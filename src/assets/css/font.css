@@ -1,0 +1,146 @@
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-thin-BF64a38d8b07276.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-thinoblique-BF64a38d8b19b6c.otf') format('opentype');
+  font-weight: 100;
+  font-style: oblique;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-extralight-BF64a38d8b0e73d.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-extralightoblique-BF64a38d8b11563.otf') format('opentype');
+  font-weight: 200;
+  font-style: oblique;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-light-BF64a38d8b23c4f.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-lightoblique-BF64a38d8b06a0e.otf') format('opentype');
+  font-weight: 300;
+  font-style: oblique;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-normal-BF64a38d8b0cbaf.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-normaloblique-BF64a38d8b23cba.otf') format('opentype');
+  font-weight: 400;
+  font-style: oblique;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-regular-BF64a38d8b1d671.otf') format('opentype');
+  font-weight: 450;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-regularoblique-BF64a38d8b0ef3f.otf') format('opentype');
+  font-weight: 450;
+  font-style: oblique;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-medium-BF64a38d8b06b0b.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-mediumoblique-BF64a38d8b16b36.otf') format('opentype');
+  font-weight: 500;
+  font-style: oblique;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-demibold-BF64a38d8aeae4a.otf') format('opentype');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-demiboldoblique-BF64a38d8b12178.otf') format('opentype');
+  font-weight: 600;
+  font-style: oblique;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-bold-BF64a38d89ce81e.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-boldoblique-BF64a38d8ac535a.otf') format('opentype');
+  font-weight: 700;
+  font-style: oblique;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-extrabold-BF64a38d8b064e.otf') format('opentype');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-extraboldoblique-BF64a38d8a36cc0.otf') format('opentype');
+  font-weight: 800;
+  font-style: oblique;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-heavy-BF64a38d8b25524.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Articulat CF';
+  src: url('./fonts/Fontspring-DEMO-articulatcf-heavyoblique-BF64a38d8b16ba0.otf') format('opentype');
+  font-weight: 900;
+  font-style: oblique;
+}
+
+
+body {
+  font-family: 'Articulat CF', sans-serif;
+  scroll-behavior: smooth;
+}

@@ -1,0 +1,8 @@
+:root {
+  --brand-color: #2E437C;
+  /* --brand-color-dark: #007ACC; */
+  /* --brand-color-light: #3AB0FF; */
+}
+.bg-brand {
+  background-color: var(--brand-color);
+}
