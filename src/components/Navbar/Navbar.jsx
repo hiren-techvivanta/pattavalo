@@ -60,7 +60,7 @@ export default function Navbar() {
       transition: { delay: 0.6 },
     },
     hover: {
-    //   scale: 1.05,
+   
       backgroundColor: "#2E437C",
       color: "#FFFFFF",
       borderColor: "#2E437C",
