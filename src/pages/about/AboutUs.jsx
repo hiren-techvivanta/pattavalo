@@ -216,29 +216,6 @@ const AboutUs = () => {
     };
   }, []);
 
-  // GSAP Setup - Original video scaling only
-  useEffect(() => {
-    // Video scaling animation (original)
-    if (videoContainerRef.current && sectionRef.current && isVideoExpanded) {
-      gsap.to(videoContainerRef.current, {
-        scaleY: 0.85,
-        scaleX: 0.98,
-        borderRadius: "20px",
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1.2,
-        },
-      });
-    }
-
-    // Cleanup
-    return () => {
-      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-    };
-  }, [isVideoExpanded]);
 
   useEffect(() => {
     if (videoRef.current) {
