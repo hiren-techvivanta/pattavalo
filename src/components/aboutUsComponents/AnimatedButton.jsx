@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
-const ClipPathButton = ({
+const AnimatedButton = ({
   children,
   onClick,
   className = "",
@@ -14,7 +14,7 @@ const ClipPathButton = ({
 
   return (
     <button
-      className={`relative inline-flex items-center text-[${color}] font-medium px-6 py-3 rounded-full overflow-hidden transition-all duration-[1000ms] ease-in-out group ${
+      className={`relative  inline-flex items-center text-[${color}] font-medium px-6 py-3 rounded-full overflow-hidden transition-all duration-[1000ms] ease-in-out group ${
         isHovered ? "border-none text-white" : `border border-[${hoverColor}]`
       }`}
       style={{
@@ -25,9 +25,10 @@ const ClipPathButton = ({
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`absolute right-6 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-[${color}]  transition-transform duration-[1000ms] ease-in-out will-change-transform ${
+        className={`absolute border border-black right-6 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full transition-transform duration-[1000ms] ease-in will-change-transform ${
           isHovered ? "scale-[30]" : "scale-100"
         }`}
+        style={{ backgroundColor: color }}
       />
 
       <span className="relative z-10 transition-colors duration-[1000ms]">
@@ -52,4 +53,4 @@ const ClipPathButton = ({
   );
 };
 
-export default ClipPathButton;
+export default AnimatedButton;

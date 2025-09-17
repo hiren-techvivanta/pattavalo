@@ -1,26 +1,34 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from "react-router-dom";
 import logoBlack from "../../assets/images/atc_logo.png";
 import logoWhite from "../../assets/images/ATC Logo white.png";
 
-export default function Navbar() {
+export default function Navbar({ navStyle }) {
   const navigate = useNavigate();
   const [navBg, setNavBg] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY >= 50) {
-        setNavBg(true);
-      } else {
-        setNavBg(false);
+      if (navStyle !== "white") {
+        if (window.scrollY >= 50) {
+          setNavBg(true);
+        } else {
+          setNavBg(false);
+        }
       }
     };
-    
+
+    if (navStyle === "white") {
+      setNavBg(true);
+    } else {
+      setNavBg(window.scrollY >= 50);
+    }
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [navStyle]);
 
   const menuItems = [
     { name: "Home", url: "/" },
@@ -28,7 +36,7 @@ export default function Navbar() {
     { name: "Industries", url: "/industries" },
     { name: "News", url: "/news" },
     { name: "Jobs", url: "/jobs" },
-    { name: "About Us", url: "/about" }
+    { name: "About Us", url: "/about" },
   ];
 
   const mobileMenuVariants = {
@@ -83,7 +91,7 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
           >
             <img
               src={navBg ? logoBlack : logoWhite}
@@ -96,7 +104,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((menu, index) => (
               <motion.button
-                key={menu.name} // Use menu.name as key instead of index
+                key={menu.name}
                 onClick={() => navigate(menu.url)}
                 className={`${
                   navBg ? "text-[#2E437C]" : "text-white"
@@ -192,7 +200,9 @@ export default function Navbar() {
         {isOpen && (
           <motion.div
             className={`md:hidden fixed inset-x-0 top-20 shadow-lg ${
-              navBg ? "bg-white border-t border-gray-200" : "bg-gray-900/95 backdrop-blur-md"
+              navBg
+                ? "bg-white border-t border-gray-200"
+                : "bg-gray-900/95 backdrop-blur-md"
             }`}
             variants={mobileMenuVariants}
             initial="closed"
@@ -218,7 +228,7 @@ export default function Navbar() {
                   {menu.name}
                 </motion.button>
               ))}
-              
+
               {/* Mobile Contact Button */}
               <motion.div
                 className="pt-4 px-2"

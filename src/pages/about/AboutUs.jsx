@@ -34,6 +34,7 @@ import i3 from "../../assets/images/i3.png";
 import i4 from "../../assets/images/i4.png";
 import i5 from "../../assets/images/i5.png";
 import i6 from "../../assets/images/i6.png";
+
 import l1 from "../../assets/images/l1.png";
 import l2 from "../../assets/images/l2.png";
 import l3 from "../../assets/images/l3.png";
@@ -628,7 +629,7 @@ const AboutUs = () => {
         </motion.div>
 
         <motion.div className="pt-16 flex justify-center" variants={fadeInUp}>
-          <AnimatedButton icon={HiDownload} color={"#000"} hoverColor={"#000"}>Load More</AnimatedButton>
+          <AnimatedButton icon={HiDownload} color={"#000"} hoverColor={`#000`}>Load More</AnimatedButton>
         </motion.div>
       </motion.div>
 
