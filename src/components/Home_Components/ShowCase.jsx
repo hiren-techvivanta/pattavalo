@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import showcaseImg from "../../assets/images/Showcase.png";
 import { TiPlus } from "react-icons/ti";
 
-export default function ProductShowcase() {
+const ShowCase = () => {
   const [activePoint, setActivePoint] = useState(null);
   const [selectedPoint, setSelectedPoint] = useState(null);
   const handleContextMenu = (e) => {
@@ -311,4 +311,6 @@ export default function ProductShowcase() {
       </div>
     </section>
   );
-}
+};
+
+export default ShowCase;
