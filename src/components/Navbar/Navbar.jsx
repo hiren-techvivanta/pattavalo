@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import logo from "../../assets/images/atc_logo.png";
-import {Link, useNavigate} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
 import logoBlack from "../../assets/images/atc_logo.png";
 import logoWhite from "../../assets/images/ATC Logo white.png";
 
 export default function Navbar() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [navBg, setNavBg] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [activeMenu, setActiveMenu] = useState(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,29 +17,18 @@ export default function Navbar() {
         setNavBg(false);
       }
     };
+    
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const menuItems = [
-   {
-     name: "Home", url: "/",
-   },
-   {
-     name: "Products", url: "/products",
-   },
-   {
-     name: "Industries", url: "/industries",
-   },
-   {
-     name: "News", url: "/news",
-   },
-   {
-     name: "Jobs", url: "/jobs",
-   },
-   {
-     name: "About Us", url: "/about",
-   }
+    { name: "Home", url: "/" },
+    { name: "Products", url: "/products" },
+    { name: "Industries", url: "/industries" },
+    { name: "News", url: "/news" },
+    { name: "Jobs", url: "/jobs" },
+    { name: "About Us", url: "/about" }
   ];
 
   const mobileMenuVariants = {
@@ -68,23 +55,15 @@ export default function Navbar() {
     visible: { opacity: 1, y: 0 },
   };
 
-  const desktopButtonVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: { delay: 0.6 },
-    },
-    tap: { scale: 0.95 },
+  const handleMobileMenuClick = (url) => {
+    setIsOpen(false);
+    navigate(url);
   };
 
-  const mobileButtonVariants = {
-    hover: {
-      backgroundColor: "#FFFFFF",
-      color: "#2E437C",
-      transition: { duration: 0.2 },
-    },
-    tap: { scale: 0.98 },
+  const handleContactClick = () => {
+    // Add your contact functionality here
+    console.log("Contact clicked");
+    // Or navigate to contact page: navigate('/contact');
   };
 
   return (
@@ -98,11 +77,13 @@ export default function Navbar() {
     >
       <div className="mx-auto px-6 md:px-3 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
+          {/* Logo */}
           <motion.div
-            className="flex-shrink-0 flex items-center"
+            className="flex-shrink-0 flex items-center cursor-pointer"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
+            onClick={() => navigate('/')}
           >
             <img
               src={navBg ? logoBlack : logoWhite}
@@ -111,14 +92,15 @@ export default function Navbar() {
             />
           </motion.div>
 
+          {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((menu, index) => (
-              <motion.p
-                key={index}
+              <motion.button
+                key={menu.name} // Use menu.name as key instead of index
                 onClick={() => navigate(menu.url)}
                 className={`${
                   navBg ? "text-[#2E437C]" : "text-white"
-                } transition-colors font-medium hover:text-blue-500`}
+                } transition-colors font-medium hover:text-blue-500 cursor-pointer`}
                 style={{
                   fontFamily: "'Articulat CF', sans-serif",
                   fontSize: "0.95rem",
@@ -131,13 +113,14 @@ export default function Navbar() {
                 whileHover={{ y: -2 }}
               >
                 {menu.name}
-              </motion.p>
+              </motion.button>
             ))}
           </div>
 
-          {/* Desktop Button */}
+          {/* Desktop Contact Button */}
           <div className="hidden md:flex">
             <motion.button
+              onClick={handleContactClick}
               className="cursor-pointer inline-flex items-center border text-sm px-6 py-2.5 rounded-full transition-all"
               style={{
                 fontFamily: "'Articulat CF', sans-serif",
@@ -156,10 +139,10 @@ export default function Navbar() {
                 backgroundColor: "#2E437C",
                 color: "#FFFFFF",
                 borderColor: "#2E437C",
-                transition: { duration: 0.1 },
+                transition: { duration: 0.2 },
               }}
               whileTap={{ scale: 0.95 }}
-              transition={{ duration: 0.1 }}
+              transition={{ duration: 0.3 }}
             >
               CONTACT US
             </motion.button>
@@ -204,11 +187,12 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             className={`md:hidden fixed inset-x-0 top-20 shadow-lg ${
-              navBg ? "bg-white" : "bg-gray-900"
+              navBg ? "bg-white border-t border-gray-200" : "bg-gray-900/95 backdrop-blur-md"
             }`}
             variants={mobileMenuVariants}
             initial="closed"
@@ -217,32 +201,37 @@ export default function Navbar() {
           >
             <div className="px-5 pt-4 pb-8 space-y-1 flex flex-col">
               {menuItems.map((menu, index) => (
-                <motion.a
-                  key={menu}
-                  href="#"
-                  className={`py-4 px-4.5 rounded-lg text-lg ${
+                <motion.button
+                  key={menu.name} // Use menu.name as key instead of index
+                  onClick={() => handleMobileMenuClick(menu.url)}
+                  className={`py-4 px-4 rounded-lg text-lg text-left ${
                     navBg
                       ? "text-[#2E437C] hover:bg-gray-100"
                       : "text-white hover:bg-gray-800"
                   } transition-colors font-medium`}
                   style={{ fontFamily: "'Articulat CF', sans-serif" }}
-                  onClick={() => setIsOpen(false)}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ x: 5 }}
                 >
-                  {menu}
-                </motion.a>
+                  {menu.name}
+                </motion.button>
               ))}
+              
+              {/* Mobile Contact Button */}
               <motion.div
-                className="pt-2 px-2"
+                className="pt-4 px-2"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6 }}
               >
                 <motion.button
-                  className={`w-50 inline-flex justify-center items-center border-1 font-medium px-0 py-2 rounded-full text-md ${
+                  onClick={() => {
+                    setIsOpen(false);
+                    handleContactClick();
+                  }}
+                  className={`w-full inline-flex justify-center items-center border font-medium px-6 py-3 rounded-full text-base transition-all ${
                     navBg
                       ? "border-[#2E437C] text-[#2E437C] hover:bg-[#2E437C] hover:text-white"
                       : "border-white text-white hover:bg-white hover:text-[#2E437C]"
@@ -251,10 +240,8 @@ export default function Navbar() {
                     fontFamily: "'Articulat CF', sans-serif",
                     fontWeight: 300,
                   }}
-                  onClick={() => setIsOpen(false)}
-                  variants={mobileButtonVariants}
-                  whileHover="hover"
-                  whileTap="tap"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   CONTACT US
                 </motion.button>
