@@ -3,7 +3,7 @@ import HomeBanner from '../components/Home_Components/HomeBanner'
 import Gatherings from '../components/Home_Components/Gatherings'
 import CustomConveyor from '../components/Home_Components/CustomConveyor'
 import ModulerSolution from '../components/Home_Components/ModulerSolution'
-import ProductShowCase from '../components/Home_Components/ProductShowcase'
+import ProductShowcase from '../components/Home_Components/ProductShowcase'
 import Navbar from '../components/Navbar/Navbar'
 
 export default function Home() {
@@ -14,7 +14,7 @@ export default function Home() {
      <Gatherings/>
      <ModulerSolution/>
      <CustomConveyor/>
-     <ProductShowCase/>   
+     <ProductShowcase/>   
     </div>
   )
 }
