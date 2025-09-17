@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import logo from "../../assets/images/atc_logo.png";
+import {Link, useNavigate} from 'react-router-dom'
 
 export default function Navbar() {
+  const navigate = useNavigate()
   const [navBg, setNavBg] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -19,12 +21,24 @@ export default function Navbar() {
   }, []);
 
   const menuItems = [
-    "Home",
-    "Products",
-    "Industries",
-    "News",
-    "Jobs",
-    "About Us",
+   {
+     name: "Home", url: "/",
+   },
+   {
+     name: "Products", url: "/products",
+   },
+   {
+     name: "Industries", url: "/industries",
+   },
+   {
+     name: "News", url: "/news",
+   },
+   {
+     name: "Jobs", url: "/jobs",
+   },
+   {
+     name: "About Us", url: "/about",
+   }
   ];
 
   const mobileMenuVariants = {
@@ -102,9 +116,9 @@ export default function Navbar() {
         
           <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((menu, index) => (
-              <motion.a
-                key={menu}
-                href="#"
+              <motion.p
+                key={index}
+                onClick={() => navigate(menu.url)}
                 className={`${
                   navBg ? "text-gray-800" : "text-white"
                 } transition-colors font-medium hover:text-blue-600`}
@@ -119,8 +133,8 @@ export default function Navbar() {
                 transition={{ delay: index * 0.1 + 0.3 }}
                 whileHover={{ y: -2 }}
               >
-                {menu}
-              </motion.a>
+                {menu.name}
+              </motion.p>
             ))}
           </div>
 
