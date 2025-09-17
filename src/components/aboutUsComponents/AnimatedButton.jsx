@@ -31,7 +31,6 @@ const ClipPathButton = ({
       transition={{ duration: 0.6 }}
       viewport={{ once: true }}
       style={{
-        // Only apply hover effects on devices with fine pointers
         '@media (hover: hover) and (pointer: fine)': {
           '--clip-path-transition': '0.65s cubic-bezier(0.785, 0.135, 0.15, 0.86)'
         }
