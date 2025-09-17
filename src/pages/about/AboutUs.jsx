@@ -22,7 +22,7 @@ import AnimatedSection from "../../components/aboutUsComponents/AnimatedSection"
 import AnimatedButton from "../../components/aboutUsComponents/AnimatedButton";
 
 // Assets
-import BgVideo from "../../assets/Video/aboutus.mp4";
+import BgVideo from "../../assets/Video/aboutUs.mp4";
 import a1 from "../../assets/images/a1.jpg";
 import a2 from "../../assets/images/a2.jpg";
 import t1 from "../../assets/images/t1.jpg";
