@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import showcaseImg from "../../assets/images/Showcase.png";
+import { CgArrowTopLeftO } from "react-icons/cg";
 import { TiPlus } from "react-icons/ti";
 
 const ShowCase = () => {
   const [activePoint, setActivePoint] = useState(null);
   const [selectedPoint, setSelectedPoint] = useState(null);
+  const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
   const handleContextMenu = (e) => {
     e.preventDefault();
   };
@@ -103,99 +113,28 @@ const ShowCase = () => {
   ];
 
   return (
-    // <section className="relative w-full bg-white py-12 px-4 md:px-8">
-    //   <div className=" mb-10">
-    //     <h2 className="text-3xl md:text-4xl font-bold text-[#2E437C]">
-    //       Interactive <span className="text-gray-500">Product Showcase</span>
-    //     </h2>
-    //     <p className="text-gray-600 mt-2 text-sm md:text-base">
-    //       Hover over the hotspots to explore our products
-    //     </p>
-    //   </div>
+    <section className="container mx-auto relative w-full bg-white  ">
+      <div className="  md:text-left md:px-10 px-8 ">
+        <motion.h2
+          className="text-[36px] md:text-[48px] font-normal text-[#2E437C] leading-tight"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          Interactive <br />
+          <span className="text-[#BABEC8] font-bold">Product Showcase</span>
+        </motion.h2>
 
-    //   <div className="relative w-full max-w-6xl mx-auto">
-    //     <div
-    //       className="w-full h-auto cursor-not-allowed select-none"
-    //       onContextMenu={handleContextMenu}
-    //       onDragStart={handleDragStart}
-    //     >
-    //       <img
-    //         src={showcaseImg}
-    //         alt="Product Showcase"
-    //         className="w-full h-auto object-contain"
-    //       />
-    //     </div>
-
-    //     {points.map((point) => (
-    //       <motion.div
-    //         key={point.id}
-    //         className="absolute"
-    //         style={{ top: point.top, left: point.left }}
-    //         initial={{ scale: 0 }}
-    //         animate={{ scale: 1 }}
-    //         transition={{ duration: 0.4 }}
-    //         onMouseEnter={() => setActivePoint(point.id)}
-    //         onMouseLeave={() => setActivePoint(null)}
-    //       >
-    //         <button
-    //           aria-label="Hotspot"
-    //           className="relative flex items-center justify-center
-    //          w-4 h-4 sm:w-6 sm:h-6 md:w-5 md:h-5 lg:w-7 lg:h-7
-    //            bg-orange-500 text-white rounded-full shadow-lg
-    //        cursor-pointer transition-transform duration-200
-    //              hover:scale-110 active:scale-95"
-    //         >
-    //           <span className="absolute inset-0 rounded-full bg-orange-500/40 animate-[ripple_2.5s_linear_infinite]" />
-
-    //           <span className="absolute inset-0 rounded-full bg-orange-500/40 animate-[ripple_2.5s_linear_infinite] [animation-delay:1.25s]" />
-
-    //           <TiPlus className="w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4 lg:w-4 lg:h-4 relative z-10" />
-    //         </button>
-
-    //         <AnimatePresence>
-    //           {activePoint === point.id && (
-    //             <motion.div
-    //               initial={{ opacity: 0, y: 10, scale: 0.95 }}
-    //               animate={{ opacity: 1, y: 0, scale: 1 }}
-    //               exit={{ opacity: 0, y: 10, scale: 0.95 }}
-    //               transition={{ duration: 0.3 }}
-    //               className="absolute left-8 top-0 w-60 md:w-72 bg-white rounded-xl shadow-xl p-4 z-20"
-    //             >
-    //               <h4 className="text-lg font-semibold text-[#2E437C]">
-    //                 {point.title}
-    //               </h4>
-    //               <p className="text-gray-600 text-sm mt-1">{point.desc}</p>
-    //               <motion.button
-    //                 whileHover={{ scale: 1.05 }}
-    //                 whileTap={{ scale: 0.95 }}
-    //                 className="mt-3 inline-flex items-center px-4 py-2 rounded-full border border-[#2E437C] text-[#2E437C] text-sm font-medium hover:bg-[#2E437C] hover:text-white transition-all"
-    //               >
-    //                 VIEW →
-    //               </motion.button>
-    //             </motion.div>
-    //           )}
-    //         </AnimatePresence>
-    //       </motion.div>
-    //     ))}
-    //   </div>
-
-    //   <div className="absolute bottom-5 right-5 flex items-center gap-2 text-gray-600 text-sm">
-    //     <span>🔍</span>
-    //     <p>
-    //       <strong>Explore</strong> – Click on any point
-    //     </p>
-    //   </div>
-    // </section>
-    <section className="relative w-full bg-white py-12 px-4 md:px-8">
-      <div className="mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold text-[#2E437C]">
-          Interactive <span className="text-gray-500">Product Showcase</span>
-        </h2>
-        <p className="text-gray-600 mt-2 text-sm md:text-base">
-          {window.innerWidth >= 768
-            ? "Hover over the hotspots to explore our products"
+        <motion.p
+          className="text-[#191919] mt-4 text-sm md:text-base max-w-xl mx-auto md:mx-0"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
+        >
+          {isDesktop
+            ? "Click or hover over the hotspots to explore our products"
             : "Tap on the hotspots to explore our products"}
-        </p>
+        </motion.p>
       </div>
 
       <div className="relative w-full max-w-6xl mx-auto">
@@ -269,7 +208,6 @@ const ShowCase = () => {
         ))}
       </div>
 
-      {/* Mobile card overlay */}
       <AnimatePresence>
         {selectedPoint && window.innerWidth < 768 && (
           <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
@@ -303,11 +241,21 @@ const ShowCase = () => {
         )}
       </AnimatePresence>
 
-      <div className="absolute bottom-5 right-5 hidden md:flex items-center gap-2 text-gray-600 text-sm">
-        <span>🔍</span>
-        <p>
-          <strong>Explore</strong> – Click on any point
-        </p>
+      <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 md:bottom-5 md:right-5 flex items-start gap-2 text-black">
+        
+        <span className="text-lg sm:text-xl md:text-2xl">
+          <CgArrowTopLeftO />
+        </span>
+
+        
+        <div className="flex flex-col leading-tight">
+          <span className="font-bold text-sm sm:text-base md:text-lg">
+            Explore
+          </span>
+          <span className="text-sm sm:text-base md:text-lg">
+            Click or Hover on any point
+          </span>
+        </div>
       </div>
     </section>
   );
