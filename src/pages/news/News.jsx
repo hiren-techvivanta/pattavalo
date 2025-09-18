@@ -23,6 +23,7 @@ import l3 from "../../assets/images/l3.png";
 import l4 from "../../assets/images/l4.png";
 import l5 from "../../assets/images/l5.png";
 import l6 from "../../assets/images/l6.png";
+
 import AnimatedButton from "../../components/aboutUsComponents/AnimatedButton";
 import { HiDownload } from "react-icons/hi";
 import AnimatedImage from "../../components/aboutUsComponents/AnimatedImage";
@@ -403,7 +404,7 @@ const News = () => {
         <AnimatePresence mode="wait">
           <motion.div
             key={`${activeTab}-${searchQuery}`}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8"
+            className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8"
             variants={containerVariants}
             initial={{ y: 50 }}
             animate={{ y: 0, ease: easeInOut }}
