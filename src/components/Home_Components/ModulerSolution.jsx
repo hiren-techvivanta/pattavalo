@@ -117,7 +117,7 @@ export default function ModulerSolution() {
     },
   ];
 
-  // Animation variants for container
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -129,7 +129,7 @@ export default function ModulerSolution() {
     },
   };
 
-  // Animation variants for items with zoom effect
+  
   const itemVariants = {
     hidden: {
       opacity: 0,
@@ -157,7 +157,7 @@ export default function ModulerSolution() {
     },
   };
 
-  // Enhanced title animation
+ 
   const titleVariants = {
     hidden: {
       opacity: 0,
@@ -176,7 +176,7 @@ export default function ModulerSolution() {
   };
 
   return (
-    <section className="container mx-auto w-full px-6 md:px-12 py-12 bg-white">
+    <section className="container mx-auto w-full px-6 md:px-0 py-12 bg-white">
       {/* Enhanced Title Animation */}
       <motion.div
         initial="hidden"

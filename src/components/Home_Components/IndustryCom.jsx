@@ -10,54 +10,228 @@ import {
   FaCar,
   FaHospital,
 } from "react-icons/fa";
-
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Pagination ,Autoplay  } from "swiper/modules";
+import food1 from "../../assets/images/industries/food1.jpg";
+import food2 from "../../assets/images/industries/food2.jpeg";
+import water1 from "../../assets/images/industries/water1.jpeg";
+import water2 from "../../assets/images/industries/water2.jpeg";
+import juice1 from "../../assets/images/industries/juice1.jpeg";
+import juice2 from "../../assets/images/industries/juice2.jpeg";
+import tetra1 from "../../assets/images/industries/tetra1.jpeg";
+import tetra2 from "../../assets/images/industries/tetra2.jpeg";
+import beer1 from "../../assets/images/industries/beer1.jpeg";
+import beer2 from "../../assets/images/industries/beer2.jpeg";
+import softdrink1 from "../../assets/images/industries/softdrink1.jpeg";
+import softdrink2 from "../../assets/images/industries/softdrink2.jpeg";
+import seafood1 from "../../assets/images/industries/seafood1.jpeg";
+import seafood2 from "../../assets/images/industries/seafood2.jpeg";
+import meat1 from "../../assets/images/industries/meat1.jpeg";
+import meat2 from "../../assets/images/industries/meat2.jpeg";
+import poultry1 from "../../assets/images/industries/meat2.jpeg";
 
 const categoryContent = {
-  Bakery: {
-    title: "Bakery Solutions",
+  // Food Industry
+  "Fruit & Vegitables": {
+    title: "Fruit & Vegetables Solutions",
     description:
-      "Specialized conveyor systems for bakery products that ensure gentle handling and maintain product integrity throughout the production process.",
-    image:
-      "https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=1200&q=80",
+      "A fruits and vegetable modular conveyor belt is a type of conveyor system that is designed specifically for handling fruits and vegetables in a production or processing facility. This type of conveyor system is typically made up of modular plastic belts that are designed to be easily replaced, cleaned, and sanitized to meet the strict hygiene standards required in the food industry. The design of a fruits and vegetable modular conveyor belt is optimized for the handling of delicate produce, such as fruits and vegetables, without causing damage to the product. The conveyor system is typically equipped with features such as adjustable speed controls and gentle transfer mechanisms to ensure that the produce is transported smoothly and safely through the production or processing line. In addition to being designed for the handling of delicate produce, a fruits and vegetable modular conveyor belt is also typically designed to be easily disassembled and cleaned to meet strict food safety requirements. This is important because any contaminants or bacteria that may be present on the conveyor belt can easily transfer to the produce, which can have serious health implications for consumers. Overall, a fruits and vegetable modular conveyor belt is an important component of a modern food production or processing facility, and can help ensure that fruits and vegetables are handled safely and efficiently throughout the production process.",
+    images: [food1, food2],
   },
 
- 
   Water: {
     title: "Water Bottling Solutions",
     description:
-      "High-speed conveying systems for water bottling plants with precision handling and labeling capabilities.",
-    image:
-      "https://images.unsplash.com/photo-1600672025550-802dcd5c78a1?auto=format&fit=crop&w=1200&q=80",
+      "SS chain (stainless steel chain), plastic chain, modular belts, and components are commonly used in water bottling lines for various purposes. These materials and components play important roles in conveying, transferring, and processing bottles throughout the bottling process.",
+    images: [water1, water2],
   },
   Juice: {
     title: "Juice Production Lines",
     description:
-      "Sanitary conveyor systems for juice processing that resist corrosion and enable easy cleaning.",
-    image:
-      "https://images.unsplash.com/photo-1615482266735-80c216cec44d?auto=format&fit=crop&w=1200&q=80",
+      "In a juice production line, you can utilize conveyors made of stainless steel (SS), plastic chain, and modular belt, along with various components tailored to the specific needs of the process. Modular belt, SS chains, Plastic and flex chains are commonly use in In-feed Conveyors, Fruit Washing Conveyors, Sorting Conveyors, Juice Extraction Conveyors, Bottle or Container Conveyors, Packaging Conveyors, Inspection Conveyors, Transfer Conveyors. Stainless steel conveyors are commonly used for conveying fruits through washing and sorting stages. They are resistant to moisture, chemicals, and are easy to clean, making them suitable for maintaining hygiene during the washing process. Plastic chain conveyors can also be employed, providing gentle and efficient transportation of delicate fruits.For the bottling and packaging of juice, conveyors with modular belts or plastic chains are commonly used. These conveyors transport empty bottles or containers through filling, capping, labeling, and packaging stations. Modular belts provide a stable surface for smooth and efficient movement, while plastic chain conveyors offer flexibility and ease of cleaning. Conveyors with modular belts or plastic chains are used for visual inspection and quality control of filled and packaged juice products. These conveyors facilitate the movement of bottles or containers, allowing inspectors to examine them for any defects or inconsistencies.",
+    images: [juice1, juice2],
   },
   "Tetra Pack": {
     title: "Tetra Pack Handling",
     description:
-      "Specialized conveyors for tetra pack packaging with precise alignment and sealing capabilities.",
-    image:
-      "https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?auto=format&fit=crop&w=1200&q=80",
+      "Tetra Pack production typically involves the use of finger chains, slat chains, and various conveyor components to transport the cartons throughout the production line.Finger chains are commonly used in the Tetra Pack production process to transport the cartons from one stage to another. They are designed to securely hold the cartons in place and prevent them from falling or tilting during the conveying process.Modular belts are a versatile option for conveying cartons in the Tetra Pack production process. They can be easily customized to fit different conveyor configurations and offer low maintenance and easy cleaning, making them ideal for use in food and beverage applications. Other conveyor components commonly used in the Tetra Pack production process include bearings, sprockets, wear strips, and guides, all of which play a crucial role in ensuring the efficient and effective operation of the conveyor system.",
+    images: [tetra1, tetra2],
   },
   "Beer Line": {
     title: "Brewery Conveying Systems",
     description:
-      "Durable conveyors for brewery operations that can handle glass bottles, cans, and kegs with care.",
-    image:
-      "https://images.unsplash.com/photo-1504502350688-00f5d9bb610f?auto=format&fit=crop&w=1200&q=80",
+      "Beer manufacturing processes often utilize conveyors for various stages of production, including bottling, canning, labeling, packaging, and transportation. Both stainless steel (SS) conveyors and conveyors with plastic chains or modular belts are commonly employed in the beer industry. Stainless steel is a popular choice for conveying systems in the beer manufacturing industry due to its durability, corrosion resistance, and ease of cleaning. Plastic chain conveyors are another type of conveyor system widely used in the beer industry. These conveyors consist of interlocking plastic chains that move products along the production line. Plastic chains offer advantages such as being lightweight, flexible, and easy to clean. Both plastic chain conveyors and modular belt conveyors are well-suited for beer manufacturing processes as they are resistant to moisture, corrosion, and chemical exposure. The choice between the two will depend on factors such as the specific application, the type of product being transported, and the desired level of hygiene and product protection. It's worth noting that conveyor systems in the beer industry often require additional features and components to ensure product integrity and maintain hygiene standards. These may include side guides, drip pans, sanitary design principles, and proper cleaning procedures to prevent contamination and maintain the quality of the beer throughout the production process.",
+    images: [beer1, beer2],
   },
   "Carbonated Soft Drinks": {
     title: "Carbonated Beverage Lines",
     description:
-      "High-speed conveying solutions for carbonated drink production with precision filling and capping.",
-    image:
-      "https://images.unsplash.com/photo-1592892111427-53c6ec5c9a5a?auto=format&fit=crop&w=1200&q=80",
+      "The manufacturing process of carbonated soft drinks often involves the use of SS (stainless steel) slat chains, plastic chains, and various conveyor parts to transport the bottles or cans throughout the production line.Other conveyor parts commonly used in the manufacturing process of carbonated soft drinks include bearings, sprockets, wear strips, and guides, all of which play a crucial role in ensuring the efficient and effective operation of the conveyor system.",
+    images: [softdrink1, softdrink2],
   },
 
+  // Meat & Seafood Industry
+  Seafood: {
+    title: "Seafood Handling Solutions",
+    description:
+      "Efficient and hygienic conveyor systems for seafood processing and packaging.",
+    images: [seafood1, seafood2],
+  },
+  Meat: {
+    title: "Meat Processing Solutions",
+    description:
+      "Safe and sanitary conveyor systems for meat processing facilities.",
+   images: [meat1, meat2],
+  },
+  Poultry: {
+    title: "Poultry Handling Solutions",
+    description:
+      "Specialized conveyors for handling poultry products with hygiene compliance.",
+    images: [poultry1],
+  },
+
+  // Dairy Industry
+  Chocolate: {
+    title: "Chocolate Production Solutions",
+    description: "Conveyors for chocolate processing ensuring product quality.",
+    images: [
+      "https://images.unsplash.com/photo-1580927752450-b5f0a35b0a2d?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  "Milk & Milk Products": {
+    title: "Milk Processing Solutions",
+    description: "Efficient conveyors for milk and dairy products.",
+    images: [
+      "https://images.unsplash.com/photo-1603724359751-3f64e876e267?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  Yogurt: {
+    title: "Yogurt Production Lines",
+    description: "Sanitary conveyor solutions for yogurt production.",
+    images: [
+      "https://images.unsplash.com/photo-1587398290463-90b95b56e1b1?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  Cheese: {
+    title: "Cheese Handling Systems",
+    description: "Specialized conveyors for cheese processing and packaging.",
+    images: [
+      "https://images.unsplash.com/photo-1596614770116-0ff91d8e234d?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+
+  // Packaging & Logistics
+  "Shrink Wrapping": {
+    title: "Shrink Wrapping Solutions",
+    description:
+      "Conveyors for automated shrink wrapping in logistics and packaging.",
+    images: [
+      "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  "Material Handling": {
+    title: "Material Handling Solutions",
+    description:
+      "Efficient conveyors for moving materials across production lines.",
+    images: [
+      "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  "Packaging Belting Solution": {
+    title: "Packaging Belting Solutions",
+    description:
+      "Conveyor belts optimized for packaging applications and labeling.",
+    images: [
+      "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  "E-commerce": {
+    title: "E-commerce Logistics Solutions",
+    description: "Conveyors for efficient handling of e-commerce products.",
+    images: [
+      "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  Distribution: {
+    title: "Distribution Solutions",
+    description: "Conveyors for product distribution and warehouse automation.",
+    images: [
+      "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+
+  // Cosmetic & Pharmaceutical
+  "No Category": {
+    title: "Cosmetic & Pharmaceutical Conveyors",
+    description:
+      "Conveyors for cosmetic and pharmaceutical industries ensuring sterile handling.",
+    images: [
+      "https://png.pngtree.com/png-vector/20221125/ourmid/pngtree-no-image-available-icon-flatvector-illustration-picture-coming-creative-vector-png-image_40968940.jpg",
+    ],
+  },
+
+  // Automobile
+  Assembly: {
+    title: "Assembly Line Conveyors",
+    description: "Conveyors for automobile assembly lines.",
+    images: [
+      "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  "Parts Manufacturing": {
+    title: "Parts Manufacturing Conveyors",
+    description: "Conveyors for efficient parts manufacturing.",
+    images: [
+      "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  Painting: {
+    title: "Painting Line Conveyors",
+    description: "Specialized conveyors for painting operations.",
+    images: [
+      "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  "Quality Control": {
+    title: "Quality Control Conveyors",
+    description: "Conveyors for QC processes in automobile production.",
+    images: [
+      "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+
+  // Healthcare
+  "Medical Supplies": {
+    title: "Medical Supplies Conveyors",
+    description: "Conveyors for safe transport of medical supplies.",
+    images: [
+      "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  Equipment: {
+    title: "Medical Equipment Conveyors",
+    description: "Conveyors for moving medical equipment safely.",
+    images: [
+      "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  "Specimen Transport": {
+    title: "Specimen Transport Solutions",
+    description: "Conveyors for safe and hygienic transport of specimens.",
+    images: [
+      "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
+  "Sterile Products": {
+    title: "Sterile Product Handling",
+    description: "Conveyors for sterile product transport in healthcare.",
+    images: [
+      "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
+    ],
+  },
 };
 
 const industries = [
@@ -66,11 +240,10 @@ const industries = [
     title: "Food Industry",
     description:
       "A food industry modular conveyor belt is a type of conveyor system that is commonly used in the food processing and manufacturing industry. It consists of individual interlocking plastic modules that.",
-    image:
-      "https://images.unsplash.com/photo-1606851093957-481bf8e7c7f0?auto=format&fit=crop&w=1200&q=80",
+    image: food1,
     icon: <FaIndustry size={26} />,
     color: "#2E437C",
-    targetRotation: 0,
+    targetRotation: -20,
     categories: ["Fruit & Vegitables"],
   },
   {
@@ -82,7 +255,7 @@ const industries = [
       "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
     icon: <FaWineBottle size={26} />,
     color: "#1d4ed8",
-    targetRotation: -45,
+    targetRotation: -65,
     categories: [
       "Water",
       "Juice",
@@ -100,7 +273,7 @@ const industries = [
       "https://images.unsplash.com/photo-1581338834647-b0fb40704e21?auto=format&fit=crop&w=1200&q=80",
     icon: <FaFish size={26} />,
     color: "#E74623",
-    targetRotation: -90,
+    targetRotation: -110,
     categories: ["Seafood", "Meat", "Poultry"],
   },
   {
@@ -112,7 +285,7 @@ const industries = [
       "https://images.unsplash.com/photo-1566772940193-9c3ae2938d78?auto=format&fit=crop&w=1200&q=80",
     icon: <FaIceCream size={26} />,
     color: "#f97316",
-    targetRotation: -135,
+    targetRotation: -155,
     categories: ["Chocolate", "Milk & Milk Products", "Yogurt", "Cheese"],
   },
   {
@@ -124,7 +297,7 @@ const industries = [
       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
     icon: <FaShippingFast size={26} />,
     color: "#10b981",
-    targetRotation: -180,
+    targetRotation: -200,
     categories: [
       "Shrink Wrapping",
       "Material Handling",
@@ -142,7 +315,7 @@ const industries = [
       "https://png.pngtree.com/png-vector/20221125/ourmid/pngtree-no-image-available-icon-flatvector-illustration-picture-coming-creative-vector-png-image_40968940.jpg",
     icon: <FaSprayCan size={26} />,
     color: "#8b5cf6",
-    targetRotation: -225,
+    targetRotation: -245,
     categories: [],
   },
   {
@@ -154,7 +327,7 @@ const industries = [
       "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
     icon: <FaCar size={26} />,
     color: "#06b6d4",
-    targetRotation: -270,
+    targetRotation: -290,
     categories: [
       "Assembly",
       "Parts Manufacturing",
@@ -171,7 +344,7 @@ const industries = [
       "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
     icon: <FaHospital size={26} />,
     color: "#ec4899",
-    targetRotation: -315,
+    targetRotation: -335,
     categories: [
       "Medical Supplies",
       "Equipment",
@@ -184,13 +357,14 @@ const industries = [
 export default function IndustryCom() {
   const [activeIndustry, setActiveIndustry] = useState(industries[0]);
   const [activeCategory, setActiveCategory] = useState(
-    industries[0].categories[0]
+    industries[0].categories?.[0] || null
   );
+
   const [rotation, setRotation] = useState(0);
 
   const handleButtonClick = (industry) => {
     setActiveIndustry(industry);
-    setActiveCategory(industry.categories[0]);
+    setActiveCategory(industry.categories?.[0] || null);
 
     const currentRotation = rotation % 360;
     let targetRotation = industry.targetRotation;
@@ -245,21 +419,20 @@ export default function IndustryCom() {
   const categoryData = getCategoryContent();
 
   return (
-    <section className="container me-auto w-full py-12   overflow-hidden">
+    <section className="container  w-full py-12 overflow-hidden">
       {/* Heading */}
       <motion.h1
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="text-4xl sm:text-5xl md:text-6xl lg:text-[100px] font-normal text-[#BABEC8] mb-10 text-center lg:text-left  sm:px-6 lg:px-13"
+        className="text-4xl sm:text-5xl md:text-6xl lg:text-[100px] font-normal text-[#BABEC8] mb-10 text-center lg:text-left  sm:px-6 md:px-10 lg:px-25"
       >
         Industries we serve
       </motion.h1>
 
-      <div className=" grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-15 items-center">
-        {/* Circle Section (Left) */}
-        <div className="relative flex justify-center lg:justify-start items-center overflow-hidden">
+      <div className=" grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10 items-center">
+        <div className="relative flex justify-center lg:justify-start items-center overflow-hidden order-2 lg:order-1">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -319,6 +492,13 @@ export default function IndustryCom() {
                           300 + 300 * Math.sin((endAngle * Math.PI) / 180)
                         } Z')`,
                         zIndex: 15,
+                        border: isActive
+                          ? "2px solid #fff"
+                          : "2px solid transparent",
+                        filter: isActive
+                          ? "drop-shadow(0 0 15px rgba(255,255,255,0.6))"
+                          : "none",
+                        transition: "all 0.3s ease",
                       }}
                     ></div>
 
@@ -351,33 +531,65 @@ export default function IndustryCom() {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col "
+          className="flex flex-col w-full max-w-3xl px-4 sm:px-6 lg:px-0 order-1 lg:order-2"
         >
-          <div className="flex flex-wrap gap-2 mb-4">
-            {activeIndustry.categories.map((category, index) => (
-              <button
-                key={index}
-                onClick={() => handleCategoryClick(category)}
-                className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                  activeCategory === category
-                    ? "text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-                style={{
-                  backgroundColor: activeCategory === category ? "#2E437C" : "",
-                }}
-              >
-                {category}
-              </button>
-            ))}
+          <div className="flex flex-wrap  gap-2 mb-4">
+            {activeIndustry.categories?.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {activeIndustry.categories.map((category, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleCategoryClick(category)}
+                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                      activeCategory === category
+                        ? "text-white"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                    style={{
+                      backgroundColor:
+                        activeCategory === category ? "#2E437C" : "",
+                    }}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           <div className="relative overflow-hidden rounded-lg">
-            <img
-              src={categoryData.image}
-              alt={categoryData.title}
-              className="w-full h-110 object-cover transition-transform duration-500 hover:scale-105"
-            />
+            {categoryData?.images?.length > 0 ? (
+              <Swiper
+                modules={[Pagination, Autoplay]}
+                navigation
+                pagination={{ clickable: true }}
+                spaceBetween={10}
+                autoplay={{
+                  delay: 3000,
+                  disableOnInteraction: false,
+                }}
+                loop={true}
+                slidesPerView={1}
+                className="rounded-lg"
+              >
+                {categoryData.images.map((img, idx) => (
+                  <SwiperSlide key={idx}>
+                    <img
+                      src={img}
+                      alt={`${categoryData.title} ${idx + 1}`}
+                      className="w-full h-110 object-cover transition-transform duration-500 hover:scale-105 rounded-lg"
+                    />
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            ) : (
+              <img
+                src={activeIndustry.image}
+                alt={activeIndustry.title}
+                className="w-full h-110 object-cover transition-transform duration-500 hover:scale-105 rounded-lg"
+              />
+            )}
+
             <div className="absolute top-0 left-0 w-full p-3 bg-gradient-to-b from-black/70 to-transparent">
               <h3 className="text-xl font-semibold text-white">
                 {categoryData.title}

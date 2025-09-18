@@ -114,7 +114,7 @@ const ShowCase = () => {
 
   return (
     <section className="container mx-auto relative w-full bg-white  ">
-      <div className="  md:text-left md:px-10 px-8 ">
+      <div className="  md:text-left md:px-0 px-8 ">
         <motion.h2
           className="text-[36px] md:text-[48px] font-normal text-[#2E437C] leading-tight"
           initial={{ opacity: 0, y: 20 }}
@@ -137,7 +137,7 @@ const ShowCase = () => {
         </motion.p>
       </div>
 
-      <div className="relative w-full max-w-6xl mx-auto">
+      <div className="relative w-full  mx-auto">
         <div
           className="w-full h-auto cursor-not-allowed select-none"
           onContextMenu={handleContextMenu}
@@ -241,7 +241,7 @@ const ShowCase = () => {
         )}
       </AnimatePresence>
 
-      <div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 md:bottom-5 md:right-5 flex items-start gap-2 text-black">
+      <div className="w-full justify-end  flex items-start gap-2 text-black">
         
         <span className="text-lg sm:text-xl md:text-2xl">
           <CgArrowTopLeftO />
