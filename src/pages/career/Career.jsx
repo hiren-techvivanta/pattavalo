@@ -24,30 +24,34 @@ const Career = () => {
       id: 1,
       icon: <LuUsersRound className="text-[26px] md:text-[38px]" />,
       title: "Team work",
-      description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
-      bgColor: "bg-[#E7F2FF]"
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
+      bgColor: "bg-[#E7F2FF]",
     },
     {
       id: 2,
       icon: <MdOutlineSecurity className="text-[26px] md:text-[38px]" />,
       title: "Secured Future",
-      description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
-      bgColor: "bg-[#F1F7E8]"
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
+      bgColor: "bg-[#F1F7E8]",
     },
     {
       id: 3,
       icon: <PiStudentBold className="text-[26px] md:text-[38px]" />,
       title: "Learning Opportunity",
-      description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
-      bgColor: "bg-[#EFF2F5]"
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
+      bgColor: "bg-[#EFF2F5]",
     },
     {
       id: 4,
       icon: <BsBarChart className="text-[26px] md:text-[38px]" />,
       title: "Upgrate Skills",
-      description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
-      bgColor: "bg-[#FFEEED]"
-    }
+      description:
+        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
+      bgColor: "bg-[#FFEEED]",
+    },
   ];
 
   const categories = [
@@ -344,7 +348,9 @@ const Career = () => {
   // Render benefit card component
   const BenefitCard = ({ benefit, index }) => (
     <div key={benefit.id}>
-      <div className={`w-[51px] md:w-[74px] h-[51px] md:h-[74px] ${benefit.bgColor} rounded-[4px] flex items-center justify-center`}>
+      <div
+        className={`w-[51px] md:w-[74px] h-[51px] md:h-[74px] ${benefit.bgColor} rounded-[4px] flex items-center justify-center`}
+      >
         {benefit.icon}
       </div>
       <h6 className="text-[#001833] text-[18px] font-[700] mt-3">
@@ -362,9 +368,7 @@ const Career = () => {
       <div className="flex items-center justify-between">
         {/* Job Title */}
         <div className="flex-1">
-          <h3 className="text-lg font-semibold text-gray-900">
-            {job.title}
-          </h3>
+          <h3 className="text-lg font-semibold text-gray-900">{job.title}</h3>
         </div>
 
         {/* Experience Section */}
@@ -405,9 +409,7 @@ const Career = () => {
       `}
     >
       <div className="flex items-center space-x-3">
-        <span className="font-medium text-sm">
-          {category.name}
-        </span>
+        <span className="font-medium text-sm">{category.name}</span>
       </div>
       {category.count > 0 && (
         <span
@@ -485,9 +487,7 @@ const Career = () => {
                 className="space-y-4"
               >
                 {filteredJobs.length > 0 ? (
-                  filteredJobs.map((job) => (
-                    <JobCard key={job.id} job={job} />
-                  ))
+                  filteredJobs.map((job) => <JobCard key={job.id} job={job} />)
                 ) : (
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
@@ -544,8 +544,9 @@ const Career = () => {
               Our Awesome Team
             </h2>
             <p className="text-[#001833] text-[14px] font-[400] mt-4 leading-relaxed">
-              We want to feel like home when you are working at ATC (Advanced Technology & Consultancy) 
-              & for that we have curated a great set of benefits for you. It all starts with the free lunch!
+              We want to feel like home when you are working at ATC (Advanced
+              Technology & Consultancy) & for that we have curated a great set
+              of benefits for you. It all starts with the free lunch!
             </p>
           </motion.div>
 
