@@ -55,15 +55,15 @@ export default function Gatherings() {
       </motion.span>
     ));
   return (
-    <section className="w-full px-4 md:px-10 lg:px-15 py-10">
+    <section className=" w-full px-4 md:px-10 lg:px-15 py-10">
       <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
         variants={containerVariants}
-        className="mb-5 sm:mb-10 sm:px-6 lg:px-0 pb-1 text-center md:text-left"
+        className="container mx-auto mb-5 sm:mb-10 sm:px-6 lg:px-0 pb-1  md:text-left"
       >
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[74px] leading-snug">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[74px]   leading-17 md``:leading-17">
           <span className="font-normal text-[#2E437C] block">
             {splitText("What’s ")}
           </span>
@@ -71,13 +71,13 @@ export default function Gatherings() {
             {splitText("Happening Next")}
           </span>
         </h1>
-        <p className="text-[#191919] mt-1 text-[20px] sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto md:mx-0">
+        <p className="text-[#191919] mt-6 text-[20px] sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto md:mx-0">
           Stay connected with our latest gatherings and innovations
         </p>
       </motion.div>
 
       {/* Events Grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+      <div className="container mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
         {events.map((event, index) => (
           <motion.div
             key={event.id}
@@ -90,7 +90,7 @@ export default function Gatherings() {
             <img
               src={event.img}
               alt={event.title}
-              className="w-full h-70 sm:h-76 md:h-80 lg:h-80 xl:h-100 2xl:h-100 object-cover p-2 transform transition-transform duration-500 group-hover:scale-105"
+              className="w-full h-70 sm:h-76 md:h-80 lg:h-80 xl:h-100 2xl:h-100  object-cover p-2 transform transition-transform duration-500 group-hover:scale-105"
             />
 
             <div className="flex items-center gap-4 p-4">

@@ -309,10 +309,10 @@ const AboutUs = () => {
         {isVideoExpanded && (
           <div className="relative z-10 w-full h-full flex items-center px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16">
             <div className="max-w-7xl mx-auto w-full">
-              <div className="max-w-4xl text-white">
+              <div className="max-w-4xl text-white overflow-hidden">
                 <motion.h1
                   className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[100px] font-bold leading-none overflow-hidden tracking-tight"
-                  initial={{ opacity: 0, y: -80 }}
+                  initial={{ opacity: 1, y: -80 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, ease: "easeInOut", delay: 0.8 }}
                   style={{
@@ -326,7 +326,7 @@ const AboutUs = () => {
 
                 <motion.p
                   className="mt-4 sm:mt-5 md:mt-6 text-sm xs:text-base sm:text-lg md:text-xl text-gray-200 max-w-xl md:max-w-2xl"
-                  initial={{ opacity: 0, y: 80 }}
+                  initial={{ opacity: 1, y: 80 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, ease: "easeInOut", delay: 0.8 }}
                   style={{
