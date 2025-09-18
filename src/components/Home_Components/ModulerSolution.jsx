@@ -176,7 +176,7 @@ export default function ModulerSolution() {
   };
 
   return (
-    <section className="w-full px-6 md:px-12 lg:px-20 py-12 bg-white">
+    <section className="container mx-auto w-full px-6 md:px-12 py-12 bg-white">
       {/* Enhanced Title Animation */}
       <motion.div
         initial="hidden"
@@ -210,7 +210,7 @@ export default function ModulerSolution() {
         whileInView="visible"
         viewport={{ once: true, margin: "-50px" }}
         variants={containerVariants}
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-10 text-center"
+        className=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-10 text-center"
       >
         {solutions.map((item, idx) => (
           <motion.div
