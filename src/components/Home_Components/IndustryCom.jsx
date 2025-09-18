@@ -607,10 +607,6 @@ export default function IndustryCom() {
           </p>
         </motion.div>
       </div>
-
-      <div className="mt-8 text-center text-gray-500 text-sm">
-        <p>Click on an industry segment to learn more</p>
-      </div>
     </section>
   );
 }
