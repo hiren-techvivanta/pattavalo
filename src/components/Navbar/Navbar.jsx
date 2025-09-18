@@ -240,6 +240,7 @@ export default function Navbar({ navStyle }) {
                   onClick={() => {
                     setIsOpen(false);
                     handleContactClick();
+                    navigate('/contact')
                   }}
                   className={`w-full inline-flex justify-center items-center border font-medium px-6 py-3 rounded-full text-base transition-all ${
                     navBg
