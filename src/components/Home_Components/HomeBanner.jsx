@@ -58,7 +58,7 @@ export default function HomeBanner() {
 
       {/* Transparent animated overlay div */}
       <motion.div
-        initial={{ opacity: 0, y: 1500 }}
+        initial={{ opacity: 1, y: 1500 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
         className={`absolute inset-0 transition-all duration-1000 ease-in-out bg-white/0 ${
