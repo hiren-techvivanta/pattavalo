@@ -16,6 +16,7 @@ import l4 from "../assets/images/l4.png";
 import l5 from "../assets/images/l5.png";
 import l6 from "../assets/images/l6.png";
 import ClientFeedback from "../components/Home_Components/ClientFeedback";
+import Resources from "../components/Home_Components/Resources";
 
 // Data
 const partners = [
@@ -51,7 +52,7 @@ export default function Home() {
       <CustomConveyor />
       <ShowCase />
       <IndustryCom />
-      <ClientFeedback/>
+      <ClientFeedback />
       <div className="our-client-section">
         <motion.div
           className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-0 xl:px-0 py-16 sm:py-20"
@@ -104,29 +105,29 @@ export default function Home() {
           </div>
         </motion.div>
       </div>
-      <ContactForm />
-       <section className="w-full py-16   bg-white">
-      {/* Heading */}
-    
+      <Resources />
 
-      
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="w-full h-[300px] sm:h-[400px] lg:h-[400px]  overflow-hidden "
-      >
-        <iframe
-          title="Google Map"
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.552118019386!2d72.56938131542603!3d23.04473198494092!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e84f5ad85d0e7%3A0xa71fa5b3e4aa1b45!2sFire%20Station%2C%2022%2C%20Kalyan%20Nagar%20Society%2C%20Opp%20Akhand%20Anand%20School%2C%20Nr%20O%2Fs%2C%20Shahpur%20Rd%2C%20Shahpur%2C%20Ahmedabad%2C%20Gujarat%20380004!5e0!3m2!1sen!2sin!4v1694762433625!5m2!1sen!2sin"
-          className="w-full h-full"
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
-      </motion.div>
-    </section>
+      <ContactForm />
+      <section className="w-full pt-10 bg-white">
+        
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="w-full h-[300px] sm:h-[400px] lg:h-[400px] overflow-hidden shadow-lg"
+        >
+          <iframe
+            title="ATC CHAINS INDIA Location"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.604152548122!2d72.580103!3d23.03987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8442629d0ef7%3A0x475a2529ab81e2dc!2sATC%20CHAINS%20INDIA!5e0!3m2!1sen!2sin!4v1726752975123!5m2!1sen!2sin"
+            className="w-full h-full"
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </motion.div>
+      </section>
+
     </div>
   );
 }

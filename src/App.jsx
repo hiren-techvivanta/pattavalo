@@ -7,6 +7,7 @@ import News from "./pages/news/News";
 import BlogDetails from "./pages/blog/details/BlogDetails";
 import Career from "./pages/career/Career";
 import ContactUs from "./pages/Contact/ContactUs";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/jobs" element={<Career />} />
           <Route path="/contact" element={<ContactUs />} />
         </Routes>
+        <Footer/>
       </BrowserRouter>
     </>
   );
