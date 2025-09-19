@@ -213,7 +213,7 @@ const Industries = () => {
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={searchQuery} // Re-animate when search changes
+            key={searchQuery} 
             className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 pt-10"
             variants={containerVariants}
             initial="hidden"
