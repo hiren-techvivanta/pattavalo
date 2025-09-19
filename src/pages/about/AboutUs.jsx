@@ -1,10 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  motion,
-  AnimatePresence,
-  useScroll,
-  useTransform,
-} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
@@ -18,7 +13,6 @@ import AnimatedImage from "../../components/aboutUsComponents/AnimatedImage";
 import StatCard from "../../components/aboutUsComponents/StatCard";
 import TeamCard from "../../components/aboutUsComponents/TeamCard";
 import TimelineItem from "../../components/aboutUsComponents/TimelineItem";
-import AnimatedSection from "../../components/aboutUsComponents/AnimatedSection";
 import AnimatedButton from "../../components/aboutUsComponents/AnimatedButton";
 
 // Assets
@@ -99,8 +93,6 @@ const AboutUs = () => {
   const [selectedYear, setSelectedYear] = useState("2015");
 
   const videoRef = useRef(null);
-  const videoContainerRef = useRef(null);
-  const sectionRef = useRef(null);
   const scrollContainerRef = useRef(null);
 
   // Animation variants
@@ -109,7 +101,7 @@ const AboutUs = () => {
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.8,
+        duration: 0.5,
         staggerChildren: 0.15,
         delayChildren: 0.1,
       },
@@ -130,7 +122,7 @@ const AboutUs = () => {
         type: "spring",
         stiffness: 100,
         damping: 20,
-        duration: 1.2,
+        duration: 1,
       },
     },
   };
@@ -149,7 +141,7 @@ const AboutUs = () => {
         type: "spring",
         stiffness: 100,
         damping: 20,
-        duration: 1.2,
+        duration: 1,
       },
     },
   };
@@ -168,7 +160,7 @@ const AboutUs = () => {
         type: "spring",
         stiffness: 120,
         damping: 15,
-        duration: 0.8,
+        duration: 0.6,
       },
     },
   };
@@ -187,34 +179,15 @@ const AboutUs = () => {
         type: "spring",
         stiffness: 200,
         damping: 20,
-        duration: 0.6,
+        duration: 0.4,
       },
-    },
-  };
-
-  // HomeBanner style animation variants
-  const titleVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
-    },
-  };
-
-  const subTitleVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.9, ease: "easeOut", delay: 0.3 },
     },
   };
 
   // Smooth scrolling setup
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       direction: "vertical",
       gestureDirection: "vertical",
@@ -252,8 +225,8 @@ const AboutUs = () => {
         .catch((err) => console.log("Autoplay prevented:", err));
     }
 
-    const timer = setTimeout(() => setIsVideoExpanded(true), 2000);
-    const navbarTimer = setTimeout(() => setShowNavbar(true), 2500);
+    const timer = setTimeout(() => setIsVideoExpanded(true), 1500);
+    const navbarTimer = setTimeout(() => setShowNavbar(true), 2000);
 
     return () => {
       clearTimeout(timer);
@@ -295,8 +268,12 @@ const AboutUs = () => {
         <motion.div
           initial={{ opacity: 1, y: 1500 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-          className={`absolute inset-0 transition-all duration-1000 ease-in-out bg-white/0 ${
+          transition={{
+            duration: 0.4,
+            delay: 0,
+            ease: "easeOut",
+          }}
+          className={`absolute inset-0 transition-all duration-800 ease-out bg-white/0 ${
             isVideoExpanded
               ? "scale-110"
               : "scale-75 rounded-[15px] sm:scale-50 sm:rounded-3xl m-4"
@@ -312,7 +289,7 @@ const AboutUs = () => {
               <div className="max-w-4xl text-white overflow-hidden">
                 <motion.h1
                   className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[100px] font-bold leading-none overflow-hidden tracking-tight"
-                  initial={{ opacity: 1, y: -80 }}
+                  initial={{ opacity: 1, y: -100 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, ease: "easeInOut", delay: 0.8 }}
                   style={{
@@ -326,7 +303,7 @@ const AboutUs = () => {
 
                 <motion.p
                   className="mt-4 sm:mt-5 md:mt-6 text-sm xs:text-base sm:text-lg md:text-xl text-gray-200 max-w-xl md:max-w-2xl"
-                  initial={{ opacity: 1, y: 80 }}
+                  initial={{ opacity: 1, y: 100 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, ease: "easeInOut", delay: 0.8 }}
                   style={{
@@ -561,7 +538,7 @@ const AboutUs = () => {
                   type: "spring",
                   stiffness: 200,
                   damping: 25,
-                  duration: 0.5,
+                  duration: 0.3,
                 }}
               >
                 <div className="relative z-10">
@@ -569,7 +546,7 @@ const AboutUs = () => {
                     className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 text-[#2E437C]"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2, duration: 0.6 }}
+                    transition={{ delay: 0.2, duration: 0.4 }}
                   >
                     {currentData.title} ({selectedYear})
                   </motion.h3>
@@ -578,7 +555,7 @@ const AboutUs = () => {
                     className="text-base sm:text-lg leading-relaxed mb-6 opacity-60"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 0.6, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.6 }}
+                    transition={{ delay: 0.4, duration: 0.4 }}
                   >
                     {currentData.description}
                   </motion.p>
@@ -629,7 +606,9 @@ const AboutUs = () => {
         </motion.div>
 
         <motion.div className="pt-16 flex justify-center" variants={fadeInUp}>
-          <AnimatedButton icon={HiDownload} color={"#000"} hoverColor={`#000`}>Load More</AnimatedButton>
+          <AnimatedButton icon={HiDownload} color={"#000"} hoverColor={`#000`}>
+            Load More
+          </AnimatedButton>
         </motion.div>
       </motion.div>
 
@@ -638,7 +617,7 @@ const AboutUs = () => {
         className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 0.8 }}
         viewport={{ once: true }}
       >
         <div className="overflow-hidden">

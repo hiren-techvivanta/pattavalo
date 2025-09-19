@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence, easeInOut } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -125,8 +125,8 @@ const News = () => {
     setSearchQuery("");
   };
 
-  // Filter data
-  const getFilteredData = () => {
+  // Memoized filter function for better performance
+  const filteredData = useMemo(() => {
     let filtered = allNews;
     if (activeTab !== "Latest") {
       filtered = filtered.filter((item) => item.news === activeTab);
@@ -140,19 +140,19 @@ const News = () => {
       );
     }
     return filtered;
-  };
+  }, [activeTab, searchQuery]);
 
-  // Smooth scrolling setup - SLOWER
+  // Optimized smooth scrolling setup - FASTER
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 2.0, // Slower from 1.2
+      duration: 1.2, // Faster from 2.0
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       direction: "vertical",
       gestureDirection: "vertical",
       smooth: true,
-      mouseMultiplier: 0.8, // Slower scroll
+      mouseMultiplier: 1.0, // Faster scroll from 0.8
       smoothTouch: false,
-      touchMultiplier: 1.5, // Slower touch scroll
+      touchMultiplier: 2.0, // Faster touch scroll from 1.5
       infinite: false,
     });
 
@@ -173,16 +173,16 @@ const News = () => {
     };
   }, []);
 
-  // SLOWER animation variants
+  // FASTER animation variants - Optimized for performance
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        duration: 1.2, // Slower from 0.6
-        ease: [0.25, 0.46, 0.45, 0.94],
-        staggerChildren: 0.2, // Slower from 0.1
-        delayChildren: 0.3, // More delay from 0.1
+        duration: 0.6, // Faster from 1.2
+        ease: "easeOut", // Simpler easing
+        staggerChildren: 0.1, // Faster from 0.2
+        delayChildren: 0.1, // Less delay from 0.3
       },
     },
   };
@@ -190,32 +190,28 @@ const News = () => {
   const cardVariants = {
     hidden: {
       opacity: 0,
-      y: 60, // More movement from 40
-      scale: 0.9, // More scale from 0.95
+      y: 30, // Less movement from 60
+      scale: 0.95, // Less scale from 0.9
     },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        type: "spring",
-        stiffness: 80, // Slower from 120
-        damping: 20, // More damping from 15
-        mass: 1.2, // Heavier from 0.8
+        duration: 0.4, // Faster direct transition
+        ease: "easeOut", // Simpler easing instead of spring
       },
     },
   };
 
   const tabVariants = {
-    hidden: { opacity: 0, y: -20 }, // More movement
+    hidden: { opacity: 0, y: -10 }, // Less movement
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        type: "spring",
-        stiffness: 150, // Slower from 200
-        damping: 25, // More damping from 20
-        duration: 0.8, // Added duration
+        duration: 0.3, // Much faster
+        ease: "easeOut",
       },
     },
   };
@@ -223,34 +219,28 @@ const News = () => {
   const fadeInUp = {
     hidden: {
       opacity: 0,
-      y: 40,
-      scale: 0.98,
+      y: 20, // Less movement
     },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 15,
-        duration: 0.8,
+        duration: 0.4, // Faster
+        ease: "easeOut",
       },
     },
   };
-
-  const filteredData = getFilteredData();
 
   return (
     <>
       <Navbar navStyle={"white"} />
 
-      {/* Header Section - SLOWER ANIMATIONS */}
+      {/* Header Section - FASTER ANIMATIONS */}
       <motion.div
         className="w-full bg-white pt-20 md:pt-24 lg:pt-30"
-        initial={{ opacity: 0, y: 30 }} // More movement
+        initial={{ opacity: 0, y: 20 }} // Less movement
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2, ease: "easeOut" }} // Slower from 0.8
+        transition={{ duration: 0.5, ease: "easeOut" }} // Much faster
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -259,14 +249,14 @@ const News = () => {
             initial="hidden"
             animate="visible"
           >
-            {/* Tabs Navigation - SLOWER */}
+            {/* Tabs Navigation - FASTER */}
             <nav className="flex space-x-4 md:space-x-6 lg:space-x-8 overflow-x-auto scrollbar-hide">
               {tabs.map((tab, index) => (
                 <motion.button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
                   className={`
-                    relative pb-2 text-sm font-medium transition-colors duration-500 whitespace-nowrap flex-shrink-0
+                    relative pb-2 text-sm font-medium transition-colors duration-200 whitespace-nowrap flex-shrink-0
                     ${
                       activeTab === tab
                         ? "text-gray-900 border-b-2 border-gray-900"
@@ -275,39 +265,32 @@ const News = () => {
                   `}
                   variants={tabVariants}
                   whileHover={{
-                    y: -3, // More movement
-                    transition: {
-                      type: "spring",
-                      stiffness: 200,
-                      damping: 15,
-                      duration: 0.6, // Slower hover
-                    },
+                    y: -2, // Less movement
+                    transition: { duration: 0.2 }, // Faster hover
                   }}
                   whileTap={{
-                    scale: 0.95,
-                    transition: { duration: 0.2 },
+                    scale: 0.98, // Less scale
+                    transition: { duration: 0.1 },
                   }}
-                  initial={{ opacity: 0, x: -30 }} // More movement
+                  initial={{ opacity: 0, x: -20 }} // Less movement
                   animate={{ opacity: 1, x: 0 }}
                   transition={{
-                    delay: index * 0.15, // Slower stagger from 0.1
-                    duration: 0.8, // Slower from 0.5
+                    delay: index * 0.05, // Much faster stagger
+                    duration: 0.3, // Faster
                   }}
                 >
                   {tab}
 
-                  {/* Animated underline - SLOWER */}
+                  {/* Animated underline - FASTER */}
                   {activeTab === tab && (
                     <motion.div
                       className="absolute bottom-0 left-0 right-0 h-0.5 bg-gray-900"
                       layoutId="activeTabUnderline"
-                      initial={{ scaleX: 0, opacity: 0 }}
-                      animate={{ scaleX: 1, opacity: 1 }}
+                      initial={{ scaleX: 0 }}
+                      animate={{ scaleX: 1 }}
                       transition={{
-                        type: "spring",
-                        stiffness: 200, // Slower from 300
-                        damping: 35, // More damping from 30
-                        duration: 0.8, // Added duration
+                        duration: 0.3, // Faster
+                        ease: "easeOut",
                       }}
                     />
                   )}
@@ -315,27 +298,25 @@ const News = () => {
               ))}
             </nav>
 
-            {/* Search Input - SLOWER */}
+            {/* Search Input - FASTER */}
             <motion.div
               className="relative w-full md:w-64 lg:w-72"
-              initial={{ opacity: 0, x: 30 }} // More movement
+              initial={{ opacity: 0, x: 20 }} // Less movement
               animate={{ opacity: 1, x: 0 }}
               transition={{
-                delay: 0.5, // More delay from 0.3
-                duration: 0.8, // Slower from 0.5
+                delay: 0.2, // Less delay
+                duration: 0.4, // Faster
               }}
             >
               <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <motion.div
                   animate={{
                     rotate: searchQuery ? 90 : 0,
-                    scale: searchQuery ? 1.1 : 1,
+                    scale: searchQuery ? 1.05 : 1, // Less scale
                   }}
                   transition={{
-                    type: "spring",
-                    stiffness: 200, // Slower from 300
-                    damping: 30, // More damping from 25
-                    duration: 0.6,
+                    duration: 0.2, // Much faster
+                    ease: "easeOut",
                   }}
                 >
                   <IoSearchOutline className="w-4 h-4 text-gray-400" />
@@ -347,12 +328,12 @@ const News = () => {
                 placeholder="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-10 py-2 text-sm rounded-[22px] border border-gray-300 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all duration-500" // Slower from 200
+                className="w-full pl-10 pr-10 py-2 text-sm rounded-[22px] border border-gray-300 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all duration-200" // Faster
                 whileFocus={{
-                  scale: 1.02,
-                  boxShadow: "0 4px 15px rgba(59, 130, 246, 0.15)",
+                  scale: 1.01, // Less scale
+                  boxShadow: "0 2px 8px rgba(59, 130, 246, 0.1)", // Less shadow
                   borderColor: "#3b82f6",
-                  transition: { duration: 0.4 }, // Slower focus
+                  transition: { duration: 0.2 }, // Faster focus
                 }}
               />
 
@@ -360,23 +341,21 @@ const News = () => {
                 {searchQuery && (
                   <motion.button
                     onClick={clearSearch}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-400" // Slower
-                    initial={{ opacity: 0, scale: 0, rotate: -90 }}
-                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                    exit={{ opacity: 0, scale: 0, rotate: 90 }}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                    initial={{ opacity: 0, scale: 0.8 }} // Simplified
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
                     transition={{
-                      type: "spring",
-                      stiffness: 200, // Slower from 300
-                      damping: 25,
-                      duration: 0.5, // Added duration
+                      duration: 0.2, // Much faster
+                      ease: "easeOut",
                     }}
                     whileHover={{
-                      scale: 1.15, // More scale
-                      transition: { duration: 0.3 },
+                      scale: 1.1,
+                      transition: { duration: 0.15 },
                     }}
                     whileTap={{
-                      scale: 0.85,
-                      transition: { duration: 0.2 },
+                      scale: 0.9,
+                      transition: { duration: 0.1 },
                     }}
                   >
                     <IoCloseCircle className="w-4 h-4" />
@@ -385,20 +364,17 @@ const News = () => {
               </AnimatePresence>
             </motion.div>
           </motion.div>
-
-          {/* Search Results Indicator - SLOWER */}
-          <AnimatePresence></AnimatePresence>
         </div>
       </motion.div>
 
-      {/* Content Grid - SLOWER */}
+      {/* Content Grid - FASTER */}
       <motion.div
         className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 pb-16 sm:pb-20"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{
-          delay: 0.8, // More delay from 0.4
-          duration: 1.0, // Slower from 0.6
+          delay: 0.3, // Less delay
+          duration: 0.5, // Faster
         }}
       >
         <AnimatePresence mode="wait">
@@ -406,24 +382,37 @@ const News = () => {
             key={`${activeTab}-${searchQuery}`}
             className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8"
             variants={containerVariants}
-            initial={{ y: 50 }}
-            animate={{ y: 0, ease: easeInOut }}
+            initial={{ y: 20 }} // Less movement
+            animate={{ y: 0 }}
             transition={{
-              delay: 0.8,
-              duration: 1.0,
+              delay: 0.2,
+              duration: 0.4, // Faster
             }}
             exit="hidden"
           >
             {filteredData.length > 0 ? (
-              filteredData.map((item, index) => <NewsCard props={item} />)
+              filteredData.map((item, index) => (
+                <motion.div
+                  key={`${item.heading}-${index}`} // Better key
+                  variants={cardVariants}
+                  custom={index}
+                  initial="hidden"
+                  animate="visible"
+                  transition={{
+                    delay: index * 0.05, // Much faster stagger
+                  }}
+                >
+                  <NewsCard props={item} />
+                </motion.div>
+              ))
             ) : (
               <motion.div
                 className="col-span-full text-center py-16"
-                initial={{ opacity: 0, y: 40 }} // More movement
+                initial={{ opacity: 0, y: 20 }} // Less movement
                 animate={{ opacity: 1, y: 0 }}
                 transition={{
-                  duration: 0.8, // Slower from 0.5
-                  delay: 0.3,
+                  duration: 0.4, // Faster
+                  delay: 0.1,
                 }}
               >
                 <div className="text-gray-400 mb-4">
@@ -452,14 +441,14 @@ const News = () => {
                 {searchQuery && (
                   <motion.button
                     onClick={clearSearch}
-                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-300" // Slower
+                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors duration-200"
                     whileHover={{
-                      scale: 1.08, // More scale from 1.05
-                      transition: { duration: 0.3 },
+                      scale: 1.05,
+                      transition: { duration: 0.2 },
                     }}
                     whileTap={{
-                      scale: 0.92, // More scale from 0.95
-                      transition: { duration: 0.2 },
+                      scale: 0.95,
+                      transition: { duration: 0.1 },
                     }}
                   >
                     Clear Search
@@ -482,11 +471,11 @@ const News = () => {
       `}</style>
 
       <motion.div
-        className="container mx-auto "
+        className="container mx-auto"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true, margin: "-50px" }} // Less margin
       >
         <motion.div className="flex justify-center" variants={fadeInUp}>
           <AnimatedButton icon={HiDownload} color={"#000"} hoverColor={`#000`}>
@@ -495,12 +484,12 @@ const News = () => {
         </motion.div>
       </motion.div>
 
-      {/* Partners Section */}
+      {/* Partners Section - Optimized */}
       <motion.div
         className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ duration: 1 }}
+        transition={{ duration: 0.6 }} // Faster
         viewport={{ once: true }}
       >
         <div className="overflow-hidden">
@@ -511,7 +500,7 @@ const News = () => {
                 initial={{ x: "0%" }}
                 animate={{ x: "-100%" }}
                 transition={{
-                  duration: 40,
+                  duration: 30, 
                   repeat: Infinity,
                   ease: "linear",
                   repeatType: "loop",
@@ -526,8 +515,9 @@ const News = () => {
                     <img
                       src={partner.image}
                       alt={partner.name}
-                      className="h-12 sm:h-16 lg:h-20 object-contain opacity-60 hover:opacity-100 transition-all duration-300 filter grayscale hover:grayscale-0"
+                      className="h-12 sm:h-16 lg:h-20 object-contain opacity-60 hover:opacity-100 transition-all duration-200 filter grayscale hover:grayscale-0" // Faster transition
                       style={{ maxWidth: `${partner.width}px` }}
+                      loading="lazy" 
                     />
                   </motion.div>
                 ))}
