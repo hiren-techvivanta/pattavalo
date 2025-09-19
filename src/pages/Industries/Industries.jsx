@@ -234,7 +234,7 @@ const Industries = () => {
                       ease: "easeOut",
                     },
                   }}
-                  layout // Smooth layout transitions
+                  layout 
                 >
                   <motion.img
                     src={v.img}
