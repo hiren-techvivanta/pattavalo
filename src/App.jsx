@@ -8,11 +8,14 @@ import BlogDetails from "./pages/blog/details/BlogDetails";
 import Career from "./pages/career/Career";
 import ContactUs from "./pages/Contact/ContactUs";
 import Footer from "./components/Footer";
+import ScrollToTop from "./components/ScrollToTop";
+import Industries from "./pages/Industries/Industries";
 
 function App() {
   return (
     <>
       <BrowserRouter>
+      <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<AboutUs />} />
@@ -20,6 +23,7 @@ function App() {
           <Route path="/blog/details" element={<BlogDetails />} />
           <Route path="/jobs" element={<Career />} />
           <Route path="/contact" element={<ContactUs />} />
+          <Route path="/industries" element={<Industries />} />
         </Routes>
         <Footer/>
       </BrowserRouter>
