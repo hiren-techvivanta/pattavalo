@@ -7,7 +7,6 @@ import Lenis from "@studio-freight/lenis";
 import NewsCard from "../../../components/newsComponents/NewsCard";
 
 import blo1 from "../../../assets/images/blo1.jpg";
-
 import bl1 from "../../../assets/images/bl1.jpg";
 import bl2 from "../../../assets/images/bl2.jpg";
 import bl3 from "../../../assets/images/bl3.jpg";
@@ -72,17 +71,17 @@ const BlogDetails = () => {
     },
   ];
 
-  // Smooth scrolling setup
+  // Optimized smooth scrolling setup - FASTER
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.8,
+      duration: 1.2, 
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       direction: "vertical",
       gestureDirection: "vertical",
       smooth: true,
-      mouseMultiplier: 0.8,
+      mouseMultiplier: 1.0, 
       smoothTouch: false,
-      touchMultiplier: 1.5,
+      touchMultiplier: 2.0, 
       infinite: false,
     });
 
@@ -103,16 +102,16 @@ const BlogDetails = () => {
     };
   }, []);
 
-  // Animation variants
+  // FASTER animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.8,
-        ease: [0.25, 0.46, 0.45, 0.94],
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
+        duration: 0.4, 
+        ease: "easeOut", 
+        staggerChildren: 0.05, 
+        delayChildren: 0.1,
       },
     },
   };
@@ -120,18 +119,14 @@ const BlogDetails = () => {
   const fadeInUp = {
     hidden: {
       opacity: 0,
-      y: 60,
-      scale: 0.95,
+      y: 30, 
     },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-        duration: 0.8,
+        duration: 0.4, 
+        ease: "easeOut",
       },
     },
   };
@@ -139,16 +134,14 @@ const BlogDetails = () => {
   const fadeInLeft = {
     hidden: {
       opacity: 0,
-      x: -50,
+      x: -20, 
     },
     visible: {
       opacity: 1,
       x: 0,
       transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 20,
-        duration: 0.8,
+        duration: 0.3,
+        ease: "easeOut",
       },
     },
   };
@@ -156,16 +149,14 @@ const BlogDetails = () => {
   const fadeInRight = {
     hidden: {
       opacity: 0,
-      x: 50,
+      x: 20,
     },
     visible: {
       opacity: 1,
       x: 0,
       transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 20,
-        duration: 0.8,
+        duration: 0.3,
+        ease: "easeOut",
       },
     },
   };
@@ -173,18 +164,14 @@ const BlogDetails = () => {
   const imageVariants = {
     hidden: {
       opacity: 0,
-      scale: 0.8,
-      y: 40,
+      scale: 0.95, 
     },
     visible: {
       opacity: 1,
       scale: 1,
-      y: 0,
       transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 25,
-        duration: 1.0,
+        duration: 0.5,
+        ease: "easeOut",
       },
     },
   };
@@ -194,8 +181,8 @@ const BlogDetails = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
+        staggerChildren: 0.05, 
+        delayChildren: 0.05, 
       },
     },
   };
@@ -203,29 +190,16 @@ const BlogDetails = () => {
   const cardVariants = {
     hidden: {
       opacity: 0,
-      y: 80,
-      scale: 0.8,
+      y: 30, 
+      scale: 0.95, 
     },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 20,
-        duration: 0.8,
-      },
-    },
-  };
-
-  const partnerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 1.0,
-        staggerChildren: 0.1,
+        duration: 0.4, 
+        ease: "easeOut",
       },
     },
   };
@@ -244,9 +218,9 @@ const BlogDetails = () => {
         <motion.div variants={fadeInUp} className="mb-8">
           <motion.p
             className="font-[700] text-[16px]"
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
+            transition={{ delay: 0.1, duration: 0.3 }} 
           >
             Shivam Patel{" "}
             <span className="font-[500] text-[#999999] ms-4">
@@ -256,13 +230,12 @@ const BlogDetails = () => {
 
           <motion.h1
             className="font-[400] text-[32px] md:text-[48px] lg:text-[64px] leading-tight mt-4"
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }} 
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: 0.4,
-              duration: 0.8,
-              type: "spring",
-              stiffness: 100,
+              delay: 0.2, 
+              duration: 0.5, 
+              ease: "easeOut",
             }}
           >
             The Future of Digital Innovation
@@ -275,20 +248,21 @@ const BlogDetails = () => {
             src={blo1}
             className="w-full lg:h-[650px] object-cover rounded-[16px] shadow-lg"
             alt="Digital Innovation"
+            loading="lazy"
             whileHover={{
-              scale: 1.02,
-              transition: { duration: 0.3 },
+              scale: 1.01,
+              transition: { duration: 0.2 },
             }}
           />
         </motion.div>
 
         {/* Article Content */}
         <motion.div
-          className="pt-8 lg:pt-15 max-w-4xl"
+          className="pt-8 lg:pt-15 max-w-4xl mx-auto"
           variants={textStagger}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
         >
           <motion.p
             variants={fadeInUp}
@@ -371,39 +345,36 @@ const BlogDetails = () => {
         {/* Center Image */}
         <motion.div
           className="text-center my-12"
-          initial={{ opacity: 0, scale: 0.9 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{
-            type: "spring",
-            stiffness: 100,
-            damping: 25,
-            duration: 0.8,
+            duration: 0.4,
+            ease: "easeOut",
           }}
         >
           <motion.img
             src={blo1}
             className="lg:w-[692px] lg:h-[312px] object-cover rounded-[16px] mx-auto shadow-md"
             alt="Innovation Process"
+            loading="lazy"
             whileHover={{
-              scale: 1.05,
-              boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1)",
-              transition: { duration: 0.3 },
+              scale: 1.02,
+              boxShadow: "0 10px 25px rgba(0, 0, 0, 0.08)", 
+              transition: { duration: 0.2 },
             }}
           />
         </motion.div>
 
         {/* Conclusion */}
         <motion.div
-          className="pt-8 max-w-4xl"
-          initial={{ opacity: 0, y: 30 }}
+          className="pt-8 max-w-4xl mx-auto"
+          initial={{ opacity: 0, y: 20 }} 
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true, margin: "-50px" }}
           transition={{
-            type: "spring",
-            stiffness: 120,
-            damping: 20,
-            duration: 0.8,
+            duration: 0.4, 
+            ease: "easeOut",
           }}
         >
           <p className="text-[16px] text-[#666666] py-3 leading-relaxed">
@@ -418,19 +389,17 @@ const BlogDetails = () => {
           className="pt-16 lg:pt-20"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.4 }} 
         >
           <motion.h3
             className="text-[28px] lg:text-[36px] font-[700] text-[#BABEC8] mb-8"
-            initial={{ opacity: 0, x: -30 }}
+            initial={{ opacity: 0, x: -20 }} 
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{
-              type: "spring",
-              stiffness: 120,
-              damping: 20,
-              duration: 0.8,
+              duration: 0.4, 
+              ease: "easeOut",
             }}
           >
             Popular Blogs
@@ -441,20 +410,30 @@ const BlogDetails = () => {
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, margin: "-50px" }}
           >
             {allNews?.map((item, index) => (
-              <NewsCard props={item} />
+              <motion.div
+                key={index}
+                variants={cardVariants}
+                custom={index}
+                transition={{
+                  delay: index * 0.05, 
+                }}
+              >
+                <NewsCard props={item} />
+              </motion.div>
             ))}
           </motion.div>
         </motion.div>
 
+        {/* Partners Section - Optimized */}
         <motion.div
           className="overflow-hidden pt-16 lg:pt-20"
-          variants={partnerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-50px" }}
+          transition={{ duration: 0.4 }}
         >
           <div className="flex">
             {[1, 2].map((set) => (
@@ -463,7 +442,7 @@ const BlogDetails = () => {
                 initial={{ x: "0%" }}
                 animate={{ x: "-100%" }}
                 transition={{
-                  duration: 45,
+                  duration: 30, 
                   repeat: Infinity,
                   ease: "linear",
                   repeatType: "loop",
@@ -474,23 +453,13 @@ const BlogDetails = () => {
                   <motion.div
                     key={`${set}-${partner.id}`}
                     className="flex-shrink-0 mx-12 px-0 md:px-5"
-                    whileHover={{
-                      scale: 1.2,
-                      y: -8,
-                      rotate: [0, -2, 2, 0],
-                      transition: {
-                        duration: 0.3,
-                        type: "spring",
-                        stiffness: 300,
-                        damping: 20,
-                      },
-                    }}
                   >
                     <img
                       src={partner.image}
                       alt={partner.name}
-                      className="h-12 sm:h-16 lg:h-20 object-contain opacity-60 hover:opacity-100 transition-all duration-500 filter grayscale hover:grayscale-0"
+                      className="h-12 sm:h-16 lg:h-20 object-contain opacity-60 hover:opacity-100 transition-all duration-200 filter grayscale hover:grayscale-0" // Faster transition
                       style={{ maxWidth: `${partner.width}px` }}
+                      loading="lazy"
                     />
                   </motion.div>
                 ))}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   FaIndustry,
@@ -14,7 +14,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Pagination ,Autoplay  } from "swiper/modules";
+import { Pagination, Autoplay } from "swiper/modules";
 import food1 from "../../assets/images/industries/food1.jpg";
 import food2 from "../../assets/images/industries/food2.jpeg";
 import water1 from "../../assets/images/industries/water1.jpeg";
@@ -48,24 +48,28 @@ const categoryContent = {
       "SS chain (stainless steel chain), plastic chain, modular belts, and components are commonly used in water bottling lines for various purposes. These materials and components play important roles in conveying, transferring, and processing bottles throughout the bottling process.",
     images: [water1, water2],
   },
+  
   Juice: {
     title: "Juice Production Lines",
     description:
       "In a juice production line, you can utilize conveyors made of stainless steel (SS), plastic chain, and modular belt, along with various components tailored to the specific needs of the process. Modular belt, SS chains, Plastic and flex chains are commonly use in In-feed Conveyors, Fruit Washing Conveyors, Sorting Conveyors, Juice Extraction Conveyors, Bottle or Container Conveyors, Packaging Conveyors, Inspection Conveyors, Transfer Conveyors. Stainless steel conveyors are commonly used for conveying fruits through washing and sorting stages. They are resistant to moisture, chemicals, and are easy to clean, making them suitable for maintaining hygiene during the washing process. Plastic chain conveyors can also be employed, providing gentle and efficient transportation of delicate fruits.For the bottling and packaging of juice, conveyors with modular belts or plastic chains are commonly used. These conveyors transport empty bottles or containers through filling, capping, labeling, and packaging stations. Modular belts provide a stable surface for smooth and efficient movement, while plastic chain conveyors offer flexibility and ease of cleaning. Conveyors with modular belts or plastic chains are used for visual inspection and quality control of filled and packaged juice products. These conveyors facilitate the movement of bottles or containers, allowing inspectors to examine them for any defects or inconsistencies.",
     images: [juice1, juice2],
   },
+  
   "Tetra Pack": {
     title: "Tetra Pack Handling",
     description:
       "Tetra Pack production typically involves the use of finger chains, slat chains, and various conveyor components to transport the cartons throughout the production line.Finger chains are commonly used in the Tetra Pack production process to transport the cartons from one stage to another. They are designed to securely hold the cartons in place and prevent them from falling or tilting during the conveying process.Modular belts are a versatile option for conveying cartons in the Tetra Pack production process. They can be easily customized to fit different conveyor configurations and offer low maintenance and easy cleaning, making them ideal for use in food and beverage applications. Other conveyor components commonly used in the Tetra Pack production process include bearings, sprockets, wear strips, and guides, all of which play a crucial role in ensuring the efficient and effective operation of the conveyor system.",
     images: [tetra1, tetra2],
   },
+  
   "Beer Line": {
     title: "Brewery Conveying Systems",
     description:
       "Beer manufacturing processes often utilize conveyors for various stages of production, including bottling, canning, labeling, packaging, and transportation. Both stainless steel (SS) conveyors and conveyors with plastic chains or modular belts are commonly employed in the beer industry. Stainless steel is a popular choice for conveying systems in the beer manufacturing industry due to its durability, corrosion resistance, and ease of cleaning. Plastic chain conveyors are another type of conveyor system widely used in the beer industry. These conveyors consist of interlocking plastic chains that move products along the production line. Plastic chains offer advantages such as being lightweight, flexible, and easy to clean. Both plastic chain conveyors and modular belt conveyors are well-suited for beer manufacturing processes as they are resistant to moisture, corrosion, and chemical exposure. The choice between the two will depend on factors such as the specific application, the type of product being transported, and the desired level of hygiene and product protection. It's worth noting that conveyor systems in the beer industry often require additional features and components to ensure product integrity and maintain hygiene standards. These may include side guides, drip pans, sanitary design principles, and proper cleaning procedures to prevent contamination and maintain the quality of the beer throughout the production process.",
     images: [beer1, beer2],
   },
+  
   "Carbonated Soft Drinks": {
     title: "Carbonated Beverage Lines",
     description:
@@ -80,12 +84,14 @@ const categoryContent = {
       "Efficient and hygienic conveyor systems for seafood processing and packaging.",
     images: [seafood1, seafood2],
   },
+  
   Meat: {
     title: "Meat Processing Solutions",
     description:
       "Safe and sanitary conveyor systems for meat processing facilities.",
-   images: [meat1, meat2],
+    images: [meat1, meat2],
   },
+  
   Poultry: {
     title: "Poultry Handling Solutions",
     description:
@@ -101,6 +107,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1580927752450-b5f0a35b0a2d?auto=format&fit=crop&w=1200&q=80",
     ],
   },
+  
   "Milk & Milk Products": {
     title: "Milk Processing Solutions",
     description: "Efficient conveyors for milk and dairy products.",
@@ -108,6 +115,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1603724359751-3f64e876e267?auto=format&fit=crop&w=1200&q=80",
     ],
   },
+  
   Yogurt: {
     title: "Yogurt Production Lines",
     description: "Sanitary conveyor solutions for yogurt production.",
@@ -115,6 +123,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1587398290463-90b95b56e1b1?auto=format&fit=crop&w=1200&q=80",
     ],
   },
+  
   Cheese: {
     title: "Cheese Handling Systems",
     description: "Specialized conveyors for cheese processing and packaging.",
@@ -132,6 +141,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
     ],
   },
+  
   "Material Handling": {
     title: "Material Handling Solutions",
     description:
@@ -140,6 +150,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
     ],
   },
+  
   "Packaging Belting Solution": {
     title: "Packaging Belting Solutions",
     description:
@@ -148,6 +159,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
     ],
   },
+  
   "E-commerce": {
     title: "E-commerce Logistics Solutions",
     description: "Conveyors for efficient handling of e-commerce products.",
@@ -155,6 +167,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
     ],
   },
+  
   Distribution: {
     title: "Distribution Solutions",
     description: "Conveyors for product distribution and warehouse automation.",
@@ -181,6 +194,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
     ],
   },
+  
   "Parts Manufacturing": {
     title: "Parts Manufacturing Conveyors",
     description: "Conveyors for efficient parts manufacturing.",
@@ -188,6 +202,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
     ],
   },
+  
   Painting: {
     title: "Painting Line Conveyors",
     description: "Specialized conveyors for painting operations.",
@@ -195,6 +210,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
     ],
   },
+  
   "Quality Control": {
     title: "Quality Control Conveyors",
     description: "Conveyors for QC processes in automobile production.",
@@ -211,6 +227,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
     ],
   },
+  
   Equipment: {
     title: "Medical Equipment Conveyors",
     description: "Conveyors for moving medical equipment safely.",
@@ -218,6 +235,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
     ],
   },
+  
   "Specimen Transport": {
     title: "Specimen Transport Solutions",
     description: "Conveyors for safe and hygienic transport of specimens.",
@@ -225,6 +243,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
     ],
   },
+  
   "Sterile Products": {
     title: "Sterile Product Handling",
     description: "Conveyors for sterile product transport in healthcare.",
@@ -316,7 +335,7 @@ const industries = [
     icon: <FaSprayCan size={26} />,
     color: "#8b5cf6",
     targetRotation: -245,
-    categories: [],
+    categories: ["No Category"],
   },
   {
     id: 7,
@@ -360,7 +379,32 @@ export default function IndustryCom() {
     industries[0].categories?.[0] || null
   );
 
-  const [rotation, setRotation] = useState(0);
+  // Responsive rotation state
+  const [rotation, setRotation] = useState(-20);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Check screen size and set appropriate initial rotation
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const mobile = window.innerWidth < 1024; 
+      setIsMobile(mobile);
+      
+    
+      if (mobile) {
+        setRotation(-170); 
+      } else {
+        setRotation(0); 
+      }
+    };
+
+    // Check on mount
+    checkScreenSize();
+
+    // Listen for resize events
+    window.addEventListener('resize', checkScreenSize);
+    
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const handleButtonClick = (industry) => {
     setActiveIndustry(industry);
@@ -368,6 +412,11 @@ export default function IndustryCom() {
 
     const currentRotation = rotation % 360;
     let targetRotation = industry.targetRotation;
+
+    // Adjust target rotation for mobile
+    if (isMobile) {
+      targetRotation = industry.targetRotation - 100; // Add offset for mobile
+    }
 
     const normalizedCurrent = ((currentRotation % 360) + 360) % 360;
     const normalizedTarget = ((targetRotation % 360) + 360) % 360;
@@ -419,35 +468,50 @@ export default function IndustryCom() {
   const categoryData = getCategoryContent();
 
   return (
-    <section className="container  w-full py-12 overflow-hidden">
+    <section className="container mx-auto px-4 sm:px-6 md:px-10 lg:pr-16 lg:pl-0 xl:pr-20 xl:pl-0 py-16 sm:py-20">
       {/* Heading */}
       <motion.h1
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="text-4xl sm:text-5xl md:text-6xl lg:text-[100px] font-normal text-[#BABEC8] mb-10 text-center lg:text-left  sm:px-6 md:px-10 lg:px-25"
+        className="text-4xl sm:text-5xl md:text-6xl lg:text-[100px] font-normal text-[#BABEC8] mb-10 text-center lg:text-left sm:px-6 md:px-10 lg:px-25"
       >
         Industries we serve
       </motion.h1>
 
-      <div className=" grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10 items-center">
-        <div className="relative flex justify-center lg:justify-start items-center overflow-hidden order-2 lg:order-1">
+      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-center">
+        {/* Chart Section */}
+        <div className="col-span-1 md:col-span-1 lg:col-span-1 relative flex justify-center lg:justify-start items-center overflow-hidden order-2 lg:order-1">
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ 
+              opacity: 0, 
+              x: -50,
+              rotate: isMobile ? -120 : -20 
+            }}
+            whileInView={{ 
+              opacity: 1, 
+              x: 0,
+              rotate: isMobile ? -120 : -20 
+            }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="relative"
-            style={{ width: "600px", height: "600px", marginLeft: "-250px" }}
+            style={{ 
+              width: isMobile ? "400px" : "600px", 
+              height: isMobile ? "400px" : "600px", 
+              marginLeft: isMobile ? "0px" : "-250px",
+              marginTop: isMobile? "-270px" : "0"
+            }}
           >
             <motion.div
+              initial={{ rotate: isMobile ? -120 : -20 }}
               animate={{ rotate: rotation }}
               transition={{
                 duration: 0.7,
                 ease: "easeInOut",
               }}
-              className="relative w-full h-full rounded-full"
+              className="absolute w-full h-full rounded-full"
             >
               <div
                 className="absolute inset-0 rounded-full cursor-pointer"
@@ -459,7 +523,7 @@ export default function IndustryCom() {
               <div
                 className="absolute bg-white rounded-full z-10 flex items-center justify-center"
                 style={{
-                  inset: "150px",
+                  inset: isMobile ? "100px" : "150px",
                   boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
                 }}
               ></div>
@@ -470,11 +534,13 @@ export default function IndustryCom() {
                 const endAngle = (index + 1) * segmentAngle;
                 const midAngle = startAngle + segmentAngle / 2;
                 const radian = (midAngle * Math.PI) / 180;
-                const radius = 220;
+                const radius = isMobile ? 150 : 220;
                 const x = radius * Math.cos(radian);
                 const y = radius * Math.sin(radian);
 
                 const isActive = industry.id === activeIndustry.id;
+                const centerPoint = isMobile ? 200 : 300;
+                const pathRadius = isMobile ? 200 : 300;
 
                 return (
                   <div key={industry.id}>
@@ -482,14 +548,14 @@ export default function IndustryCom() {
                       onClick={() => handleButtonClick(industry)}
                       className="absolute inset-0 rounded-full cursor-pointer"
                       style={{
-                        clipPath: `path('M300,300 L${
-                          300 + 300 * Math.cos((startAngle * Math.PI) / 180)
+                        clipPath: `path('M${centerPoint},${centerPoint} L${
+                          centerPoint + pathRadius * Math.cos((startAngle * Math.PI) / 180)
                         },${
-                          300 + 300 * Math.sin((startAngle * Math.PI) / 180)
-                        } A300,300 0 0,1 ${
-                          300 + 300 * Math.cos((endAngle * Math.PI) / 180)
+                          centerPoint + pathRadius * Math.sin((startAngle * Math.PI) / 180)
+                        } A${pathRadius},${pathRadius} 0 0,1 ${
+                          centerPoint + pathRadius * Math.cos((endAngle * Math.PI) / 180)
                         },${
-                          300 + 300 * Math.sin((endAngle * Math.PI) / 180)
+                          centerPoint + pathRadius * Math.sin((endAngle * Math.PI) / 180)
                         } Z')`,
                         zIndex: 15,
                         border: isActive
@@ -503,19 +569,28 @@ export default function IndustryCom() {
                     ></div>
 
                     <motion.div
+                      initial={{ rotate: isMobile ? 120 : 20 }}
                       animate={{ rotate: -rotation }}
                       transition={{ duration: 0.7, ease: "easeInOut" }}
-                      className={`absolute z-20 flex flex-col items-center justify-center w-16 h-16`}
+                      className={`absolute z-20 flex flex-col items-center justify-center ${
+                        isMobile ? 'w-12 h-12' : 'w-16 h-16'
+                      }`}
                       style={{
-                        left: `calc(50% + ${x}px - 2rem)`,
-                        top: `calc(50% + ${y}px - 2rem)`,
+                        left: `calc(50% + ${x}px - ${isMobile ? '1.5rem' : '2rem'})`,
+                        top: `calc(50% + ${y}px - ${isMobile ? '1.5rem' : '2rem'})`,
                         color: "white",
                         borderColor: "white",
                         pointerEvents: "none",
                       }}
                     >
-                      {industry.icon}
-                      <span className="text-xs mt-1 font-medium text-center leading-tight">
+                      <span className={isMobile ? 'text-lg' : 'text-xl'}>
+                        {React.cloneElement(industry.icon, { 
+                          size: isMobile ? 20 : 26 
+                        })}
+                      </span>
+                      <span className={`${
+                        isMobile ? 'text-[8px]' : 'text-xs'
+                      } mt-1 font-medium text-center leading-tight`}>
                         {industry.title.split(" ")[0]}
                       </span>
                     </motion.div>
@@ -526,86 +601,92 @@ export default function IndustryCom() {
           </motion.div>
         </div>
 
-        <motion.div
-          key={activeIndustry.id}
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.6 }}
-          className="flex flex-col w-full max-w-3xl px-4 sm:px-6 lg:px-0 order-1 lg:order-2"
-        >
-          <div className="flex flex-wrap  gap-2 mb-4">
-            {activeIndustry.categories?.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                {activeIndustry.categories.map((category, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleCategoryClick(category)}
-                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                      activeCategory === category
-                        ? "text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                    style={{
-                      backgroundColor:
-                        activeCategory === category ? "#2E437C" : "",
-                    }}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
-          <div className="relative overflow-hidden rounded-lg">
-            {categoryData?.images?.length > 0 ? (
-              <Swiper
-                modules={[Pagination, Autoplay]}
-                navigation
-                pagination={{ clickable: true }}
-                spaceBetween={10}
-                autoplay={{
-                  delay: 3000,
-                  disableOnInteraction: false,
-                }}
-                loop={true}
-                slidesPerView={1}
-                className="rounded-lg"
-              >
-                {categoryData.images.map((img, idx) => (
-                  <SwiperSlide key={idx}>
-                    <img
-                      src={img}
-                      alt={`${categoryData.title} ${idx + 1}`}
-                      className="w-full h-110 object-cover transition-transform duration-500 hover:scale-105 rounded-lg"
-                    />
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-            ) : (
-              <img
-                src={activeIndustry.image}
-                alt={activeIndustry.title}
-                className="w-full h-110 object-cover transition-transform duration-500 hover:scale-105 rounded-lg"
-              />
-            )}
-
-            <div className="absolute top-0 left-0 w-full p-3 bg-gradient-to-b from-black/70 to-transparent">
-              <h3 className="text-xl font-semibold text-white">
-                {categoryData.title}
-              </h3>
+        {/* Content Section */}
+        <div className="col-span-1 md:col-span-1 lg:col-span-2 order-1 lg:order-2">
+          <motion.div
+            key={activeIndustry.id}
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col w-full px-4 sm:px-6 lg:px-0 order-1 lg:order-2"
+          >
+            {/* Category Buttons */}
+            <div className="flex flex-wrap gap-2 mb-4">
+              {activeIndustry.categories?.length > 0 && (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {activeIndustry.categories.map((category, index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleCategoryClick(category)}
+                      className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+                        activeCategory === category
+                          ? "text-white"
+                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      }`}
+                      style={{
+                        backgroundColor:
+                          activeCategory === category ? "#2E437C" : "",
+                      }}
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
-            <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-black/70 to-transparent"></div>
-          </div>
 
-          <h3 className="mt-4 text-3xl font-semibold text-gray-800">
-            Solutions for{" "}
-            <span style={{ color: "#2E437C" }}>{activeIndustry.title}</span>
-          </h3>
-          <p className="mt-2 text-gray-600 text-base leading-relaxed">
-            {categoryData.description}
-          </p>
-        </motion.div>
+            {/* Image Slider */}
+            <div className="relative overflow-hidden rounded-lg">
+              {categoryData?.images?.length > 0 ? (
+                <Swiper
+                  modules={[Pagination, Autoplay]}
+                  navigation
+                  pagination={{ clickable: true }}
+                  spaceBetween={10}
+                  autoplay={{
+                    delay: 3000,
+                    disableOnInteraction: false,
+                  }}
+                  loop={true}
+                  slidesPerView={1}
+                  className="rounded-lg"
+                >
+                  {categoryData.images.map((img, idx) => (
+                    <SwiperSlide key={idx}>
+                      <img
+                        src={img}
+                        alt={`${categoryData.title} ${idx + 1}`}
+                        className="w-full h-60 sm:h-80 lg:h-110 object-cover transition-transform duration-500 hover:scale-105 rounded-lg"
+                      />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              ) : (
+                <img
+                  src={activeIndustry.image}
+                  alt={activeIndustry.title}
+                  className="w-full h-60 sm:h-80 lg:h-110 object-cover transition-transform duration-500 hover:scale-105 rounded-lg"
+                />
+              )}
+
+              <div className="absolute top-0 left-0 w-full p-3 bg-gradient-to-b from-black/70 to-transparent">
+                <h3 className="text-lg lg:text-xl font-semibold text-white">
+                  {categoryData.title}
+                </h3>
+              </div>
+              <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-black/70 to-transparent"></div>
+            </div>
+
+            {/* Title and Description */}
+            <h3 className="mt-4 text-2xl lg:text-3xl font-semibold text-gray-800">
+              Solutions for{" "}
+              <span style={{ color: "#2E437C" }}>{activeIndustry.title}</span>
+            </h3>
+            <p className="mt-2 text-gray-600 text-sm lg:text-base leading-relaxed">
+              {categoryData.description}
+            </p>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
