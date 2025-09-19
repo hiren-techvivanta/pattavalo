@@ -48,10 +48,10 @@ export default function ClientFeedback() {
         className="text-left mb-12 max-w-4xl"
       >
         <p className="text-[#2E437C] font-medium">Client Feedback</p>
-        <h2 className="text-3xl md:text-4xl font-bold text-[#2E437C] mt-2">
+        <h2 className="text-2xl md:text-4xl font-normal text-[#2E437C] mt-2">
           Don’t take our world for it!
         </h2>
-        <h3 className="text-2xl md:text-3xl font-semibold text-[#BABEC8]">
+        <h3 className="text-2xl md:text-4xl font-bold text-[#BABEC8]">
           Hear it from our partners.
         </h3>
       </motion.div>
