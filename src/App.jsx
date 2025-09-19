@@ -8,6 +8,7 @@ import BlogDetails from "./pages/blog/details/BlogDetails";
 import Career from "./pages/career/Career";
 import ContactUs from "./pages/Contact/ContactUs";
 import Footer from "./components/Footer";
+import OurProduct from "./pages/Product/OurProduct";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/products" element={<OurProduct />} />
           <Route path="/about" element={<AboutUs />} />
           <Route path="/news" element={<News />} />
           <Route path="/blog/details" element={<BlogDetails />} />
