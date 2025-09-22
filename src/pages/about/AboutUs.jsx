@@ -306,7 +306,7 @@ const AboutUs = () => {
       </motion.div>
 
       {/* Hero Video Section - Same as original */}
-      <div className="relative h-[408px] md:h-screen w-full overflow-hidden">
+      <div className="relative h-[100vh] md:h-screen w-full overflow-hidden">
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <video
             ref={videoRef}

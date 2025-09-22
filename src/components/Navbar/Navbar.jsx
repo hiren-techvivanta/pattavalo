@@ -83,6 +83,7 @@ export default function Navbar({ navStyle, show = true }) {
     // Add your contact functionality here
     console.log("Contact clicked");
     // Or navigate to contact page: navigate('/contact');
+     navigate('/contact')
   };
 
   return (
@@ -129,11 +130,7 @@ export default function Navbar({ navStyle, show = true }) {
                       fontSize: "0.95rem",
                       fontWeight: 450,
                     }}
-                    variants={navItemVariants}
-                    initial="hidden"
-                    animate="visible"
-                    transition={{ delay: index * 0.1 + 0.3 }}
-                    whileHover={{ y: -2 }}
+                    
                   >
                     {menu.name}
                   </motion.button>
@@ -149,7 +146,7 @@ export default function Navbar({ navStyle, show = true }) {
                     handleContactClick();
                     navigate('/contact')
                   }}
-                  className={`w-full inline-flex justify-center items-center border font-medium px-6 py-3 rounded-full text-base transition-all ${
+                  className={`w-full inline-flex justify-center items-center border font-medium px-6 py-3 rounded-full text-base ${
                     navBg
                       ? "border-[#2E437C] text-[#2E437C] hover:bg-[#2E437C] hover:text-white"
                       : "border-white text-white hover:bg-white hover:text-[#2E437C]"
@@ -160,22 +157,7 @@ export default function Navbar({ navStyle, show = true }) {
                     fontWeight: 300,
                     letterSpacing: "0.5px",
                   }}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{
-                    opacity: 1,
-                    scale: 1,
-                    backgroundColor: navBg ? "#FFFFFF" : "transparent",
-                    color: navBg ? "#2E437C" : "#FFFFFF",
-                    borderColor: navBg ? "#2E437C" : "#FFFFFF",
-                  }}
-                  whileHover={{
-                    backgroundColor: "#2E437C",
-                    color: "#FFFFFF",
-                    borderColor: "#2E437C",
-                    transition: { duration: 0.2 },
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  transition={{ duration: 0.3 }}
+                 
                 >
                   CONTACT US
                 </motion.button>

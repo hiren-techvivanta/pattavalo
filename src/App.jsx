@@ -11,12 +11,13 @@ import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import Industries from "./pages/Industries/Industries";
 import OurProduct from "./pages/Product/OurProduct";
+import Error from "./pages/error/Error";
 
 function App() {
   return (
     <>
       <BrowserRouter>
-      <ScrollToTop />
+        <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<OurProduct />} />
@@ -26,8 +27,10 @@ function App() {
           <Route path="/jobs" element={<Career />} />
           <Route path="/contact" element={<ContactUs />} />
           <Route path="/industries" element={<Industries />} />
+          <Route path="/downloads" element={<Industries />} />
+          <Route path="*" element={<Error />} />
         </Routes>
-        <Footer/>
+        <Footer />
       </BrowserRouter>
     </>
   );
