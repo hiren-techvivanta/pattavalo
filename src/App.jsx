@@ -10,7 +10,7 @@ import ContactUs from "./pages/Contact/ContactUs";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
 import Industries from "./pages/Industries/Industries";
-import OurProduct from "./pages/Product/OurProduct";
+import OurProduct from "./pages/product/OurProduct";
 import Error from "./pages/error/Error";
 
 function App() {
