@@ -9,41 +9,41 @@ import Navbar from "../../components/Navbar/Navbar";
 gsap.registerPlugin(ScrollTrigger);
 
 function OurProduct() {
-  useEffect(() => {
-    const lenis = new Lenis({
-      lerp: 0.12,
-      duration: 0.8,
-      easing: (t) => 1 - Math.pow(1 - t, 3),
-      direction: "vertical",
-      gestureDirection: "vertical",
-      smooth: true,
-      mouseMultiplier: 1.2,
-      smoothTouch: false,
-      touchMultiplier: 2,
-      infinite: false,
-      autoResize: true,
-    });
+  // useEffect(() => {
+  //   const lenis = new Lenis({
+  //     lerp: 0.12,
+  //     duration: 0.8,
+  //     easing: (t) => 1 - Math.pow(1 - t, 3),
+  //     direction: "vertical",
+  //     gestureDirection: "vertical",
+  //     smooth: true,
+  //     mouseMultiplier: 1.2,
+  //     smoothTouch: false,
+  //     touchMultiplier: 2,
+  //     infinite: false,
+  //     autoResize: true,
+  //   });
 
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+  //   function raf(time) {
+  //     lenis.raf(time);
+  //     requestAnimationFrame(raf);
+  //   }
+  //   requestAnimationFrame(raf);
 
-    lenis.on('scroll', ScrollTrigger.update);
+  //   lenis.on('scroll', ScrollTrigger.update);
     
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+  //   gsap.ticker.add((time) => {
+  //     lenis.raf(time * 1000);
+  //   });
 
-    gsap.ticker.lagSmoothing(0);
+  //   gsap.ticker.lagSmoothing(0);
 
-    return () => {
-      lenis.destroy();
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-      gsap.ticker.remove(lenis.raf);
-    };
-  }, []);
+  //   return () => {
+  //     lenis.destroy();
+  //     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+  //     gsap.ticker.remove(lenis.raf);
+  //   };
+  // }, []);
 
   const pageVariants = {
     hidden: {

@@ -33,7 +33,7 @@ export default function Navbar({ navStyle, show = true }) {
   const menuItems = [
     { name: "Home", url: "/" },
     { name: "Products", url: "/products" },
-    { name: "Industries", url: "/industries" },
+    { name: "Downloads", url: "/downloads" },
     { name: "News", url: "/news" },
     { name: "Jobs", url: "/jobs" },
     { name: "About Us", url: "/about" },

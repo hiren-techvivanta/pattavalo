@@ -78,65 +78,65 @@ export default function Home() {
   const [showNavbar, setShowNavbar] = useState(false);
 
   // Individual Lenis setup for this page
-  useEffect(() => {
-    // Initialize Lenis with fast settings for 0.8s animations
-    const lenis = new Lenis({
-      lerp: 0.15,             // Fast interpolation
-      duration: 0.8,          // Max 0.8s duration
-      easing: (t) => 1 - Math.pow(1 - t, 3), // Fast ease-out cubic
-      direction: "vertical",
-      gestureDirection: "vertical",
-      smooth: true,
-      mouseMultiplier: 1.2,   // Quick mouse response
-      smoothTouch: false,     // Disable on mobile for performance
-      touchMultiplier: 2.5,   // Quick touch response
-      infinite: false,
-      autoResize: true,
-    });
+  // useEffect(() => {
+  //   // Initialize Lenis with fast settings for 0.8s animations
+  //   const lenis = new Lenis({
+  //     lerp: 0.15,             // Fast interpolation
+  //     duration: 0.8,          // Max 0.8s duration
+  //     easing: (t) => 1 - Math.pow(1 - t, 3), // Fast ease-out cubic
+  //     direction: "vertical",
+  //     gestureDirection: "vertical",
+  //     smooth: true,
+  //     mouseMultiplier: 1.2,   // Quick mouse response
+  //     smoothTouch: false,     // Disable on mobile for performance
+  //     touchMultiplier: 2.5,   // Quick touch response
+  //     infinite: false,
+  //     autoResize: true,
+  //   });
 
-    // Manual RAF loop for smooth scrolling
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
-    requestAnimationFrame(raf);
+  //   // Manual RAF loop for smooth scrolling
+  //   function raf(time) {
+  //     lenis.raf(time);
+  //     requestAnimationFrame(raf);
+  //   }
+  //   requestAnimationFrame(raf);
 
-    // GSAP ScrollTrigger integration
-    lenis.on('scroll', ScrollTrigger.update);
+  //   // GSAP ScrollTrigger integration
+  //   lenis.on('scroll', ScrollTrigger.update);
     
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+  //   gsap.ticker.add((time) => {
+  //     lenis.raf(time * 1000);
+  //   });
 
-    gsap.ticker.lagSmoothing(0);
+  //   gsap.ticker.lagSmoothing(0);
 
-    // Optional: Add scroll-triggered animations
-    gsap.fromTo(".fade-in-section", 
-      { 
-        opacity: 0,
-        y: 30,
-      },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.5, // Fast 0.5s animation
-        ease: "power2.out",
-        scrollTrigger: {
-          trigger: ".fade-in-section",
-          start: "top 85%",
-          end: "bottom 20%",
-          toggleActions: "play none none reverse",
-        }
-      }
-    );
+  //   // Optional: Add scroll-triggered animations
+  //   gsap.fromTo(".fade-in-section", 
+  //     { 
+  //       opacity: 0,
+  //       y: 30,
+  //     },
+  //     {
+  //       opacity: 1,
+  //       y: 0,
+  //       duration: 0.5, // Fast 0.5s animation
+  //       ease: "power2.out",
+  //       scrollTrigger: {
+  //         trigger: ".fade-in-section",
+  //         start: "top 85%",
+  //         end: "bottom 20%",
+  //         toggleActions: "play none none reverse",
+  //       }
+  //     }
+  //   );
 
-    // Cleanup function
-    return () => {
-      lenis.destroy();
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-      gsap.ticker.remove(lenis.raf);
-    };
-  }, []);
+  //   // Cleanup function
+  //   return () => {
+  //     lenis.destroy();
+  //     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+  //     gsap.ticker.remove(lenis.raf);
+  //   };
+  // }, []);
 
   const handleBannerAnimationComplete = () => {
     setShowNavbar(true);

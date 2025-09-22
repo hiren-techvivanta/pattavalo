@@ -245,35 +245,35 @@ const AboutUs = () => {
   };
 
   // Smooth scrolling setup
-  useEffect(() => {
-    const lenis = new Lenis({
-      duration: 0.8,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: "vertical",
-      gestureDirection: "vertical",
-      smooth: true,
-      mouseMultiplier: 1.2,
-      smoothTouch: false,
-      touchMultiplier: 2,
-      infinite: false,
-    });
+  // useEffect(() => {
+  //   const lenis = new Lenis({
+  //     duration: 0.8,
+  //     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  //     direction: "vertical",
+  //     gestureDirection: "vertical",
+  //     smooth: true,
+  //     mouseMultiplier: 1.2,
+  //     smoothTouch: false,
+  //     touchMultiplier: 2,
+  //     infinite: false,
+  //   });
 
-    function raf(time) {
-      lenis.raf(time);
-      requestAnimationFrame(raf);
-    }
+  //   function raf(time) {
+  //     lenis.raf(time);
+  //     requestAnimationFrame(raf);
+  //   }
 
-    requestAnimationFrame(raf);
-    lenis.on("scroll", ScrollTrigger.update);
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000);
-    });
+  //   requestAnimationFrame(raf);
+  //   lenis.on("scroll", ScrollTrigger.update);
+  //   gsap.ticker.add((time) => {
+  //     lenis.raf(time * 1000);
+  //   });
 
-    return () => {
-      lenis.destroy();
-      gsap.ticker.remove(lenis.raf);
-    };
-  }, []);
+  //   return () => {
+  //     lenis.destroy();
+  //     gsap.ticker.remove(lenis.raf);
+  //   };
+  // }, []);
 
   useEffect(() => {
     if (videoRef.current) {
