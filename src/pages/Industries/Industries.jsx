@@ -329,7 +329,7 @@ const Industries = () => {
             {filteredData.length > 0 ? (
               filteredData.map((v, i) => (
                 <motion.div
-                  className="flex gap-6 p-4 rounded-2xl bg-gradient-to-br from-white to-gray-50/50 border border-gray-100 hover:shadow-lg transition-all duration-300 fade-up-element"
+                  className="flex gap-6 p-4  bg-gradient-to-br from-white to-gray-50/50 hover:shadow-lg transition-all duration-300 fade-up-element"
                   key={v.id}
                   variants={itemVariants}
                   whileHover={{
@@ -347,7 +347,7 @@ const Industries = () => {
                 >
                   <motion.img
                     src={v.img}
-                    className="w-32 h-40 lg:w-48 lg:h-60 object-cover rounded-xl shadow-md"
+                    className="w-32 h-40 lg:w-48 lg:h-60 object-cover  shadow-md"
                     alt={v.title}
                     loading="lazy"
                     initial={{ opacity: 0, scale: 0.9, rotateY: -5 }}

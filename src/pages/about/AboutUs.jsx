@@ -662,7 +662,7 @@ const AboutUs = () => {
         </motion.div>
 
         <motion.div className="pt-16 flex justify-center" variants={fadeInUp}>
-          <AnimatedButton icon={HiDownload} color={"#000"} hoverColor={`#000`}>
+          <AnimatedButton icon={HiDownload} color={"#2E437C"} hoverColor={`#2E437C`}>
             Load More
           </AnimatedButton>
         </motion.div>
