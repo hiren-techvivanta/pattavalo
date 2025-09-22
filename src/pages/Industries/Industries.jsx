@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import Lenis from "@studio-freight/lenis";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Navbar from "../../components/Navbar/Navbar";
 import { IoSearchOutline, IoCloseCircle } from "react-icons/io5";
 
@@ -10,8 +13,66 @@ import bl4 from "../../assets/images/bl4.jpg";
 import { HiDownload } from "react-icons/hi";
 import AnimatedButton from "../../components/aboutUsComponents/AnimatedButton";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Industries = () => {
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const lenis = new Lenis({
+      lerp: 0.1,
+      duration: 0.8,
+      easing: (t) => 1 - Math.pow(1 - t, 3),
+      direction: "vertical",
+      gestureDirection: "vertical",
+      smooth: true,
+      mouseMultiplier: 1.2,
+      smoothTouch: false,
+      touchMultiplier: 2,
+      infinite: false,
+      autoResize: true,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+
+    lenis.on('scroll', ScrollTrigger.update);
+    
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+
+    gsap.ticker.lagSmoothing(0);
+
+    gsap.fromTo(".fade-up-element", 
+      { 
+        opacity: 0,
+        y: 30,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: ".fade-up-element",
+          start: "top 85%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse",
+        }
+      }
+    );
+
+    return () => {
+      lenis.destroy();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      gsap.ticker.remove(lenis.raf);
+    };
+  }, []);
 
   const data = [
     {
@@ -44,44 +105,28 @@ const Industries = () => {
     },
   ];
 
-  // Filter data based on search query
   const filteredData = data.filter(
     (item) =>
       item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       item.destription.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
+  const pageVariants = {
     hidden: {
       opacity: 0,
-      y: 30,
-      scale: 0.95,
     },
     visible: {
       opacity: 1,
-      y: 0,
-      scale: 1,
       transition: {
         duration: 0.5,
         ease: "easeOut",
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
       },
     },
   };
 
-  const headerVariants = {
+  const navVariants = {
     hidden: {
       opacity: 0,
       y: -20,
@@ -90,8 +135,27 @@ const Industries = () => {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.6,
+        duration: 0.4,
         ease: "easeOut",
+      },
+    },
+  };
+
+  const headerVariants = {
+    hidden: {
+      opacity: 0,
+      y: 30,
+      scale: 0.98,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.6,
       },
     },
   };
@@ -99,15 +163,50 @@ const Industries = () => {
   const searchVariants = {
     hidden: {
       opacity: 0,
-      x: 20,
+      x: 30,
+      scale: 0.95,
     },
     visible: {
       opacity: 1,
       x: 0,
+      scale: 1,
       transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 25,
+        delay: 0.2,
+      },
+    },
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: {
+      opacity: 0,
+      y: 25,
+      scale: 0.95,
+      rotateX: 5,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      rotateX: 0,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 20,
         duration: 0.5,
-        ease: "easeOut",
-        delay: 0.3,
       },
     },
   };
@@ -118,46 +217,51 @@ const Industries = () => {
 
   return (
     <>
-      <Navbar navStyle={"white"} />
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={navVariants}
+      >
+        <Navbar navStyle={"white"} />
+      </motion.div>
+
       <motion.div
         className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20 mt-10"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
+        initial="hidden"
+        animate="visible"
+        variants={pageVariants}
       >
         <motion.div
-          className="flex justify-between items-center"
+          className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 mb-10"
           variants={containerVariants}
-          initial="hidden"
-          animate="visible"
         >
-          <motion.div variants={headerVariants}>
+          <motion.div variants={headerVariants} className="fade-up-element">
             <motion.h1
-              className="text-[#BABEC8] font-[700] text-[36px]"
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="text-[#BABEC8] font-bold text-3xl md:text-4xl lg:text-5xl"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut" }}
             >
               Downloads
             </motion.h1>
             <motion.p
-              className="text-[20px]"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
+              className="text-gray-600 text-lg md:text-xl mt-2"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
             >
               Learn more about us at your convenience
             </motion.p>
           </motion.div>
 
           <motion.div
-            className="relative w-full md:w-64 lg:w-72"
+            className="relative w-full md:w-80 lg:w-96"
             variants={searchVariants}
           >
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
               <motion.div
                 animate={{
-                  rotate: searchQuery ? 90 : 0,
+                  rotate: searchQuery ? 360 : 0,
                   scale: searchQuery ? 1.1 : 1,
                 }}
                 transition={{
@@ -165,20 +269,19 @@ const Industries = () => {
                   ease: "easeOut",
                 }}
               >
-                <IoSearchOutline className="w-4 h-4 text-gray-400" />
+                <IoSearchOutline className="w-5 h-5 text-gray-400" />
               </motion.div>
             </div>
 
             <motion.input
               type="text"
-              placeholder="Search"
+              placeholder="Search downloads..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-10 py-2 text-sm rounded-[22px] border border-gray-300 focus:ring-blue-500 focus:border-blue-500 focus:outline-none transition-all duration-200"
+              className="w-full pl-12 pr-12 py-3 text-sm rounded-2xl border-2 border-gray-200 bg-gray-50/50 focus:ring-2 focus:ring-[#2E437C]/20 focus:border-[#2E437C] focus:outline-none focus:bg-white transition-all duration-300"
               whileFocus={{
-                scale: 1.02,
-                boxShadow: "0 4px 15px rgba(59, 130, 246, 0.15)",
-                borderColor: "#3b82f6",
+                scale: 1.01,
+                boxShadow: "0 8px 25px rgba(46, 67, 124, 0.15)",
                 transition: { duration: 0.2 },
               }}
             />
@@ -187,16 +290,19 @@ const Industries = () => {
               {searchQuery && (
                 <motion.button
                   onClick={clearSearch}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                  className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
                   initial={{ opacity: 0, scale: 0, rotate: -90 }}
                   animate={{ opacity: 1, scale: 1, rotate: 0 }}
                   exit={{ opacity: 0, scale: 0, rotate: 90 }}
                   transition={{
+                    type: "spring",
+                    stiffness: 500,
+                    damping: 25,
                     duration: 0.3,
-                    ease: "easeOut",
                   }}
                   whileHover={{
                     scale: 1.1,
+                    rotate: 90,
                     transition: { duration: 0.2 },
                   }}
                   whileTap={{
@@ -204,7 +310,7 @@ const Industries = () => {
                     transition: { duration: 0.1 },
                   }}
                 >
-                  <IoCloseCircle className="w-4 h-4" />
+                  <IoCloseCircle className="w-5 h-5" />
                 </motion.button>
               )}
             </AnimatePresence>
@@ -213,8 +319,8 @@ const Industries = () => {
 
         <AnimatePresence mode="wait">
           <motion.div
-            key={searchQuery} 
-            className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 pt-10"
+            key={searchQuery}
+            className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10"
             variants={containerVariants}
             initial="hidden"
             animate="visible"
@@ -223,37 +329,41 @@ const Industries = () => {
             {filteredData.length > 0 ? (
               filteredData.map((v, i) => (
                 <motion.div
-                  className="w-[100%] flex gap-6 p-2"
+                  className="flex gap-6 p-4 rounded-2xl bg-gradient-to-br from-white to-gray-50/50 border border-gray-100 hover:shadow-lg transition-all duration-300 fade-up-element"
                   key={v.id}
                   variants={itemVariants}
-                  custom={i}
                   whileHover={{
                     y: -5,
+                    scale: 1.01,
+                    boxShadow: "0 15px 35px rgba(0, 0, 0, 0.1)",
                     transition: {
+                      type: "spring",
+                      stiffness: 400,
+                      damping: 25,
                       duration: 0.3,
-                      ease: "easeOut",
                     },
                   }}
-                  layout 
+                  layout
                 >
                   <motion.img
                     src={v.img}
-                    className="w-[135px] h-[180px] lg:w-[200px] lg:h-[264px] object-cover"
+                    className="w-32 h-40 lg:w-48 lg:h-60 object-cover rounded-xl shadow-md"
                     alt={v.title}
                     loading="lazy"
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0, scale: 0.9, rotateY: -5 }}
+                    animate={{ opacity: 1, scale: 1, rotateY: 0 }}
                     transition={{
                       duration: 0.5,
                       delay: i * 0.1 + 0.2,
                     }}
                     whileHover={{
-                      scale: 1.05,
+                      scale: 1.01,
+                      rotateY: 5,
                       transition: { duration: 0.3 },
                     }}
                   />
                   <motion.div
-                    className="h-[100%] relative flex-1"
+                    className="flex-1 flex flex-col justify-between"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{
@@ -261,37 +371,41 @@ const Industries = () => {
                       delay: i * 0.1 + 0.3,
                     }}
                   >
-                    <motion.h6
-                      className="font-[600] text-[16px] lg:text-[20px] pt-3"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{
-                        duration: 0.4,
-                        delay: i * 0.1 + 0.4,
-                      }}
-                    >
-                      {v.title}
-                    </motion.h6>
+                    <div>
+                      <motion.h6
+                        className="font-semibold text-lg lg:text-xl text-gray-800 mb-3"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          duration: 0.4,
+                          delay: i * 0.1 + 0.4,
+                        }}
+                      >
+                        {v.title}
+                      </motion.h6>
 
-                    <motion.p
-                      className="text-[#667085] text-[12px] lg:text-[15px] pt-3"
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{
-                        duration: 0.4,
-                        delay: i * 0.1 + 0.5,
-                      }}
-                    >
-                      {v.destription}
-                    </motion.p>
+                      <motion.p
+                        className="text-gray-600 text-sm lg:text-base leading-relaxed mb-4"
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          duration: 0.4,
+                          delay: i * 0.1 + 0.5,
+                        }}
+                      >
+                        {v.destription}
+                      </motion.p>
+                    </div>
+
                     <motion.div
-                      className="absolute bottom-0 right-0"
+                      className="flex justify-end"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{
-                        duration: 0.4,
+                        type: "spring",
+                        stiffness: 500,
+                        damping: 25,
                         delay: i * 0.1 + 0.6,
-                        ease: "backOut",
                       }}
                     >
                       <AnimatedButton
@@ -299,7 +413,7 @@ const Industries = () => {
                         color={"#2E437C"}
                         hoverColor={`#2E437C`}
                         px={6}
-                        py={1}
+                        py={2}
                       >
                         Download
                       </AnimatedButton>
@@ -309,14 +423,29 @@ const Industries = () => {
               ))
             ) : (
               <motion.div
-                className="col-span-full text-center py-16"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                className="col-span-full text-center py-20"
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 300,
+                  damping: 25,
+                  duration: 0.6,
+                }}
               >
-                <div className="text-gray-400 mb-4">
+                <motion.div
+                  className="text-gray-300 mb-6"
+                  animate={{
+                    y: [0, -5, 0],
+                  }}
+                  transition={{
+                    duration: 2,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                  }}
+                >
                   <svg
-                    className="w-16 h-16 mx-auto"
+                    className="w-20 h-20 mx-auto"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -324,28 +453,46 @@ const Industries = () => {
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
-                      strokeWidth={1}
-                      d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.291-1.002-5.824-2.653M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
+                      strokeWidth={1.5}
+                      d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"
                     />
                   </svg>
-                </div>
-                <h3 className="text-lg font-medium text-gray-600 mb-2">
+                </motion.div>
+                
+                <motion.h3
+                  className="text-xl font-semibold text-gray-500 mb-2"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.2 }}
+                >
                   No downloads found
-                </h3>
-                <p className="text-gray-400">
+                </motion.h3>
+                
+                <motion.p
+                  className="text-gray-400 mb-6"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                >
                   No items match "{searchQuery}". Try a different search term.
-                </p>
+                </motion.p>
+                
                 <motion.button
                   onClick={clearSearch}
-                  className="mt-4 px-4 py-2 bg-[#2E437C] text-white rounded-lg hover:bg-[#1E2F5C] transition-colors duration-200"
+                  className="px-6 py-3 bg-[#2E437C] text-white rounded-xl font-medium hover:bg-[#1E2F5C] transition-all duration-300 shadow-lg hover:shadow-xl"
                   whileHover={{
                     scale: 1.05,
+                    y: -2,
+                    boxShadow: "0 10px 25px rgba(46, 67, 124, 0.3)",
                     transition: { duration: 0.2 },
                   }}
                   whileTap={{
                     scale: 0.95,
                     transition: { duration: 0.1 },
                   }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
                 >
                   Clear Search
                 </motion.button>

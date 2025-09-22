@@ -2,50 +2,133 @@ import React from "react";
 import { motion } from "framer-motion";
 import ConveyorImage from "../../assets/images/custom_conveyor.png";
 import { FaArrowRight } from "react-icons/fa6";
+import AnimatedButton from "../aboutUsComponents/AnimatedButton";
+
 export default function ExpertSolutions() {
   const containerVariants = {
-    hidden: {},
+    hidden: { opacity: 0 },
     visible: {
-      transition: { staggerChildren: 0.15 },
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.2,
+      },
     },
   };
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+  const textRevealVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 20,
+      scale: 0.98
+    },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeOut" },
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        mass: 0.8,
+      },
+    },
+  };
+
+  const imageVariants = {
+    hidden: { 
+      opacity: 0, 
+      x: 30,
+      scale: 0.95
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 20,
+        mass: 0.9,
+        delay: 0.3,
+      },
     },
   };
 
   const buttonVariants = {
-    // hover: { scale: 1.05 },
-    tap: { scale: 0.95 },
+    hover: {
+      scale: 1.01,
+      y: -1,
+      transition: {
+        type: "spring",
+        stiffness: 500,
+        damping: 30,
+        mass: 0.4,
+      },
+    },
+    tap: { 
+      scale: 0.98,
+      transition: { duration: 0.1 }
+    },
   };
 
   return (
-    <section className="container min-h-screen flex flex-col-reverse mx-auto  lg:flex-row items-center justify-between px-6 md:px-0   py-0 bg-white font-articulat">
+    <section className="container min-h-screen flex flex-col-reverse mx-auto lg:flex-row items-center justify-between px-6 md:px-0 py-0 bg-white font-articulat">
       <motion.div
         className="lg:w-1/2 w-full lg:pr-20 mb-12 lg:mb-0"
         initial="hidden"
-        animate="visible"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
         variants={containerVariants}
       >
         <motion.h1
           className="text-[42px] md:text-[48px] lg:text-[54px] leading-tight font-bold mb-8"
-          variants={itemVariants}
+          variants={textRevealVariants}
         >
-          <span className="text-[#BABEC8] font-normal">Expert </span>
-          <span className="text-[#2E437C] font-bold">
+          <motion.span 
+            className="text-[#BABEC8] font-normal inline-block"
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              visible: { 
+                opacity: 1, 
+                y: 0,
+                transition: { duration: 0.4, ease: "easeOut" }
+              }
+            }}
+          >
+            Expert{" "}
+          </motion.span>
+          <motion.span 
+            className="text-[#2E437C] font-bold inline-block"
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              visible: { 
+                opacity: 1, 
+                y: 0,
+                transition: { duration: 0.4, ease: "easeOut", delay: 0.1 }
+              }
+            }}
+          >
             Solutions for Custom Conveyor{" "}
-          </span>
-          <span className="text-[#BABEC8] font-normal">Needs.</span>
+          </motion.span>
+          <motion.span 
+            className="text-[#BABEC8] font-normal inline-block"
+            variants={{
+              hidden: { opacity: 0, y: 15 },
+              visible: { 
+                opacity: 1, 
+                y: 0,
+                transition: { duration: 0.4, ease: "easeOut", delay: 0.2 }
+              }
+            }}
+          >
+            Needs.
+          </motion.span>
         </motion.h1>
 
         <motion.p
           className="text-base md:text-lg text-[#A0A3AD] mb-6 leading-relaxed font-normal"
-          variants={itemVariants}
+          variants={textRevealVariants}
         >
           We are a team of 150+ experts leading and thriving in the
           manufacturing industry. Our large warehouse capacity facilitates
@@ -55,7 +138,7 @@ export default function ExpertSolutions() {
 
         <motion.p
           className="text-base md:text-lg text-[#A0A3AD] mb-6 leading-relaxed font-normal"
-          variants={itemVariants}
+          variants={textRevealVariants}
         >
           With expertise across multiple industries, we deliver intelligent and
           unique belt solutions tailored to your specific requirements. Our
@@ -64,60 +147,42 @@ export default function ExpertSolutions() {
         </motion.p>
 
         <motion.div
-          className="w-2 h-[2px]  mb-8"
-          variants={itemVariants}
-        ></motion.div>
+          className="w-2 h-[2px] mb-8"
+          variants={textRevealVariants}
+        />
 
-        {/* Button */}
         <motion.div
-          variants={buttonVariants}
+          variants={textRevealVariants}
           whileHover="hover"
           whileTap="tap"
           className="mt-4"
         >
-          <button
-            className="relative inline-flex items-center justify-center px-6 py-3 rounded-full overflow-hidden transition-all duration-[1000ms] ease-in-out group border border-[#2E437C] text-[#2E437C] font-medium text-sm tracking-wide"
-            style={{ fontFamily: "'Inter', sans-serif", fontWeight: 400 }}
-          >
-           
-            <div className="absolute right-6 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full bg-[#2E437C] transition-transform duration-[1200ms] ease-in-out will-change-transform group-hover:scale-[30] scale-100" />
-
-           
-            <span className="relative z-10 transition-colors duration-[800ms] group-hover:text-white">
-              READ MORE
-            </span>
-
-            
-            <span className="relative z-10 ml-3 h-8 w-8 overflow-hidden flex items-center justify-center">
-             
-              <FaArrowRight
-                size={18}
-                className="absolute transition-transform duration-[1000ms] ease-in-out translate-x-0 opacity-100 group-hover:translate-x-6 group-hover:opacity-0 text-white"
-              />
-             
-              <FaArrowRight
-                size={18}
-                className="absolute transition-transform duration-[1000ms] ease-in-out -translate-x-6 opacity-0 group-hover:translate-x-0 group-hover:opacity-100 text-white"
-              />
-            </span>
-          </button>
+         <AnimatedButton icon={FaArrowRight} color={"#2E437C"} hoverColor={`#2E437C`}>
+            READ MORE
+          </AnimatedButton>
         </motion.div>
       </motion.div>
 
-      {/* Right Side Image */}
       <motion.div
-        className="lg:w-1/2 w-full flex justify-center lg:justify-end "
-        initial={{ opacity: 0, x: 50 }}
-        animate={{
-          opacity: 1,
-          x: 0,
-          transition: { duration: 0.8, ease: "easeOut" },
-        }}
+        className="lg:w-1/2 w-full flex justify-center lg:justify-end"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
+        variants={imageVariants}
       >
-        <img
+        <motion.img
           src={ConveyorImage}
           alt="Custom Conveyor"
-          className="w-full   object-contain"
+          className="w-full object-contain"
+          whileHover={{
+            scale: 1.02,
+            transition: {
+              type: "spring",
+              stiffness: 300,
+              damping: 25,
+              duration: 0.4
+            }
+          }}
         />
       </motion.div>
     </section>

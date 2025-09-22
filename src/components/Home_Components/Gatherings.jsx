@@ -38,14 +38,73 @@ const events = [
 
 export default function Gatherings() {
   const letterVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: { opacity: 1, y: 0 },
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.3
+      }
+    },
   };
 
   const containerVariants = {
+    hidden: { opacity: 0 },
     visible: {
-      transition: { staggerChildren: 0.03, delayChildren: 0.2 },
+      opacity: 1,
+      transition: { 
+        staggerChildren: 0.02, 
+        delayChildren: 0.1,
+        duration: 0.4
+      },
     },
+  };
+
+  const cardVariants = {
+    hidden: { 
+      opacity: 0, 
+      y: 30,
+      scale: 0.95
+    },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 20,
+        duration: 0.5
+      }
+    },
+  };
+
+  const imageVariants = {
+    hover: {
+      scale: 1.08,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.4
+      }
+    }
+  };
+
+  const cardHover = {
+    hover: {
+      y: -8,
+      boxShadow: "0 20px 40px rgba(46, 67, 124, 0.15)",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 25,
+        duration: 0.3
+      }
+    }
   };
 
   const splitText = (text) =>
@@ -54,64 +113,109 @@ export default function Gatherings() {
         {char === " " ? "\u00A0" : char}
       </motion.span>
     ));
+
   return (
-    <section className=" w-full px-4 md:px-10 lg:px-15 py-10">
+    <section className="w-full px-4 md:px-10 lg:px-15 py-10">
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true }}
+        viewport={{ once: true, margin: "-100px" }}
         variants={containerVariants}
-        className="container mx-auto mb-5 sm:mb-10 sm:px-6 lg:px-0 pb-1  md:text-left"
+        className="container mx-auto mb-5 sm:mb-10 sm:px-6 lg:px-0 pb-1 md:text-left"
       >
-        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[74px]   leading-17 md``:leading-17">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[74px] leading-17 md:leading-17">
           <span className="font-normal text-[#2E437C] block">
-            {splitText("What’s ")}
+            {splitText("What's ")}
           </span>
           <span className="font-bold text-[#BABEC8] block">
             {splitText("Happening Next")}
           </span>
         </h1>
-        <p className="text-[#191919] mt-6 text-[20px] sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto md:mx-0">
+        <motion.p 
+          className="text-[#191919] mt-6 text-[20px] sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto md:mx-0"
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: 0.6 }}
+        >
           Stay connected with our latest gatherings and innovations
-        </p>
+        </motion.p>
       </motion.div>
 
-      {/* Events Grid */}
       <div className="container mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
         {events.map((event, index) => (
           <motion.div
             key={event.id}
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.2 }}
-            viewport={{ once: true }}
-            className="group  overflow-hidden hover:bg-[#D8DEEE] hover:border-b-2  hover:border-[#2E437C] transition-colors duration-300 cursor-pointer"
+            initial="hidden"
+            whileInView="visible"
+            whileHover="hover"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={{
+              ...cardVariants,
+              visible: {
+                ...cardVariants.visible,
+                transition: {
+                  ...cardVariants.visible.transition,
+                  delay: index * 0.1
+                }
+              }
+            }}
+            className="group overflow-hidden bg-white rounded-lg shadow-sm transition-shadow duration-300 cursor-pointer"
           >
-            <img
-              src={event.img}
-              alt={event.title}
-              className="w-full h-70 sm:h-76 md:h-80 lg:h-80 xl:h-100 2xl:h-100  object-cover p-2 transform transition-transform duration-500 group-hover:scale-105"
-            />
-
-            <div className="flex items-center gap-4 p-4">
-              {/* Date box */}
-              <div className="bg-gray-100 w-14 h-14 flex flex-col items-center justify-center ">
-                <p className="text-[11px] font-medium text-gray-600 leading-tight">
-                  {event.date.split(" ")[0]}
-                </p>
-                <p className="text-base font-semibold text-gray-800 leading-tight">
-                  {event.date.split(" ")[1]}
-                </p>
+            <motion.div
+              // variants={cardHover}
+              className="relative"
+            >
+              <div className="overflow-hidden rounded-t-lg">
+                <motion.img
+                  src={event.img}
+                  alt={event.title}
+                  variants={imageVariants}
+                  className="w-full h-70 sm:h-76 md:h-80 lg:h-80 xl:h-100 2xl:h-100 object-cover p-2"
+                />
               </div>
 
-              {/* Title & Location */}
-              <div>
-                <h3 className="font-semibold text-gray-800 text-[15px] md:text-base">
-                  {event.title}
-                </h3>
-                <p className="text-sm text-gray-500">{event.location}</p>
-              </div>
-            </div>
+              <motion.div 
+                className="flex items-center gap-4 p-4"
+                initial={{ opacity: 0.8 }}
+                whileHover={{ opacity: 1 }}
+                transition={{ duration: 0.2 }}
+              >
+                <motion.div 
+                  className="bg-gray-100 w-14 h-14 flex flex-col items-center justify-center rounded-lg"
+                  whileHover={{ 
+                    backgroundColor: "#2E437C",
+                    transition: { duration: 0.3 }
+                  }}
+                >
+                  <motion.p 
+                    className="text-[11px] font-medium text-gray-600 leading-tight"
+                    whileHover={{ color: "#FFFFFF" }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {event.date.split(" ")[0]}
+                  </motion.p>
+                  <motion.p 
+                    className="text-base font-semibold text-gray-800 leading-tight"
+                    whileHover={{ color: "#FFFFFF" }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {event.date.split(" ")[1]}
+                  </motion.p>
+                </motion.div>
+
+                <div>
+                  <motion.h3 
+                    className="font-semibold text-gray-800 text-[15px] md:text-base"
+                    whileHover={{ color: "#2E437C" }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    {event.title}
+                  </motion.h3>
+                  <p className="text-sm text-gray-500">{event.location}</p>
+                </div>
+              </motion.div>
+            </motion.div>
           </motion.div>
         ))}
       </div>

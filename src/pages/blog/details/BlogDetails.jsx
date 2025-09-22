@@ -19,7 +19,6 @@ import l4 from "../../../assets/images/l4.png";
 import l5 from "../../../assets/images/l5.png";
 import l6 from "../../../assets/images/l6.png";
 
-// Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
 
 const BlogDetails = () => {
@@ -71,18 +70,19 @@ const BlogDetails = () => {
     },
   ];
 
-  // Optimized smooth scrolling setup - FASTER
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1.2, 
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: 0.1,
+      duration: 0.8,
+      easing: (t) => 1 - Math.pow(1 - t, 3),
       direction: "vertical",
       gestureDirection: "vertical",
       smooth: true,
-      mouseMultiplier: 1.0, 
+      mouseMultiplier: 1.2,
       smoothTouch: false,
-      touchMultiplier: 2.0, 
+      touchMultiplier: 2,
       infinite: false,
+      autoResize: true,
     });
 
     function raf(time) {
@@ -92,97 +92,169 @@ const BlogDetails = () => {
 
     requestAnimationFrame(raf);
     lenis.on("scroll", ScrollTrigger.update);
+
     gsap.ticker.add((time) => {
       lenis.raf(time * 1000);
     });
 
+    gsap.ticker.lagSmoothing(0);
+
+    gsap.fromTo(
+      ".fade-up-blog",
+      {
+        opacity: 0,
+        y: 30,
+      },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: ".fade-up-blog",
+          start: "top 85%",
+          end: "bottom 20%",
+          toggleActions: "play none none reverse",
+        },
+      }
+    );
+
     return () => {
       lenis.destroy();
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       gsap.ticker.remove(lenis.raf);
     };
   }, []);
 
-  // FASTER animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
+  const pageVariants = {
+    hidden: {
+      opacity: 0,
+    },
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.4, 
-        ease: "easeOut", 
-        staggerChildren: 0.05, 
+        duration: 0.5,
+        ease: "easeOut",
+        staggerChildren: 0.1,
         delayChildren: 0.1,
       },
     },
   };
 
-  const fadeInUp = {
+  const navVariants = {
     hidden: {
       opacity: 0,
-      y: 30, 
+      y: -20,
     },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
-        duration: 0.4, 
+        duration: 0.4,
         ease: "easeOut",
       },
     },
   };
 
-  const fadeInLeft = {
+  const headerVariants = {
     hidden: {
       opacity: 0,
-      x: -20, 
+      y: 30,
+      scale: 0.98,
     },
     visible: {
       opacity: 1,
-      x: 0,
+      y: 0,
+      scale: 1,
       transition: {
-        duration: 0.3,
-        ease: "easeOut",
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.6,
       },
     },
   };
 
-  const fadeInRight = {
+  const heroImageVariants = {
     hidden: {
       opacity: 0,
-      x: 20,
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  const imageVariants = {
-    hidden: {
-      opacity: 0,
-      scale: 0.95, 
+      scale: 0.95,
+      y: 20,
     },
     visible: {
       opacity: 1,
       scale: 1,
+      y: 0,
       transition: {
-        duration: 0.5,
+        type: "spring",
+        stiffness: 200,
+        damping: 20,
+        duration: 0.7,
+        delay: 0.2,
+      },
+    },
+  };
+
+  const contentVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const paragraphVariants = {
+    hidden: {
+      opacity: 0,
+      y: 15,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.4,
         ease: "easeOut",
       },
     },
   };
 
-  const textStagger = {
+  const listVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05, 
-        delayChildren: 0.05, 
+        staggerChildren: 0.1,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const listItemVariants = {
+    hidden: {
+      opacity: 0,
+      x: -10,
+    },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut",
+      },
+    },
+  };
+
+  const cardGridVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.06,
+        delayChildren: 0.2,
       },
     },
   };
@@ -190,83 +262,95 @@ const BlogDetails = () => {
   const cardVariants = {
     hidden: {
       opacity: 0,
-      y: 30, 
-      scale: 0.95, 
+      y: 25,
+      scale: 0.95,
+      rotateX: 5,
     },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
+      rotateX: 0,
       transition: {
-        duration: 0.4, 
-        ease: "easeOut",
+        type: "spring",
+        stiffness: 200,
+        damping: 20,
+        duration: 0.5,
       },
     },
   };
 
   return (
     <>
-      <Navbar navStyle={"white"} />
+      <motion.div initial="hidden" animate="visible" variants={navVariants}>
+        <Navbar navStyle={"white"} />
+      </motion.div>
 
       <motion.div
         className="container mx-auto mt-20 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20"
-        variants={containerVariants}
         initial="hidden"
         animate="visible"
+        variants={pageVariants}
       >
-        {/* Header Section */}
-        <motion.div variants={fadeInUp} className="mb-8">
-          <motion.p
-            className="font-[700] text-[16px]"
+        <motion.div className="mb-8 fade-up-blog" variants={headerVariants}>
+          <motion.div
+            className="flex items-center gap-4 mb-4"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1, duration: 0.3 }} 
+            transition={{ duration: 0.4, ease: "easeOut" }}
           >
-            Shivam Patel{" "}
-            <span className="font-[500] text-[#999999] ms-4">
-              16 March 2023
-            </span>
-          </motion.p>
+            <p className="font-semibold text-gray-800">Shivam Patel</p>
+            <p className="text-sm text-gray-500">16 March 2023</p>
+          </motion.div>
 
           <motion.h1
-            className="font-[400] text-[32px] md:text-[48px] lg:text-[64px] leading-tight mt-4"
-            initial={{ opacity: 0, y: 20 }} 
+            className="font-normal text-3xl md:text-5xl lg:text-6xl leading-tight text-gray-800"
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{
-              delay: 0.2, 
-              duration: 0.5, 
-              ease: "easeOut",
+              type: "spring",
+              stiffness: 300,
+              damping: 25,
+              delay: 0.2,
             }}
           >
-            The Future of Digital Innovation
+            The Future of{" "}
+            <span className="bg-gradient-to-r from-[#2E437C] to-[#1d3b72] bg-clip-text text-transparent">
+              Digital Innovation
+            </span>
           </motion.h1>
         </motion.div>
 
-        {/* Hero Image */}
-        <motion.div variants={imageVariants} className="mb-10">
+        <motion.div className="mb-12 fade-up-blog" variants={heroImageVariants}>
           <motion.img
             src={blo1}
-            className="w-full lg:h-[650px] object-cover rounded-[16px] shadow-lg"
+            className="w-full lg:h-[650px] object-cover rounded-2xl shadow-2xl"
             alt="Digital Innovation"
             loading="lazy"
             whileHover={{
               scale: 1.01,
-              transition: { duration: 0.2 },
+              y: -5,
+              boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)",
+              transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 25,
+                duration: 0.3,
+              },
             }}
           />
         </motion.div>
 
-        {/* Article Content */}
-        <motion.div
-          className="pt-8 lg:pt-15 max-w-4xl mx-auto"
-          variants={textStagger}
+        <motion.article
+          className="max-w-4xl mx-auto prose prose-lg prose-gray"
+          variants={contentVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-100px" }}
         >
           <motion.p
-            variants={fadeInUp}
-            className="text-[16px] text-[#666666] py-3 leading-relaxed"
+            variants={paragraphVariants}
+            className="text-lg text-gray-700 leading-relaxed mb-6 first-letter:text-5xl first-letter:font-bold first-letter:text-[#2E437C] first-letter:float-left first-letter:mr-2 first-letter:mt-1 fade-up-blog"
           >
             In today's fast-paced world, digital innovation is shaping the way
             we live, work, and connect with each other. From artificial
@@ -275,198 +359,251 @@ const BlogDetails = () => {
           </motion.p>
 
           <motion.p
-            variants={fadeInUp}
-            className="text-[16px] text-[#666666] py-3 leading-relaxed"
+            variants={paragraphVariants}
+            className="text-base text-gray-600 leading-relaxed mb-6 fade-up-blog"
           >
-            In today's fast-paced world, digital innovation is shaping the way
-            we live, work, and connect with each other. From artificial
-            intelligence to cloud computing, technology has become the backbone
-            of modern businesses and everyday life.
+            The rapid evolution of technology continues to transform industries,
+            creating new opportunities while challenging traditional business
+            models. Companies that embrace digital transformation are better
+            positioned to thrive in this competitive landscape.
           </motion.p>
 
           <motion.p
-            variants={fadeInUp}
-            className="text-[16px] text-[#666666] py-3 leading-relaxed"
+            variants={paragraphVariants}
+            className="text-base text-gray-600 leading-relaxed mb-8 fade-up-blog"
           >
-            In today's fast-paced world, digital innovation is shaping the way
-            we live, work, and connect with each other. From artificial
-            intelligence to cloud computing, technology has become the backbone
-            of modern businesses and everyday life.
+            As we move forward, the integration of emerging technologies like
+            machine learning, IoT, and blockchain will continue to revolutionize
+            how we approach problem-solving and innovation across various
+            sectors.
           </motion.p>
 
-          {/* Bullet Points */}
-          <motion.div variants={fadeInUp} className="ms-5 my-6">
-            <motion.ul
-              className="list-disc marker:text-[#2E437C] marker:text-xl space-y-2"
-              variants={textStagger}
-            >
+          <motion.div
+            className="ml-6 my-8 fade-up-blog"
+            variants={listVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+          >
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">
+              Key Innovation Areas:
+            </h3>
+            <motion.ul className="space-y-3">
               <motion.li
-                variants={fadeInLeft}
-                className="text-[16px] text-[#666666]"
+                variants={listItemVariants}
+                className="flex items-center text-gray-600"
               >
-                Lorem ipsum
+                <div className="w-2 h-2 bg-[#2E437C] rounded-full mr-3"></div>
+                Artificial Intelligence and Machine Learning
               </motion.li>
               <motion.li
-                variants={fadeInLeft}
-                className="text-[16px] text-[#666666]"
+                variants={listItemVariants}
+                className="flex items-center text-gray-600"
               >
-                dolor sit amet
+                <div className="w-2 h-2 bg-[#2E437C] rounded-full mr-3"></div>
+                Cloud Computing and Infrastructure
               </motion.li>
               <motion.li
-                variants={fadeInLeft}
-                className="text-[16px] text-[#666666]"
+                variants={listItemVariants}
+                className="flex items-center text-gray-600"
               >
-                consectetur adipisicing elit
+                <div className="w-2 h-2 bg-[#2E437C] rounded-full mr-3"></div>
+                Internet of Things (IoT) Solutions
               </motion.li>
             </motion.ul>
           </motion.div>
 
           <motion.p
-            variants={fadeInUp}
-            className="text-[16px] text-[#666666] py-3 leading-relaxed"
+            variants={paragraphVariants}
+            className="text-base text-gray-600 leading-relaxed mb-6 fade-up-blog"
           >
-            In today's fast-paced world, digital innovation is shaping the way
-            we live, work, and connect with each other. From artificial
-            intelligence to cloud computing, technology has become the backbone
-            of modern businesses and everyday life.
+            The digital transformation journey requires strategic planning,
+            investment in the right technologies, and a commitment to continuous
+            learning and adaptation. Organizations must foster a culture of
+            innovation to stay ahead of the curve.
           </motion.p>
 
           <motion.p
-            variants={fadeInUp}
-            className="text-[16px] text-[#666666] py-3 leading-relaxed"
+            variants={paragraphVariants}
+            className="text-base text-gray-600 leading-relaxed mb-8 fade-up-blog"
           >
-            In today's fast-paced world, digital innovation is shaping the way
-            we live, work, and connect with each other. From artificial
-            intelligence to cloud computing, technology has become the backbone
-            of modern businesses and everyday life.
+            Success in the digital age depends on the ability to leverage data
+            effectively, automate processes intelligently, and create seamless
+            user experiences that exceed customer expectations.
           </motion.p>
-        </motion.div>
+        </motion.article>
 
-        {/* Center Image */}
         <motion.div
-          className="text-center my-12"
-          initial={{ opacity: 0, scale: 0.98 }}
+          className="text-center my-16 fade-up-blog"
+          initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{
-            duration: 0.4,
-            ease: "easeOut",
+            type: "spring",
+            stiffness: 200,
+            damping: 20,
+            duration: 0.6,
           }}
         >
           <motion.img
             src={blo1}
-            className="lg:w-[692px] lg:h-[312px] object-cover rounded-[16px] mx-auto shadow-md"
+            className="lg:w-[692px] lg:h-[312px] object-cover rounded-2xl mx-auto shadow-xl"
             alt="Innovation Process"
             loading="lazy"
             whileHover={{
               scale: 1.02,
-              boxShadow: "0 10px 25px rgba(0, 0, 0, 0.08)", 
-              transition: { duration: 0.2 },
+              y: -3,
+              boxShadow: "0 20px 40px rgba(0, 0, 0, 0.12)",
+              transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 25,
+                duration: 0.3,
+              },
             }}
           />
         </motion.div>
 
-        {/* Conclusion */}
         <motion.div
-          className="pt-8 max-w-4xl mx-auto"
-          initial={{ opacity: 0, y: 20 }} 
+          className="max-w-4xl mx-auto fade-up-blog"
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-50px" }}
+          viewport={{ once: true, margin: "-100px" }}
           transition={{
-            duration: 0.4, 
-            ease: "easeOut",
+            type: "spring",
+            stiffness: 300,
+            damping: 25,
+            duration: 0.6,
           }}
         >
-          <p className="text-[16px] text-[#666666] py-3 leading-relaxed">
-            The future promises even greater opportunities: smarter
-            applications, secure platforms, and an increased focus on
-            sustainability through technology.
-          </p>
-        </motion.div>
-
-        {/* Popular Blogs Section */}
-        <motion.div
-          className="pt-16 lg:pt-20"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.4 }} 
-        >
-          <motion.h3
-            className="text-[28px] lg:text-[36px] font-[700] text-[#BABEC8] mb-8"
-            initial={{ opacity: 0, x: -20 }} 
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{
-              duration: 0.4, 
-              ease: "easeOut",
+          <motion.div
+            className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-8 border-l-4 border-[#2E437C]"
+            whileHover={{
+              scale: 1.01,
+              boxShadow: "0 8px 25px rgba(0, 0, 0, 0.08)",
+              transition: { duration: 0.2 },
             }}
           >
-            Popular Blogs
-          </motion.h3>
+            <p className="text-lg text-gray-700 leading-relaxed italic">
+              "The future promises even greater opportunities: smarter
+              applications, secure platforms, and an increased focus on
+              sustainability through technology. We stand at the threshold of
+              unprecedented innovation."
+            </p>
+          </motion.div>
+        </motion.div>
+
+        <motion.section
+          className="pt-20 fade-up-blog"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
+        >
+          <motion.div
+            className="flex items-center gap-4 mb-10"
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, ease: "easeOut" }}
+          >
+            <h3 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r text-[#2E437C]">
+              Popular Blogs
+            </h3>
+          </motion.div>
 
           <motion.div
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8"
-            variants={containerVariants}
+            variants={cardGridVariants}
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
+            viewport={{ once: true, margin: "-100px" }}
           >
             {allNews?.map((item, index) => (
               <motion.div
                 key={index}
                 variants={cardVariants}
-                custom={index}
-                transition={{
-                  delay: index * 0.05, 
+                whileHover={{
+                  y: -8,
+                  scale: 1.02,
+                  rotateX: -2,
+                  boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1)",
+                  transition: {
+                    type: "spring",
+                    stiffness: 400,
+                    damping: 25,
+                    duration: 0.3,
+                  },
                 }}
+                className="fade-up-blog  border border-[#0A0D170D] rounded-[8px]"
               >
                 <NewsCard props={item} />
               </motion.div>
             ))}
           </motion.div>
-        </motion.div>
+        </motion.section>
 
-        {/* Partners Section - Optimized */}
-        <motion.div
-          className="overflow-hidden pt-16 lg:pt-20"
+        <motion.section
+          className="overflow-hidden pt-20 fade-up-blog"
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-50px" }}
-          transition={{ duration: 0.4 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6 }}
         >
-          <div className="flex">
-            {[1, 2].map((set) => (
-              <motion.div
-                key={set}
-                initial={{ x: "0%" }}
-                animate={{ x: "-100%" }}
-                transition={{
-                  duration: 30, 
-                  repeat: Infinity,
-                  ease: "linear",
-                  repeatType: "loop",
-                }}
-                className="flex flex-shrink-0 items-center"
-              >
-                {partners.map((partner) => (
-                  <motion.div
-                    key={`${set}-${partner.id}`}
-                    className="flex-shrink-0 mx-12 px-0 md:px-5"
-                  >
-                    <img
-                      src={partner.image}
-                      alt={partner.name}
-                      className="h-12 sm:h-16 lg:h-20 object-contain opacity-60 hover:opacity-100 transition-all duration-200 filter grayscale hover:grayscale-0" // Faster transition
-                      style={{ maxWidth: `${partner.width}px` }}
-                      loading="lazy"
-                    />
-                  </motion.div>
-                ))}
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
+          <motion.div
+            className="bg-gradient-to-r from-gray-50/50 to-transparent rounded-2xl py-12"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <motion.h4
+              className="text-center text-xl font-semibold text-gray-600 mb-8"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              Trusted by Industry Leaders
+            </motion.h4>
+
+            <div className="flex">
+              {[1, 2].map((set) => (
+                <motion.div
+                  key={set}
+                  initial={{ x: "0%" }}
+                  animate={{ x: "-100%" }}
+                  transition={{
+                    duration: 25,
+                    repeat: Infinity,
+                    ease: "linear",
+                    repeatType: "loop",
+                  }}
+                  className="flex flex-shrink-0 items-center"
+                >
+                  {partners.map((partner) => (
+                    <motion.div
+                      key={`${set}-${partner.id}`}
+                      className="flex-shrink-0 mx-12 px-0 md:px-5"
+                      whileHover={{
+                        scale: 1.1,
+                        transition: { duration: 0.2 },
+                      }}
+                    >
+                      <img
+                        src={partner.image}
+                        alt={partner.name}
+                        className="h-12 sm:h-16 lg:h-20 object-contain opacity-60 hover:opacity-100 transition-all duration-300 filter grayscale hover:grayscale-0"
+                        style={{ maxWidth: `${partner.width}px` }}
+                        loading="lazy"
+                      />
+                    </motion.div>
+                  ))}
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </motion.section>
       </motion.div>
     </>
   );

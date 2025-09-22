@@ -16,6 +16,7 @@
     "@gsap/react": "^2.1.2",
     "@mui/material": "^7.3.2",
     "@mui/styled-engine-sc": "^7.3.2",
+    "@mui/x-tree-view": "^8.11.3",
     "@studio-freight/lenis": "^1.0.42",
     "@tailwindcss/vite": "^4.1.13",
     "aos": "^2.3.4",

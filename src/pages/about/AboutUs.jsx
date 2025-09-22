@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useInView } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
@@ -10,7 +10,6 @@ import { HiDownload } from "react-icons/hi";
 import Navbar from "../../components/Navbar/Navbar";
 import SectionTitle from "../../components/aboutUsComponents/SectionTitle";
 import AnimatedImage from "../../components/aboutUsComponents/AnimatedImage";
-import StatCard from "../../components/aboutUsComponents/StatCard";
 import TeamCard from "../../components/aboutUsComponents/TeamCard";
 import TimelineItem from "../../components/aboutUsComponents/TimelineItem";
 import AnimatedButton from "../../components/aboutUsComponents/AnimatedButton";
@@ -84,7 +83,68 @@ const timelineData = {
   },
 };
 
-// Register GSAP plugins
+// Enhanced StatCard with counter animation - keeping original UI
+const AnimatedStatCard = ({ number, label, index }) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+  
+  // Extract number and suffix
+  const numericValue = parseInt(number.replace(/[^0-9]/g, ''));
+  const suffix = number.replace(/[0-9]/g, '');
+
+  useEffect(() => {
+    if (isInView) {
+      const timer = setTimeout(() => {
+        const duration = 1200;
+        const steps = 60;
+        const increment = numericValue / steps;
+        const stepDuration = duration / steps;
+        let currentCount = 0;
+
+        const counter = setInterval(() => {
+          currentCount += increment;
+          if (currentCount >= numericValue) {
+            setCount(numericValue);
+            clearInterval(counter);
+          } else {
+            setCount(Math.floor(currentCount));
+          }
+        }, stepDuration);
+
+        return () => clearInterval(counter);
+      }, index * 100);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isInView, numericValue, index]);
+
+  return (
+    <div ref={ref}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8, rotate: -2 }}
+        animate={isInView ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.8, rotate: -2 }}
+        transition={{
+          type: "spring",
+          stiffness: 400,
+          damping: 25,
+          duration: 0.3,
+          delay: index * 0.05,
+        }}
+        className="text-center"
+      >
+        {/* Using original StatCard styling exactly */}
+        <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#BABEC8] mb-2">
+          {count}{suffix}
+        </div>
+        <div className="text-sm md:text-base text-[#2E437C] font-medium">
+          {label}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 const AboutUs = () => {
@@ -95,15 +155,15 @@ const AboutUs = () => {
   const videoRef = useRef(null);
   const scrollContainerRef = useRef(null);
 
-  // Animation variants
+  // Faster Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        duration: 0.5,
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
+        duration: 0.3,
+        staggerChildren: 0.08,
+        delayChildren: 0.05,
       },
     },
   };
@@ -111,8 +171,8 @@ const AboutUs = () => {
   const slideInLeft = {
     hidden: {
       opacity: 0,
-      x: -80,
-      scale: 0.95,
+      x: -40,
+      scale: 0.98,
     },
     visible: {
       opacity: 1,
@@ -120,9 +180,9 @@ const AboutUs = () => {
       scale: 1,
       transition: {
         type: "spring",
-        stiffness: 100,
-        damping: 20,
-        duration: 1,
+        stiffness: 200,
+        damping: 25,
+        duration: 0.5,
       },
     },
   };
@@ -130,8 +190,8 @@ const AboutUs = () => {
   const slideInRight = {
     hidden: {
       opacity: 0,
-      x: 80,
-      scale: 0.95,
+      x: 40,
+      scale: 0.98,
     },
     visible: {
       opacity: 1,
@@ -139,9 +199,9 @@ const AboutUs = () => {
       scale: 1,
       transition: {
         type: "spring",
-        stiffness: 100,
-        damping: 20,
-        duration: 1,
+        stiffness: 200,
+        damping: 25,
+        duration: 0.5,
       },
     },
   };
@@ -149,7 +209,7 @@ const AboutUs = () => {
   const fadeInUp = {
     hidden: {
       opacity: 0,
-      y: 40,
+      y: 20,
       scale: 0.98,
     },
     visible: {
@@ -158,9 +218,9 @@ const AboutUs = () => {
       scale: 1,
       transition: {
         type: "spring",
-        stiffness: 120,
-        damping: 15,
-        duration: 0.6,
+        stiffness: 300,
+        damping: 25,
+        duration: 0.4,
       },
     },
   };
@@ -168,8 +228,8 @@ const AboutUs = () => {
   const scaleInVariants = {
     hidden: {
       opacity: 0,
-      scale: 0.8,
-      rotate: -5,
+      scale: 0.9,
+      rotate: -2,
     },
     visible: {
       opacity: 1,
@@ -177,9 +237,9 @@ const AboutUs = () => {
       rotate: 0,
       transition: {
         type: "spring",
-        stiffness: 200,
-        damping: 20,
-        duration: 0.4,
+        stiffness: 400,
+        damping: 25,
+        duration: 0.3,
       },
     },
   };
@@ -187,12 +247,12 @@ const AboutUs = () => {
   // Smooth scrolling setup
   useEffect(() => {
     const lenis = new Lenis({
-      duration: 1,
+      duration: 0.8,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       direction: "vertical",
       gestureDirection: "vertical",
       smooth: true,
-      mouseMultiplier: 1,
+      mouseMultiplier: 1.2,
       smoothTouch: false,
       touchMultiplier: 2,
       infinite: false,
@@ -204,10 +264,7 @@ const AboutUs = () => {
     }
 
     requestAnimationFrame(raf);
-
-    // Update ScrollTrigger
     lenis.on("scroll", ScrollTrigger.update);
-
     gsap.ticker.add((time) => {
       lenis.raf(time * 1000);
     });
@@ -248,7 +305,7 @@ const AboutUs = () => {
         <Navbar />
       </motion.div>
 
-      {/* Hero Video Section - HomeBanner Style */}
+      {/* Hero Video Section - Same as original */}
       <div className="relative h-[408px] md:h-screen w-full overflow-hidden">
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <video
@@ -264,7 +321,6 @@ const AboutUs = () => {
           <div className="absolute inset-0 bg-black/60"></div>
         </div>
 
-        {/* White overlay animation */}
         <motion.div
           initial={{ opacity: 1, y: 1500 }}
           animate={{ opacity: 1, y: 0 }}
@@ -327,7 +383,7 @@ const AboutUs = () => {
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-150px" }}
+        viewport={{ once: true, margin: "-100px" }}
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           <motion.div
@@ -349,7 +405,7 @@ const AboutUs = () => {
               <motion.div
                 whileHover={{
                   scale: 1.02,
-                  transition: { duration: 0.3 },
+                  transition: { duration: 0.2 },
                 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -370,7 +426,7 @@ const AboutUs = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-150px" }}
+          viewport={{ once: true, margin: "-100px" }}
         >
           <motion.div
             className="lg:col-span-7 p-4 sm:p-5 sm:order-1 md:order-2"
@@ -391,7 +447,7 @@ const AboutUs = () => {
               <motion.div
                 whileHover={{
                   scale: 1.02,
-                  transition: { duration: 0.3 },
+                  transition: { duration: 0.2 },
                 }}
                 whileTap={{ scale: 0.98 }}
               >
@@ -407,13 +463,13 @@ const AboutUs = () => {
         </motion.div>
       </motion.div>
 
-      {/* Stats Section */}
+      {/* Stats Section - ORIGINAL UI WITH ANIMATED COUNTERS */}
       <motion.div
         className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true, margin: "-80px" }}
       >
         <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-12 text-center"
@@ -421,7 +477,7 @@ const AboutUs = () => {
         >
           {statsData.map((stat, index) => (
             <motion.div key={index} variants={scaleInVariants}>
-              <StatCard {...stat} index={index} />
+              <AnimatedStatCard {...stat} index={index} />
             </motion.div>
           ))}
         </motion.div>
@@ -433,7 +489,7 @@ const AboutUs = () => {
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true, margin: "-80px" }}
       >
         <div className="p-8">
           <motion.div variants={fadeInUp}>
@@ -461,7 +517,7 @@ const AboutUs = () => {
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true, margin: "-80px" }}
       >
         <div className="p-8">
           <motion.p
@@ -501,7 +557,7 @@ const AboutUs = () => {
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true, margin: "-80px" }}
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           <motion.div
@@ -531,31 +587,31 @@ const AboutUs = () => {
               <motion.div
                 key={selectedYear}
                 className="bg-gradient-to-br rounded-2xl h-full p-6 sm:p-8 relative overflow-hidden"
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                initial={{ opacity: 0, y: 20, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -30, scale: 0.95 }}
+                exit={{ opacity: 0, y: -20, scale: 0.98 }}
                 transition={{
                   type: "spring",
-                  stiffness: 200,
-                  damping: 25,
-                  duration: 0.3,
+                  stiffness: 400,
+                  damping: 30,
+                  duration: 0.2,
                 }}
               >
                 <div className="relative z-10">
                   <motion.h3
                     className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 text-[#2E437C]"
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2, duration: 0.4 }}
+                    transition={{ delay: 0.1, duration: 0.3 }}
                   >
                     {currentData.title} ({selectedYear})
                   </motion.h3>
 
                   <motion.p
                     className="text-base sm:text-lg leading-relaxed mb-6 opacity-60"
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 0.6, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.4 }}
+                    transition={{ delay: 0.2, duration: 0.3 }}
                   >
                     {currentData.description}
                   </motion.p>
@@ -572,7 +628,7 @@ const AboutUs = () => {
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: true, margin: "-80px" }}
       >
         <motion.div variants={fadeInUp}>
           <SectionTitle
@@ -592,7 +648,7 @@ const AboutUs = () => {
               variants={scaleInVariants}
               whileHover={{
                 scale: 1.03,
-                transition: { duration: 0.3 },
+                transition: { duration: 0.2 },
               }}
             >
               <AnimatedImage
@@ -617,7 +673,7 @@ const AboutUs = () => {
         className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
+        transition={{ duration: 0.5 }}
         viewport={{ once: true }}
       >
         <div className="overflow-hidden">
@@ -628,7 +684,7 @@ const AboutUs = () => {
                 initial={{ x: "0%" }}
                 animate={{ x: "-100%" }}
                 transition={{
-                  duration: 40,
+                  duration: 30,
                   repeat: Infinity,
                   ease: "linear",
                   repeatType: "loop",
@@ -643,7 +699,7 @@ const AboutUs = () => {
                     <img
                       src={partner.image}
                       alt={partner.name}
-                      className="h-12 sm:h-16 lg:h-20 object-contain opacity-60 hover:opacity-100 transition-all duration-300 filter grayscale hover:grayscale-0"
+                      className="h-12 sm:h-16 lg:h-20 object-contain opacity-60 hover:opacity-100 transition-all duration-200 filter grayscale hover:grayscale-0"
                       style={{ maxWidth: `${partner.width}px` }}
                     />
                   </motion.div>

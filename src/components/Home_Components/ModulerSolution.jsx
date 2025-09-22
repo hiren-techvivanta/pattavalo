@@ -21,7 +21,7 @@ export default function ModulerSolution() {
       title: "BEARING",
       icon: BEARING,
       animation: {
-        rotate: 360,
+        rotate: [0, 360],
         transition: { duration: 3, repeat: Infinity, ease: "linear" },
       },
     },
@@ -29,72 +29,72 @@ export default function ModulerSolution() {
       title: "CABLE DRAG CHAIN",
       icon: CHAIN,
       animation: {
-        x: [0, 8, 0],
-        transition: { duration: 1.5, repeat: Infinity },
+        x: [0, 3, -3, 0],
+        transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
       },
     },
     {
       title: "CONVEYOR COMPONENT",
       icon: CONVEYOR,
       animation: {
-        y: [0, -6, 0],
-        transition: { duration: 2, repeat: Infinity },
+        y: [0, -2, 0, 2, 0],
+        transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
       },
     },
     {
       title: "MODULAR BELT",
       icon: MODULAR,
       animation: {
-        scale: [1, 1.1, 1],
-        transition: { duration: 2, repeat: Infinity },
+        scale: [1, 1.05, 1],
+        transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
       },
     },
     {
       title: "SS CHAIN & SPROCKET",
       icon: SSCHAIN,
       animation: {
-        rotate: [0, 8, 0, -8, 0],
-        transition: { duration: 3, repeat: Infinity },
+        rotate: [0, 3, -3, 0],
+        transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
       },
     },
     {
       title: "THERMOPLASTIC CHAIN & SPROCKET",
       icon: THERMOPLASTICCHAIN,
       animation: {
-        y: [0, -5, 0],
-        rotate: [0, 5, 0, -5, 0],
-        transition: { duration: 2.5, repeat: Infinity },
+        y: [0, -1, 0],
+        rotate: [0, 2, 0, -2, 0],
+        transition: { duration: 3, repeat: Infinity, ease: "easeInOut" },
       },
     },
     {
       title: "FINGER CHAIN & ASSEMBLY",
       icon: FINGERCHAIN,
       animation: {
-        scale: [1, 1.05, 1],
-        transition: { duration: 1.2, repeat: Infinity },
+        scale: [1, 1.03, 1],
+        transition: { duration: 1.5, repeat: Infinity, ease: "easeInOut" },
       },
     },
     {
       title: "Z BUCKET ELEVATOR",
       icon: ZBUCKET,
       animation: {
-        y: [0, -8, 0],
-        transition: { duration: 2, repeat: Infinity },
+        y: [0, -3, 0],
+        transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
       },
     },
     {
       title: "WEAR STRIP",
       icon: WEARSTRIP,
       animation: {
-        x: [0, 6, 0],
-        transition: { duration: 1.8, repeat: Infinity },
+        x: [0, 2, -2, 0],
+        transition: { duration: 2.2, repeat: Infinity, ease: "easeInOut" },
       },
     },
     {
       title: "SPIRAL FREEZER",
       icon: SPIRALFREEZER,
       animation: {
-        rotate: 360,
+        rotate: [0, 360],
         transition: { duration: 8, repeat: Infinity, ease: "linear" },
       },
     },
@@ -102,162 +102,157 @@ export default function ModulerSolution() {
       title: "SPIRAL LOGISTICS",
       icon: SPIRALLOGISTICS,
       animation: {
-        scale: [1, 1.12, 1],
-        transition: { duration: 3, repeat: Infinity },
+        scale: [1, 1.06, 1],
+        transition: { duration: 3, repeat: Infinity, ease: "easeInOut" },
       },
     },
     {
       title: "FLEXZERO",
       icon: FLEXZERO,
       animation: {
-        y: [0, -5, 0],
-        rotate: [0, 3, 0, -3, 0],
-        transition: { duration: 2, repeat: Infinity },
+        y: [0, -1.5, 0],
+        rotate: [0, 1, 0, -1, 0],
+        transition: { duration: 2.8, repeat: Infinity, ease: "easeInOut" },
       },
     },
   ];
 
-  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
+        staggerChildren: 0.04,
+        delayChildren: 0.15,
       },
     },
   };
 
-  
   const itemVariants = {
     hidden: {
       opacity: 0,
-      y: 30,
-      scale: 0.9,
+      y: 15,
+      scale: 0.98,
     },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        type: "tween",
-        ease: "easeOut",
-        duration: 0.3, // सिर्फ entry ke liye
-      },
-    },
-    hover: {
-      scale: 1.05,
-      y: -5,
-      transition: {
-        type: "tween",
-        ease: "easeOut", // smooth & instant
-        duration: 0.15, // fast response
+        type: "spring",
+        stiffness: 400,
+        damping: 30,
+        mass: 0.8,
       },
     },
   };
 
- 
   const titleVariants = {
-    hidden: {
-      opacity: 0,
-      y: -40,
-    },
+    hidden: { opacity: 0, y: -15 },
     visible: {
       opacity: 1,
       y: 0,
       transition: {
         type: "spring",
-        damping: 12,
-        stiffness: 100,
-        delay: 0.2,
+        stiffness: 300,
+        damping: 25,
+        delay: 0.1,
       },
     },
   };
 
   return (
     <section className="container mx-auto w-full px-6 md:px-0 py-12 bg-white">
-      {/* Enhanced Title Animation */}
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
+        viewport={{ once: true, margin: "-80px" }}
         variants={titleVariants}
-        className="mb-8 sm:mb-12  md:text-left px-3"
+        className="mb-8 sm:mb-12 md:text-left px-3"
       >
-        <h2
-          className="
-      text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl 
-      font-semibold text-[#BABEC8] leading-snug
-    "
-        >
+        <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#BABEC8] leading-snug">
           Your Crafted,
-          <span
-            className="
-        block 
-        text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl
-        font-semibold text-[#2E437C]
-      "
-          >
+          <span className="block text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#2E437C]">
             Modular Solution
           </span>
         </h2>
       </motion.div>
 
-      {/* Solutions Grid with Enhanced Animations */}
       <motion.div
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
+        viewport={{ once: true, margin: "-60px" }}
         variants={containerVariants}
-        className=" grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-10 text-center"
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8 text-center"
       >
         {solutions.map((item, idx) => (
           <motion.div
             key={idx}
             variants={itemVariants}
-            whileHover="hover"
             onHoverStart={() => setHoveredIndex(idx)}
             onHoverEnd={() => setHoveredIndex(null)}
-            className={`group flex flex-col items-center justify-center p-4 rounded-xl transition-all duration-300 cursor-pointer ${
-              item.highlight
-                ? "bg-[#1d3b72] text-white"
-                : "bg-transparent hover:bg-[#1d3b72]"
-            }`}
+            whileHover={{
+              y: -2,
+              scale: 1.01,
+              transition: {
+                type: "spring",
+                stiffness: 500,
+                damping: 30,
+                mass: 0.5,
+              },
+            }}
+            className="group relative flex flex-col items-center justify-center p-5 rounded-2xl bg-white border border-gray-50 hover:border-gray-200 transition-all duration-300 cursor-pointer overflow-hidden"
+            style={{
+              boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)",
+            }}
           >
-            {/* Icon with zoom effect and type-specific animation */}
             <motion.div
-              className="w-14 h-14 mb-3 flex items-center justify-center"
+              className="absolute inset-0 bg-gradient-to-br from-[#2E437C]/5 via-transparent to-[#1d3b72]/5 opacity-0 transition-opacity duration-300"
+              whileHover={{ opacity: 1 }}
+            />
+
+            <motion.div
+              className="relative z-10 w-12 h-12 sm:w-14 sm:h-14 mb-3 flex items-center justify-center"
               animate={hoveredIndex === idx ? item.animation : {}}
               whileHover={{
-                scale: 1.15,
+                scale: 1.08,
                 transition: {
-                  type: "tween",
-                  ease: "easeOut",
-                  duration: 0.15,
+                  type: "spring",
+                  stiffness: 600,
+                  damping: 25,
+                  mass: 0.4,
                 },
               }}
             >
-              <img
+              <motion.img
                 src={item.icon}
                 alt={item.title}
-                className={`w-full h-full object-contain transition duration-200 ${
-                  item.highlight
-                    ? "invert brightness-200"
-                    : "group-hover:invert group-hover:brightness-200"
-                }`}
+                className="w-full h-full object-contain transition-all duration-300 group-hover:brightness-75"
+                whileHover={{
+                  filter: "brightness(0.8) saturate(1.2)",
+                  transition: { duration: 0.2 },
+                }}
               />
             </motion.div>
 
-            <p
-              className={`text-xs sm:text-sm md:text-base font-normal transition duration-300 ${
-                item.highlight
-                  ? "text-white"
-                  : "text-gray-700 group-hover:text-white"
-              }`}
+            <motion.p
+              className="relative z-10 text-xs sm:text-sm md:text-base font-medium text-gray-700 transition-colors duration-300 text-center leading-tight max-w-full"
+              whileHover={{
+                color: "#2E437C",
+                scale: 1.01,
+                transition: {
+                  duration: 0.2,
+                  ease: "easeOut",
+                },
+              }}
             >
               {item.title}
-            </p>
+            </motion.p>
+
+            <motion.div
+              className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#2E437C] to-[#1d3b72] opacity-0 transition-opacity duration-300"
+              whileHover={{ opacity: 1 }}
+            />
           </motion.div>
         ))}
       </motion.div>

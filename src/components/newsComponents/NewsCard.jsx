@@ -7,7 +7,7 @@ const NewsCard = ({ props }) => {
   return (
     <>
       <div
-        className="border border-[#0A0D170D] rounded-[8px]"
+        // className="border border-[#0A0D170D] rounded-[8px]"
         onClick={() => navigate(`/blog/details`)}
       >
         <img
