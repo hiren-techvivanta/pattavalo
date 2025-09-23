@@ -132,7 +132,7 @@ const categoryContent = {
     ],
   },
 
-  // Packaging & Logistics
+ 
   "Shrink Wrapping": {
     title: "Shrink Wrapping Solutions",
     description:
@@ -383,7 +383,7 @@ export default function IndustryCom() {
   const [rotation, setRotation] = useState(-20);
   const [isMobile, setIsMobile] = useState(false);
 
-  // Check screen size and set appropriate initial rotation
+  
   useEffect(() => {
     const checkScreenSize = () => {
       const mobile = window.innerWidth < 1024; 
@@ -415,7 +415,7 @@ export default function IndustryCom() {
 
     // Adjust target rotation for mobile
     if (isMobile) {
-      targetRotation = industry.targetRotation - 100; // Add offset for mobile
+      targetRotation = industry.targetRotation - 100; 
     }
 
     const normalizedCurrent = ((currentRotation % 360) + 360) % 360;
@@ -498,10 +498,10 @@ export default function IndustryCom() {
             transition={{ duration: 0.6 }}
             className="relative"
             style={{ 
-              width: isMobile ? "400px" : "600px", 
-              height: isMobile ? "400px" : "600px", 
+              width: isMobile ? "320px" : "600px", 
+              height: isMobile ? "320px" : "600px", 
               marginLeft: isMobile ? "0px" : "-250px",
-              marginTop: isMobile? "-270px" : "0"
+              marginTop: isMobile? "-180px" : "0"
             }}
           >
             <motion.div
@@ -523,7 +523,7 @@ export default function IndustryCom() {
               <div
                 className="absolute bg-white rounded-full z-10 flex items-center justify-center"
                 style={{
-                  inset: isMobile ? "100px" : "150px",
+                  inset: isMobile ? "80px" : "150px",
                   boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
                 }}
               ></div>
@@ -558,18 +558,18 @@ export default function IndustryCom() {
                           centerPoint + pathRadius * Math.sin((endAngle * Math.PI) / 180)
                         } Z')`,
                         zIndex: 15,
-                        border: isActive
-                          ? "2px solid #fff"
-                          : "2px solid transparent",
-                        filter: isActive
-                          ? "drop-shadow(0 0 15px rgba(255,255,255,0.6))"
-                          : "none",
+                        // border: isActive
+                        //   ? "2px solid #fff"
+                        //   : "2px solid transparent",
+                        // filter: isActive
+                        //   ? "drop-shadow(0 0 15px rgba(255,255,255,0.6))"
+                        //   : "none",
                         transition: "all 0.3s ease",
                       }}
                     ></div>
 
                     <motion.div
-                      initial={{ rotate: isMobile ? 120 : 20 }}
+                      initial={{ rotate: isMobile ? 110 : 20 }}
                       animate={{ rotate: -rotation }}
                       transition={{ duration: 0.7, ease: "easeInOut" }}
                       className={`absolute z-20 flex flex-col items-center justify-center ${
@@ -585,7 +585,7 @@ export default function IndustryCom() {
                     >
                       <span className={isMobile ? 'text-lg' : 'text-xl'}>
                         {React.cloneElement(industry.icon, { 
-                          size: isMobile ? 20 : 26 
+                          size: isMobile ? 23 : 26 
                         })}
                       </span>
                       <span className={`${

@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import Lenis from "@studio-freight/lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-// Components
 import HomeBanner from "../components/Home_Components/HomeBanner";
 import Gatherings from "../components/Home_Components/Gatherings";
 import CustomConveyor from "../components/Home_Components/CustomConveyor";
@@ -212,7 +210,7 @@ export default function Home() {
                   initial={{ x: "0%" }}
                   animate={{ x: "-100%" }}
                   transition={{
-                    duration: 25, // Faster scroll
+                    duration: 25, 
                     repeat: Infinity,
                     ease: "linear",
                     repeatType: "loop",
@@ -225,7 +223,7 @@ export default function Home() {
                       className="flex-shrink-0 mx-12 px-0 md:px-5"
                       whileHover={{ 
                         scale: 1.05,
-                        transition: { duration: 0.1 } // Super quick hover
+                        transition: { duration: 0.1 } 
                       }}
                     >
                       <img
@@ -277,7 +275,7 @@ export default function Home() {
           className="w-full h-[300px] sm:h-[400px] lg:h-[400px] overflow-hidden shadow-lg"
           whileHover={{ 
             scale: 1.01,
-            transition: { duration: 0.15 } // Quick map hover
+            transition: { duration: 0.15 } 
           }}
         >
           <iframe

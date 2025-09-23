@@ -8,7 +8,7 @@ import Lottie from "lottie-react";
 import err from "../../assets/json/Error404.json";
 
 gsap.registerPlugin(ScrollTrigger);
-
+  
 const Error = () => {
   const navigate = useNavigate();
 
