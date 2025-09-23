@@ -4,6 +4,7 @@ import ContactForm from "../../components/contactUsForm/ContactForm";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "@studio-freight/lenis";
+import Seo from "../../components/common/Seo";
 
 const ContactUs = () => {
 
@@ -67,6 +68,11 @@ const ContactUs = () => {
 
   return (
     <>
+      <Seo
+        title="Contact | ATC Chain India"
+        description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
+        url="https://www.atcchain.com/contact"
+      />
       <Navbar navStyle={"white"} />
 
       <div className="container mx-auto mt-10 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20">

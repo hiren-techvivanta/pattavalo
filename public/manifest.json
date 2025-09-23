@@ -1,0 +1,42 @@
+{
+  "name": "ATC Chain India",
+  "short_name": "ATC Chain India",
+  "description": "Shop premium glasses and UV-protected sunglasses at Eye Line. Trendy eyewear with fast delivery and secure checkout.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/image198.png",
+      "sizes": "198x198",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/image512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/image128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/image32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/image16.png",
+      "sizes": "16x16",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

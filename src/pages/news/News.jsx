@@ -26,6 +26,7 @@ import l6 from "../../assets/images/l6.png";
 
 import AnimatedButton from "../../components/aboutUsComponents/AnimatedButton";
 import { HiDownload } from "react-icons/hi";
+import Seo from "../../components/common/Seo";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -316,6 +317,11 @@ const News = () => {
 
   return (
     <>
+      <Seo
+        title="News | ATC Chain India"
+        description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
+        url="https://www.atcchain.com/news"
+      />
       <motion.div
         initial="hidden"
         animate="visible"

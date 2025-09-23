@@ -180,7 +180,7 @@ export default function Resources() {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={tabContainerVariants}
-        className="relative flex justify-start gap-6 border-b w-100 border-gray-200 mb-8 text-sm sm:text-base"
+        className="relative flex justify-start gap-4 border-b w-full md:w-100 border-gray-200 mb-8 text-sm sm:text-base"
       >
         <motion.div
           className="absolute bottom-0 h-0.5 rounded-full"

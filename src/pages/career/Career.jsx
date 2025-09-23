@@ -9,6 +9,7 @@ import { LuUsersRound } from "react-icons/lu";
 import { MdOutlineSecurity } from "react-icons/md";
 import { PiStudentBold } from "react-icons/pi";
 import { BsBarChart } from "react-icons/bs";
+import Seo from "../../components/common/Seo";
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -427,6 +428,11 @@ const Career = () => {
 
   return (
     <>
+      <Seo
+        title="Jobs | ATC Chain India"
+        description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
+        url="https://www.atcchain.com/jobs"
+      />
       <Navbar navStyle={"white"} />
 
       {/* Hero Section */}

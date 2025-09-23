@@ -18,6 +18,7 @@ import l3 from "../../../assets/images/l3.png";
 import l4 from "../../../assets/images/l4.png";
 import l5 from "../../../assets/images/l5.png";
 import l6 from "../../../assets/images/l6.png";
+import Seo from "../../../components/common/Seo";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -282,6 +283,11 @@ const BlogDetails = () => {
 
   return (
     <>
+      <Seo
+        title="News Details | ATC Chain India"
+        description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
+        url="https://www.atcchain.com/news/details"
+      />
       <motion.div initial="hidden" animate="visible" variants={navVariants}>
         <Navbar navStyle={"white"} />
       </motion.div>

@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ProductCom from "../../components/ProductComponent/ProductCom";
 import Navbar from "../../components/Navbar/Navbar";
+import Seo from "../../components/common/Seo";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -97,6 +98,11 @@ function OurProduct() {
       variants={pageVariants}
       className="min-h-screen bg-white"
     >
+      <Seo
+        title="Products | ATC Chain India"
+        description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
+        url="https://www.atcchain.com/products"
+      />
       <motion.div 
         className="nav_section relative z-50"
         variants={navVariants}
