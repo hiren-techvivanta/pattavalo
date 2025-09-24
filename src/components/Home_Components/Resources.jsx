@@ -138,7 +138,7 @@ export default function Resources() {
   };
 
   return (
-    <div className="w-full bg-white px-4 sm:px-8 lg:px-16 py-12">
+    <div className="container mx-auto w-full bg-white px-4 sm:px-8 lg:px-16 py-12">
       <motion.div
         initial="hidden"
         whileInView="visible"

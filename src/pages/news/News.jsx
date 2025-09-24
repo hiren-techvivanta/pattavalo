@@ -487,7 +487,7 @@ const News = () => {
                       duration: 0.3,
                     },
                   }}
-                  className="fade-up-news border border-[#0A0D170D] rounded-[8px]"
+                  className="fade-up-news "
                 >
                   <NewsCard props={item} />
                 </motion.div>

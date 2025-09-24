@@ -153,7 +153,7 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
     transform: "translate(-50%, -50%)",
     width: "90%",
     maxWidth: "600px",
-    maxHeight: "85vh", // Reduced from 90vh
+    maxHeight: "85vh", 
     bgcolor: "background.paper",
     borderRadius: "16px",
     boxShadow: 24,
@@ -167,7 +167,7 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
     <Modal
       open={isOpen}
       onClose={handleClose}
-      disableScrollLock={false} // This helps with scroll management
+      disableScrollLock={false} 
       BackdropProps={{
         style: {
           backgroundColor: "rgba(0, 0, 0, 0.5)",

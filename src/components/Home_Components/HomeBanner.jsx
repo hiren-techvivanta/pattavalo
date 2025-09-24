@@ -116,8 +116,8 @@ export default function HomeBanner({ onAnimationComplete }) {
 
         {/* Content - only show when isVideoExpanded is true and showContent is true */}
         {isVideoExpanded && showContent && (
-          <div className="relative z-10 w-full h-full flex items-center px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16">
-            <div className="max-w-7xl mx-auto w-full mt-10 sm:mt-0">
+          <div className="relative z-10 w-full h-full flex items-center px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5 py-16">
+            <div className="container mx-auto w-full mt-10 sm:mt-0">
               <div className="max-w-4xl text-white overflow-hidden">
                 <div className="overflow-hidden">
                   <motion.h1

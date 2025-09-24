@@ -224,7 +224,7 @@ export default function Home() {
                     ease: "linear",
                     repeatType: "loop",
                   }}
-                  className="flex flex-shrink-0 items-center"
+                  className="flex flex-shrink-0 items-center  "
                 >
                   {partners.map((partner) => (
                     <motion.div
@@ -275,7 +275,7 @@ export default function Home() {
 
       {/* Map Section with fast animation */}
       <motion.section
-        className="w-full pt-10 bg-white fade-in-section overflow-hidden"
+        className=" w-full pt-10 bg-white fade-in-section overflow-hidden"
         variants={quickScale}
         initial="hidden"
         whileInView="visible"

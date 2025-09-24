@@ -465,7 +465,7 @@ export default function IndustryCom() {
   const categoryData = getCategoryContent();
 
   return (
-    <section className="w-full   lg:px-15  px-4 sm:px-6 md:px-10 lg:pr-16 lg:pl-0 xl:pr-20 xl:pl-0 py-16 sm:py-20">
+    <section className="container mx-auto w-full  lg:px-15  px-4 sm:px-6 md:px-10 lg:pr-16 lg:pl-0 xl:pr-20 xl:pl-0 py-16 sm:py-20">
       {/* Heading */}
       <motion.h1
         initial={{ opacity: 0, y: 30 }}
