@@ -1,0 +1,13 @@
+# robots.txt for ATC Chain India
+# ============================
+
+# Allow all crawlers to access everything
+User-agent: *
+Disallow:
+
+# Prevent crawling of build/static files (not useful for SEO)
+Disallow: /static/
+Disallow: /assets/
+
+# Sitemap location (update with your deployed URL)
+Sitemap: https://www.atcchain.com/sitemap.xml

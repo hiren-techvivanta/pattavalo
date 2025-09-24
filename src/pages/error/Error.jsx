@@ -173,6 +173,10 @@ const Error = () => {
       animate="visible"
       exit="exit"
     >
+      <Seo
+        title="Error | ATC Chain India"
+        description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
+      />
       {/* Background Decorative Elements */}
       <motion.div
         className="absolute top-20 left-10 w-32 h-32 bg-gradient-to-br from-[#2E437C]/5 to-transparent rounded-full blur-3xl"

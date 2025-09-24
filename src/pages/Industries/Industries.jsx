@@ -12,6 +12,7 @@ import bl3 from "../../assets/images/bl3.jpg";
 import bl4 from "../../assets/images/bl4.jpg";
 import { HiDownload } from "react-icons/hi";
 import AnimatedButton from "../../components/aboutUsComponents/AnimatedButton";
+import Seo from "../../components/common/Seo";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -217,6 +218,11 @@ const Industries = () => {
 
   return (
     <>
+      <Seo
+        title="Downloads | ATC Chain India"
+        description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
+        url="https://www.atcchain.com/downloads"
+      />
       <motion.div
         initial="hidden"
         animate="visible"

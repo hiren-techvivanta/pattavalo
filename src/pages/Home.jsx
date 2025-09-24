@@ -21,6 +21,7 @@ import l3 from "../assets/images/l3.png";
 import l4 from "../assets/images/l4.png";
 import l5 from "../assets/images/l5.png";
 import l6 from "../assets/images/l6.png";
+import Seo from "../components/common/Seo";
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -101,7 +102,7 @@ export default function Home() {
 
   //   // GSAP ScrollTrigger integration
   //   lenis.on('scroll', ScrollTrigger.update);
-    
+
   //   gsap.ticker.add((time) => {
   //     lenis.raf(time * 1000);
   //   });
@@ -109,8 +110,8 @@ export default function Home() {
   //   gsap.ticker.lagSmoothing(0);
 
   //   // Optional: Add scroll-triggered animations
-  //   gsap.fromTo(".fade-in-section", 
-  //     { 
+  //   gsap.fromTo(".fade-in-section",
+  //     {
   //       opacity: 0,
   //       y: 30,
   //     },
@@ -142,8 +143,13 @@ export default function Home() {
 
   return (
     <div>
+      <Seo
+        title="ATC Chain India"
+        description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
+        url="https://www.atcchain.com/"
+      />
       <HomeBanner onAnimationComplete={handleBannerAnimationComplete} />
-      
+
       {/* Animated Components with fast timing */}
       <motion.div
         variants={fastContainerVariants}
@@ -154,23 +160,26 @@ export default function Home() {
         <motion.div variants={quickFadeInUp} className="fade-in-section">
           <Gatherings />
         </motion.div>
-        
+
         <motion.div variants={quickFadeInUp} className="fade-in-section">
           <ModulerSolution />
         </motion.div>
-        
-        <motion.div variants={quickFadeInUp} className="fade-in-section">
+
+        <motion.div variants={quickFadeInUp} className="fade-in-section ">
           <CustomConveyor />
         </motion.div>
-        
-        <motion.div variants={quickFadeInUp} className="fade-in-section">
+
+        <motion.div
+          variants={quickFadeInUp}
+          className="fade-in-section overflow-hidden"
+        >
           <ShowCase />
         </motion.div>
-        
+
         <motion.div variants={quickFadeInUp} className="fade-in-section">
           <IndustryCom />
         </motion.div>
-        
+
         <motion.div variants={quickFadeInUp} className="fade-in-section">
           <ClientFeedback />
         </motion.div>
@@ -195,7 +204,7 @@ export default function Home() {
             <span className="text-[#2E437C]">Our </span>
             <span className="text-[#BABEC8]">Clients</span>
           </motion.h1>
-          
+
           <motion.div
             className="overflow-hidden"
             initial={{ opacity: 0 }}
@@ -221,9 +230,10 @@ export default function Home() {
                     <motion.div
                       key={`${set}-${partner.id}`}
                       className="flex-shrink-0 mx-12 px-0 md:px-5"
-                      whileHover={{ 
+                      whileHover={{
                         scale: 1.05,
-                        transition: { duration: 0.1 } 
+
+                        transition: { duration: 0.1 }, 
                       }}
                     >
                       <img
@@ -273,9 +283,10 @@ export default function Home() {
       >
         <motion.div
           className="w-full h-[300px] sm:h-[400px] lg:h-[400px] overflow-hidden shadow-lg"
-          whileHover={{ 
+          whileHover={{
             scale: 1.01,
-            transition: { duration: 0.15 } 
+
+            transition: { duration: 0.15 }, 
           }}
         >
           <iframe

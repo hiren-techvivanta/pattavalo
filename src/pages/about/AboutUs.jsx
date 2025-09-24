@@ -34,6 +34,7 @@ import l3 from "../../assets/images/l3.png";
 import l4 from "../../assets/images/l4.png";
 import l5 from "../../assets/images/l5.png";
 import l6 from "../../assets/images/l6.png";
+import Seo from "../../components/common/Seo";
 
 // Data
 const partners = [
@@ -88,10 +89,10 @@ const AnimatedStatCard = ({ number, label, index }) => {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-50px" });
-  
+
   // Extract number and suffix
-  const numericValue = parseInt(number.replace(/[^0-9]/g, ''));
-  const suffix = number.replace(/[0-9]/g, '');
+  const numericValue = parseInt(number.replace(/[^0-9]/g, ""));
+  const suffix = number.replace(/[0-9]/g, "");
 
   useEffect(() => {
     if (isInView) {
@@ -123,7 +124,11 @@ const AnimatedStatCard = ({ number, label, index }) => {
     <div ref={ref}>
       <motion.div
         initial={{ opacity: 0, scale: 0.8, rotate: -2 }}
-        animate={isInView ? { opacity: 1, scale: 1, rotate: 0 } : { opacity: 0, scale: 0.8, rotate: -2 }}
+        animate={
+          isInView
+            ? { opacity: 1, scale: 1, rotate: 0 }
+            : { opacity: 0, scale: 0.8, rotate: -2 }
+        }
         transition={{
           type: "spring",
           stiffness: 400,
@@ -135,7 +140,8 @@ const AnimatedStatCard = ({ number, label, index }) => {
       >
         {/* Using original StatCard styling exactly */}
         <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-[#BABEC8] mb-2">
-          {count}{suffix}
+          {count}
+          {suffix}
         </div>
         <div className="text-sm md:text-base text-[#2E437C] font-medium">
           {label}
@@ -296,6 +302,11 @@ const AboutUs = () => {
   return (
     <div ref={scrollContainerRef} className="overflow-hidden">
       {/* Animated Navbar */}
+      <Seo
+        title="About | ATC Chain India"
+        description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
+        url="https://www.atcchain.com/about"
+      />
       <motion.div
         className="fixed top-0 left-0 right-0 z-50"
         initial={{ opacity: 1, y: -100 }}
@@ -322,21 +333,20 @@ const AboutUs = () => {
         </div>
 
         <motion.div
-          initial={{ opacity: 1, y: 1500 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.4,
-            delay: 0,
-            ease: "easeOut",
+          initial={{ opacity: 1, y: 1500, boxShadow: "0 0 0 9999px white" }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            boxShadow: isVideoExpanded
+              ? "0 0 0 0px white"
+              : "0 0 0 9999px white",
           }}
-          className={`absolute inset-0 transition-all duration-800 ease-out bg-white/0 ${
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className={`absolute inset-0 transition-all duration-800 ease-out bg-transparent ${
             isVideoExpanded
               ? "scale-110"
               : "scale-75 rounded-[15px] sm:scale-50 sm:rounded-3xl m-4"
           }`}
-          style={{
-            boxShadow: isVideoExpanded ? "none" : "0 0 0 9999px white",
-          }}
         />
 
         {isVideoExpanded && (
@@ -661,7 +671,11 @@ const AboutUs = () => {
         </motion.div>
 
         <motion.div className="pt-16 flex justify-center" variants={fadeInUp}>
-          <AnimatedButton icon={HiDownload} color={"#2E437C"} hoverColor={`#2E437C`}>
+          <AnimatedButton
+            icon={HiDownload}
+            color={"#2E437C"}
+            hoverColor={`#2E437C`}
+          >
             Load More
           </AnimatedButton>
         </motion.div>

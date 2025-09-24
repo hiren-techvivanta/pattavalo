@@ -53,10 +53,10 @@ export default function Resources() {
   const [activeTab, setActiveTab] = useState("Latest");
 
   const headerVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 30,
-      scale: 0.98
+      scale: 0.98,
     },
     visible: {
       opacity: 1,
@@ -83,10 +83,10 @@ export default function Resources() {
   };
 
   const tabVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 20,
-      scale: 0.95
+      scale: 0.95,
     },
     visible: {
       opacity: 1,
@@ -113,11 +113,11 @@ export default function Resources() {
   };
 
   const cardVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 30,
       scale: 0.95,
-      rotateX: 10
+      rotateX: 10,
     },
     visible: {
       opacity: 1,
@@ -146,29 +146,29 @@ export default function Resources() {
         variants={headerVariants}
         className="mb-8"
       >
-        <motion.h2 
+        <motion.h2
           className="text-[48px] sm:text-4xl lg:text-5xl font-bold text-[#2E437C]"
           variants={{
             hidden: { opacity: 0, y: 20 },
-            visible: { 
-              opacity: 1, 
+            visible: {
+              opacity: 1,
               y: 0,
-              transition: { duration: 0.4 }
-            }
+              transition: { duration: 0.4 },
+            },
           }}
         >
           Resources <span className="text-[#BABEC8]">& Insights</span>
         </motion.h2>
-        
-        <motion.p 
+
+        <motion.p
           className="mt-2 text-[#343434] text-sm sm:text-base"
           variants={{
             hidden: { opacity: 0, y: 15 },
-            visible: { 
-              opacity: 1, 
+            visible: {
+              opacity: 1,
               y: 0,
-              transition: { duration: 0.4, delay: 0.2 }
-            }
+              transition: { duration: 0.4, delay: 0.2 },
+            },
           }}
         >
           The latest industry news, interviews, technologies, and resources.
@@ -180,7 +180,7 @@ export default function Resources() {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={tabContainerVariants}
-        className="relative flex justify-start gap-6 border-b  border-gray-200 mb-8 text-sm sm:text-base"
+        className="relative flex justify-start gap-4 border-b w-full md:w-100 border-gray-200 mb-8 text-sm sm:text-base"
       >
         <motion.div
           className="absolute bottom-0 h-0.5 rounded-full"
@@ -197,7 +197,7 @@ export default function Resources() {
             duration: 0.3,
           }}
         />
-        
+
         {tabs.map((tab, index) => (
           <motion.button
             key={tab}
@@ -231,7 +231,7 @@ export default function Resources() {
             >
               {tab}
             </motion.span>
-            
+
             {activeTab === tab && (
               <motion.div
                 className="absolute -bottom-0.5 left-0 right-0 h-0.5 bg-[#2E437C] rounded-full"
@@ -291,9 +291,13 @@ export default function Resources() {
         }}
         className="flex justify-center mt-12"
       >
-        <AnimatedButton icon={MdArrowOutward} color={"#2E437C"} hoverColor={`#2E437C`}>
-           VIEW ALL RESOURCES
-          </AnimatedButton>
+        <AnimatedButton
+          icon={MdArrowOutward}
+          color={"#2E437C"}
+          hoverColor={`#2E437C`}
+        >
+          VIEW ALL RESOURCES
+        </AnimatedButton>
       </motion.div>
     </div>
   );

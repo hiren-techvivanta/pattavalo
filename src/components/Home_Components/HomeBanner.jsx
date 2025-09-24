@@ -72,9 +72,9 @@ export default function HomeBanner({ onAnimationComplete }) {
     <>
       {/* Animated Navbar - same as AboutUs */}
       <motion.div
-        className="fixed top-0 left-0 right-0 z-50"
+        className="fixed top-0 left-0 right-0 z-50 overflow-x-hidden"
         initial={{ opacity: 1, y: -100 }}
-        animate={showNavbar ? { opacity: 1, y: 0, scale: 1 } : { y: -100 }}
+        animate={showNavbar ? { opacity: 1, y: 0} : { y: -100 }}
         transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
       >
         <Navbar navStyle="transparent" />
@@ -98,21 +98,20 @@ export default function HomeBanner({ onAnimationComplete }) {
 
         {/* White overlay animation - match AboutUs timing and transition */}
         <motion.div
-          initial={{ opacity: 1, y: 1500 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{
-            duration: 0.4,
-            delay: 0,
-            ease: "easeOut",
+          initial={{ opacity: 1, y: 1500, boxShadow: "0 0 0 9999px white" }}
+          animate={{
+            opacity: 1,
+            y: 0,
+            boxShadow: isVideoExpanded
+              ? "0 0 0 0px white"
+              : "0 0 0 9999px white",
           }}
-          className={`absolute inset-0 transition-all duration-800 ease-out bg-white/0 ${
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className={`absolute inset-0 transition-all duration-800 ease-out bg-transparent ${
             isVideoExpanded
               ? "scale-110"
-              : "scale-75 rounded-[15px] sm:scale-50 sm:rounded-3xl m-2 sm:m-4"
+              : "scale-75 rounded-[15px] sm:scale-50 sm:rounded-3xl m-4"
           }`}
-          style={{
-            boxShadow: isVideoExpanded ? "none" : "0 0 0 9999px white",
-          }}
         />
 
         {/* Content - only show when isVideoExpanded is true and showContent is true */}
