@@ -190,7 +190,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-12"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-12 px-14"
           >
             <span className="text-[#2E437C]">Our </span>
             <span className="text-[#BABEC8]">Clients</span>
@@ -258,7 +258,7 @@ export default function Home() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        className="fade-in-section"
+        className="fade-in-section "
       >
         <ContactForm />
       </motion.div>

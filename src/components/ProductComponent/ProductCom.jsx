@@ -379,7 +379,7 @@ const ProductCom = () => {
         </div>
       </motion.div>
 
-      <div className="mt-10 flex flex-col md:flex-row gap-10">
+      <div className="mt-10 flex flex-col md:flex-row gap-5">
         {/* Left Sidebar - Accordion */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -561,7 +561,9 @@ const ProductCom = () => {
           {viewMode === "products" ? (
             <>
               {filteredProducts.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div
+                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-2"
+                >
                   {filteredProducts.map((product, index) => (
                     <motion.div
                       key={product.id}

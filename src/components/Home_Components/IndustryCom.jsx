@@ -48,28 +48,28 @@ const categoryContent = {
       "SS chain (stainless steel chain), plastic chain, modular belts, and components are commonly used in water bottling lines for various purposes. These materials and components play important roles in conveying, transferring, and processing bottles throughout the bottling process.",
     images: [water1, water2],
   },
-  
+
   Juice: {
     title: "Juice Production Lines",
     description:
       "In a juice production line, you can utilize conveyors made of stainless steel (SS), plastic chain, and modular belt, along with various components tailored to the specific needs of the process. Modular belt, SS chains, Plastic and flex chains are commonly use in In-feed Conveyors, Fruit Washing Conveyors, Sorting Conveyors, Juice Extraction Conveyors, Bottle or Container Conveyors, Packaging Conveyors, Inspection Conveyors, Transfer Conveyors. Stainless steel conveyors are commonly used for conveying fruits through washing and sorting stages. They are resistant to moisture, chemicals, and are easy to clean, making them suitable for maintaining hygiene during the washing process. Plastic chain conveyors can also be employed, providing gentle and efficient transportation of delicate fruits.For the bottling and packaging of juice, conveyors with modular belts or plastic chains are commonly used. These conveyors transport empty bottles or containers through filling, capping, labeling, and packaging stations. Modular belts provide a stable surface for smooth and efficient movement, while plastic chain conveyors offer flexibility and ease of cleaning. Conveyors with modular belts or plastic chains are used for visual inspection and quality control of filled and packaged juice products. These conveyors facilitate the movement of bottles or containers, allowing inspectors to examine them for any defects or inconsistencies.",
     images: [juice1, juice2],
   },
-  
+
   "Tetra Pack": {
     title: "Tetra Pack Handling",
     description:
       "Tetra Pack production typically involves the use of finger chains, slat chains, and various conveyor components to transport the cartons throughout the production line.Finger chains are commonly used in the Tetra Pack production process to transport the cartons from one stage to another. They are designed to securely hold the cartons in place and prevent them from falling or tilting during the conveying process.Modular belts are a versatile option for conveying cartons in the Tetra Pack production process. They can be easily customized to fit different conveyor configurations and offer low maintenance and easy cleaning, making them ideal for use in food and beverage applications. Other conveyor components commonly used in the Tetra Pack production process include bearings, sprockets, wear strips, and guides, all of which play a crucial role in ensuring the efficient and effective operation of the conveyor system.",
     images: [tetra1, tetra2],
   },
-  
+
   "Beer Line": {
     title: "Brewery Conveying Systems",
     description:
       "Beer manufacturing processes often utilize conveyors for various stages of production, including bottling, canning, labeling, packaging, and transportation. Both stainless steel (SS) conveyors and conveyors with plastic chains or modular belts are commonly employed in the beer industry. Stainless steel is a popular choice for conveying systems in the beer manufacturing industry due to its durability, corrosion resistance, and ease of cleaning. Plastic chain conveyors are another type of conveyor system widely used in the beer industry. These conveyors consist of interlocking plastic chains that move products along the production line. Plastic chains offer advantages such as being lightweight, flexible, and easy to clean. Both plastic chain conveyors and modular belt conveyors are well-suited for beer manufacturing processes as they are resistant to moisture, corrosion, and chemical exposure. The choice between the two will depend on factors such as the specific application, the type of product being transported, and the desired level of hygiene and product protection. It's worth noting that conveyor systems in the beer industry often require additional features and components to ensure product integrity and maintain hygiene standards. These may include side guides, drip pans, sanitary design principles, and proper cleaning procedures to prevent contamination and maintain the quality of the beer throughout the production process.",
     images: [beer1, beer2],
   },
-  
+
   "Carbonated Soft Drinks": {
     title: "Carbonated Beverage Lines",
     description:
@@ -84,14 +84,14 @@ const categoryContent = {
       "Efficient and hygienic conveyor systems for seafood processing and packaging.",
     images: [seafood1, seafood2],
   },
-  
+
   Meat: {
     title: "Meat Processing Solutions",
     description:
       "Safe and sanitary conveyor systems for meat processing facilities.",
     images: [meat1, meat2],
   },
-  
+
   Poultry: {
     title: "Poultry Handling Solutions",
     description:
@@ -107,7 +107,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1580927752450-b5f0a35b0a2d?auto=format&fit=crop&w=1200&q=80",
     ],
   },
-  
+
   "Milk & Milk Products": {
     title: "Milk Processing Solutions",
     description: "Efficient conveyors for milk and dairy products.",
@@ -115,7 +115,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1603724359751-3f64e876e267?auto=format&fit=crop&w=1200&q=80",
     ],
   },
-  
+
   Yogurt: {
     title: "Yogurt Production Lines",
     description: "Sanitary conveyor solutions for yogurt production.",
@@ -123,7 +123,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1587398290463-90b95b56e1b1?auto=format&fit=crop&w=1200&q=80",
     ],
   },
-  
+
   Cheese: {
     title: "Cheese Handling Systems",
     description: "Specialized conveyors for cheese processing and packaging.",
@@ -132,7 +132,6 @@ const categoryContent = {
     ],
   },
 
- 
   "Shrink Wrapping": {
     title: "Shrink Wrapping Solutions",
     description:
@@ -141,7 +140,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
     ],
   },
-  
+
   "Material Handling": {
     title: "Material Handling Solutions",
     description:
@@ -150,7 +149,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
     ],
   },
-  
+
   "Packaging Belting Solution": {
     title: "Packaging Belting Solutions",
     description:
@@ -159,7 +158,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
     ],
   },
-  
+
   "E-commerce": {
     title: "E-commerce Logistics Solutions",
     description: "Conveyors for efficient handling of e-commerce products.",
@@ -167,7 +166,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
     ],
   },
-  
+
   Distribution: {
     title: "Distribution Solutions",
     description: "Conveyors for product distribution and warehouse automation.",
@@ -194,7 +193,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
     ],
   },
-  
+
   "Parts Manufacturing": {
     title: "Parts Manufacturing Conveyors",
     description: "Conveyors for efficient parts manufacturing.",
@@ -202,7 +201,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
     ],
   },
-  
+
   Painting: {
     title: "Painting Line Conveyors",
     description: "Specialized conveyors for painting operations.",
@@ -210,7 +209,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
     ],
   },
-  
+
   "Quality Control": {
     title: "Quality Control Conveyors",
     description: "Conveyors for QC processes in automobile production.",
@@ -227,7 +226,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
     ],
   },
-  
+
   Equipment: {
     title: "Medical Equipment Conveyors",
     description: "Conveyors for moving medical equipment safely.",
@@ -235,7 +234,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
     ],
   },
-  
+
   "Specimen Transport": {
     title: "Specimen Transport Solutions",
     description: "Conveyors for safe and hygienic transport of specimens.",
@@ -243,7 +242,7 @@ const categoryContent = {
       "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
     ],
   },
-  
+
   "Sterile Products": {
     title: "Sterile Product Handling",
     description: "Conveyors for sterile product transport in healthcare.",
@@ -383,17 +382,15 @@ export default function IndustryCom() {
   const [rotation, setRotation] = useState(-20);
   const [isMobile, setIsMobile] = useState(false);
 
-  
   useEffect(() => {
     const checkScreenSize = () => {
-      const mobile = window.innerWidth < 1024; 
+      const mobile = window.innerWidth < 1024;
       setIsMobile(mobile);
-      
-    
+
       if (mobile) {
-        setRotation(-170); 
+        setRotation(-170);
       } else {
-        setRotation(0); 
+        setRotation(0);
       }
     };
 
@@ -401,9 +398,9 @@ export default function IndustryCom() {
     checkScreenSize();
 
     // Listen for resize events
-    window.addEventListener('resize', checkScreenSize);
-    
-    return () => window.removeEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   const handleButtonClick = (industry) => {
@@ -415,7 +412,7 @@ export default function IndustryCom() {
 
     // Adjust target rotation for mobile
     if (isMobile) {
-      targetRotation = industry.targetRotation - 100; 
+      targetRotation = industry.targetRotation - 100;
     }
 
     const normalizedCurrent = ((currentRotation % 360) + 360) % 360;
@@ -468,7 +465,7 @@ export default function IndustryCom() {
   const categoryData = getCategoryContent();
 
   return (
-    <section className="container mx-auto px-4 sm:px-6 md:px-10 lg:pr-16 lg:pl-0 xl:pr-20 xl:pl-0 py-16 sm:py-20">
+    <section className="w-full   lg:px-15  px-4 sm:px-6 md:px-10 lg:pr-16 lg:pl-0 xl:pr-20 xl:pl-0 py-16 sm:py-20">
       {/* Heading */}
       <motion.h1
         initial={{ opacity: 0, y: 30 }}
@@ -484,24 +481,24 @@ export default function IndustryCom() {
         {/* Chart Section */}
         <div className="col-span-1 md:col-span-1 lg:col-span-1 relative flex justify-center lg:justify-start items-center overflow-hidden order-2 lg:order-1">
           <motion.div
-            initial={{ 
-              opacity: 0, 
+            initial={{
+              opacity: 0,
               x: -50,
-              rotate: isMobile ? -120 : -20 
+              rotate: isMobile ? -120 : -20,
             }}
-            whileInView={{ 
-              opacity: 1, 
+            whileInView={{
+              opacity: 1,
               x: 0,
-              rotate: isMobile ? -120 : -20 
+              rotate: isMobile ? -120 : -20,
             }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
             className="relative"
-            style={{ 
-              width: isMobile ? "320px" : "600px", 
-              height: isMobile ? "320px" : "600px", 
+            style={{
+              width: isMobile ? "320px" : "600px",
+              height: isMobile ? "320px" : "600px",
               marginLeft: isMobile ? "0px" : "-250px",
-              marginTop: isMobile? "-180px" : "0"
+              marginTop: isMobile ? "-180px" : "0",
             }}
           >
             <motion.div
@@ -534,7 +531,7 @@ export default function IndustryCom() {
                 const endAngle = (index + 1) * segmentAngle;
                 const midAngle = startAngle + segmentAngle / 2;
                 const radian = (midAngle * Math.PI) / 180;
-                const radius = isMobile ? 150 : 220;
+                const radius = isMobile ? 120 : 220;
                 const x = radius * Math.cos(radian);
                 const y = radius * Math.sin(radian);
 
@@ -549,13 +546,17 @@ export default function IndustryCom() {
                       className="absolute inset-0 rounded-full cursor-pointer"
                       style={{
                         clipPath: `path('M${centerPoint},${centerPoint} L${
-                          centerPoint + pathRadius * Math.cos((startAngle * Math.PI) / 180)
+                          centerPoint +
+                          pathRadius * Math.cos((startAngle * Math.PI) / 180)
                         },${
-                          centerPoint + pathRadius * Math.sin((startAngle * Math.PI) / 180)
+                          centerPoint +
+                          pathRadius * Math.sin((startAngle * Math.PI) / 180)
                         } A${pathRadius},${pathRadius} 0 0,1 ${
-                          centerPoint + pathRadius * Math.cos((endAngle * Math.PI) / 180)
+                          centerPoint +
+                          pathRadius * Math.cos((endAngle * Math.PI) / 180)
                         },${
-                          centerPoint + pathRadius * Math.sin((endAngle * Math.PI) / 180)
+                          centerPoint +
+                          pathRadius * Math.sin((endAngle * Math.PI) / 180)
                         } Z')`,
                         zIndex: 15,
                         // border: isActive
@@ -573,24 +574,30 @@ export default function IndustryCom() {
                       animate={{ rotate: -rotation }}
                       transition={{ duration: 0.7, ease: "easeInOut" }}
                       className={`absolute z-20 flex flex-col items-center justify-center ${
-                        isMobile ? 'w-12 h-12' : 'w-16 h-16'
+                        isMobile ? "w-12 h-12" : "w-16 h-16"
                       }`}
                       style={{
-                        left: `calc(50% + ${x}px - ${isMobile ? '1.5rem' : '2rem'})`,
-                        top: `calc(50% + ${y}px - ${isMobile ? '1.5rem' : '2rem'})`,
+                        left: `calc(50% + ${x}px - ${
+                          isMobile ? "1.5rem" : "2rem"
+                        })`,
+                        top: `calc(50% + ${y}px - ${
+                          isMobile ? "1.5rem" : "2rem"
+                        })`,
                         color: "white",
                         borderColor: "white",
                         pointerEvents: "none",
                       }}
                     >
-                      <span className={isMobile ? 'text-lg' : 'text-xl'}>
-                        {React.cloneElement(industry.icon, { 
-                          size: isMobile ? 23 : 26 
+                      <span className={isMobile ? "text-lg" : "text-xl"}>
+                        {React.cloneElement(industry.icon, {
+                          size: isMobile ? 23 : 26,
                         })}
                       </span>
-                      <span className={`${
-                        isMobile ? 'text-[8px]' : 'text-xs'
-                      } mt-1 font-medium text-center leading-tight`}>
+                      <span
+                        className={`${
+                          isMobile ? "text-[8px]" : "text-xs"
+                        } mt-1 font-medium text-center leading-tight`}
+                      >
                         {industry.title.split(" ")[0]}
                       </span>
                     </motion.div>

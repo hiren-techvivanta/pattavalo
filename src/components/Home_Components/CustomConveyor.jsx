@@ -73,7 +73,7 @@ export default function ExpertSolutions() {
   };
 
   return (
-    <section className="container min-h-screen flex flex-col-reverse mx-auto lg:flex-row items-center justify-between px-6 md:px-0 py-0 bg-white font-articulat">
+    <section className=" min-h-screen flex flex-col-reverse mx-auto lg:flex-row items-center justify-between w-full px-4 md:px-10 lg:px-15 py-10 bg-white font-articulat">
       <motion.div
         className="lg:w-1/2 w-full lg:pr-20 mb-12 lg:mb-0"
         initial="hidden"

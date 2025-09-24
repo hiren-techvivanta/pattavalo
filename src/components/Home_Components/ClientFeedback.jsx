@@ -139,7 +139,7 @@ export default function ClientFeedback() {
   };
 
   return (
-    <section className="w-full py-16 px-4 sm:px-6 md:px-12 lg:px-20 bg-white">
+    <section className="w-full px-4 md:px-10 lg:px-15 py-10 bg-white">
       <motion.div
         initial="hidden"
         whileInView="visible"

@@ -39,15 +39,15 @@ const events = [
 export default function Gatherings() {
   const letterVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         type: "spring",
         stiffness: 300,
         damping: 25,
-        duration: 0.3
-      }
+        duration: 0.3,
+      },
     },
   };
 
@@ -55,30 +55,30 @@ export default function Gatherings() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: { 
-        staggerChildren: 0.02, 
+      transition: {
+        staggerChildren: 0.02,
         delayChildren: 0.1,
-        duration: 0.4
+        duration: 0.4,
       },
     },
   };
 
   const cardVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 30,
-      scale: 0.95
+      scale: 0.95,
     },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       scale: 1,
       transition: {
         type: "spring",
         stiffness: 200,
         damping: 20,
-        duration: 0.5
-      }
+        duration: 0.5,
+      },
     },
   };
 
@@ -89,9 +89,9 @@ export default function Gatherings() {
         type: "spring",
         stiffness: 300,
         damping: 25,
-        duration: 0.4
-      }
-    }
+        duration: 0.4,
+      },
+    },
   };
 
   const cardHover = {
@@ -102,9 +102,9 @@ export default function Gatherings() {
         type: "spring",
         stiffness: 400,
         damping: 25,
-        duration: 0.3
-      }
-    }
+        duration: 0.3,
+      },
+    },
   };
 
   const splitText = (text) =>
@@ -131,7 +131,7 @@ export default function Gatherings() {
             {splitText("Happening Next")}
           </span>
         </h1>
-        <motion.p 
+        <motion.p
           className="text-[#191919] mt-6 text-[20px] sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto md:mx-0"
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -156,56 +156,49 @@ export default function Gatherings() {
                 ...cardVariants.visible,
                 transition: {
                   ...cardVariants.visible.transition,
-                  delay: index * 0.1
-                }
-              }
+                  delay: index * 0.1,
+                },
+              },
             }}
-            className="group overflow-hidden bg-white rounded-lg shadow-sm transition-shadow duration-300 cursor-pointer"
+            className="group overflow-hidden bg-white hover:bg-[#D8DEEE] border-b-2 border-transparent  hover:border-b-2 hover:border-[#2E437C]  transition-shadow duration-300 cursor-pointer"
           >
             <motion.div
               // variants={cardHover}
               className="relative"
             >
-              <div className="overflow-hidden rounded-t-lg">
+              <div className="overflow-hidden ">
                 <motion.img
                   src={event.img}
                   alt={event.title}
                   variants={imageVariants}
-                  className="w-full h-70 sm:h-76 md:h-80 lg:h-80 xl:h-100 2xl:h-100 object-cover p-2"
+                  className="w-full h-70 sm:h-76 md:h-80 lg:h-80 xl:h-100 2xl:h-100 object-cover p-2 "
                 />
               </div>
 
-              <motion.div 
+              <motion.div
                 className="flex items-center gap-4 p-4"
                 initial={{ opacity: 0.8 }}
                 whileHover={{ opacity: 1 }}
                 transition={{ duration: 0.2 }}
               >
-                <motion.div 
-                  className="bg-gray-100 w-14 h-14 flex flex-col items-center justify-center rounded-lg"
-                  whileHover={{ 
+                <motion.div
+                  className="bg-gray-100 w-14 h-14 flex flex-col items-center justify-center "
+                  whileHover={{
                     backgroundColor: "#2E437C",
-                    transition: { duration: 0.3 }
+                    color: "#FFFFFF", 
+                    transition: { duration: 0.3 },
                   }}
                 >
-                  <motion.p 
-                    className="text-[11px] font-medium text-gray-600 leading-tight"
-                    whileHover={{ color: "#FFFFFF" }}
-                    transition={{ duration: 0.3 }}
-                  >
+                  <p className="text-[11px] font-medium leading-tight">
                     {event.date.split(" ")[0]}
-                  </motion.p>
-                  <motion.p 
-                    className="text-base font-semibold text-gray-800 leading-tight"
-                    whileHover={{ color: "#FFFFFF" }}
-                    transition={{ duration: 0.3 }}
-                  >
+                  </p>
+                  <p className="text-base font-semibold leading-tight">
                     {event.date.split(" ")[1]}
-                  </motion.p>
+                  </p>
                 </motion.div>
 
                 <div>
-                  <motion.h3 
+                  <motion.h3
                     className="font-semibold text-gray-800 text-[15px] md:text-base"
                     whileHover={{ color: "#2E437C" }}
                     transition={{ duration: 0.2 }}

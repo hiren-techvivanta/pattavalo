@@ -176,7 +176,7 @@ export default function HomeBanner({ onAnimationComplete }) {
                 >
                   <AnimatedButton
                     icon={MdArrowOutward}
-                    color={"#fff"}
+                    color={"#2E437C"}
                     hoverColor={`#2E437C`}
                   >
                     FIND SOLUTION

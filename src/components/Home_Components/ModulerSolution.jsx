@@ -14,8 +14,6 @@ import SPIRALLOGISTICS from "../../assets/SVG/AF 400.svg";
 import FLEXZERO from "../../assets/SVG/FZ 90.svg";
 
 export default function ModulerSolution() {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-
   const solutions = [
     {
       title: "BEARING",
@@ -128,27 +126,8 @@ export default function ModulerSolution() {
     },
   };
 
-  const itemVariants = {
-    hidden: {
-      opacity: 0,
-      y: 15,
-      scale: 0.98,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 400,
-        damping: 30,
-        mass: 0.8,
-      },
-    },
-  };
-
-  const titleVariants = {
-    hidden: { opacity: 0, y: -15 },
+ const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
       y: 0,
@@ -156,24 +135,32 @@ export default function ModulerSolution() {
         type: "spring",
         stiffness: 300,
         damping: 25,
-        delay: 0.1,
+        duration: 0.3,
       },
     },
   };
-
+    const splitText = (text) =>
+      text.split("").map((char, i) => (
+        <motion.span key={i} variants={letterVariants} className="inline-block">
+          {char === " " ? "\u00A0" : char}
+        </motion.span>
+      ));
   return (
-    <section className="container mx-auto w-full px-6 md:px-0 py-12 bg-white">
+    <section className="w-full px-4 md:px-10 lg:px-15 py-10 bg-white">
       <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
-        variants={titleVariants}
+        variants={letterVariants}
         className="mb-8 sm:mb-12 md:text-left px-3"
       >
         <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#BABEC8] leading-snug">
-          Your Crafted,
+          
+          {splitText("Your Crafted, ")}
           <span className="block text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#2E437C]">
-            Modular Solution
+            
+          {splitText("Modular Solution")}
+
           </span>
         </h2>
       </motion.div>
@@ -188,9 +175,6 @@ export default function ModulerSolution() {
         {solutions.map((item, idx) => (
           <motion.div
             key={idx}
-            variants={itemVariants}
-            onHoverStart={() => setHoveredIndex(idx)}
-            onHoverEnd={() => setHoveredIndex(null)}
             whileHover={{
               y: -2,
               scale: 1.01,
@@ -201,44 +185,33 @@ export default function ModulerSolution() {
                 mass: 0.5,
               },
             }}
-            className="group relative flex flex-col items-center justify-center p-5 rounded-2xl bg-white border border-gray-50 hover:border-gray-200 transition-all duration-300 cursor-pointer overflow-hidden"
+            className="group relative flex flex-col items-center justify-center p-5 bg-white
+             transition-all duration-300 cursor-pointer overflow-hidden rounded-lg"
             style={{
               boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)",
             }}
           >
             <motion.div
-              className="absolute inset-0 bg-gradient-to-br from-[#2E437C]/5 via-transparent to-[#1d3b72]/5 opacity-0 transition-opacity duration-300"
-              whileHover={{ opacity: 1 }}
+              className="absolute inset-0 bg-gradient-to-br from-[#2E437C] to-[#1d3b72]
+               opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             />
 
-            <motion.div
-              className="relative z-10 w-12 h-12 sm:w-14 sm:h-14 mb-3 flex items-center justify-center"
-              animate={hoveredIndex === idx ? item.animation : {}}
-              whileHover={{
-                scale: 1.08,
-                transition: {
-                  type: "spring",
-                  stiffness: 600,
-                  damping: 25,
-                  mass: 0.4,
-                },
-              }}
-            >
-              <motion.img
+            {/* Icon */}
+            <motion.div className="relative z-10 w-12 h-12 sm:w-14 sm:h-14 mb-3 flex items-center justify-center">
+              <img
                 src={item.icon}
                 alt={item.title}
-                className="w-full h-full object-contain transition-all duration-300 group-hover:brightness-75"
-                whileHover={{
-                  filter: "brightness(0.8) saturate(1.2)",
-                  transition: { duration: 0.2 },
-                }}
+                className="w-full h-full object-contain transition-all duration-300
+                 group-hover:brightness-0 group-hover:invert" 
               />
             </motion.div>
 
+            {/* Title */} 
             <motion.p
-              className="relative z-10 text-xs sm:text-sm md:text-base font-medium text-gray-700 transition-colors duration-300 text-center leading-tight max-w-full"
+              className="relative z-10 text-xs sm:text-sm md:text-base font-medium
+               text-gray-700 group-hover:text-white transition-colors duration-300
+               text-center leading-tight max-w-full"
               whileHover={{
-                color: "#2E437C",
                 scale: 1.01,
                 transition: {
                   duration: 0.2,
@@ -249,9 +222,11 @@ export default function ModulerSolution() {
               {item.title}
             </motion.p>
 
+            {/* Bottom Border */}
             <motion.div
-              className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-[#2E437C] to-[#1d3b72] opacity-0 transition-opacity duration-300"
-              whileHover={{ opacity: 1 }}
+              className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r
+               from-[#2E437C] to-[#1d3b72]
+               opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             />
           </motion.div>
         ))}

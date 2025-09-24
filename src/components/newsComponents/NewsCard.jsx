@@ -7,12 +7,12 @@ const NewsCard = ({ props }) => {
   return (
     <>
       <div
-        // className="border border-[#0A0D170D] rounded-[8px]"
+        className=" "
         onClick={() => navigate(`/blog/details`)}
       >
         <img
           src={props.image}
-          className="w-[194px] md:w-[100%] h-[245px] md:h-[245px] lg:h-[356px] object-cover rounded-t-[8px]"
+          className="w-[194px] md:w-[100%] h-[245px] md:h-[245px] lg:h-[356px] object-cover "
           alt="img"
         />
        <div className="md:p-[23px] p-[15px]">

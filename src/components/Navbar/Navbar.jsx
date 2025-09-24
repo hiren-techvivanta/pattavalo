@@ -124,11 +124,12 @@ export default function Navbar({ navStyle, show = true }) {
                     onClick={() => navigate(menu.url)}
                     className={`${
                       navBg ? "text-[#2E437C]" : "text-white"
-                    } transition-colors font-medium hover:text-blue-500 cursor-pointer`}
+                    } transition-colors font-medium hover:text-[#2E437C] cursor-pointer`}
                     style={{
                       fontFamily: "'Articulat CF', sans-serif",
-                      fontSize: "0.95rem",
-                      fontWeight: 450,
+                      fontSize: "16px",
+                      letterSpacing: "0.5px",
+                      fontWeight: 550,
                     }}
                     
                   >
@@ -146,7 +147,7 @@ export default function Navbar({ navStyle, show = true }) {
                     handleContactClick();
                     navigate('/contact')
                   }}
-                  className={`w-full inline-flex justify-center items-center border font-medium px-6 py-3 rounded-full text-base ${
+                  className={`w-full inline-flex justify-center items-center border font-medium px-6 py-2 rounded-full text-base ${
                     navBg
                       ? "border-[#2E437C] text-[#2E437C] hover:bg-[#2E437C] hover:text-white"
                       : "border-white text-white hover:bg-white hover:text-[#2E437C]"
@@ -154,7 +155,8 @@ export default function Navbar({ navStyle, show = true }) {
 
                   style={{
                     fontFamily: "'Articulat CF', sans-serif",
-                    fontWeight: 300,
+                    fontWeight: 500,
+                    fontSize: "16px",
                     letterSpacing: "0.5px",
                   }}
                  

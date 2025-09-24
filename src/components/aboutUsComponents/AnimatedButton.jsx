@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 const AnimatedButton = ({
   children,
   onClick,
-  py = 3,
+  py = 4,
   px = 6,
   icon: Icon,
   disabled = false,
@@ -15,18 +15,20 @@ const AnimatedButton = ({
 
   return (
     <button
-      className={`relative  inline-flex items-center text-[${color}] font-medium px-${px} py-${py} rounded-full overflow-hidden transition-all duration-[600ms] ease-in-out group ${
-        isHovered ? "border-none text-white" : `border border-[${color}]`
-      }`}
+      className={`relative cursor-pointer  inline-flex items-center  bg-white font-medium px-${px} py-${py} rounded-full overflow-hidden transition-all duration-[600ms] ease-in-out group `}
+      
       style={{
+         color: isHovered ? "white" : color,
+         border: `1px solid ${isHovered ? hoverColor : color}`,
         fontFamily: "'Inter', sans-serif",
         fontWeight: 400,
+
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <div
-        className={`absolute right-6 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full transition-transform duration-[600ms] ease-in-out will-change-transform ${
+        className={` absolute right-6 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full transition-transform duration-[1100ms] ease-in-out will-change-transform ${
           isHovered ? "scale-[30]" : "scale-100"
         }`}
         style={{ backgroundColor: hoverColor }}
