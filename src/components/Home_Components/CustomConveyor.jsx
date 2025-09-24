@@ -17,10 +17,10 @@ export default function ExpertSolutions() {
   };
 
   const textRevealVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 20,
-      scale: 0.98
+      scale: 0.98,
     },
     visible: {
       opacity: 1,
@@ -36,10 +36,10 @@ export default function ExpertSolutions() {
   };
 
   const imageVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       x: 30,
-      scale: 0.95
+      scale: 0.95,
     },
     visible: {
       opacity: 1,
@@ -66,14 +66,14 @@ export default function ExpertSolutions() {
         mass: 0.4,
       },
     },
-    tap: { 
+    tap: {
       scale: 0.98,
-      transition: { duration: 0.1 }
+      transition: { duration: 0.1 },
     },
   };
 
   return (
-    <section className=" min-h-screen flex flex-col-reverse mx-auto lg:flex-row items-center justify-between w-full px-4 md:px-10 lg:px-15 py-10 bg-white font-articulat">
+    <section className="container min-h-screen flex flex-col-reverse mx-auto lg:flex-row items-center justify-between w-full px-4 md:px-10 lg:px-5 xl:px-5 py-5 bg-white font-articulat">
       <motion.div
         className="lg:w-1/2 w-full lg:pr-20 mb-12 lg:mb-0"
         initial="hidden"
@@ -85,41 +85,41 @@ export default function ExpertSolutions() {
           className="text-[42px] md:text-[48px] lg:text-[54px] leading-tight font-bold mb-8"
           variants={textRevealVariants}
         >
-          <motion.span 
+          <motion.span
             className="text-[#BABEC8] font-normal inline-block"
             variants={{
               hidden: { opacity: 0, y: 15 },
-              visible: { 
-                opacity: 1, 
+              visible: {
+                opacity: 1,
                 y: 0,
-                transition: { duration: 0.4, ease: "easeOut" }
-              }
+                transition: { duration: 0.4, ease: "easeOut" },
+              },
             }}
           >
             Expert{" "}
           </motion.span>
-          <motion.span 
+          <motion.span
             className="text-[#2E437C] font-bold inline-block"
             variants={{
               hidden: { opacity: 0, y: 15 },
-              visible: { 
-                opacity: 1, 
+              visible: {
+                opacity: 1,
                 y: 0,
-                transition: { duration: 0.4, ease: "easeOut", delay: 0.1 }
-              }
+                transition: { duration: 0.4, ease: "easeOut", delay: 0.1 },
+              },
             }}
           >
             Solutions for Custom Conveyor{" "}
           </motion.span>
-          <motion.span 
+          <motion.span
             className="text-[#BABEC8] font-normal inline-block"
             variants={{
               hidden: { opacity: 0, y: 15 },
-              visible: { 
-                opacity: 1, 
+              visible: {
+                opacity: 1,
                 y: 0,
-                transition: { duration: 0.4, ease: "easeOut", delay: 0.2 }
-              }
+                transition: { duration: 0.4, ease: "easeOut", delay: 0.2 },
+              },
             }}
           >
             Needs.
@@ -157,7 +157,11 @@ export default function ExpertSolutions() {
           whileTap="tap"
           className="mt-4"
         >
-         <AnimatedButton icon={FaArrowRight} color={"#2E437C"} hoverColor={`#2E437C`}>
+          <AnimatedButton
+            icon={FaArrowRight}
+            color={"#2E437C"}
+            hoverColor={`#2E437C`}
+          >
             READ MORE
           </AnimatedButton>
         </motion.div>
@@ -169,19 +173,21 @@ export default function ExpertSolutions() {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={imageVariants}
+        draggable={false}
+        onContextMenu={(e) => e.preventDefault()}
       >
         <motion.img
           src={ConveyorImage}
           alt="Custom Conveyor"
-          className="w-full object-contain"
+          className="w-full object-contain pointer-events-none select-none"
           whileHover={{
             scale: 1.02,
             transition: {
               type: "spring",
               stiffness: 300,
               damping: 25,
-              duration: 0.4
-            }
+              duration: 0.4,
+            },
           }}
         />
       </motion.div>

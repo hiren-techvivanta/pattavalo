@@ -62,7 +62,16 @@ export default function Gatherings() {
       },
     },
   };
-
+  const cardGridVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.06,
+        delayChildren: 0.2,
+      },
+    },
+  };
   const cardVariants = {
     hidden: {
       opacity: 0,
@@ -141,8 +150,14 @@ export default function Gatherings() {
           Stay connected with our latest gatherings and innovations
         </motion.p>
       </motion.div>
-
-      <div className="container mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
+      {/* <div className="container mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"> */}
+      <motion.div
+        className="container mx-auto grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
+        variants={cardGridVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-50px" }}
+      >
         {events.map((event, index) => (
           <motion.div
             key={event.id}
@@ -185,7 +200,7 @@ export default function Gatherings() {
                   className="bg-gray-100 w-14 h-14 flex flex-col items-center justify-center "
                   whileHover={{
                     backgroundColor: "#2E437C",
-                    color: "#FFFFFF", 
+                    color: "#FFFFFF",
                     transition: { duration: 0.3 },
                   }}
                 >
@@ -211,7 +226,8 @@ export default function Gatherings() {
             </motion.div>
           </motion.div>
         ))}
-      </div>
+      </motion.div>
+      {/* </div> */}
     </section>
   );
 }
