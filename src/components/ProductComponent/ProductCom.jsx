@@ -471,7 +471,7 @@ const ProductCom = () => {
                                   transition: "color 0.2s ease-in-out",
                                 }}
                               >
-                                {child.title}
+                               {child.title}
                               </Typography>
                             </AccordionSummary>
 
@@ -493,7 +493,7 @@ const ProductCom = () => {
 
                                         transition: "all 0.2s ease-in-out",
                                       }}
-                                    >
+                                    >• {" "}
                                       <ListItemText
                                         primary={subChild.title}
                                         primaryTypographyProps={{
@@ -501,6 +501,7 @@ const ProductCom = () => {
                                           fontWeight: 500,
                                           fontStyle: "normal",
                                           color: "#6b7280",
+                                          marginLeft:"2px",
                                           transition: "color 0.2s ease-in-out",
                                         }}
                                       />
@@ -527,7 +528,7 @@ const ProductCom = () => {
 
                                 transition: "all 0.2s ease-in-out",
                               }}
-                            >
+                            >•
                               <ListItemText
                                 primary={child.title}
                                 primaryTypographyProps={{
@@ -535,6 +536,7 @@ const ProductCom = () => {
                                   fontWeight: 500,
                                   fontStyle: "normal",
                                   color: "#4b5563",
+                                  marginLeft:"2px",
                                   transition: "color 0.2s ease-in-out",
                                 }}
                               />

@@ -18,6 +18,9 @@ const Career = () => {
   const [activeCategory, setActiveCategory] = useState("ENGINEERING");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedJobTitle, setSelectedJobTitle] = useState("");
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Benefits data
   const benefitsData = [
@@ -26,7 +29,7 @@ const Career = () => {
       icon: <LuUsersRound className="text-[26px] md:text-[38px]" />,
       title: "Team work",
       description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
+        "Work in a collaborative environment where every idea counts, and success is built through shared goals and mutual support.",
       bgColor: "bg-[#E7F2FF]",
     },
     {
@@ -34,7 +37,7 @@ const Career = () => {
       icon: <MdOutlineSecurity className="text-[26px] md:text-[38px]" />,
       title: "Secured Future",
       description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
+        "Grow your career with stability and long-term opportunities, supported by an organization that invests in your success.",
       bgColor: "bg-[#F1F7E8]",
     },
     {
@@ -42,15 +45,15 @@ const Career = () => {
       icon: <PiStudentBold className="text-[26px] md:text-[38px]" />,
       title: "Learning Opportunity",
       description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
+        "Gain hands-on experience and expand your knowledge with continuous learning that shapes you into a better professional.",
       bgColor: "bg-[#EFF2F5]",
     },
     {
       id: 4,
       icon: <BsBarChart className="text-[26px] md:text-[38px]" />,
-      title: "Upgrate Skills",
+      title: "Upgrade Skills",
       description:
-        "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry.",
+        "Stay ahead in your career with access to new tools, training, and guidance to sharpen and enhance your expertise.",
       bgColor: "bg-[#FFEEED]",
     },
   ];
@@ -79,7 +82,7 @@ const Career = () => {
     {
       id: "ENGINEERING",
       name: "ENGINEERING",
-      count: 20,
+      count: 0,
       icon: (
         <svg
           className="w-5 h-5"
@@ -164,58 +167,63 @@ const Career = () => {
     },
   ];
 
-  const jobs = [
-    {
-      id: 1,
-      title: "WordPress Developer",
-      experience: "2 Years",
-      category: "ENGINEERING",
-      location: "Remote",
-      type: "Full Time",
-      profileImage:
-        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face",
-    },
-    {
-      id: 2,
-      title: "Javascript Developer",
-      experience: "1 Years",
-      category: "ENGINEERING",
-      location: "On-site",
-      type: "Full Time",
-      profileImage:
-        "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face",
-    },
-    {
-      id: 3,
-      title: "Apps Developer",
-      experience: "3 Years",
-      category: "ENGINEERING",
-      location: "Hybrid",
-      type: "Full Time",
-      profileImage:
-        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face",
-    },
-    {
-      id: 4,
-      title: "IOS Developer",
-      experience: "2 Years",
-      category: "ENGINEERING",
-      location: "Remote",
-      type: "Contract",
-      profileImage:
-        "https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?w=40&h=40&fit=crop&crop=face",
-    },
-    {
-      id: 5,
-      title: "Node JS Developer",
-      experience: "3 Years",
-      category: "ENGINEERING",
-      location: "On-site",
-      type: "Full Time",
-      profileImage:
-        "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=40&h=40&fit=crop&crop=face",
-    },
-  ];
+  // Fetch jobs from API
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch("http://65.20.78.195:8775/settings/job", {
+          method: "GET",
+          headers: {
+            Authorization:
+              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiYmh1dmFwcml5ZXNoQGdtYWlsLmNvbSIsImlhdCI6MTc1ODU1NjI4MH0.O7lBh3uSaCt8A7WUgzIbViGkMA3DF9s_JFviF6l8aCg",
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.message === "Job fetch successfully" && result.data) {
+          // Transform API data to match existing job structure
+          const transformedJobs = result.data.map((job, index) => ({
+            id: job.id,
+            title: job.name,
+            experience: job.experience,
+            category: "ENGINEERING",
+            location: job.location,
+            type: job.job_role,
+            description: job.description,
+            slug: job.slug,
+            profileImage: `https://images.unsplash.com/photo-${
+              150729964 + index
+            }785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face`,
+          }));
+
+          setJobs(transformedJobs);
+
+          // Update category counts dynamically
+          const engineeringCount = transformedJobs.filter(
+            (job) => job.category === "ENGINEERING"
+          ).length;
+          categories.find((cat) => cat.id === "ENGINEERING").count =
+            engineeringCount;
+        }
+      } catch (err) {
+        console.error("Error fetching jobs:", err);
+        setError("Failed to load job openings. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchJobs();
+  }, []);
 
   // Handle Apply button click
   const handleApplyClick = (jobTitle) => {
@@ -227,37 +235,6 @@ const Career = () => {
     setIsModalOpen(false);
     setSelectedJobTitle("");
   };
-
-  // Smooth scrolling setup
-  // useEffect(() => {
-  //   const lenis = new Lenis({
-  //     duration: 1.8,
-  //     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  //     direction: "vertical",
-  //     gestureDirection: "vertical",
-  //     smooth: true,
-  //     mouseMultiplier: 0.8,
-  //     smoothTouch: false,
-  //     touchMultiplier: 1.5,
-  //     infinite: false,
-  //   });
-
-  //   function raf(time) {
-  //     lenis.raf(time);
-  //     requestAnimationFrame(raf);
-  //   }
-
-  //   requestAnimationFrame(raf);
-  //   lenis.on("scroll", ScrollTrigger.update);
-  //   gsap.ticker.add((time) => {
-  //     lenis.raf(time * 1000);
-  //   });
-
-  //   return () => {
-  //     lenis.destroy();
-  //     gsap.ticker.remove(lenis.raf);
-  //   };
-  // }, []);
 
   const filteredJobs = jobs.filter((job) => job.category === activeCategory);
 
@@ -327,25 +304,6 @@ const Career = () => {
     },
   };
 
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: 40,
-      scale: 0.9,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 20,
-        duration: 0.6,
-      },
-    },
-  };
-
   // Render benefit card component
   const BenefitCard = ({ benefit, index }) => (
     <div key={benefit.id}>
@@ -370,6 +328,7 @@ const Career = () => {
         {/* Job Title */}
         <div className="flex-1">
           <h3 className="text-lg font-semibold text-gray-900">{job.title}</h3>
+          <p className="text-sm text-gray-500 mt-1">{job.location}</p>
         </div>
 
         {/* Experience Section */}
@@ -483,52 +442,107 @@ const Career = () => {
 
           {/* Job Listings */}
           <motion.div className="lg:col-span-3" variants={slideInRight}>
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeCategory}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.4 }}
-                className="space-y-4"
-              >
-                {filteredJobs.length > 0 ? (
-                  filteredJobs.map((job) => <JobCard key={job.id} job={job} />)
-                ) : (
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="text-center py-16 bg-white rounded-xl border border-gray-200 shadow-sm"
+            {/* Loading State */}
+            {loading && (
+              <div className="text-center py-16 bg-white rounded-xl border border-gray-200 shadow-sm">
+                <div className="text-gray-300 mb-6">
+                  <svg
+                    className="w-20 h-20 mx-auto animate-spin"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
                   >
-                    <div className="text-gray-300 mb-6">
-                      <svg
-                        className="w-20 h-20 mx-auto"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={1}
-                          d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0H8m8 0v2a2 2 0 01-2 2H10a2 2 0 01-2-2V6"
-                        />
-                      </svg>
-                    </div>
-                    <h3 className="text-xl font-medium text-gray-600 mb-3">
-                      No Openings Available
-                    </h3>
-                    <p className="text-gray-400 mb-6 max-w-md mx-auto">
-                      We don't have any positions in this category right now,
-                      but we're always growing!
-                    </p>
-                    <button className="text-[#2E437C] hover:text-[#1E2F5C] font-medium bg-blue-50 hover:bg-blue-100 px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105 transform">
-                      Get notified when new jobs are posted →
-                    </button>
-                  </motion.div>
-                )}
-              </motion.div>
-            </AnimatePresence>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1}
+                      d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                    />
+                  </svg>
+                </div>
+                <p className="text-gray-600">Loading job openings...</p>
+              </div>
+            )}
+
+            {/* Error State */}
+            {error && !loading && (
+              <div className="text-center py-16 bg-white rounded-xl border border-red-200 shadow-sm">
+                <div className="text-red-300 mb-6">
+                  <svg
+                    className="w-20 h-20 mx-auto"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1}
+                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                </div>
+                <p className="text-red-600 mb-4">{error}</p>
+                <button
+                  onClick={() => window.location.reload()}
+                  className="text-[#2E437C] hover:text-[#1E2F5C] font-medium bg-blue-50 hover:bg-blue-100 px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105 transform"
+                >
+                  Try Again
+                </button>
+              </div>
+            )}
+
+            {/* Job Listings */}
+            {!loading && !error && (
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={activeCategory}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.4 }}
+                  className="space-y-4"
+                >
+                  {filteredJobs.length > 0 ? (
+                    filteredJobs.map((job) => (
+                      <JobCard key={job.id} job={job} />
+                    ))
+                  ) : (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="text-center py-16 bg-white rounded-xl border border-gray-200 shadow-sm"
+                    >
+                      <div className="text-gray-300 mb-6">
+                        <svg
+                          className="w-20 h-20 mx-auto"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1}
+                            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0H8m8 0v2a2 2 0 01-2 2H10a2 2 0 01-2-2V6"
+                          />
+                        </svg>
+                      </div>
+                      <h3 className="text-xl font-medium text-gray-600 mb-3">
+                        No Openings Available
+                      </h3>
+                      <p className="text-gray-400 mb-6 max-w-md mx-auto">
+                        We don't have any positions in this category right now,
+                        but we're always growing!
+                      </p>
+                      <button className="text-[#2E437C] hover:text-[#1E2F5C] font-medium bg-blue-50 hover:bg-blue-100 px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105 transform">
+                        Get notified when new jobs are posted →
+                      </button>
+                    </motion.div>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            )}
           </motion.div>
         </div>
 
