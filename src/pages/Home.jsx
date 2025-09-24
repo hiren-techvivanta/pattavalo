@@ -251,7 +251,7 @@ export default function Home() {
         </div>
       </motion.div>
 
-      {/* Resources with quick animation */}
+      
       <motion.div
         variants={quickFadeInUp}
         initial="hidden"
