@@ -120,13 +120,23 @@ export default function ModulerSolution() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.04,
-        delayChildren: 0.15,
+        staggerChildren: 0.02,
+        delayChildren: 0.1,
+        duration: 0.4,
       },
     },
   };
-
- const letterVariants = {
+  const cardGridVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.06,
+        delayChildren: 0.2,
+      },
+    },
+  };
+  const letterVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
       opacity: 1,
@@ -139,28 +149,43 @@ export default function ModulerSolution() {
       },
     },
   };
-    const splitText = (text) =>
-      text.split("").map((char, i) => (
-        <motion.span key={i} variants={letterVariants} className="inline-block">
-          {char === " " ? "\u00A0" : char}
-        </motion.span>
-      ));
+   const cardVariants = {
+    hidden: {
+      opacity: 0,
+      y: 30,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 20,
+        duration: 0.5,
+      },
+    },
+  };
+  const splitText = (text) =>
+    text.split("").map((char, i) => (
+      <motion.span key={i} variants={letterVariants} className="inline-block">
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
   return (
     <section className="container mx-auto w-full px-4 md:px-10 lg:px-5 xl:px-5 py-10 bg-white">
       <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
-        variants={letterVariants}
+        variants={containerVariants}
         className="mb-8 sm:mb-12 md:text-left px-3"
       >
         <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#BABEC8] leading-snug">
-          
           {splitText("Your Crafted, ")}
           <span className="block text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#2E437C]">
-            
-          {splitText("Modular Solution")}
-
+            {splitText("Modular Solution")}
           </span>
         </h2>
       </motion.div>
@@ -169,12 +194,14 @@ export default function ModulerSolution() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-60px" }}
-        variants={containerVariants}
+        variants={cardGridVariants}
         className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8 text-center"
       >
         {solutions.map((item, idx) => (
           <motion.div
             key={idx}
+        variants={containerVariants}
+            
             whileHover={{
               y: -2,
               scale: 1.01,
@@ -202,11 +229,11 @@ export default function ModulerSolution() {
                 src={item.icon}
                 alt={item.title}
                 className="w-full h-full object-contain transition-all duration-300
-                 group-hover:brightness-0 group-hover:invert" 
+                 group-hover:brightness-0 group-hover:invert"
               />
             </motion.div>
 
-            {/* Title */} 
+            {/* Title */}
             <motion.p
               className="relative z-10 text-xs sm:text-sm md:text-base font-medium
                text-gray-700 group-hover:text-white transition-colors duration-300

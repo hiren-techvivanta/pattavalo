@@ -75,7 +75,7 @@ const partners = [
 
 export default function Home() {
   const [showNavbar, setShowNavbar] = useState(false);
-
+  const [showMap, setShowMap] = useState(false);
   // Individual Lenis setup for this page
   // useEffect(() => {
   //   // Initialize Lenis with fast settings for 0.8s animations
@@ -219,7 +219,7 @@ export default function Home() {
                   initial={{ x: "0%" }}
                   animate={{ x: "-100%" }}
                   transition={{
-                    duration: 25, 
+                    duration: 25,
                     repeat: Infinity,
                     ease: "linear",
                     repeatType: "loop",
@@ -233,7 +233,7 @@ export default function Home() {
                       whileHover={{
                         scale: 1.05,
 
-                        transition: { duration: 0.1 }, 
+                        transition: { duration: 0.1 },
                       }}
                     >
                       <img
@@ -251,7 +251,6 @@ export default function Home() {
         </div>
       </motion.div>
 
-      
       <motion.div
         variants={quickFadeInUp}
         initial="hidden"
@@ -268,13 +267,13 @@ export default function Home() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        className="fade-in-section "
+        className="fade-in-section  container mx-auto mt-10 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20   "
       >
         <ContactForm />
       </motion.div>
 
       {/* Map Section with fast animation */}
-      <motion.section
+      {/* <motion.section
         className=" w-full pt-10 bg-white fade-in-section overflow-hidden"
         variants={quickScale}
         initial="hidden"
@@ -283,11 +282,7 @@ export default function Home() {
       >
         <motion.div
           className="w-full h-[300px] sm:h-[400px] lg:h-[400px] overflow-hidden shadow-lg"
-          whileHover={{
-            scale: 1.01,
-
-            transition: { duration: 0.15 }, 
-          }}
+         
         >
           <iframe
             title="ATC CHAINS INDIA Location"
@@ -298,6 +293,49 @@ export default function Home() {
             referrerPolicy="no-referrer-when-downgrade"
           />
         </motion.div>
+      </motion.section> */}
+      <motion.section
+        className="relative w-full pt-10 bg-white overflow-hidden"
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Map iframe container */}
+        <motion.div
+          className="w-full h-[300px] sm:h-[400px] lg:h-[400px] overflow-hidden shadow-lg"
+          animate={{ opacity: showMap ? 1 : 0.3 }}
+          transition={{ duration: 0.5 }}
+        >
+          <iframe
+            title="ATC CHAINS INDIA Location"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.604152548122!2d72.580103!3d23.03987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8442629d0ef7%3A0x475a2529ab81e2dc!2sATC%20CHAINS%20INDIA!5e0!3m2!1sen!2sin!4v1726752975123!5m2!1sen!2sin"
+            className="w-full h-full pointer-events-none"
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </motion.div>
+
+        {/* Clickable overlay */}
+        {!showMap && (
+          <motion.div
+            className="absolute inset-0 flex items-center justify-center cursor-pointer bg-black/40 "
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowMap(true)}
+          >
+            <motion.p
+              className="text-white text-md  sm:text-xl font-medium px-6 py-3 rounded-lg bg-[#2E437C] backdrop-blur-sm shadow-lg"
+              whileHover={{
+                scale: 1.05,
+                // textShadow: "0 0 10px rgba(255,255,255,0.7)",
+              }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              Click to View Our Location
+            </motion.p>
+          </motion.div>
+        )}
       </motion.section>
     </div>
   );

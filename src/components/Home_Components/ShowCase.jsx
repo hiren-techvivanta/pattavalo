@@ -113,8 +113,8 @@ const ShowCase = () => {
   ];
 
   return (
-    <section className="container mx-auto w-full px-4 md:px-10 lg:px-10  relative  bg-white  ">
-      <div className="  md:text-left md:px-0 px-8 ">
+    <section className="container mx-auto w-full px-4 md:px-10 lg:px-10 xl:px-10  relative  bg-white overflow-visible ">
+      <div className="  md:text-left md:px-0 px-8  ">
         <motion.h2
           className="text-[36px] md:text-[48px] font-normal text-[#2E437C] leading-tight"
           initial={{ opacity: 0, y: 20 }}
@@ -137,7 +137,7 @@ const ShowCase = () => {
         </motion.p>
       </div>
 
-      <div className="relative w-full  mx-auto">
+      {/* <div className="relative w-full  mx-auto">
         <div
           className="w-full h-auto cursor-not-allowed select-none"
           onContextMenu={handleContextMenu}
@@ -180,7 +180,7 @@ const ShowCase = () => {
               <TiPlus className="w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4 lg:w-4 lg:h-4 relative z-10" />
             </button>
 
-            {/* Desktop tooltip */}
+          
             <AnimatePresence>
               {activePoint === point.id && window.innerWidth >= 768 && (
                 <motion.div
@@ -206,7 +206,82 @@ const ShowCase = () => {
             </AnimatePresence>
           </motion.div>
         ))}
-      </div>
+      </div> */}
+      <div className="relative w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 overflow-visible"> 
+  {/* Showcase Wrapper */}
+  <div
+    className="relative w-full aspect-[16/9] rounded-xl overflow-visible cursor-not-allowed select-none "
+    onContextMenu={handleContextMenu}
+    onDragStart={handleDragStart}
+  >
+    <img
+      src={showcaseImg}
+      alt="Product Showcase"
+      className="w-full h-full object-contain"
+    />
+
+    {points.map((point) => (
+      <motion.div
+        key={point.id}
+        className="absolute"
+        style={{ top: point.top, left: point.left }}
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        transition={{ duration: 0.4 }}
+        onMouseEnter={() =>
+          window.innerWidth >= 768 && setActivePoint(point.id)
+        }
+        onMouseLeave={() =>
+          window.innerWidth >= 768 && setActivePoint(null)
+        }
+        onClick={() => window.innerWidth < 768 && handlePointClick(point)}
+      >
+        {/* Hotspot Button */}
+        <button
+          aria-label="Hotspot"
+          className="relative flex items-center justify-center
+          w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6
+          bg-orange-500 text-white rounded-full shadow-lg
+          cursor-pointer transition-transform duration-200
+          hover:scale-110 active:scale-95"
+        >
+          <span className="absolute inset-0 rounded-full bg-orange-500/40 animate-[ripple_2.5s_linear_infinite]" />
+          <span className="absolute inset-0 rounded-full bg-orange-500/40 animate-[ripple_2.5s_linear_infinite] [animation-delay:1.25s]" />
+          <TiPlus className="w-2 h-2 sm:w-3 sm:h-3 md:w-4 md:h-4 relative z-10" />
+        </button>
+
+        {/* Desktop Tooltip */}
+        <AnimatePresence>
+          {activePoint === point.id && window.innerWidth >= 768 && (
+            <motion.div
+              initial={{ opacity: 0, y: 10, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.95 }}
+              transition={{ duration: 0.3 }}
+              className="absolute left-[-90px] top-8 w-52 sm:w-60 md:w-64
+                        bg-white rounded-xl shadow-xl p-3 sm:p-4 z-20"
+            >
+              <h4 className="text-base sm:text-lg font-semibold text-[#2E437C]">
+                {point.title}
+              </h4>
+              <p className="text-gray-600 text-xs sm:text-sm mt-1">{point.desc}</p>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="mt-2 sm:mt-3 inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2
+                          rounded-full border border-[#2E437C] text-[#2E437C]
+                          text-xs sm:text-sm font-medium hover:bg-[#2E437C]
+                          hover:text-white transition-all"
+              >
+                VIEW →
+              </motion.button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+    ))}
+  </div>
+</div>
 
       <AnimatePresence>
         {selectedPoint && window.innerWidth < 768 && (
