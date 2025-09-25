@@ -2,40 +2,30 @@ import React, { useState, useRef, useEffect } from "react";
 import { Modal, Box } from "@mui/material";
 import { IoClose, IoCloudUploadOutline } from "react-icons/io5";
 
-const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
+const JobApplicationModal = ({ isOpen, onClose, jobId }) => {
   const [formData, setFormData] = useState({
     name: "",
     contactNumber: "",
-    position: jobTitle || "",
     resume: null,
   });
   const [dragActive, setDragActive] = useState(false);
   const [errors, setErrors] = useState({});
   const [success, setSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState("");
   const fileInputRef = useRef(null);
 
-  // Prevent background scrolling when modal is open
   useEffect(() => {
     if (isOpen) {
-      // Disable background scroll
       document.body.style.overflow = "hidden";
     } else {
-      // Re-enable background scroll
       document.body.style.overflow = "unset";
     }
 
-    // Cleanup on unmount
     return () => {
       document.body.style.overflow = "unset";
     };
   }, [isOpen]);
-
-  // Update position when jobTitle changes
-  React.useEffect(() => {
-    if (jobTitle) {
-      setFormData((prev) => ({ ...prev, position: jobTitle }));
-    }
-  }, [jobTitle]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -75,11 +65,11 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
       }
     }
   };
-
+  
   const validateFile = (file) => {
     const allowedTypes = [
       "image/jpeg",
-      "image/jpg",
+      "image/jpg", 
       "image/png",
       "application/pdf",
     ];
@@ -108,29 +98,61 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
     if (!formData.name.trim()) newErrors.name = "Name is required";
     if (!formData.contactNumber.trim())
       newErrors.contactNumber = "Contact number is required";
-    if (!formData.position.trim()) newErrors.position = "Position is required";
     if (!formData.resume) newErrors.resume = "Resume is required";
+
+    const phoneRegex = /^[\d\s\-\+\(\)]+$/;
+    if (formData.contactNumber && !phoneRegex.test(formData.contactNumber)) {
+      newErrors.contactNumber = "Please enter a valid contact number";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log("Form submitted:", formData);
-      setSuccess(true);
-      setTimeout(() => {
-        setFormData({
-          name: "",
-          contactNumber: "",
-          position: jobTitle || "",
-          resume: null,
-        });
-        setErrors({});
-        setSuccess(false);
-        onClose();
-      }, 2000);
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    if (!jobId) {
+      setSubmitMessage("Job ID is missing. Please try again.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitMessage("");
+
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('job_id', jobId.toString());
+      formDataToSend.append('name', formData.name.trim());
+      formDataToSend.append('contact_number', formData.contactNumber.trim());
+      formDataToSend.append('file', formData.resume);
+
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/settings/apply-job`, {
+        method: 'POST',
+        body: formDataToSend,
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        setSuccess(true);
+        setSubmitMessage("Application submitted successfully! We will contact you soon.");
+        
+        setTimeout(() => {
+          handleClose();
+        }, 3000);
+      } else {
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || 'Failed to submit application');
+      }
+    } catch (error) {
+      console.error('Error submitting application:', error);
+      setSubmitMessage(`Failed to submit application: ${error.message}. Please try again.`);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -138,11 +160,12 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
     setFormData({
       name: "",
       contactNumber: "",
-      position: jobTitle || "",
       resume: null,
     });
     setErrors({});
     setSuccess(false);
+    setIsSubmitting(false);
+    setSubmitMessage("");
     onClose();
   };
 
@@ -153,7 +176,7 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
     transform: "translate(-50%, -50%)",
     width: "90%",
     maxWidth: "600px",
-    maxHeight: "85vh", 
+    maxHeight: "85vh",
     bgcolor: "background.paper",
     borderRadius: "16px",
     boxShadow: 24,
@@ -167,7 +190,7 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
     <Modal
       open={isOpen}
       onClose={handleClose}
-      disableScrollLock={false} 
+      disableScrollLock={false}
       BackdropProps={{
         style: {
           backgroundColor: "rgba(0, 0, 0, 0.5)",
@@ -176,24 +199,28 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
       }}
     >
       <Box sx={modalStyle}>
-        {/* Header - Fixed */}
-        <div className="flex-shrink-0 relative  p-6 pb-4">
-          {/* Close Button */}
+        <div className="flex-shrink-0 relative p-6 pb-4">
           <button
             onClick={handleClose}
             className="absolute top-4 right-4 p-2 text-gray-400 hover:text-gray-600 transition-colors z-10"
+            disabled={isSubmitting}
           >
             <IoClose className="w-6 h-6" />
           </button>
         </div>
 
-        {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto p-6 pt-4">
-          {/* Success Message */}
+          {submitMessage && (
+            <div className={`mb-6 p-4 rounded-lg text-center ${
+              success 
+                ? 'bg-green-50 text-green-700 border border-green-200'
+                : 'bg-red-50 text-red-700 border border-red-200'
+            }`}>
+              {submitMessage}
+            </div>
+          )}
 
-          {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* Name Field */}
             <div>
               <div className="relative">
                 <input
@@ -202,7 +229,10 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Name"
+                  disabled={isSubmitting}
                   className={`w-full px-4 py-4 text-gray-900 bg-transparent border-2 rounded-[8px] transition-all duration-300 focus:outline-none placeholder-gray-500 ${
+                    isSubmitting ? "bg-gray-50 cursor-not-allowed" : ""
+                  } ${
                     errors.name
                       ? "border-red-300 focus:border-red-500"
                       : "border-gray-300 focus:border-blue-500"
@@ -214,7 +244,6 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
               )}
             </div>
 
-            {/* Contact Number Field */}
             <div>
               <div className="relative">
                 <input
@@ -223,7 +252,10 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
                   value={formData.contactNumber}
                   onChange={handleInputChange}
                   placeholder="Contact Number"
+                  disabled={isSubmitting}
                   className={`w-full px-4 py-4 text-gray-900 bg-transparent border-2 rounded-[8px] transition-all duration-300 focus:outline-none placeholder-gray-500 ${
+                    isSubmitting ? "bg-gray-50 cursor-not-allowed" : ""
+                  } ${
                     errors.contactNumber
                       ? "border-red-300 focus:border-red-500"
                       : "border-gray-300 focus:border-blue-500"
@@ -237,28 +269,6 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
               )}
             </div>
 
-            {/* Position Field */}
-            <div>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="position"
-                  value={formData.position}
-                  onChange={handleInputChange}
-                  placeholder="Position Applying For"
-                  className={`w-full px-4 py-4 text-gray-900 bg-transparent border-2 rounded-[8px] transition-all duration-300 focus:outline-none placeholder-gray-500 ${
-                    errors.position
-                      ? "border-red-300 focus:border-red-500"
-                      : "border-gray-300 focus:border-blue-500"
-                  }`}
-                />
-              </div>
-              {errors.position && (
-                <p className="text-red-500 text-sm mt-2">{errors.position}</p>
-              )}
-            </div>
-
-            {/* File Upload */}
             <div>
               <input
                 ref={fileInputRef}
@@ -266,21 +276,24 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
                 accept=".jpg,.jpeg,.png,.pdf"
                 onChange={handleFileSelect}
                 className="hidden"
+                disabled={isSubmitting}
               />
 
               <div
-                className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 cursor-pointer ${
+                className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 ${
+                  isSubmitting ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+                } ${
                   dragActive
                     ? "border-blue-400 bg-blue-50"
                     : errors.resume
                     ? "border-red-300 bg-red-50"
                     : "border-gray-300 bg-gray-50 hover:border-blue-400 hover:bg-blue-50"
                 }`}
-                onDragEnter={handleDrag}
-                onDragLeave={handleDrag}
-                onDragOver={handleDrag}
-                onDrop={handleDrop}
-                onClick={() => fileInputRef.current?.click()}
+                onDragEnter={!isSubmitting ? handleDrag : undefined}
+                onDragLeave={!isSubmitting ? handleDrag : undefined}
+                onDragOver={!isSubmitting ? handleDrag : undefined}
+                onDrop={!isSubmitting ? handleDrop : undefined}
+                onClick={!isSubmitting ? () => fileInputRef.current?.click() : undefined}
               >
                 <IoCloudUploadOutline className="w-12 h-12 text-gray-400 mx-auto mb-4" />
 
@@ -289,16 +302,18 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
                     <p className="text-green-600 font-medium">
                       ✓ {formData.resume.name}
                     </p>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        fileInputRef.current?.click();
-                      }}
-                      className="text-blue-500 hover:text-blue-600 underline transition-colors"
-                    >
-                      Change file
-                    </button>
+                    {!isSubmitting && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          fileInputRef.current?.click();
+                        }}
+                        className="text-blue-500 hover:text-blue-600 underline transition-colors"
+                      >
+                        Change file
+                      </button>
+                    )}
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -326,17 +341,27 @@ const JobApplicationModal = ({ isOpen, onClose, jobTitle }) => {
               )}
             </div>
 
-            {/* Submit Button */}
             <button
               type="submit"
-              disabled={success}
+              disabled={success || isSubmitting}
               className={`w-full py-4 rounded-2xl font-semibold text-lg transition-all duration-300 shadow-lg ${
                 success
                   ? "bg-green-500 text-white cursor-not-allowed"
+                  : isSubmitting
+                  ? "bg-gray-400 text-white cursor-not-allowed"
                   : "bg-[#2E437C] hover:bg-[#1E2F5C] text-white hover:shadow-xl"
               }`}
             >
-              {success ? "Submitted!" : "Apply"}
+              {isSubmitting ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Submitting...
+                </div>
+              ) : success ? (
+                "Submitted!"
+              ) : (
+                "Apply"
+              )}
             </button>
           </form>
         </div>

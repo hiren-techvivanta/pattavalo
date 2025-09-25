@@ -26,6 +26,7 @@ const AnimatedButton = ({
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onClick={onClick}
     >
       <div
         className={` absolute right-6 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full transition-transform duration-[1100ms] ease-in-out will-change-transform ${

@@ -153,7 +153,7 @@ const ProductDetails = () => {
     setSubmitStatus({ type: '', message: '' });
     
     try {
-      const response = await fetch('http://65.20.78.195:8775/settings/enquiry', {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/settings/enquiry`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

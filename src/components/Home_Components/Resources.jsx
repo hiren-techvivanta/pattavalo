@@ -7,6 +7,7 @@ import bl3 from "../../assets/images/bl3.jpg";
 import bl4 from "../../assets/images/bl4.jpg";
 import NewsCard from "../newsComponents/NewsCard";
 import AnimatedButton from "../aboutUsComponents/AnimatedButton";
+import NewsGrid from "../common/NewsGrid";
 
 const tabs = ["Latest", "Blogs", "Events", "Featured Product"];
 
@@ -249,35 +250,12 @@ export default function Resources() {
         ))}
       </motion.div>
 
-      <motion.div
-        key={activeTab}
-        initial="hidden"
-        animate="visible"
-        variants={cardGridVariants}
-        className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8"
-      >
-        {allNews.map((item, index) => (
-          <motion.div
-            key={`${activeTab}-${index}`}
-            variants={cardVariants}
-            whileHover={{
-              y: -8,
-              scale: 1.02,
-              rotateX: -2,
-              boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1)",
-              transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 25,
-                duration: 0.3,
-              },
-            }}
-            className="transform-gpu  "
-          >
-            <NewsCard props={item} />
-          </motion.div>
-        ))}
-      </motion.div>
+       <NewsGrid 
+        activeTab={activeTab}
+        initialPostsCount={4}
+        // searchQuery={searchQuery}
+        // className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 pb-16 sm:pb-20"
+      />
 
       <motion.div
         initial={{ opacity: 0, y: 20 }}

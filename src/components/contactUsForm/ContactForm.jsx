@@ -11,14 +11,16 @@ const ContactForm = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    website: "",
-    contactDetails: "",
-    companyName: "",
+    company_website: "",
+    phone_number: "",
+    company_name: "",
     designation: "",
     message: "",
   });
 
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -26,28 +28,113 @@ const ContactForm = () => {
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: "" }));
     }
+    // Clear submit status when user starts typing
+    if (submitStatus.message) {
+      setSubmitStatus({ type: '', message: '' });
+    }
+  };
+
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validatePhone = (phone) => {
+    const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
+    return phoneRegex.test(phone.replace(/\s/g, ''));
+  };
+
+  const validateURL = (url) => {
+    if (!url) return true; // Optional field
+    try {
+      new URL(url.startsWith('http') ? url : `https://${url}`);
+      return true;
+    } catch {
+      return false;
+    }
   };
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.name.trim()) newErrors.name = "Name is required";
-    if (!formData.email.trim()) newErrors.email = "Email is required";
-    if (!formData.contactDetails.trim())
-      newErrors.contactDetails = "Contact details are required";
-    if (!formData.companyName.trim())
-      newErrors.companyName = "Company name is required";
-    if (!formData.designation.trim())
+    
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+    }
+    
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+    
+    if (!formData.phone_number.trim()) {
+      newErrors.phone_number = "Phone number is required";
+    } else if (!validatePhone(formData.phone_number)) {
+      newErrors.phone_number = "Please enter a valid phone number";
+    }
+    
+    if (!formData.company_name.trim()) {
+      newErrors.company_name = "Company name is required";
+    }
+    
+    if (formData.company_website && !validateURL(formData.company_website)) {
+      newErrors.company_website = "Please enter a valid website URL";
+    }
+    
+    if (!formData.designation.trim()) {
       newErrors.designation = "Designation is required";
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (validateForm()) {
-      console.log("Form submitted:", formData);
-      // Handle form submission here
+    
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus({ type: '', message: '' });
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/settings/enquiry`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.ok) {
+        setSubmitStatus({
+          type: 'success',
+          message: 'Your message has been sent successfully! We will get back to you soon.'
+        });
+        
+        // Reset form after successful submission
+        setFormData({
+          name: "",
+          email: "",
+          company_website: "",
+          phone_number: "",
+          company_name: "",
+          designation: "",
+          message: "",
+        });
+      } else {
+        throw new Error('Failed to send message');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus({
+        type: 'error',
+        message: 'Failed to send message. Please try again later.'
+      });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -160,6 +247,17 @@ const ContactForm = () => {
           className="col-span-12 md:col-span-6 lg:col-span-6"
           variants={itemVariants}
         >
+          {/* Status Message */}
+          {submitStatus.message && (
+            <div className={`mb-4 p-4 rounded-lg ${
+              submitStatus.type === 'success' 
+                ? 'bg-green-50 text-green-700 border border-green-200' 
+                : 'bg-red-50 text-red-700 border border-red-200'
+            }`}>
+              {submitStatus.message}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="space-y-4 lg:space-y-6">
             {/* Email Field */}
             <div className="space-y-2">
@@ -199,58 +297,59 @@ const ContactForm = () => {
               )}
             </div>
 
-            {/* Website and Contact Details Row */}
+            {/* Company Name and Website Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
-              <div className="space-y-2">
-                <input
-                  type="text"
-                  name="website"
-                  value={formData.website}
-                  onChange={handleInputChange}
-                  placeholder="Website"
-                  className="w-full h-14 lg:h-16 px-3 lg:px-4 bg-white border border-[#D8D8D8] rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all"
-                />
-              </div>
               <div className="space-y-2">
                 <div className="relative">
                   <input
                     type="text"
-                    name="contactDetails"
-                    value={formData.contactDetails}
+                    name="company_name"
+                    value={formData.company_name}
                     onChange={handleInputChange}
-                    placeholder="Contact Details"
+                    placeholder="Company Name"
                     className={`w-full h-14 lg:h-16 px-3 lg:px-4 pr-8 lg:pr-10 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
-                      errors.contactDetails
-                        ? "border-red-500"
-                        : "border-[#D8D8D8]"
+                      errors.company_name ? "border-red-500" : "border-[#D8D8D8]"
                     }`}
                   />
                 </div>
-                {errors.contactDetails && (
-                  <p className="text-red-500 text-sm">
-                    {errors.contactDetails}
-                  </p>
+                {errors.company_name && (
+                  <p className="text-red-500 text-sm">{errors.company_name}</p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <input
+                  type="text"
+                  name="company_website"
+                  value={formData.company_website}
+                  onChange={handleInputChange}
+                  placeholder="Website"
+                  className={`w-full h-14 lg:h-16 px-3 lg:px-4 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
+                    errors.company_website ? "border-red-500" : "border-[#D8D8D8]"
+                  }`}
+                />
+                {errors.company_website && (
+                  <p className="text-red-500 text-sm">{errors.company_website}</p>
                 )}
               </div>
             </div>
 
-            {/* Company Name and Designation Row */}
+            {/* Phone Number and Designation Row */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
               <div className="space-y-2">
                 <div className="relative">
                   <input
                     type="text"
-                    name="companyName"
-                    value={formData.companyName}
+                    name="phone_number"
+                    value={formData.phone_number}
                     onChange={handleInputChange}
-                    placeholder="Company Name"
+                    placeholder="Phone Number"
                     className={`w-full h-14 lg:h-16 px-3 lg:px-4 pr-8 lg:pr-10 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
-                      errors.companyName ? "border-red-500" : "border-[#D8D8D8]"
+                      errors.phone_number ? "border-red-500" : "border-[#D8D8D8]"
                     }`}
                   />
                 </div>
-                {errors.companyName && (
-                  <p className="text-red-500 text-sm">{errors.companyName}</p>
+                {errors.phone_number && (
+                  <p className="text-red-500 text-sm">{errors.phone_number}</p>
                 )}
               </div>
               <div className="space-y-2">
@@ -287,11 +386,23 @@ const ContactForm = () => {
             {/* Submit Button */}
             <motion.button
               type="submit"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              className="w-full h-14 lg:h-16 bg-[#2E437C] text-white text-[14px] lg:text-[16px] font-medium rounded-md hover:bg-[#1E2F5C] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl"
+              disabled={isSubmitting}
+              whileHover={!isSubmitting ? { scale: 1.02 } : {}}
+              whileTap={!isSubmitting ? { scale: 0.98 } : {}}
+              className={`w-full h-14 lg:h-16 text-white text-[14px] lg:text-[16px] font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl ${
+                isSubmitting
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-[#2E437C] hover:bg-[#1E2F5C]'
+              }`}
             >
-              Submit
+              {isSubmitting ? (
+                <div className="flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  Submitting...
+                </div>
+              ) : (
+                'Submit'
+              )}
             </motion.button>
           </form>
         </motion.div>

@@ -174,7 +174,7 @@ const Career = () => {
         setLoading(true);
         setError(null);
 
-        const response = await fetch("http://65.20.78.195:8775/settings/job", {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/settings/job`, {
           method: "GET",
           headers: {
             Authorization:
@@ -226,8 +226,8 @@ const Career = () => {
   }, []);
 
   // Handle Apply button click
-  const handleApplyClick = (jobTitle) => {
-    setSelectedJobTitle(jobTitle);
+  const handleApplyClick = (id) => {
+    setSelectedJobTitle(id);
     setIsModalOpen(true);
   };
 
@@ -344,7 +344,7 @@ const Career = () => {
         {/* Apply Button */}
         <div>
           <button
-            onClick={() => handleApplyClick(job.title)}
+            onClick={() => handleApplyClick(job.id)}
             className="bg-[#2E437C] hover:bg-[#1E2F5C] text-white px-6 py-2 rounded-lg font-medium transition-colors duration-300 hover:scale-105 transform"
           >
             Apply Now
@@ -584,7 +584,7 @@ const Career = () => {
       <JobApplicationModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
-        jobTitle={selectedJobTitle}
+        jobId={selectedJobTitle}
       />
     </>
   );

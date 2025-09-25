@@ -1,16 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../../../components/Navbar/Navbar";
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "@studio-freight/lenis";
 import NewsCard from "../../../components/newsComponents/NewsCard";
-
-import blo1 from "../../../assets/images/blo1.jpg";
-import bl1 from "../../../assets/images/bl1.jpg";
-import bl2 from "../../../assets/images/bl2.jpg";
-import bl3 from "../../../assets/images/bl3.jpg";
-import bl4 from "../../../assets/images/bl4.jpg";
 
 import l1 from "../../../assets/images/l1.png";
 import l2 from "../../../assets/images/l2.png";
@@ -19,10 +13,17 @@ import l4 from "../../../assets/images/l4.png";
 import l5 from "../../../assets/images/l5.png";
 import l6 from "../../../assets/images/l6.png";
 import Seo from "../../../components/common/Seo";
+import NewsGrid from "../../../components/common/NewsGrid";
+import { useParams } from "react-router-dom";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const BlogDetails = () => {
+  const { slug } = useParams();
+  const [post, setPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const partners = [
     { id: 3, name: "l1", image: l1, width: 117 },
     { id: 4, name: "l2", image: l2, width: 110 },
@@ -32,102 +33,58 @@ const BlogDetails = () => {
     { id: 8, name: "l6", image: l6, width: 200 },
   ];
 
-  const allNews = [
-    {
-      image: bl1,
-      news: "Latest",
-      heading: "Revolutionary Conveyor Belt Technology",
-      details:
-        "Discover how our latest innovations are transforming manufacturing efficiency across industries.",
-      date: "Dec 15, 2024",
-      author: "Tech Team",
-    },
-    {
-      image: bl2,
-      news: "Blog",
-      heading: "Industry Best Practices Guide",
-      details:
-        "How do you create compelling presentations that wow your colleagues and impress your managers?",
-      date: "Dec 12, 2024",
-      author: "John Smith",
-    },
-    {
-      image: bl3,
-      news: "Events",
-      heading: "Manufacturing Expo 2025",
-      details:
-        "Join us at the biggest manufacturing exhibition showcasing cutting-edge conveyor solutions.",
-      date: "Jan 20, 2025",
-      author: "Event Team",
-    },
-    {
-      image: bl4,
-      news: "Featured Product",
-      heading: "Premium Modular Belt Series",
-      details:
-        "Our flagship product line featuring advanced materials and superior durability ratings.",
-      date: "Dec 10, 2024",
-      author: "Product Team",
-    },
-  ];
+  // Fetch post details from API
+  useEffect(() => {
+    const fetchPostDetails = async () => {
+      if (!slug) return;
 
-  // useEffect(() => {
-  //   const lenis = new Lenis({
-  //     lerp: 0.1,
-  //     duration: 0.8,
-  //     easing: (t) => 1 - Math.pow(1 - t, 3),
-  //     direction: "vertical",
-  //     gestureDirection: "vertical",
-  //     smooth: true,
-  //     mouseMultiplier: 1.2,
-  //     smoothTouch: false,
-  //     touchMultiplier: 2,
-  //     infinite: false,
-  //     autoResize: true,
-  //   });
+      try {
+        setLoading(true);
+        setError(null);
 
-  //   function raf(time) {
-  //     lenis.raf(time);
-  //     requestAnimationFrame(raf);
-  //   }
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/settings/post-detail/${slug}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-  //   requestAnimationFrame(raf);
-  //   lenis.on("scroll", ScrollTrigger.update);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
-  //   gsap.ticker.add((time) => {
-  //     lenis.raf(time * 1000);
-  //   });
+        const result = await response.json();
 
-  //   gsap.ticker.lagSmoothing(0);
+        if (result.message === "Post fetch successfully" && result.data) {
+          setPost(result.data);
+        } else {
+          throw new Error("Post not found");
+        }
+      } catch (err) {
+        console.error("Error fetching post details:", err);
+        setError("Failed to load post details. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  //   gsap.fromTo(
-  //     ".fade-up-blog",
-  //     {
-  //       opacity: 0,
-  //       y: 30,
-  //     },
-  //     {
-  //       opacity: 1,
-  //       y: 0,
-  //       duration: 0.6,
-  //       ease: "power2.out",
-  //       stagger: 0.1,
-  //       scrollTrigger: {
-  //         trigger: ".fade-up-blog",
-  //         start: "top 85%",
-  //         end: "bottom 20%",
-  //         toggleActions: "play none none reverse",
-  //       },
-  //     }
-  //   );
+    fetchPostDetails();
+  }, [slug]);
 
-  //   return () => {
-  //     lenis.destroy();
-  //     ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-  //     gsap.ticker.remove(lenis.raf);
-  //   };
-  // }, []);
+  // Format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
 
+  // Animation variants
   const pageVariants = {
     hidden: {
       opacity: 0,
@@ -208,85 +165,62 @@ const BlogDetails = () => {
     },
   };
 
-  const paragraphVariants = {
-    hidden: {
-      opacity: 0,
-      y: 15,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.4,
-        ease: "easeOut",
-      },
-    },
-  };
+  // Loading state
+  if (loading) {
+    return (
+      <>
+        <motion.div initial="hidden" animate="visible" variants={navVariants}>
+          <Navbar navStyle={"white"} />
+        </motion.div>
+        <div className="container mx-auto mt-20 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20">
+          <div className="flex justify-center items-center min-h-[400px]">
+            <div className="text-center">
+              <div className="w-16 h-16 border-4 border-[#2E437C] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading post...</p>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
-  const listVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.1,
-      },
-    },
-  };
+  // Error state
+  if (error) {
+    return (
+      <>
+        <motion.div initial="hidden" animate="visible" variants={navVariants}>
+          <Navbar navStyle={"white"} />
+        </motion.div>
+        <div className="container mx-auto mt-20 px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20">
+          <div className="text-center min-h-[400px] flex items-center justify-center">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-800 mb-4">
+                Post Not Found
+              </h1>
+              <p className="text-gray-600 mb-6">{error}</p>
+              <button
+                onClick={() => window.history.back()}
+                className="px-6 py-3 bg-[#2E437C] text-white rounded-lg hover:bg-[#1E2F5C] transition-colors"
+              >
+                Go Back
+              </button>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
 
-  const listItemVariants = {
-    hidden: {
-      opacity: 0,
-      x: -10,
-    },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.3,
-        ease: "easeOut",
-      },
-    },
-  };
-
-  const cardGridVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.06,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: 25,
-      scale: 0.95,
-      rotateX: 5,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      rotateX: 0,
-      transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 20,
-        duration: 0.5,
-      },
-    },
-  };
-
+  // Main content when post is loaded
   return (
     <>
       <Seo
-        title="News Details | ATC Chain India"
-        description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
-        url="https://www.atcchain.com/news/details"
+        title={`${post?.name || "Post"} | ATC Chain India`}
+        description={
+          post?.name ||
+          "ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries."
+        }
+        url={`https://www.atcchain.com/news/${slug}`}
       />
       <motion.div initial="hidden" animate="visible" variants={navVariants}>
         <Navbar navStyle={"white"} />
@@ -305,8 +239,10 @@ const BlogDetails = () => {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
           >
-            <p className="font-semibold text-gray-800">Shivam Patel</p>
-            <p className="text-sm text-gray-500">16 March 2023</p>
+            <p className="font-semibold text-gray-800">ATC Team</p>
+            <p className="text-sm text-gray-500">
+              {formatDate(post?.date_time)}
+            </p>
           </motion.div>
 
           <motion.h1
@@ -320,33 +256,44 @@ const BlogDetails = () => {
               delay: 0.2,
             }}
           >
-            The Future of{" "}
-            <span className="bg-gradient-to-r from-[#2E437C] to-[#1d3b72] bg-clip-text text-transparent">
-              Digital Innovation
-            </span>
+            {post?.name && (
+              <>
+                {post.name.split(" ").slice(0, -2).join(" ")}{" "}
+                <span className="bg-gradient-to-r from-[#2E437C] to-[#1d3b72] bg-clip-text text-transparent">
+                  {post.name.split(" ").slice(-2).join(" ")}
+                </span>
+              </>
+            )}
           </motion.h1>
         </motion.div>
 
-        <motion.div className="mb-12 fade-up-blog" variants={heroImageVariants}>
-          <motion.img
-            src={blo1}
-            className="w-full lg:h-[650px] object-cover rounded-2xl shadow-2xl"
-            alt="Digital Innovation"
-            loading="lazy"
-            whileHover={{
-              scale: 1.01,
-              y: -5,
-              boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)",
-              transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 25,
-                duration: 0.3,
-              },
-            }}
-          />
-        </motion.div>
+        {/* Hero Image */}
+        {post?.image && (
+          <motion.div
+            className="mb-12 fade-up-blog"
+            variants={heroImageVariants}
+          >
+            <motion.img
+              src={`${import.meta.env.VITE_BACKEND_URL}/${post.image}`}
+              className="w-full lg:h-[650px] object-cover rounded-2xl shadow-2xl"
+              alt={post.name}
+              loading="lazy"
+              whileHover={{
+                scale: 1.01,
+                y: -5,
+                boxShadow: "0 25px 50px rgba(0, 0, 0, 0.15)",
+                transition: {
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 25,
+                  duration: 0.3,
+                },
+              }}
+            />
+          </motion.div>
+        )}
 
+        {/* Post Content */}
         <motion.article
           className="max-w-4xl mx-auto prose prose-lg prose-gray"
           variants={contentVariants}
@@ -354,201 +301,23 @@ const BlogDetails = () => {
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          <motion.p
-            variants={paragraphVariants}
-            className="text-lg text-gray-700 leading-relaxed mb-6 first-letter:text-5xl first-letter:font-bold first-letter:text-[#2E437C] first-letter:float-left first-letter:mr-2 first-letter:mt-1 fade-up-blog"
-          >
-            In today's fast-paced world, digital innovation is shaping the way
-            we live, work, and connect with each other. From artificial
-            intelligence to cloud computing, technology has become the backbone
-            of modern businesses and everyday life.
-          </motion.p>
-
-          <motion.p
-            variants={paragraphVariants}
-            className="text-base text-gray-600 leading-relaxed mb-6 fade-up-blog"
-          >
-            The rapid evolution of technology continues to transform industries,
-            creating new opportunities while challenging traditional business
-            models. Companies that embrace digital transformation are better
-            positioned to thrive in this competitive landscape.
-          </motion.p>
-
-          <motion.p
-            variants={paragraphVariants}
-            className="text-base text-gray-600 leading-relaxed mb-8 fade-up-blog"
-          >
-            As we move forward, the integration of emerging technologies like
-            machine learning, IoT, and blockchain will continue to revolutionize
-            how we approach problem-solving and innovation across various
-            sectors.
-          </motion.p>
-
-          <motion.div
-            className="ml-6 my-8 fade-up-blog"
-            variants={listVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-50px" }}
-          >
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">
-              Key Innovation Areas:
-            </h3>
-            <motion.ul className="space-y-3">
-              <motion.li
-                variants={listItemVariants}
-                className="flex items-center text-gray-600"
-              >
-                <div className="w-2 h-2 bg-[#2E437C] rounded-full mr-3"></div>
-                Artificial Intelligence and Machine Learning
-              </motion.li>
-              <motion.li
-                variants={listItemVariants}
-                className="flex items-center text-gray-600"
-              >
-                <div className="w-2 h-2 bg-[#2E437C] rounded-full mr-3"></div>
-                Cloud Computing and Infrastructure
-              </motion.li>
-              <motion.li
-                variants={listItemVariants}
-                className="flex items-center text-gray-600"
-              >
-                <div className="w-2 h-2 bg-[#2E437C] rounded-full mr-3"></div>
-                Internet of Things (IoT) Solutions
-              </motion.li>
-            </motion.ul>
-          </motion.div>
-
-          <motion.p
-            variants={paragraphVariants}
-            className="text-base text-gray-600 leading-relaxed mb-6 fade-up-blog"
-          >
-            The digital transformation journey requires strategic planning,
-            investment in the right technologies, and a commitment to continuous
-            learning and adaptation. Organizations must foster a culture of
-            innovation to stay ahead of the curve.
-          </motion.p>
-
-          <motion.p
-            variants={paragraphVariants}
-            className="text-base text-gray-600 leading-relaxed mb-8 fade-up-blog"
-          >
-            Success in the digital age depends on the ability to leverage data
-            effectively, automate processes intelligently, and create seamless
-            user experiences that exceed customer expectations.
-          </motion.p>
+          {post?.description && (
+            <motion.div
+              className="text-base text-gray-600 leading-relaxed fade-up-blog prose-custom"
+              dangerouslySetInnerHTML={{ __html: post.description }}
+              style={{
+                fontSize: "16px",
+                lineHeight: "1.75",
+                color: "#4a5568",
+              }}
+            />
+          )}
         </motion.article>
 
-        <motion.div
-          className="text-center my-16 fade-up-blog"
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{
-            type: "spring",
-            stiffness: 200,
-            damping: 20,
-            duration: 0.6,
-          }}
-        >
-          <motion.img
-            src={blo1}
-            className="lg:w-[692px] lg:h-[312px] object-cover rounded-2xl mx-auto shadow-xl"
-            alt="Innovation Process"
-            loading="lazy"
-            whileHover={{
-              scale: 1.02,
-              y: -3,
-              boxShadow: "0 20px 40px rgba(0, 0, 0, 0.12)",
-              transition: {
-                type: "spring",
-                stiffness: 400,
-                damping: 25,
-                duration: 0.3,
-              },
-            }}
-          />
-        </motion.div>
+        {/* Related Posts Section */}
+        <NewsGrid  initialPostsCount={4} className="pt-20" />
 
-        <motion.div
-          className="max-w-4xl mx-auto fade-up-blog"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{
-            type: "spring",
-            stiffness: 300,
-            damping: 25,
-            duration: 0.6,
-          }}
-        >
-          <motion.div
-            className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-8 border-l-4 border-[#2E437C]"
-            whileHover={{
-              scale: 1.01,
-              boxShadow: "0 8px 25px rgba(0, 0, 0, 0.08)",
-              transition: { duration: 0.2 },
-            }}
-          >
-            <p className="text-lg text-gray-700 leading-relaxed italic">
-              "The future promises even greater opportunities: smarter
-              applications, secure platforms, and an increased focus on
-              sustainability through technology. We stand at the threshold of
-              unprecedented innovation."
-            </p>
-          </motion.div>
-        </motion.div>
-
-        <motion.section
-          className="pt-20 fade-up-blog"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.div
-            className="flex items-center gap-4 mb-10"
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-          >
-            <h3 className="text-3xl lg:text-4xl font-bold bg-gradient-to-r text-[#2E437C]">
-              Popular Blogs
-            </h3>
-          </motion.div>
-
-          <motion.div
-            className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8"
-            variants={cardGridVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-          >
-            {allNews?.map((item, index) => (
-              <motion.div
-                key={index}
-                variants={cardVariants}
-                whileHover={{
-                  y: -8,
-                  scale: 1.02,
-                  rotateX: -2,
-                  boxShadow: "0 20px 40px rgba(0, 0, 0, 0.1)",
-                  transition: {
-                    type: "spring",
-                    stiffness: 400,
-                    damping: 25,
-                    duration: 0.3,
-                  },
-                }}
-                className="fade-up-blog  border border-[#0A0D170D] rounded-[8px]"
-              >
-                <NewsCard props={item} />
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.section>
-
+        {/* Partners Section */}
         <motion.section
           className="overflow-hidden pt-20 fade-up-blog"
           initial={{ opacity: 0 }}
@@ -611,6 +380,193 @@ const BlogDetails = () => {
           </motion.div>
         </motion.section>
       </motion.div>
+
+      {/* Custom styles for HTML content */}
+      <style jsx>{`
+        .prose-custom p {
+          margin-bottom: 1.5rem;
+          font-size: 16px;
+          line-height: 1.75;
+          color: #4a5568;
+        }
+        .prose-custom strong {
+          color: #2d3748;
+          font-weight: 600;
+        }
+        .prose-custom img {
+          width: 100%;
+          height: auto;
+          border-radius: 12px;
+          margin: 2rem 0;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .prose-custom .dest-block {
+          margin-bottom: 2rem;
+        }
+        .prose-custom blockquote {
+          background: linear-gradient(to right, #f7fafc, #edf2f7);
+          border-left: 4px solid #2e437c;
+          margin: 2rem 0;
+          padding: 2rem;
+          border-radius: 16px;
+          font-size: 18px;
+          line-height: 1.75;
+          color: #374151;
+          font-style: italic;
+          position: relative;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .prose-custom blockquote::before {
+          content: '"';
+          font-size: 4rem;
+          color: #2e437c;
+          position: absolute;
+          top: -10px;
+          left: 20px;
+          font-family: Georgia, serif;
+          opacity: 0.3;
+        }
+        .prose-custom blockquote p {
+          margin: 0;
+          padding-left: 2rem;
+          color: #374151;
+          font-size: 18px;
+        }
+        .prose-custom h1 {
+          font-size: 2rem;
+          font-weight: 700;
+          color: #2d3748;
+          margin: 2rem 0 1rem 0;
+          line-height: 1.2;
+        }
+        .prose-custom h2 {
+          font-size: 1.5rem;
+          font-weight: 600;
+          color: #2d3748;
+          margin: 1.75rem 0 1rem 0;
+          line-height: 1.3;
+        }
+        .prose-custom h3 {
+          font-size: 1.25rem;
+          font-weight: 600;
+          color: #2d3748;
+          margin: 1.5rem 0 0.75rem 0;
+          line-height: 1.4;
+        }
+
+        /* Quill Editor Lists - Bullet Lists (data-list="bullet") */
+        .prose-custom ol[data-list="bullet"],
+        .prose-custom ol li[data-list="bullet"] {
+          list-style-type: none;
+          counter-reset: none;
+        }
+        .prose-custom ol {
+          margin: 1.5rem 0;
+          padding-left: 0;
+          list-style-type: none;
+        }
+        .prose-custom ol li {
+          position: relative;
+          margin-bottom: 0.75rem;
+          font-size: 16px;
+          line-height: 1.75;
+          color: #4a5568;
+          padding-left: 2rem;
+          display: block;
+        }
+
+        /* Bullet points for data-list="bullet" */
+        .prose-custom ol li[data-list="bullet"]::before {
+          content: "";
+          position: absolute;
+          left: 0.5rem;
+          top: 0.75rem;
+          width: 8px;
+          height: 8px;
+          background-color: #2e437c;
+          border-radius: 50%;
+          transform: translateY(-50%);
+        }
+
+        /* Numbers for data-list="ordered" */
+        .prose-custom ol {
+          counter-reset: ordered-counter;
+        }
+        .prose-custom ol li[data-list="ordered"] {
+          counter-increment: ordered-counter;
+        }
+        .prose-custom ol li[data-list="ordered"]::before {
+          content: counter(ordered-counter);
+          position: absolute;
+          left: 0;
+          top: 0;
+          background-color: #2e437c;
+          color: white;
+          font-size: 14px;
+          font-weight: 600;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          line-height: 1;
+        }
+
+        /* Hide Quill UI elements */
+        .prose-custom .ql-ui {
+          display: none;
+        }
+
+        /* Regular unordered lists */
+        .prose-custom ul {
+          margin: 1.5rem 0;
+          padding-left: 2rem;
+          list-style-type: none;
+        }
+        .prose-custom ul li {
+          position: relative;
+          margin-bottom: 0.75rem;
+          font-size: 16px;
+          line-height: 1.75;
+          color: #4a5568;
+          padding-left: 1.5rem;
+        }
+        .prose-custom ul li::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0.75rem;
+          width: 8px;
+          height: 8px;
+          background-color: #2e437c;
+          border-radius: 50%;
+          transform: translateY(-50%);
+        }
+
+        /* Nested lists support */
+        .prose-custom ol ol,
+        .prose-custom ul ul {
+          margin: 0.5rem 0;
+          padding-left: 1.5rem;
+        }
+        .prose-custom ol ol li::before,
+        .prose-custom ul ul li::before {
+          background-color: #718096;
+          width: 6px;
+          height: 6px;
+        }
+
+        /* List item content */
+        .prose-custom li p {
+          margin: 0;
+          display: inline;
+        }
+        .prose-custom li > p + p {
+          margin-top: 0.5rem;
+          display: block;
+        }
+      `}</style>
     </>
   );
 };

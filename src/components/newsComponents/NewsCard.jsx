@@ -8,7 +8,7 @@ const NewsCard = ({ props }) => {
     <>
       <div
         // className="border border-[#0A0D170D] rounded-[8px]"
-        onClick={() => navigate(`/news/details`)}
+        onClick={() => navigate(`/news/details/${props.slug}`)}
       >
         <img
           src={props.image}
