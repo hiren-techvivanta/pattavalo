@@ -10,8 +10,9 @@ export default function ExpertSolutions() {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.2,
+        staggerChildren: 0.02,
+        delayChildren: 0.1,
+        duration: 0.4,
       },
     },
   };
@@ -72,6 +73,27 @@ export default function ExpertSolutions() {
     },
   };
 
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.3,
+      },
+    },
+  };
+
+  const splitText = (text) =>
+    text.split("").map((char, i) => (
+      <motion.span key={i} variants={letterVariants} className="inline-block">
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
+
   return (
     <section className="container min-h-screen flex flex-col-reverse mx-auto lg:flex-row items-center justify-between w-full px-4 md:px-10 lg:px-5 xl:px-5 py-5 bg-white font-articulat">
       <motion.div
@@ -83,47 +105,17 @@ export default function ExpertSolutions() {
       >
         <motion.h1
           className="text-[42px] md:text-[48px] lg:text-[54px] leading-tight font-bold mb-8"
-          variants={textRevealVariants}
+          variants={containerVariants}
         >
-          <motion.span
-            className="text-[#BABEC8] font-normal inline-block"
-            variants={{
-              hidden: { opacity: 0, y: 15 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.4, ease: "easeOut" },
-              },
-            }}
-          >
-            Expert{" "}
-          </motion.span>
-          <motion.span
-            className="text-[#2E437C] font-bold inline-block"
-            variants={{
-              hidden: { opacity: 0, y: 15 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.4, ease: "easeOut", delay: 0.1 },
-              },
-            }}
-          >
-            Solutions for Custom Conveyor{" "}
-          </motion.span>
-          <motion.span
-            className="text-[#BABEC8] font-normal inline-block"
-            variants={{
-              hidden: { opacity: 0, y: 15 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.4, ease: "easeOut", delay: 0.2 },
-              },
-            }}
-          >
-            Needs.
-          </motion.span>
+          <span className="block text-[#BABEC8] font-normal">
+            {splitText("Expert")}
+          </span>
+          <span className="block text-[#2E437C] font-bold ">
+            {splitText("Solutions for CustomConveyor")}
+          </span>
+          <span className="block text-[#BABEC8] font-normal">
+            {splitText("Needs.")}
+          </span>
         </motion.h1>
 
         <motion.p
