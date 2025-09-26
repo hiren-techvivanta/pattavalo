@@ -157,11 +157,11 @@ export default function Home() {
         animate="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
-        <motion.div variants={quickFadeInUp} className="fade-in-section">
+        <motion.div variants={quickFadeInUp} className="fade-in-section  2xl:px-10">
           <Gatherings />
         </motion.div>
 
-        <motion.div variants={quickFadeInUp} className="fade-in-section">
+        <motion.div variants={quickFadeInUp} className="fade-in-section ">
           <ModulerSolution />
         </motion.div>
 
@@ -325,10 +325,10 @@ export default function Home() {
             onClick={() => setShowMap(true)}
           >
             <motion.p
-              className="text-white text-md  sm:text-xl font-medium px-6 py-3 rounded-lg bg-[#2E437C] backdrop-blur-sm shadow-lg"
+              className="text-white text-md  sm:text-xl font-medium px-6 py-3 rounded-lg bg-[#2E437C] "
               whileHover={{
                 scale: 1.05,
-                // textShadow: "0 0 10px rgba(255,255,255,0.7)",
+                
               }}
               transition={{ type: "spring", stiffness: 300 }}
             >

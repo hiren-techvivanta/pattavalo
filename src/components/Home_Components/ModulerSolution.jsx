@@ -174,7 +174,7 @@ export default function ModulerSolution() {
       </motion.span>
     ));
   return (
-    <section className="container mx-auto w-full px-4 md:px-10 lg:px-5 xl:px-5 py-10 bg-white">
+    <section className="container mx-auto w-full px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-10 bg-white">
       <motion.div
         initial="hidden"
         whileInView="visible"

@@ -53,11 +53,11 @@ const statsData = [
   { number: "99%", label: "Satisfaction Rate" },
 ];
 
-const teamData = [
-  { img: t1, name: "Ajay Patel", role: "Managing Director" },
-  { img: t2, name: "Harnish Patel", role: "General Manager (Sales&Marketing)" },
-  { img: t3, name: "Shivam Patel", role: "Technical Director" },
-];
+// const teamData = [
+//   { img: t1, name: "Ajay Patel", role: "Managing Director" },
+//   { img: t2, name: "Harnish Patel", role: "General Manager (Sales&Marketing)" },
+//   { img: t3, name: "Shivam Patel", role: "Technical Director" },
+// ];
 
 const galleryImages = [i1, i2, i3, i4, i5, i6];
 
@@ -157,9 +157,69 @@ const AboutUs = () => {
   const [isVideoExpanded, setIsVideoExpanded] = useState(false);
   const [showNavbar, setShowNavbar] = useState(false);
   const [selectedYear, setSelectedYear] = useState("2015");
-
+  const [ourTeam, setOurTeam] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const videoRef = useRef(null);
   const scrollContainerRef = useRef(null);
+  useEffect(() => {
+    fetchTeam();
+  }, []);
+
+  const fetchTeam = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const url = `${import.meta.env.VITE_BACKEND_URL}/settings/ourteam`;
+
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+     
+      if (!response.ok) {
+        let errorMessage = `Request failed with status ${response.status}`;
+
+        
+        try {
+          const errorData = await response.json();
+          if (errorData?.message) {
+            errorMessage = errorData.message;
+          }
+        } catch {
+          
+        }
+
+        throw new Error(errorMessage);
+      }
+
+      // Parse JSON safely
+      let result;
+      try {
+        result = await response.json();
+      } catch (parseErr) {
+        throw new Error("Failed to parse server response");
+      }
+
+      
+      if (!result || typeof result !== "object") {
+        throw new Error("Unexpected response format");
+      }
+
+      setOurTeam(result.data || result);
+    } catch (err) {
+      console.error("Error fetching team:", err);
+      setError(
+        err instanceof Error ? err.message : "An unknown error occurred"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Faster Animation variants
   const containerVariants = {
@@ -192,7 +252,7 @@ const AboutUs = () => {
       },
     },
   };
-
+ 
   const slideInRight = {
     hidden: {
       opacity: 0,
@@ -505,19 +565,22 @@ const AboutUs = () => {
           <motion.div variants={fadeInUp}>
             <SectionTitle title="Our" subtitle="Team" alignment="center" />
           </motion.div>
-
-          <div className="overflow-x-auto scrollbar-hide">
-            <motion.div
-              className="flex justify-center align-top gap-8 pb-4 min-w-max"
-              variants={containerVariants}
-            >
-              {teamData.map((member, index) => (
-                <motion.div key={index} variants={scaleInVariants}>
-                  <TeamCard member={member} index={index} />
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
+          {loading && <p className="text-center">Loading team...</p>}
+          {error && <p className="text-center text-red-500">{error}</p>}
+          {!loading && !error && (
+            <div className="overflow-x-auto scrollbar-hide">
+              <motion.div
+                className="flex justify-center align-top gap-8 pb-4 min-w-max"
+                variants={containerVariants}
+              >
+                {ourTeam.map((member, index) => (
+                  <motion.div key={index} variants={scaleInVariants}>
+                    <TeamCard member={member} index={index} />
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+          )}
         </div>
       </motion.div>
 
