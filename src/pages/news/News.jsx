@@ -8,12 +8,12 @@ import Seo from "../../components/common/Seo";
 
 const News = () => {
   const [activeTab, setActiveTab] = useState("Latest");
-  const initialPostsCount = 12; 
+  const initialPostsCount = 12;
   const [loadMoreInfo, setLoadMoreInfo] = useState({
     hasMore: false,
     remaining: 0,
     total: 0,
-    handleLoadMore: null
+    handleLoadMore: null,
   });
 
   const tabs = ["Latest", "Blogs", "Events", "Featured Product"];
@@ -36,7 +36,7 @@ const News = () => {
   };
 
   const navVariants = {
-    hidden: { opacity: 0, y: -20 },
+    hidden: { opacity: 0, y: -40 },
     visible: {
       opacity: 1,
       y: 0,
@@ -77,10 +77,8 @@ const News = () => {
         description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
         url="https://www.atcchain.com/news"
       />
-      
-      <motion.div initial="hidden" animate="visible" variants={navVariants}>
-        <Navbar navStyle={"white"} />
-      </motion.div>
+
+      <Navbar navStyle={"white"} />
 
       <motion.div
         className="w-full bg-gradient-to-b from-gray-50/30 to-white pt-20 md:pt-24 lg:pt-30"
@@ -93,7 +91,7 @@ const News = () => {
             className="flex justify-start py-6"
             variants={headerVariants}
           >
-            <motion.nav 
+            <motion.nav
               className="flex space-x-4 md:space-x-6 lg:space-x-8 overflow-x-auto scrollbar-hide"
               variants={tabContainerVariants}
               initial="hidden"
@@ -131,7 +129,7 @@ const News = () => {
         </div>
       </motion.div>
 
-      <NewsGrid 
+      <NewsGrid
         activeTab={activeTab}
         searchQuery=""
         initialPostsCount={initialPostsCount}
@@ -155,12 +153,11 @@ const News = () => {
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
           >
-            <AnimatedButton 
-              icon={HiDownload} 
-              color={"#2E437C"} 
+            <AnimatedButton
+              icon={HiDownload}
+              color={"#2E437C"}
               hoverColor={"#1E2F5C"}
               onClick={loadMoreInfo.handleLoadMore}
-           
             >
               Load More ({loadMoreInfo.remaining} remaining)
             </AnimatedButton>

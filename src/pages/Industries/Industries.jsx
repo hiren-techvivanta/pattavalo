@@ -19,62 +19,6 @@ gsap.registerPlugin(ScrollTrigger);
 const Industries = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  // useEffect(() => {
-  //   const lenis = new Lenis({
-  //     lerp: 0.1,
-  //     duration: 0.8,
-  //     easing: (t) => 1 - Math.pow(1 - t, 3),
-  //     direction: "vertical",
-  //     gestureDirection: "vertical",
-  //     smooth: true,
-  //     mouseMultiplier: 1.2,
-  //     smoothTouch: false,
-  //     touchMultiplier: 2,
-  //     infinite: false,
-  //     autoResize: true,
-  //   });
-
-  //   function raf(time) {
-  //     lenis.raf(time);
-  //     requestAnimationFrame(raf);
-  //   }
-  //   requestAnimationFrame(raf);
-
-  //   lenis.on('scroll', ScrollTrigger.update);
-    
-  //   gsap.ticker.add((time) => {
-  //     lenis.raf(time * 1000);
-  //   });
-
-  //   gsap.ticker.lagSmoothing(0);
-
-  //   gsap.fromTo(".fade-up-element", 
-  //     { 
-  //       opacity: 0,
-  //       y: 30,
-  //     },
-  //     {
-  //       opacity: 1,
-  //       y: 0,
-  //       duration: 0.6,
-  //       ease: "power2.out",
-  //       stagger: 0.1,
-  //       scrollTrigger: {
-  //         trigger: ".fade-up-element",
-  //         start: "top 85%",
-  //         end: "bottom 20%",
-  //         toggleActions: "play none none reverse",
-  //       }
-  //     }
-  //   );
-
-  //   return () => {
-  //     lenis.destroy();
-  //     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-  //     gsap.ticker.remove(lenis.raf);
-  //   };
-  // }, []);
-
   const data = [
     {
       id: 1,
@@ -146,12 +90,10 @@ const Industries = () => {
     hidden: {
       opacity: 0,
       y: 30,
-      scale: 0.98,
     },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: {
         type: "spring",
         stiffness: 300,
@@ -165,12 +107,10 @@ const Industries = () => {
     hidden: {
       opacity: 0,
       x: 30,
-      scale: 0.95,
     },
     visible: {
       opacity: 1,
       x: 0,
-      scale: 1,
       transition: {
         type: "spring",
         stiffness: 400,
@@ -195,13 +135,11 @@ const Industries = () => {
     hidden: {
       opacity: 0,
       y: 25,
-      scale: 0.95,
       rotateX: 5,
     },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       rotateX: 0,
       transition: {
         type: "spring",
@@ -216,6 +154,39 @@ const Industries = () => {
     setSearchQuery("");
   };
 
+  const cardVariants = {
+     hidden: {
+      opacity: 0,
+      y: 25,
+      scale: 0.95,
+      rotateX: 5,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      rotateX: 0,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 20,
+        duration: 0.4,
+      },
+    },
+  };
+
+  const cardGridVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.06,
+        delayChildren: 0.2,
+        duration: 0.6,
+      },
+    },
+  };
+
   return (
     <>
       <Seo
@@ -223,13 +194,8 @@ const Industries = () => {
         description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
         url="https://www.atcchain.com/downloads"
       />
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={navVariants}
-      >
+     
         <Navbar navStyle={"white"} />
-      </motion.div>
 
       <motion.div
         className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20 mt-10"
@@ -268,7 +234,6 @@ const Industries = () => {
               <motion.div
                 animate={{
                   rotate: searchQuery ? 360 : 0,
-                  scale: searchQuery ? 1.1 : 1,
                 }}
                 transition={{
                   duration: 0.3,
@@ -286,7 +251,6 @@ const Industries = () => {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-12 py-3 text-sm rounded-2xl border-2 border-gray-200 bg-gray-50/50 focus:ring-2 focus:ring-[#2E437C]/20 focus:border-[#2E437C] focus:outline-none focus:bg-white transition-all duration-300"
               whileFocus={{
-                scale: 1.01,
                 boxShadow: "0 8px 25px rgba(46, 67, 124, 0.15)",
                 transition: { duration: 0.2 },
               }}
@@ -297,9 +261,9 @@ const Industries = () => {
                 <motion.button
                   onClick={clearSearch}
                   className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-gray-600 transition-colors duration-200"
-                  initial={{ opacity: 0, scale: 0, rotate: -90 }}
-                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                  exit={{ opacity: 0, scale: 0, rotate: 90 }}
+                  initial={{ opacity: 0, rotate: -90 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0, rotate: 90 }}
                   transition={{
                     type: "spring",
                     stiffness: 500,
@@ -307,13 +271,8 @@ const Industries = () => {
                     duration: 0.3,
                   }}
                   whileHover={{
-                    scale: 1.1,
                     rotate: 90,
                     transition: { duration: 0.2 },
-                  }}
-                  whileTap={{
-                    scale: 0.9,
-                    transition: { duration: 0.1 },
                   }}
                 >
                   <IoCloseCircle className="w-5 h-5" />
@@ -323,25 +282,28 @@ const Industries = () => {
           </motion.div>
         </motion.div>
 
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           <motion.div
             key={searchQuery}
             className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-10"
-            variants={containerVariants}
+            variants={cardGridVariants}
             initial="hidden"
-            animate="visible"
-            exit="hidden"
+            whileInView="visible"
+            viewport={{
+              once: true,
+              amount: 0.1,
+              margin: "-50px",
+            }}
           >
             {filteredData.length > 0 ? (
               filteredData.map((v, i) => (
                 <motion.div
-                  className="flex gap-6 p-4  bg-gradient-to-br from-white to-gray-50/50 hover:shadow-lg transition-all duration-300 fade-up-element"
+                  className="flex gap-6 p-4 bg-gradient-to-br shadow hover:shadow-lg from-white to-gray-50/50 fade-up-element"
                   key={v.id}
-                  variants={itemVariants}
+                  variants={cardVariants}
                   whileHover={{
-                    y: -5,
-                    scale: 1.01,
-                    boxShadow: "0 15px 35px rgba(0, 0, 0, 0.1)",
+                    y: -8,
+                    rotateX: -2,
                     transition: {
                       type: "spring",
                       stiffness: 400,
@@ -349,21 +311,19 @@ const Industries = () => {
                       duration: 0.3,
                     },
                   }}
-                  layout
                 >
                   <motion.img
                     src={v.img}
-                    className="w-32 h-40 lg:w-48 lg:h-60 object-cover  shadow-md"
+                    className="w-32 h-40 lg:w-48 lg:h-60 object-cover shadow-md"
                     alt={v.title}
                     loading="lazy"
-                    initial={{ opacity: 0, scale: 0.9, rotateY: -5 }}
-                    animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
                     transition={{
                       duration: 0.5,
-                      delay: i * 0.1 + 0.2,
+                      delay: i * 0.1 + 0.3,
                     }}
                     whileHover={{
-                      scale: 1.01,
                       rotateY: 5,
                       transition: { duration: 0.3 },
                     }}
@@ -405,8 +365,8 @@ const Industries = () => {
 
                     <motion.div
                       className="flex justify-end"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
                       transition={{
                         type: "spring",
                         stiffness: 500,
@@ -430,8 +390,8 @@ const Industries = () => {
             ) : (
               <motion.div
                 className="col-span-full text-center py-20"
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{
                   type: "spring",
                   stiffness: 300,
@@ -464,7 +424,7 @@ const Industries = () => {
                     />
                   </svg>
                 </motion.div>
-                
+
                 <motion.h3
                   className="text-xl font-semibold text-gray-500 mb-2"
                   initial={{ opacity: 0 }}
@@ -473,7 +433,7 @@ const Industries = () => {
                 >
                   No downloads found
                 </motion.h3>
-                
+
                 <motion.p
                   className="text-gray-400 mb-6"
                   initial={{ opacity: 0 }}
@@ -482,18 +442,16 @@ const Industries = () => {
                 >
                   No items match "{searchQuery}". Try a different search term.
                 </motion.p>
-                
+
                 <motion.button
                   onClick={clearSearch}
                   className="px-6 py-3 bg-[#2E437C] text-white rounded-xl font-medium hover:bg-[#1E2F5C] transition-all duration-300 shadow-lg hover:shadow-xl"
                   whileHover={{
-                    scale: 1.05,
                     y: -2,
                     boxShadow: "0 10px 25px rgba(46, 67, 124, 0.3)",
                     transition: { duration: 0.2 },
                   }}
                   whileTap={{
-                    scale: 0.95,
                     transition: { duration: 0.1 },
                   }}
                   initial={{ opacity: 0, y: 10 }}
