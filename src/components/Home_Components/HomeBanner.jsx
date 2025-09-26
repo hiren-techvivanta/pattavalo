@@ -19,10 +19,8 @@ export default function HomeBanner({ onAnimationComplete }) {
         .catch((err) => console.log("Autoplay prevented:", err));
     }
 
-    // Match AboutUs timing - video expands after 1500ms
     const timer = setTimeout(() => setIsVideoExpanded(true), 1500);
 
-    // Show navbar after 2000ms (same as AboutUs)
     const navbarTimer = setTimeout(() => {
       setShowNavbar(true);
       setShowContent(true);
@@ -31,7 +29,6 @@ export default function HomeBanner({ onAnimationComplete }) {
       }
     }, 2000);
 
-    // Show content after video expansion (similar to AboutUs pattern)
     const contentTimer = setTimeout(() => {}, 1900);
 
     return () => {
@@ -72,12 +69,12 @@ export default function HomeBanner({ onAnimationComplete }) {
     <>
       {/* Animated Navbar - same as AboutUs */}
       <motion.div
-        className="fixed top-0 left-0 right-0 z-50 overflow-x-hidden"
+        className="fixed top-0 left-0 right-0 z-50"
         initial={{ opacity: 1, y: -100 }}
-        animate={showNavbar ? { opacity: 1, y: 0} : { y: -100 }}
+        animate={showNavbar ? { opacity: 1, y: 0, scale: 1 } : { y: -100 }}
         transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
       >
-        <Navbar navStyle="transparent" />
+        <Navbar />
       </motion.div>
 
       <div className="relative h-screen w-full overflow-hidden">
@@ -114,10 +111,10 @@ export default function HomeBanner({ onAnimationComplete }) {
           }`}
         />
 
-        {/* Content - only show when isVideoExpanded is true and showContent is true */}
+        {/* Content - only show when isVideoExpanded is true and showContent is true px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16*/}
         {isVideoExpanded && showContent && (
-          <div className="relative z-10 w-full h-full flex items-center px-4 sm:px-6 md:px-8 lg:px-12 xl:px-5 py-16">
-            <div className="container mx-auto w-full mt-10 sm:mt-0">
+          <div className="container mx-auto relative z-10 w-full h-full flex items-center px-4 sm:px-6 md:px-8 lg:px-12 xl:px-15 2xl:px-25 py-16">
+            <div className=" w-full mt-10 sm:mt-0">
               <div className="max-w-4xl text-white overflow-hidden">
                 <div className="overflow-hidden">
                   <motion.h1

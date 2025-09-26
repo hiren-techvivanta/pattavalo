@@ -19,7 +19,7 @@ const TeamCard = ({ member, index = 0 }) => {
       transition={{ duration: 0.3 }}
     >
       <motion.img 
-        src={member.img} 
+        src={`${import.meta.env.VITE_BACKEND_URL}/${member.image}`} 
         className="w-[391px] md:w-full h-[183px] md:h-60 object-cover" 
         alt={member.name}
         whileHover={{ scale: 1.05 }}
@@ -39,7 +39,7 @@ const TeamCard = ({ member, index = 0 }) => {
         whileInView={{ opacity: 0.4, y: 0 }}
         transition={{ delay: index * 0.1 + 0.4 }}
       >
-        {member.role}
+        {member.position}
       </motion.p>
     </motion.div>
   );

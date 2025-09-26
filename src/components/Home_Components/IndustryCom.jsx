@@ -377,8 +377,8 @@ export default function IndustryCom() {
   const [activeCategory, setActiveCategory] = useState(
     industries[0].categories?.[0] || null
   );
-
-  // Responsive rotation state
+  const [expandedDescriptions, setExpandedDescriptions] = useState({});
+  
   const [rotation, setRotation] = useState(-20);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -394,10 +394,10 @@ export default function IndustryCom() {
       }
     };
 
-    // Check on mount
+    
     checkScreenSize();
 
-    // Listen for resize events
+    
     window.addEventListener("resize", checkScreenSize);
 
     return () => window.removeEventListener("resize", checkScreenSize);
@@ -432,7 +432,13 @@ export default function IndustryCom() {
   const handleCategoryClick = (category) => {
     setActiveCategory(category);
   };
-
+const toggleReadMore = (industryId, category) => {
+  const key = category ? `${industryId}-${category}` : industryId;
+  setExpandedDescriptions(prev => ({
+    ...prev,
+    [key]: !prev[key]
+  }));
+};
   const getConicGradient = () => {
     const segmentAngle = 360 / industries.length;
     const gapAngle = 5;
@@ -465,19 +471,19 @@ export default function IndustryCom() {
   const categoryData = getCategoryContent();
 
   return (
-    <section className="container mx-auto w-full  lg:px-15  px-4 sm:px-6 md:px-10 lg:pr-16 lg:pl-0 xl:pr-20 xl:pl-0 py-16 sm:py-20">
+    <section className="container mx-auto w-full  px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-10 lg:pr-16 lg:pl-0 xl:pr-20 xl:pl-0  sm:py-20">
       {/* Heading */}
       <motion.h1
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="text-4xl sm:text-5xl md:text-6xl lg:text-[100px] font-normal text-[#BABEC8] mb-10 text-center lg:text-left sm:px-6 md:px-10 lg:px-25"
+        className="text-4xl sm:text-5xl md:text-6xl lg:text-[90px] xl:text-[90px] font-normal text-[#BABEC8] mb-10 text-center lg:text-left sm:px-6 md:px-10 lg:px-15"
       >
         Industries we serve
       </motion.h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-center">
+      <div className=" grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-center">
         {/* Chart Section */}
         <div className="col-span-1 md:col-span-1 lg:col-span-1 relative flex justify-center lg:justify-start items-center overflow-hidden order-2 lg:order-1">
           <motion.div
@@ -559,12 +565,12 @@ export default function IndustryCom() {
                           pathRadius * Math.sin((endAngle * Math.PI) / 180)
                         } Z')`,
                         zIndex: 15,
-                        // border: isActive
-                        //   ? "2px solid #fff"
-                        //   : "2px solid transparent",
-                        // filter: isActive
-                        //   ? "drop-shadow(0 0 15px rgba(255,255,255,0.6))"
-                        //   : "none",
+                        border: isActive
+                          ? "2px solid #fff"
+                          : "2px solid transparent",
+                        filter: isActive
+                          ? "drop-shadow(0 0 15px rgba(255,255,255,0.6))"
+                          : "none",
                         transition: "all 0.3s ease",
                       }}
                     ></div>
@@ -689,12 +695,50 @@ export default function IndustryCom() {
               Solutions for{" "}
               <span style={{ color: "#2E437C" }}>{activeIndustry.title}</span>
             </h3>
-            <p className="mt-2 text-gray-600 text-sm lg:text-base leading-relaxed">
+            {/* <p className="mt-2 text-gray-600 text-sm lg:text-base leading-relaxed">
               {categoryData.description}
-            </p>
+            </p> */}
+             <div className="mt-2 text-gray-600">
+          <p className={`text-sm lg:text-base leading-relaxed ${
+            !expandedDescriptions[activeCategory ? 
+              `${activeIndustry.id}-${activeCategory}` : 
+              activeIndustry.id
+            ] ? 'line-clamp-3' : ''
+          }`}>
+            {categoryData.description}
+          </p>
+          
+          {/* Read More/Less Button */}
+          {categoryData.description.length > 150 && (
+            <button
+              onClick={() => toggleReadMore(activeIndustry.id, activeCategory)}
+              className="mt-2 text-[#2E437C] font-medium hover:text-[#1E2F5C] transition-colors flex items-center"
+            >
+              {expandedDescriptions[activeCategory ? 
+                `${activeIndustry.id}-${activeCategory}` : 
+                activeIndustry.id
+              ] ? (
+                <>
+                  Read Less
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                  </svg>
+                </>
+              ) : (
+                <>
+                  Read More
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </>
+              )}
+            </button>
+          )}
+        </div>
           </motion.div>
         </div>
       </div>
     </section>
+    
   );
 }

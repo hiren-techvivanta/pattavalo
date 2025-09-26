@@ -95,25 +95,25 @@ export default function ExpertSolutions() {
     ));
 
   return (
-    <section className="container min-h-screen flex flex-col-reverse mx-auto lg:flex-row items-center justify-between w-full px-4 md:px-10 lg:px-5 xl:px-5 py-5 bg-white font-articulat">
+    <section className="container min-h-screen flex flex-col-reverse mx-auto lg:flex-row items-center justify-between w-full px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-10  bg-white font-articulat">
       <motion.div
-        className="lg:w-1/2 w-full lg:pr-20 mb-12 lg:mb-0"
+        className="max-w-2xl md:w-1/3 lg:w-1/2 xl:w-3xl  w-full lg:pr-20 mb-12 lg:mb-0"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={containerVariants}
       >
         <motion.h1
-          className="text-[42px] md:text-[48px] lg:text-[54px] leading-tight font-bold mb-8"
           variants={containerVariants}
+          className="text-[42px] md:text-[48px] lg:text-[54px] leading-[60px] font-bold mb-8"
         >
-          <span className="block text-[#BABEC8] font-normal">
-            {splitText("Expert")}
+          <span className="text-[#BABEC8] font-normal">
+            {splitText("Expert ")}
           </span>
-          <span className="block text-[#2E437C] font-bold ">
-            {splitText("Solutions for CustomConveyor")}
+          <span className="text-[#2E437C] font-bold">
+            {splitText("Solutions for Custom Conveyor ")}
           </span>
-          <span className="block text-[#BABEC8] font-normal">
+          <span className="text-[#BABEC8] font-normal">
             {splitText("Needs.")}
           </span>
         </motion.h1>
