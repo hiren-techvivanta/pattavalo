@@ -24,7 +24,7 @@ const NewsGrid = ({
       case "Events":
         return "settings/post/event";
       case "Featured Product":
-        return "settings/post/product";
+        return "settings/post/featured-product";
       default:
         return "settings/post";
     }
