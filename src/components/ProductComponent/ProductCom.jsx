@@ -11,6 +11,7 @@ import {
   ListItemText,
   Box,
   CircularProgress,
+  Alert,
 } from "@mui/material";
 import { FaChevronDown, FaSearch, FaArrowLeft, FaTimes } from "react-icons/fa";
 import productImage from "../../assets/images/productdefault.png";
@@ -264,7 +265,7 @@ const ProductCom = () => {
           setParentCategory(subCategory.category);
           setViewMode("products");
           setShowDetails(false);
-          setSearchQuery(""); // Clear search when changing category
+          setSearchQuery(""); 
         }
       }
     };
