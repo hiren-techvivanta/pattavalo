@@ -53,24 +53,24 @@ const allNews = [
 export default function Resources() {
   const [activeTab, setActiveTab] = useState("Latest");
 
-  const headerVariants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-      scale: 0.98,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 25,
-        duration: 0.6,
-      },
-    },
-  };
+  // const headerVariants = {
+  //   hidden: {
+  //     opacity: 0,
+  //     y: 30,
+  //     scale: 0.98,
+  //   },
+  //   visible: {
+  //     opacity: 1,
+  //     y: 0,
+  //     scale: 1,
+  //     transition: {
+  //       type: "spring",
+  //       stiffness: 300,
+  //       damping: 25,
+  //       duration: 0.6,
+  //     },
+  //   },
+  // };
 
   const tabContainerVariants = {
     hidden: { opacity: 0 },
@@ -137,6 +137,38 @@ export default function Resources() {
   const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
+  const headerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.02,
+        delayChildren: 0.1,
+        duration: 0.4,
+      },
+    },
+  };
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.3,
+      },
+    },
+  };
+
+  const splitText = (text) =>
+    text.split("").map((char, i) => (
+      <motion.span key={i} variants={letterVariants} className="inline-block">
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
 
   return (
     <div className="container mx-auto w-full bg-white px-4 sm:px-8 lg:px-16 py-12">
@@ -149,16 +181,10 @@ export default function Resources() {
       >
         <motion.h2
           className="text-[48px] sm:text-4xl lg:text-5xl font-bold text-[#2E437C]"
-          variants={{
-            hidden: { opacity: 0, y: 20 },
-            visible: {
-              opacity: 1,
-              y: 0,
-              transition: { duration: 0.4 },
-            },
-          }}
+          variants={headerVariants} 
         >
-          Resources <span className="text-[#BABEC8]">& Insights</span>
+          <span className="text-[#2E437C]">{splitText("Resources ")}</span>
+          <span className="text-[#BABEC8]">{splitText("& Insights")}</span>
         </motion.h2>
 
         <motion.p
@@ -250,7 +276,7 @@ export default function Resources() {
         ))}
       </motion.div>
 
-       <NewsGrid 
+      <NewsGrid
         activeTab={activeTab}
         initialPostsCount={4}
         // searchQuery={searchQuery}

@@ -22,7 +22,7 @@ const Career = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Benefits data
+  
   const benefitsData = [
     {
       id: 1,
@@ -238,18 +238,8 @@ const Career = () => {
 
   const filteredJobs = jobs.filter((job) => job.category === activeCategory);
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.8,
-        staggerChildren: 0.15,
-        delayChildren: 0.2,
-      },
-    },
-  };
+  
+ 
 
   const fadeInUp = {
     hidden: {
@@ -384,7 +374,37 @@ const Career = () => {
       )}
     </button>
   );
+  const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.02,
+      delayChildren: 0.1,
+      duration: 0.4,
+    },
+  },
+};
+const letterVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      type: "spring",
+      stiffness: 300,
+      damping: 25,
+      duration: 0.3,
+    },
+  },
+};
 
+const splitText = (text) =>
+  text.split("").map((char, i) => (
+    <motion.span key={i} variants={letterVariants} className="inline-block">
+      {char === " " ? "\u00A0" : char}
+    </motion.span>
+  ));
   return (
     <>
       <Seo
@@ -404,15 +424,15 @@ const Career = () => {
         <motion.h1
           className="font-[400] text-[#2E437C] text-[40px] md:text-[74px] text-center"
           style={{ lineHeight: "70px" }}
-          variants={fadeInUp}
+          
         >
-          Career <br />
-          <span className="font-[700] text-[#BABEC8]">Openings</span>
+           {splitText("Career")} <br />
+          <span className="font-[700] text-[#BABEC8]">{splitText("Openings")}</span>
         </motion.h1>
 
         <motion.p
           className="text-[20px] pt-5 text-center text-[#191919] max-w-4xl mx-auto leading-relaxed"
-          variants={fadeInUp}
+          // variants={fadeInUp}
         >
           We're always looking for creative, talented self-starters to join the
           ATC family, <br className="hidden md:block" /> check out our open

@@ -57,16 +57,7 @@ export default function ClientFeedback() {
     },
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3,
-      },
-    },
-  };
+
 
   const cardVariants = {
     hidden: { 
@@ -137,56 +128,70 @@ export default function ClientFeedback() {
       },
     },
   };
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.02,
+        delayChildren: 0.1,
+        duration: 0.4,
+      },
+    },
+  };
 
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.3,
+      },
+    },
+  };
+
+  const splitText = (text) =>
+    text.split("").map((char, i) => (
+      <motion.span key={i} variants={letterVariants} className="inline-block">
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
   return (
     <section className="container mx-auto w-full px-4 md:px-10 lg:px-15 py-10 bg-white">
       <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
-        variants={headerVariants}
+        variants={containerVariants}
         className="text-left mb-12 max-w-4xl"
       >
         <motion.p 
           className="text-[#2E437C] font-medium"
-          variants={{
-            hidden: { opacity: 0, y: 10 },
-            visible: { 
-              opacity: 1, 
-              y: 0,
-              transition: { duration: 0.3 }
-            }
-          }}
+         
         >
-          Client Feedback
+           {splitText("Client Feedback")}
+         
         </motion.p>
         
-        <motion.h2 
+        <motion.h1 
           className="text-2xl md:text-4xl font-normal text-[#2E437C] mt-2"
-          variants={{
-            hidden: { opacity: 0, y: 15 },
-            visible: { 
-              opacity: 1, 
-              y: 0,
-              transition: { duration: 0.4, delay: 0.1 }
-            }
-          }}
+          
         >
-          Don't take our world for it!
-        </motion.h2>
+          {splitText("Don't take our world for it!")}
+          
+        </motion.h1>
         
         <motion.h3 
           className="text-2xl md:text-4xl font-bold text-[#BABEC8]"
-          variants={{
-            hidden: { opacity: 0, y: 15 },
-            visible: { 
-              opacity: 1, 
-              y: 0,
-              transition: { duration: 0.4, delay: 0.2 }
-            }
-          }}
+         
         >
-          Hear it from our partners.
+          {splitText("Hear it from our partners.")}
+
+          
         </motion.h3>
       </motion.div>
 

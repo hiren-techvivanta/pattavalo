@@ -120,16 +120,16 @@ const Industries = () => {
     },
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.2,
-      },
-    },
-  };
+  // const containerVariants = {
+  //   hidden: { opacity: 0 },
+  //   visible: {
+  //     opacity: 1,
+  //     transition: {
+  //       staggerChildren: 0.08,
+  //       delayChildren: 0.2,
+  //     },
+  //   },
+  // };
 
   const itemVariants = {
     hidden: {
@@ -155,7 +155,7 @@ const Industries = () => {
   };
 
   const cardVariants = {
-     hidden: {
+    hidden: {
       opacity: 0,
       y: 25,
       scale: 0.95,
@@ -186,6 +186,38 @@ const Industries = () => {
       },
     },
   };
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.02,
+        delayChildren: 0.1,
+        duration: 0.4,
+      },
+    },
+  };
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.3,
+      },
+    },
+  };
+
+  const splitText = (text) =>
+    text.split("").map((char, i) => (
+      <motion.span key={i} variants={letterVariants} className="inline-block">
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
 
   return (
     <>
@@ -194,8 +226,8 @@ const Industries = () => {
         description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
         url="https://www.atcchain.com/downloads"
       />
-     
-        <Navbar navStyle={"white"} />
+
+      <Navbar navStyle={"white"} />
 
       <motion.div
         className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20 mt-10"
@@ -207,19 +239,25 @@ const Industries = () => {
           className="flex flex-col md:flex-row md:justify-between md:items-center gap-6 mb-10"
           variants={containerVariants}
         >
-          <motion.div variants={headerVariants} className="fade-up-element">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-100px" }}
+            className="fade-up-element"
+          >
             <motion.h1
               className="text-[#BABEC8] font-bold text-3xl md:text-4xl lg:text-5xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, ease: "easeOut" }}
+              variants={containerVariants} 
             >
-              Downloads
+              {splitText("Downloads")}
             </motion.h1>
+
             <motion.p
               className="text-gray-600 text-lg md:text-xl mt-2"
               initial={{ opacity: 0, y: 15 }}
-              animate={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
               transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
             >
               Learn more about us at your convenience

@@ -140,6 +140,38 @@ export default function Home() {
   const handleBannerAnimationComplete = () => {
     setShowNavbar(true);
   };
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.02,
+        delayChildren: 0.1,
+        duration: 0.4,
+      },
+    },
+  };
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.3,
+      },
+    },
+  };
+
+  const splitText = (text) =>
+    text.split("").map((char, i) => (
+      <motion.span key={i} variants={letterVariants} className="inline-block">
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
 
   return (
     <div>
@@ -157,7 +189,10 @@ export default function Home() {
         animate="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
-        <motion.div variants={quickFadeInUp} className="fade-in-section  2xl:px-10">
+        <motion.div
+          variants={quickFadeInUp}
+          className="fade-in-section  2xl:px-10"
+        >
           <Gatherings />
         </motion.div>
 
@@ -194,16 +229,18 @@ export default function Home() {
         viewport={{ once: true, margin: "-100px" }}
       >
         <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-0 xl:px-0 py-16 sm:py-20">
-          <motion.h1
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
             viewport={{ once: true }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-12 px-14"
+            className="mb-12 px-14"
           >
-            <span className="text-[#2E437C]">Our </span>
-            <span className="text-[#BABEC8]">Clients</span>
-          </motion.h1>
+            <motion.h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
+              <span className="text-[#2E437C]">{splitText("Our ")}</span>
+              <span className="text-[#BABEC8]">{splitText("Clients")}</span>
+            </motion.h1>
+          </motion.div>
 
           <motion.div
             className="overflow-hidden"
@@ -328,7 +365,6 @@ export default function Home() {
               className="text-white text-md  sm:text-xl font-medium px-6 py-3 rounded-lg bg-[#2E437C] "
               whileHover={{
                 scale: 1.05,
-                
               }}
               transition={{ type: "spring", stiffness: 300 }}
             >

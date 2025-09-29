@@ -192,13 +192,11 @@ const ProductCom = () => {
     }
   };
 
-  // Extract all products from API data for search functionality
   const extractAllProducts = (apiData) => {
     const allProducts = [];
     console.log("api data", apiData);
 
     apiData.forEach((category) => {
-      // Add products from subcategories
       if (category.subcategories) {
         category.subcategories.forEach((subcategory) => {
           if (subcategory.products) {
@@ -265,13 +263,12 @@ const ProductCom = () => {
           setParentCategory(subCategory.category);
           setViewMode("products");
           setShowDetails(false);
-          setSearchQuery(""); 
+          setSearchQuery("");
         }
       }
     };
 
   const handleCategoryItemClick = (categoryName, parentCategoryName) => {
-    // Find the category object to get ID
     const category = categories.find(
       (cat) => cat.category === categoryName || cat.title === categoryName
     );
@@ -279,27 +276,24 @@ const ProductCom = () => {
     if (category) {
       fetchProductsByCategory(category.id, categoryName);
     } else {
-      // Fallback to filtering existing products
       setSelectedCategory(categoryName);
       setParentCategory(parentCategoryName || categoryName);
     }
 
     setViewMode("products");
     setShowDetails(false);
-    setSearchQuery(""); // Clear search when changing category
+    setSearchQuery("");
   };
 
   const handleProductItemClick = async (productTitle, category) => {
     try {
       setLoading(true);
 
-      // Find the category to get ID for API call
       const categoryObj = categories.find(
         (cat) => cat.category === category || cat.title === category
       );
 
       if (categoryObj) {
-        // Search for this specific product in the category
         const searchResults = await searchProducts(
           productTitle,
           categoryObj.id
@@ -349,11 +343,7 @@ const ProductCom = () => {
   if (loading) {
     return (
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-white z-50">
-        <CircularProgress
-          size={70}
-          thickness={4}
-          sx={{ color: "#2E437C" }}
-        />
+        <CircularProgress size={70} thickness={4} sx={{ color: "#2E437C" }} />
         <p className="mt-4 text-gray-600 text-lg tracking-wide">
           Loading, please wait...
         </p>
@@ -376,6 +366,38 @@ const ProductCom = () => {
       </div>
     );
   }
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.02,
+        delayChildren: 0.1,
+        duration: 0.4,
+      },
+    },
+  };
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.3,
+      },
+    },
+  };
+
+  const splitText = (text) =>
+    text.split("").map((char, i) => (
+      <motion.span key={i} variants={letterVariants} className="inline-block">
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
 
   return (
     <div className="min-h-screen bg-white px-4 md:px-12 py-10">
@@ -386,9 +408,15 @@ const ProductCom = () => {
         transition={{ duration: 0.6 }}
         className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8"
       >
-        <h1 className="text-3xl md:text-4xl font-bold text-[#BABEC8]">
-          Our Products
-        </h1>
+        <motion.h1
+          className="text-3xl md:text-4xl font-bold text-[#BABEC8]"
+          variants={containerVariants} 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {splitText("Our Products")}
+        </motion.h1>
 
         <div className="relative w-full md:max-w-md lg:max-w-lg xl:max-w-lg">
           <motion.input
