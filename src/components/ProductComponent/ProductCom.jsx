@@ -918,7 +918,7 @@ const ProductCom = () => {
                           product.image && product.image.startsWith("http")
                             ? product.image
                             : product.image && product.image.includes("/")
-                            ? `${import.meta.env.VITE_BACKEND_URL}/${product.image}`
+                            ? `${import.meta.env.VITE_IMAGE_URL}/${product.image}`
                             : productImage
                         }
                         alt={product.title}
