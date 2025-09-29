@@ -18,10 +18,7 @@ const usePosts = (endpoint = "settings/post") => {
           `${import.meta.env.VITE_BACKEND_URL}/${endpoint}`,
           {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "ngrok-skip-browser-warning": "true"
-            },
+        
           }
         );
 

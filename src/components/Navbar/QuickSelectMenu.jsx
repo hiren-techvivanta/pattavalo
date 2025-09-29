@@ -20,9 +20,7 @@ const QuickSelectMenu = ({ navBg }) => {
 
   // Common axios config with required header
   const axiosConfig = {
-    headers: {
-      "ngrok-skip-browser-warning": "true",
-    },
+  
   };
 
   useEffect(() => {

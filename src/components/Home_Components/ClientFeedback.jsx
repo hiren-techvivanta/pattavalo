@@ -221,7 +221,7 @@ export default function ClientFeedback() {
               scale: 0.98,
               transition: { duration: 0.1 },
             }}
-            className="bg-gradient-to-br from-[#F8F9FB] to-[#F0F2F7] rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-50 relative overflow-hidden group"
+            className="bg-gradient-to-br from-[#F8F9FB] to-[#F0F2F7] p-6 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-50 relative overflow-hidden group"
           >
             <motion.div
               className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#2E437C]/5 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"

@@ -174,16 +174,7 @@ const Career = () => {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(
-          `${import.meta.env.VITE_BACKEND_URL}/settings/job`,
-          {
-            method: "GET",
-            headers: {
-              "ngrok-skip-browser-warning": "true",
-              "Content-Type": "application/json",
-            },
-          }
-        );
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/settings/job`);
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

@@ -46,10 +46,7 @@ const BlogDetails = () => {
           `${import.meta.env.VITE_BACKEND_URL}/settings/post-detail/${slug}`,
           {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "ngrok-skip-browser-warning": "true"
-            },
+       
           }
         );
 

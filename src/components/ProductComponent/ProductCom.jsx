@@ -38,6 +38,7 @@ const ProductCom = () => {
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [productDetailsLoading, setProductDetailsLoading] = useState(false);
+  const [productsLoading, setProductsLoading] = useState(false);
 
   // URL parameters
   const [urlFilters, setUrlFilters] = useState({
@@ -74,14 +75,11 @@ const ProductCom = () => {
     if (categories.length > 0 && urlFilters.category) {
       applyUrlFilters();
     } else if (categories.length > 0 && !urlFilters.category) {
-      // Default behavior when no URL params
       const firstCategory = categories[0];
       if (firstCategory?.id) {
         setSelectedCategory(firstCategory.category || firstCategory.title);
         setParentCategory(firstCategory.category || firstCategory.title);
-        searchProducts("", firstCategory.id).then((defaultProducts) => {
-          setProducts(defaultProducts);
-        });
+        setExpandedPanel(`panel1`);
       }
     }
   }, [categories, urlFilters]);
@@ -103,7 +101,7 @@ const ProductCom = () => {
     setSearchParams(newSearchParams);
   };
 
-  // Fetch individual product details with enhanced error handling
+  // Fetch individual product details
   const fetchProductDetails = async (productId) => {
     try {
       setProductDetailsLoading(true);
@@ -113,15 +111,11 @@ const ProductCom = () => {
 
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/product/product/${productId}`,
-        {
-          headers: { "ngrok-skip-browser-warning": "true" },
-        }
       );
 
       console.log("Product details response:", response.data);
 
       if (response.data.message === "Product fetched successfully" && response.data.data) {
-        // Transform the detailed product data
         const detailedProduct = {
           id: response.data.data.id,
           title: response.data.data.productName,
@@ -174,7 +168,9 @@ const ProductCom = () => {
         } else if (urlFilters.subcategory) {
           await handleSubcategoryByUrl(urlFilters.subcategory, category);
         } else {
-          await fetchProductsByCategory(category.id, category.category || category.title);
+          setViewMode("products");
+          setShowDetails(false);
+          setProducts([]);
         }
       }
     } catch (error) {
@@ -184,7 +180,7 @@ const ProductCom = () => {
 
   const handleProductByUrl = async (productId, category) => {
     try {
-      setLoading(true);
+      setProductsLoading(true);
       
       const detailedProduct = await fetchProductDetails(productId);
       
@@ -193,20 +189,21 @@ const ProductCom = () => {
         setViewMode("details");
         setShowDetails(true);
         
-        const searchResults = await searchProducts("", category.id);
+        // Load products for context
+        const searchResults = await searchProducts("", category.id, detailedProduct.subcategoryId);
         setProducts(searchResults);
       }
     } catch (error) {
       console.error('Error loading product by URL:', error);
       setError('Failed to load product details');
     } finally {
-      setLoading(false);
+      setProductsLoading(false);
     }
   };
 
   const handleSubcategoryByUrl = async (subcategoryId, category) => {
     try {
-      setLoading(true);
+      setProductsLoading(true);
       
       const subcategory = category.children?.find(child => 
         child.isSubCategory && child.subcategoryId === subcategoryId
@@ -217,13 +214,16 @@ const ProductCom = () => {
         setParentCategory(category.category || category.title);
         setExpandedSubPanel(`subpanel${category.children.indexOf(subcategory)}`);
         
-        const products = await searchProducts(subcategory.title, category.id);
+        // Pass both category and subcategory IDs
+        const products = await searchProducts("", category.id, subcategoryId);
         setProducts(products);
+        setViewMode("products");
+        setShowDetails(false);
       }
     } catch (error) {
       console.error('Error loading subcategory by URL:', error);
     } finally {
-      setLoading(false);
+      setProductsLoading(false);
     }
   };
 
@@ -236,9 +236,6 @@ const ProductCom = () => {
 
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/product/chart`,
-        {
-          headers: { "ngrok-skip-browser-warning": "true" },
-        }
       );
       
       console.log('Categories response:', response.data);
@@ -246,9 +243,6 @@ const ProductCom = () => {
       if (response.data.message === "Chart fetched successfully" && response.data.data) {
         const transformedCategories = transformApiData(response.data.data);
         setCategories(transformedCategories);
-
-        const allProducts = extractAllProducts(response.data.data);
-        setProducts(allProducts);
 
         if (transformedCategories.length > 0 && !urlFilters.category) {
           const firstCategory = transformedCategories[0];
@@ -274,21 +268,32 @@ const ProductCom = () => {
     }
   };
 
-  const searchProducts = async (query, categoryId = null) => {
+  // UPDATED: searchProducts function with both category and subcategory IDs
+  const searchProducts = async (query, categoryId = null, subcategoryId = null) => {
     try {
-      setIsSearching(true);
+      setIsSearching(query ? true : false);
+      if (!query) setProductsLoading(true);
 
       let url = `${import.meta.env.VITE_BACKEND_URL}/product/product/search?search=${encodeURIComponent(query)}`;
 
+      // Add category_id if provided
       if (categoryId) {
         url += `&category_id=${categoryId}`;
       }
 
-      console.log('Searching products:', url);
+      // Add subcategory_id if provided
+      if (subcategoryId) {
+        url += `&subcategory_id=${subcategoryId}`;
+      }
 
-      const response = await axios.get(url, {
-        headers: { "ngrok-skip-browser-warning": "true" },
+      console.log('Searching products with params:', {
+        query,
+        categoryId,
+        subcategoryId,
+        url
       });
+
+      const response = await axios.get(url);
 
       console.log('Search response:', response.data);
 
@@ -310,7 +315,9 @@ const ProductCom = () => {
           apiData: product,
         }));
 
-        setSearchResults(transformedProducts);
+        if (query) {
+          setSearchResults(transformedProducts);
+        }
         return transformedProducts;
       } else {
         throw new Error("Invalid search API response format");
@@ -328,6 +335,7 @@ const ProductCom = () => {
       return [];
     } finally {
       setIsSearching(false);
+      setProductsLoading(false);
     }
   };
 
@@ -361,6 +369,7 @@ const ProductCom = () => {
             category: category.name,
             productId: product.id,
             categoryId: category.id,
+            isProduct: true,
           });
         });
       }
@@ -371,64 +380,10 @@ const ProductCom = () => {
         category: category.name,
         image: category.image || productImage,
         children: children,
+        hasSubcategories: category.subcategories && category.subcategories.length > 0,
+        hasDirectProducts: category.products && category.products.length > 0,
       };
     });
-  };
-
-  const fetchProductsByCategory = async (categoryId, categoryName) => {
-    try {
-      setLoading(true);
-      const products = await searchProducts("", categoryId);
-      setProducts(products);
-      setSelectedCategory(categoryName);
-      setParentCategory(categoryName);
-      
-      updateUrlParams({ category: categoryId });
-    } catch (error) {
-      console.error("Error fetching category products:", error);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const extractAllProducts = (apiData) => {
-    const allProducts = [];
-
-    apiData.forEach((category) => {
-      if (category.subcategories) {
-        category.subcategories.forEach((subcategory) => {
-          if (subcategory.products) {
-            subcategory.products.forEach((product) => {
-              allProducts.push({
-                id: product.id,
-                title: product.productName || product.productname,
-                category: subcategory.name,
-                parentCategory: category.name,
-                image: productImage,
-                categoryId: category.id,
-                subcategoryId: subcategory.id,
-              });
-            });
-          }
-        });
-      }
-
-      if (category.products) {
-        category.products.forEach((product) => {
-          allProducts.push({
-            id: product.id,
-            title: product.productName || product.productname,
-            category: category.name,
-            parentCategory: category.name,
-            image: productImage,
-            categoryId: category.id,
-          });
-        });
-      }
-    });
-
-    return allProducts;
   };
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
@@ -438,50 +393,65 @@ const ProductCom = () => {
       const categoryIndex = parseInt(panel.replace("panel", "")) - 1;
       const category = categories[categoryIndex];
       if (category) {
-        fetchProductsByCategory(category.id, category.category);
+        setSelectedCategory(category.category);
+        setParentCategory(category.category);
         setViewMode("products");
         setShowDetails(false);
         setExpandedSubPanel("");
         setSearchQuery("");
+        
+        setProducts([]);
+        
+        updateUrlParams({ category: category.id });
       }
     }
   };
 
-  const handleSubAccordionChange = (subPanel, subCategory) => (event, isExpanded) => {
+  // UPDATED: handleSubAccordionChange with both IDs
+  const handleSubAccordionChange = (subPanel, subCategory) => async (event, isExpanded) => {
     setExpandedSubPanel(isExpanded ? subPanel : false);
 
     if (isExpanded && subCategory) {
-      const parentCategory = categories.find(
-        (cat) => cat.category === subCategory.category || cat.title === subCategory.category
-      );
+      try {
+        setProductsLoading(true);
+        
+        const parentCategory = categories.find(
+          (cat) => cat.category === subCategory.category || cat.title === subCategory.category
+        );
 
-      if (parentCategory) {
-        setSelectedCategory(subCategory.title);
-        setParentCategory(subCategory.category);
-        setViewMode("products");
-        setShowDetails(false);
-        setSearchQuery("");
+        if (parentCategory) {
+          setSelectedCategory(subCategory.title);
+          setParentCategory(subCategory.category);
+          setViewMode("products");
+          setShowDetails(false);
+          setSearchQuery("");
 
-        updateUrlParams({ 
-          category: subCategory.categoryId,
-          subcategory: subCategory.subcategoryId 
-        });
+          console.log('Fetching products for subcategory:', {
+            categoryId: subCategory.categoryId,
+            subcategoryId: subCategory.subcategoryId
+          });
+
+          // Pass both category and subcategory IDs
+          const products = await searchProducts("", subCategory.categoryId, subCategory.subcategoryId);
+          setProducts(products);
+
+          updateUrlParams({ 
+            category: subCategory.categoryId,
+            subcategory: subCategory.subcategoryId 
+          });
+        }
+      } catch (error) {
+        console.error("Error loading subcategory products:", error);
+        setError("Failed to load products for this subcategory");
       }
+    } else {
+      setProducts([]);
     }
   };
 
   const handleCategoryItemClick = (categoryName, parentCategoryName) => {
-    const category = categories.find(
-      (cat) => cat.category === categoryName || cat.title === categoryName
-    );
-
-    if (category) {
-      fetchProductsByCategory(category.id, categoryName);
-    } else {
-      setSelectedCategory(categoryName);
-      setParentCategory(parentCategoryName || categoryName);
-    }
-
+    setSelectedCategory(categoryName);
+    setParentCategory(parentCategoryName || categoryName);
     setViewMode("products");
     setShowDetails(false);
     setSearchQuery("");
@@ -489,6 +459,8 @@ const ProductCom = () => {
 
   const handleProductItemClick = async (productTitle, category, productData = null) => {
     try {
+      setProductDetailsLoading(true);
+
       if (productData?.productId) {
         const detailedProduct = await fetchProductDetails(productData.productId);
         
@@ -512,7 +484,7 @@ const ProductCom = () => {
         return;
       }
 
-      setLoading(true);
+      setProductsLoading(true);
 
       const categoryObj = categories.find(
         (cat) => cat.category === category || cat.title === category
@@ -548,7 +520,8 @@ const ProductCom = () => {
       console.error("Error fetching product details:", error);
       setError('Failed to load product details');
     } finally {
-      setLoading(false);
+      setProductsLoading(false);
+      setProductDetailsLoading(false);
     }
   };
 
@@ -641,6 +614,7 @@ const ProductCom = () => {
 
   return (
     <div className="min-h-screen bg-white px-4 md:px-12 py-10">
+      {/* Your existing JSX remains the same */}
       <motion.div
         initial={{ opacity: 0, x: -40 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -896,7 +870,12 @@ const ProductCom = () => {
         >
           {viewMode === "products" || viewMode === "search" ? (
             <>
-              {isSearching ? (
+              {productsLoading ? (
+                <div className="text-center py-20">
+                  <CircularProgress size={40} sx={{ color: "#2E437C" }} />
+                  <p className="mt-4 text-gray-600">Loading products...</p>
+                </div>
+              ) : isSearching ? (
                 <div className="text-center py-20">
                   <CircularProgress size={40} sx={{ color: "#2E437C" }} />
                   <p className="mt-4 text-gray-600">Searching products...</p>
@@ -918,7 +897,7 @@ const ProductCom = () => {
                           product.image && product.image.startsWith("http")
                             ? product.image
                             : product.image && product.image.includes("/")
-                            ? `${import.meta.env.VITE_IMAGE_URL}/${product.image}`
+                            ? `${import.meta.env.VITE_BACKEND_URL}/${product.image}`
                             : productImage
                         }
                         alt={product.title}
@@ -962,11 +941,16 @@ const ProductCom = () => {
                     </svg>
                   </div>
                   <h3 className="text-lg font-medium text-gray-600 mb-2">
-                    No products found
+                    {products.length === 0 && !searchQuery ? 
+                      "Select a subcategory or product to view details" :
+                      "No products found"
+                    }
                   </h3>
                   <p className="text-gray-400">
                     {searchQuery && viewMode === "search"
                       ? `No products match "${searchQuery}"`
+                      : products.length === 0 && !searchQuery
+                      ? "Choose from the categories on the left to explore our products"
                       : `No products available in ${selectedCategory}`}
                   </p>
                 </motion.div>

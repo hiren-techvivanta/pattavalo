@@ -175,10 +175,7 @@ const AboutUs = () => {
 
       const response = await fetch(url, {
         method: "GET",
-        headers: {
-          Accept: "application/json",
-          "ngrok-skip-browser-warning": "true",
-        },
+      
       });
 
       if (!response.ok) {

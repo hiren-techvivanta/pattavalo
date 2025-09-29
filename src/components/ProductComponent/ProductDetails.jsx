@@ -216,10 +216,7 @@ const ProductDetails = ({ selectedProduct }) => {
         `${import.meta.env.VITE_BACKEND_URL}/settings/enquiry`,
         {
           method: "POST",
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-            "Content-Type": "application/json",
-          },
+     
           body: JSON.stringify({
             ...formData,
             product_name: selectedProduct?.title || selectedProduct?.productName || "Unknown Product",
