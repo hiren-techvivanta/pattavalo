@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs, Autoplay } from "swiper/modules";
 import { HiChevronRight } from "react-icons/hi2";
@@ -30,12 +30,6 @@ import pd4 from "../../assets/images/pd4.jpg";
 const ProductDetails = ({ selectedProduct }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [searchQuery, setSearchQuery] = useState("");
-
-  // Product details API states
-  const [productDetails, setProductDetails] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   // Dialog states
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -55,40 +49,6 @@ const ProductDetails = ({ selectedProduct }) => {
 
   const [formErrors, setFormErrors] = useState({});
 
-  // Fetch product details when selectedProduct changes
-  useEffect(() => {
-    if (selectedProduct && selectedProduct.id) {
-      fetchProductDetails(selectedProduct.id);
-    }
-  }, [selectedProduct]);
-
-  const fetchProductDetails = async (productId) => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const response = await fetch(
-        `${import.meta.env.VITE_BACKEND_URL}/product/product/${productId}`
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-
-      if (result.message === "Product fetched successfully" && result.data) {
-        setProductDetails(result.data);
-      } else {
-        throw new Error("Invalid API response format");
-      }
-    } catch (err) {
-      console.error("Error fetching product details:", err);
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
   const getImageUrl = (imagePath) => {
     if (!imagePath) return null;
 
@@ -101,17 +61,18 @@ const ProductDetails = ({ selectedProduct }) => {
     }
     return `${backendUrl}/${imagePath}`;
   };
-  // Get images from API or use fallback
+
+  // Get images from props or use fallback
   const getImages = () => {
     if (
-      productDetails &&
-      productDetails.images &&
-      productDetails.images.length > 0
+      selectedProduct &&
+      selectedProduct.images &&
+      selectedProduct.images.length > 0
     ) {
-      return productDetails.images.map((imageUrl, index) => ({
+      return selectedProduct.images.map((imageUrl, index) => ({
         id: index + 1,
         src: getImageUrl(imageUrl),
-        alt: productDetails.productName || "Product Image",
+        alt: selectedProduct.title || selectedProduct.productName || "Product Image",
       }));
     }
 
@@ -126,28 +87,35 @@ const ProductDetails = ({ selectedProduct }) => {
   const images = getImages();
 
   const getBreadcrumbItems = () => {
-    if (!productDetails) return [];
+    if (!selectedProduct) return [];
 
     const items = [];
 
-    if (productDetails.category) {
+    // Handle both transformed and raw API data
+    const categoryName = selectedProduct.category || selectedProduct.apiData?.category?.name;
+    const subcategoryName = selectedProduct.subcategory || selectedProduct.apiData?.subcategory?.name;
+    const productName = selectedProduct.title || selectedProduct.productName;
+
+    if (categoryName) {
       items.push({
-        name: productDetails.category.name,
+        name: categoryName,
         active: false,
       });
     }
 
-    if (productDetails.subcategory) {
+    if (subcategoryName) {
       items.push({
-        name: productDetails.subcategory.name,
+        name: subcategoryName,
         active: false,
       });
     }
 
-    items.push({
-      name: productDetails.productName,
-      active: true,
-    });
+    if (productName) {
+      items.push({
+        name: productName,
+        active: true,
+      });
+    }
 
     return items;
   };
@@ -250,11 +218,12 @@ const ProductDetails = ({ selectedProduct }) => {
           method: "POST",
           headers: {
             "ngrok-skip-browser-warning": "true",
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({
             ...formData,
-            product_name: productDetails?.productName || "Unknown Product",
-            product_id: productDetails?.id,
+            product_name: selectedProduct?.title || selectedProduct?.productName || "Unknown Product",
+            product_id: selectedProduct?.id,
           }),
         }
       );
@@ -306,54 +275,34 @@ const ProductDetails = ({ selectedProduct }) => {
     setSubmitStatus({ type: "", message: "" });
   };
 
-  if (loading) {
+  // Show loading or no product message if no product is provided
+  if (!selectedProduct) {
     return (
       <div className="w-full min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <CircularProgress size={60} />
-          <p className="mt-4 text-gray-600">Loading product details...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="w-full min-h-screen bg-white flex items-center justify-center px-4">
-        <Alert severity="error" className="max-w-md">
-          <strong>Error loading product details:</strong> {error}
-          <button
-            onClick={() =>
-              selectedProduct && fetchProductDetails(selectedProduct.id)
-            }
-            className="ml-2 underline hover:no-underline"
-          >
-            Try again
-          </button>
+        <Alert severity="info" className="max-w-md">
+          <Typography variant="h6" gutterBottom>
+            No Product Selected
+          </Typography>
+          <Typography variant="body2">
+            Please select a product to view its details.
+          </Typography>
         </Alert>
       </div>
     );
   }
 
-  if (!productDetails) {
-    return (
-      <div className="w-full min-h-screen bg-white flex items-center justify-center">
-        <Alert severity="warning" className="max-w-md">
-          No product details available.
-        </Alert>
-      </div>
-    );
-  }
+  // Get product data - handle both transformed and raw API data
+  const productData = {
+    id: selectedProduct.id,
+    productName: selectedProduct.title || selectedProduct.productName,
+    description: selectedProduct.description,
+    document: selectedProduct.document,
+    category: selectedProduct.category || selectedProduct.apiData?.category,
+    subcategory: selectedProduct.subcategory || selectedProduct.apiData?.subcategory,
+  };
 
   return (
     <div className="w-full min-h-screen bg-white">
-      {/* Mobile Header - Only visible on mobile */}
-      {/* <div className="lg:hidden px-4 py-4">
-        <h1 className="text-2xl md:text-3xl font-bold text-[#BABEC8] mb-4">
-          Our Products
-        </h1>
-      </div> */}
-
       {/* Breadcrumb Navigation */}
       <div className="px-4 lg:px-0 mb-4 lg:mb-5">
         <div className="flex items-center flex-wrap gap-2 text-sm">
@@ -362,7 +311,7 @@ const ProductDetails = ({ selectedProduct }) => {
               <span
                 className={`px-3 py-2 rounded-lg transition-colors ${
                   item.active
-                    ? "text-[#2E437D] font-semibold bg-blue-50"
+                    ? "text-[#2E437C] font-semibold bg-blue-50"
                     : "text-gray-700 hover:text-gray-900"
                 }`}
               >
@@ -375,25 +324,26 @@ const ProductDetails = ({ selectedProduct }) => {
           ))}
         </div>
       </div>
+
       <div className="max-w-7xl mx-auto lg:px-8 px-4">
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 lg:gap-8 mb-6 lg:mb-8">
           {/* Product Title and Description */}
           <div className="flex-1 min-w-0">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#BABEC8] leading-tight">
-              {productDetails.productName}
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#2E437C] leading-tight">
+              {productData.productName}
             </h2>
-            {/* {productDetails.description && (
+            {productData.description && (
               <p className="text-gray-600 mt-2 sm:mt-3 text-base sm:text-lg max-w-4xl leading-relaxed">
-                {productDetails.description}
+                {productData.description}
               </p>
-            )} */}
+            )}
           </div>
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto lg:justify-end">
-            {productDetails.document && (
+            {productData.document && (
               <a
-                href={productDetails.document}
+                href={getImageUrl(productData.document)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-4 sm:px-6 py-2.5 bg-[#2E437C] text-white text-xs sm:text-sm font-medium uppercase rounded-full hover:bg-[#1E2F5C] transition-colors inline-flex items-center justify-center text-center"
@@ -489,30 +439,42 @@ const ProductDetails = ({ selectedProduct }) => {
             )}
           </div>
 
+          {/* Side Thumbnails for Desktop */}
           {images.length > 1 && (
             <div className="hidden lg:block lg:col-span-1">
               <div className="flex flex-col gap-3 h-full max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 p-1">
-                {images.map((image, index) => (
-                  <div
-                    key={`side-thumb-${image.id}`}
-                    onClick={() => thumbsSwiper?.slideTo(index)}
-                    className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 rounded-lg ${
-                      activeIndex === index
-                        ? "scale-[1.02] shadow-lg border-2 border-[#2E437C] transform-gpu"
-                        : "opacity-90 hover:opacity-100 hover:scale-[1.01] grayscale-[0.1]"
-                    }`}
-                  >
-                    <img
-                      src={image.src}
-                      alt={image.alt}
-                      className={`w-full h-full object-cover transition-all duration-300 ${
-                        activeIndex === index
-                          ? "brightness-110"
-                          : "brightness-95 hover:brightness-100"
-                      }`}
-                    />
-                  </div>
-                ))}
+                <Swiper
+                  onSwiper={setThumbsSwiper}
+                  modules={[Thumbs]}
+                  spaceBetween={12}
+                  slidesPerView="auto"
+                  direction="vertical"
+                  freeMode={true}
+                  watchSlidesProgress={true}
+                  className="w-full h-full thumb-swiper"
+                >
+                  {images.map((image, index) => (
+                    <SwiperSlide key={`side-thumb-${image.id}`} className="!h-auto">
+                      <div
+                        className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 rounded-lg ${
+                          activeIndex === index
+                            ? "scale-[1.02] shadow-lg border-2 border-[#2E437C] transform-gpu"
+                            : "opacity-90 hover:opacity-100 hover:scale-[1.01] grayscale-[0.1]"
+                        }`}
+                      >
+                        <img
+                          src={image.src}
+                          alt={image.alt}
+                          className={`w-full h-full object-cover transition-all duration-300 ${
+                            activeIndex === index
+                              ? "brightness-110"
+                              : "brightness-95 hover:brightness-100"
+                          }`}
+                        />
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
               </div>
             </div>
           )}
@@ -544,7 +506,7 @@ const ProductDetails = ({ selectedProduct }) => {
               fontWeight="bold"
               color="#2E437C"
             >
-              Product Inquiry - {productDetails.productName}
+              Product Inquiry - {productData.productName}
             </Typography>
             <IconButton
               aria-label="close"
