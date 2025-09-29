@@ -290,7 +290,9 @@ const QuickSelectMenu = ({ navBg }) => {
         {isOpen && (
           <motion.div
             ref={menuRef}
-            className="absolute top-full right-0 mt-2 bg-white  shadow-2xl border border-gray-200 z-50 overflow-hidden"
+
+            className="absolute center-div mt-2 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden"
+
             variants={dropdownVariants}
             initial="hidden"
             animate="visible"
