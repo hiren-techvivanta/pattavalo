@@ -161,7 +161,6 @@ const QuickSelectMenu = ({ navBg }) => {
     handleNavigation(category);
   };
 
-  // Updated color scheme with #2E437C primary color
   const buttonVariants = {
     closed: {
       backgroundColor: navBg
@@ -264,7 +263,7 @@ const QuickSelectMenu = ({ navBg }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative ">
       {/* Icon Quick Select Button */}
       <motion.button
         ref={buttonRef}
@@ -287,11 +286,11 @@ const QuickSelectMenu = ({ navBg }) => {
       </motion.button>
 
       {/* Mega Menu Dropdown */}
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait"  >
         {isOpen && (
           <motion.div
             ref={menuRef}
-            className="absolute top-full right-0 mt-2 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden"
+            className="absolute top-full right-0 mt-2 bg-white  shadow-2xl border border-gray-200 z-50 overflow-hidden"
             variants={dropdownVariants}
             initial="hidden"
             animate="visible"
