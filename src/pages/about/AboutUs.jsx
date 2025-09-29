@@ -217,18 +217,18 @@ const AboutUs = () => {
     }
   };
 
-  // Faster Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        duration: 0.3,
-        staggerChildren: 0.08,
-        delayChildren: 0.05,
-      },
-    },
-  };
+  // // Faster Animation variants
+  // const containerVariants = {
+  //   hidden: { opacity: 0 },
+  //   visible: {
+  //     opacity: 1,
+  //     transition: {
+  //       duration: 0.3,
+  //       staggerChildren: 0.08,
+  //       delayChildren: 0.05,
+  //     },
+  //   },
+  // };
 
   const slideInLeft = {
     hidden: {
@@ -354,6 +354,38 @@ const AboutUs = () => {
   }, []);
 
   const currentData = timelineData[selectedYear];
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.02,
+        delayChildren: 0.1,
+        duration: 0.4,
+      },
+    },
+  };
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.3,
+      },
+    },
+  };
+
+  const splitText = (text) =>
+    text.split("").map((char, i) => (
+      <motion.span key={i} variants={letterVariants} className="inline-block">
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
 
   return (
     <div ref={scrollContainerRef} className="overflow-hidden">
@@ -457,8 +489,24 @@ const AboutUs = () => {
             variants={slideInLeft}
           >
             <SectionTitle
-              title="Our Quality,"
-              subtitle="Our Integrity"
+              title={
+                <motion.div
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {splitText("Our Quality,")}
+                </motion.div>
+              }
+              subtitle={
+                <motion.div
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {splitText("Our Integrity")}
+                </motion.div>
+              }
               description="Atcchains is always high in demand due to its wide variety of sub-products in the Plastic slat chain series, Modular belts series & conveyor components. We lead due to our consistent efforts in delivering the best suited services for our clients."
             />
           </motion.div>
@@ -499,8 +547,24 @@ const AboutUs = () => {
             variants={slideInRight}
           >
             <SectionTitle
-              title="Why"
-              subtitle="Atc Chains?"
+              title={
+                <motion.div
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {splitText("Why")}
+                </motion.div>
+              }
+              subtitle={
+                <motion.div
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {splitText("Atc Chains?")}
+                </motion.div>
+              }
               description="One year warranty. Our policies also include accidental warranty which is provided by no other company in the world. A diverse and wide variety of 1100+ products. 24*7 available technical assistance."
             />
           </motion.div>
@@ -559,8 +623,29 @@ const AboutUs = () => {
       >
         <div className="p-8">
           <motion.div variants={fadeInUp}>
-            <SectionTitle title="Our" subtitle="Team" alignment="center" />
+            <SectionTitle
+              title={
+                <motion.div
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {splitText("Our")}
+                </motion.div>
+              }
+              subtitle={
+                <motion.div
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {splitText("Team")}
+                </motion.div>
+              }
+              alignment="center"
+            />
           </motion.div>
+
           {loading && <p className="text-center">Loading team...</p>}
           {error && <p className="text-center text-red-500">{error}</p>}
           {!loading && !error && (
@@ -595,10 +680,28 @@ const AboutUs = () => {
           >
             OUR HISTORY
           </motion.p>
+
+          {/* Animated SectionTitle */}
           <motion.div variants={fadeInUp}>
             <SectionTitle
-              title="Foundation of excellences"
-              subtitle="in Industry"
+              title={
+                <motion.div
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {splitText("Foundation of excellences")}
+                </motion.div>
+              }
+              subtitle={
+                <motion.div
+                  variants={containerVariants}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  {splitText("in Industry")}
+                </motion.div>
+              }
               alignment="center"
             />
           </motion.div>
@@ -700,8 +803,24 @@ const AboutUs = () => {
       >
         <motion.div variants={fadeInUp}>
           <SectionTitle
-            title="Our"
-            subtitle="Recent Images"
+            title={
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {splitText("Our")}
+              </motion.div>
+            }
+            subtitle={
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {splitText("Recent Images")}
+              </motion.div>
+            }
             alignment="center"
           />
         </motion.div>

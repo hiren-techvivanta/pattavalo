@@ -528,12 +528,15 @@ const ProductCom = () => {
           setViewMode("products");
           setShowDetails(false);
           setSearchQuery("");
+<<<<<<< HEAD
 
           // Update URL - category + subcategory
           updateUrlParams({
             category: subCategory.categoryId,
             subcategory: subCategory.subcategoryId,
           });
+=======
+>>>>>>> b11eb9f1edfdff8cc7a802c9e6f2e8983c6a9044
         }
       }
     };
@@ -720,6 +723,38 @@ const ProductCom = () => {
       </div>
     );
   }
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.02,
+        delayChildren: 0.1,
+        duration: 0.4,
+      },
+    },
+  };
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.3,
+      },
+    },
+  };
+
+  const splitText = (text) =>
+    text.split("").map((char, i) => (
+      <motion.span key={i} variants={letterVariants} className="inline-block">
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
 
   return (
     <div className="min-h-screen bg-white px-4 md:px-12 py-10">
@@ -730,9 +765,16 @@ const ProductCom = () => {
         transition={{ duration: 0.6 }}
         className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8"
       >
-        <h1 className="text-3xl md:text-4xl font-bold text-[#2E437C]">
-          Our Products
-        </h1>
+        <motion.h1
+          className="text-3xl md:text-4xl font-bold text-[#BABEC8]"
+          variants={containerVariants} 
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+        >
+          {splitText("Our Products")}
+        </motion.h1>
+
 
         <div className="relative w-full md:max-w-md lg:max-w-lg xl:max-w-lg">
           <motion.input

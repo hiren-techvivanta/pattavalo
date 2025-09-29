@@ -51,7 +51,6 @@ const ShowCase = () => {
       transform: `translate(${translateX}, ${translateY})`,
     };
   };
-
   const points = [
     {
       id: 1,
@@ -132,22 +131,68 @@ const ShowCase = () => {
       desc: "Protective guard ensuring operator safety.",
     },
   ];
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.03, // controls letter-by-letter delay
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.3,
+      },
+    },
+  };
+
+  const splitText = (text) =>
+    text.split("").map((char, i) => (
+      <motion.span key={i} variants={letterVariants} className="inline-block">
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
 
   return (
     <section className="container mx-auto w-full px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-10 2xl:pb-25  relative  bg-white overflow-visible ">
-      <div className="  md:text-left md:px-0 px-8  ">
-        <motion.h2
-          className="text-[36px] md:text-[48px] font-normal text-[#2E437C] leading-tight"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+      <div className="px-6 sm:px-8 md:px-0 md:text-left text-left">
+        <motion.h1
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          className="
+      text-left
+      text-[28px] sm:text-[32px] md:text-[36px] lg:text-[42px] xl:text-[48px]
+      font-normal text-[#2E437C] leading-tight
+    "
         >
-          Interactive <br />
-          <span className="text-[#BABEC8] font-bold">Product Showcase</span>
-        </motion.h2>
+          {splitText("Interactive")}
+          <br />
+          <span className="text-[#BABEC8] font-bold">
+            {splitText("Product Showcase")}
+          </span>
+        </motion.h1>
 
         <motion.p
-          className="text-[#191919] mt-4 text-sm md:text-base max-w-xl mx-auto md:mx-0"
+          className="
+      text-[#191919]
+      mt-3 sm:mt-4
+      text-sm sm:text-base md:text-lg
+      max-w-xl
+      mx-auto md:mx-0
+      leading-relaxed
+    "
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
@@ -159,9 +204,8 @@ const ShowCase = () => {
       </div>
 
       <div className="  relative w-full max-w-[950px] mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
-        {/* Showcase Wrapper */}
         <div
-          className="relative w-full aspect-[16/9]  overflow-visible cursor-not-allowed select-none "
+          className="relative w-full aspect-[16/9]  overflow-visible cursor-not-allowed select-none lg:mb-12"
           onContextMenu={handleContextMenu}
           onDragStart={handleDragStart}
         >

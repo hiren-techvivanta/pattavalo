@@ -378,7 +378,7 @@ export default function IndustryCom() {
     industries[0].categories?.[0] || null
   );
   const [expandedDescriptions, setExpandedDescriptions] = useState({});
-  
+
   const [rotation, setRotation] = useState(-20);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -394,10 +394,8 @@ export default function IndustryCom() {
       }
     };
 
-    
     checkScreenSize();
 
-    
     window.addEventListener("resize", checkScreenSize);
 
     return () => window.removeEventListener("resize", checkScreenSize);
@@ -410,7 +408,6 @@ export default function IndustryCom() {
     const currentRotation = rotation % 360;
     let targetRotation = industry.targetRotation;
 
-    // Adjust target rotation for mobile
     if (isMobile) {
       targetRotation = industry.targetRotation - 100;
     }
@@ -432,13 +429,13 @@ export default function IndustryCom() {
   const handleCategoryClick = (category) => {
     setActiveCategory(category);
   };
-const toggleReadMore = (industryId, category) => {
-  const key = category ? `${industryId}-${category}` : industryId;
-  setExpandedDescriptions(prev => ({
-    ...prev,
-    [key]: !prev[key]
-  }));
-};
+  const toggleReadMore = (industryId, category) => {
+    const key = category ? `${industryId}-${category}` : industryId;
+    setExpandedDescriptions((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
+  };
   const getConicGradient = () => {
     const segmentAngle = 360 / industries.length;
     const gapAngle = 5;
@@ -469,18 +466,50 @@ const toggleReadMore = (industryId, category) => {
   };
 
   const categoryData = getCategoryContent();
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.02,
+        delayChildren: 0.1,
+        duration: 0.4,
+      },
+    },
+  };
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.3,
+      },
+    },
+  };
+
+  const splitText = (text) =>
+    text.split("").map((char, i) => (
+      <motion.span key={i} variants={letterVariants} className="inline-block">
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
 
   return (
     <section className="container mx-auto w-full  px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-10 lg:pr-16 lg:pl-0 xl:pr-20 xl:pl-0  sm:py-20">
       {/* Heading */}
       <motion.h1
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-80px" }}
         className="text-4xl sm:text-5xl md:text-6xl lg:text-[90px] xl:text-[90px] font-normal text-[#BABEC8] mb-10 text-center lg:text-left sm:px-6 md:px-10 lg:px-15"
       >
-        Industries we serve
+        {splitText("Industries we serve")}
       </motion.h1>
 
       <div className=" grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-center">
@@ -698,47 +727,74 @@ const toggleReadMore = (industryId, category) => {
             {/* <p className="mt-2 text-gray-600 text-sm lg:text-base leading-relaxed">
               {categoryData.description}
             </p> */}
-             <div className="mt-2 text-gray-600">
-          <p className={`text-sm lg:text-base leading-relaxed ${
-            !expandedDescriptions[activeCategory ? 
-              `${activeIndustry.id}-${activeCategory}` : 
-              activeIndustry.id
-            ] ? 'line-clamp-3' : ''
-          }`}>
-            {categoryData.description}
-          </p>
-          
-          {/* Read More/Less Button */}
-          {categoryData.description.length > 150 && (
-            <button
-              onClick={() => toggleReadMore(activeIndustry.id, activeCategory)}
-              className="mt-2 text-[#2E437C] font-medium hover:text-[#1E2F5C] transition-colors flex items-center"
-            >
-              {expandedDescriptions[activeCategory ? 
-                `${activeIndustry.id}-${activeCategory}` : 
-                activeIndustry.id
-              ] ? (
-                <>
-                  Read Less
-                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                  </svg>
-                </>
-              ) : (
-                <>
-                  Read More
-                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </>
+            <div className="mt-2 text-gray-600">
+              <p
+                className={`text-sm lg:text-base leading-relaxed ${
+                  !expandedDescriptions[
+                    activeCategory
+                      ? `${activeIndustry.id}-${activeCategory}`
+                      : activeIndustry.id
+                  ]
+                    ? "line-clamp-3"
+                    : ""
+                }`}
+              >
+                {categoryData.description}
+              </p>
+
+              {/* Read More/Less Button */}
+              {categoryData.description.length > 150 && (
+                <button
+                  onClick={() =>
+                    toggleReadMore(activeIndustry.id, activeCategory)
+                  }
+                  className="mt-2 text-[#2E437C] font-medium hover:text-[#1E2F5C] transition-colors flex items-center"
+                >
+                  {expandedDescriptions[
+                    activeCategory
+                      ? `${activeIndustry.id}-${activeCategory}`
+                      : activeIndustry.id
+                  ] ? (
+                    <>
+                      Read Less
+                      <svg
+                        className="w-4 h-4 ml-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M5 15l7-7 7 7"
+                        />
+                      </svg>
+                    </>
+                  ) : (
+                    <>
+                      Read More
+                      <svg
+                        className="w-4 h-4 ml-1"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 9l-7 7-7-7"
+                        />
+                      </svg>
+                    </>
+                  )}
+                </button>
               )}
-            </button>
-          )}
-        </div>
+            </div>
           </motion.div>
         </div>
       </div>
     </section>
-    
   );
 }

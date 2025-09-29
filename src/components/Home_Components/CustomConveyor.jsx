@@ -97,15 +97,26 @@ export default function ExpertSolutions() {
   return (
     <section className="container min-h-screen flex flex-col-reverse mx-auto lg:flex-row items-center justify-between w-full px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-10  bg-white font-articulat">
       <motion.div
-        className="max-w-2xl md:w-1/3 lg:w-1/2 xl:w-3xl  w-full lg:pr-20 mb-12 lg:mb-0"
+        className="
+    w-full 
+    max-w-[90%] sm:max-w-2xl lg:max-w-4xl
+    lg:w-1/2
+    lg:pr-16 xl:pr-20
+    mb-10 lg:mb-0
+  "
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={containerVariants}
       >
+        {/* Heading */}
         <motion.h1
           variants={containerVariants}
-          className="text-[42px] md:text-[48px] lg:text-[54px] leading-[60px] font-bold mb-8"
+          className="
+      text-[28px] sm:text-[34px] md:text-[42px] lg:text-[50px] xl:text-[54px]
+      leading-[36px] sm:leading-[44px] md:leading-[52px] lg:leading-[60px]
+      font-bold mb-6 sm:mb-8
+    "
         >
           <span className="text-[#BABEC8] font-normal">
             {splitText("Expert ")}
@@ -118,8 +129,15 @@ export default function ExpertSolutions() {
           </span>
         </motion.h1>
 
+        {/* Paragraph 1 */}
         <motion.p
-          className="text-base md:text-lg text-[#A0A3AD] mb-6 leading-relaxed font-normal"
+          className="
+      text-sm sm:text-base md:text-lg
+      text-[#A0A3AD]
+      mb-4 sm:mb-6
+      leading-relaxed
+      font-normal
+    "
           variants={textRevealVariants}
         >
           We are a team of 150+ experts leading and thriving in the
@@ -128,8 +146,15 @@ export default function ExpertSolutions() {
           and machinery designed to last for generations.
         </motion.p>
 
+        {/* Paragraph 2 */}
         <motion.p
-          className="text-base md:text-lg text-[#A0A3AD] mb-6 leading-relaxed font-normal"
+          className="
+      text-sm sm:text-base md:text-lg
+      text-[#A0A3AD]
+      mb-4 sm:mb-6
+      leading-relaxed
+      font-normal
+    "
           variants={textRevealVariants}
         >
           With expertise across multiple industries, we deliver intelligent and
@@ -138,11 +163,13 @@ export default function ExpertSolutions() {
           impeccable service and quality.
         </motion.p>
 
+        {/* Decorative line */}
         <motion.div
-          className="w-2 h-[2px] mb-8"
+          className="w-12 sm:w-16 md:w-20 h-[2px] bg-[#2E437C] mb-6 sm:mb-8"
           variants={textRevealVariants}
         />
 
+        {/* Button */}
         <motion.div
           variants={textRevealVariants}
           whileHover="hover"
@@ -151,8 +178,8 @@ export default function ExpertSolutions() {
         >
           <AnimatedButton
             icon={FaArrowRight}
-            color={"#2E437C"}
-            hoverColor={`#2E437C`}
+            color="#2E437C"
+            hoverColor="#2E437C"
           >
             READ MORE
           </AnimatedButton>
