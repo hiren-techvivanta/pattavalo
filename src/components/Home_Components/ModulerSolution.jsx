@@ -213,10 +213,7 @@ export default function ModulerSolution() {
               },
             }}
             className="group relative flex flex-col items-center justify-center p-5 bg-white
-             transition-all duration-300 cursor-pointer overflow-hidden rounded-lg"
-            style={{
-              boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)",
-            }}
+             transition-all duration-300 cursor-pointer overflow-hidden "
           >
             <motion.div
               className="absolute inset-0 bg-gradient-to-br from-[#2E437C] to-[#1d3b72]
