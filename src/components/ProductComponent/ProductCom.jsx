@@ -46,13 +46,6 @@ const ProductCom = () => {
     product: null,
   });
 
-  // Enhanced request headers for ngrok
-  const getRequestHeaders = () => ({
-    "ngrok-skip-browser-warning": "true",
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  });
-
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -93,72 +86,71 @@ const ProductCom = () => {
     }
   }, [categories, urlFilters]);
 
+  // Function to update URL parameters
+  const updateUrlParams = (params) => {
+    const newSearchParams = new URLSearchParams();
+    
+    if (params.category) {
+      newSearchParams.set('category', params.category.toString());
+    }
+    if (params.subcategory) {
+      newSearchParams.set('subcategory', params.subcategory.toString());
+    }
+    if (params.product) {
+      newSearchParams.set('product', params.product.toString());
+    }
+
+    setSearchParams(newSearchParams);
+  };
+
   // Fetch individual product details with enhanced error handling
   const fetchProductDetails = async (productId) => {
     try {
       setProductDetailsLoading(true);
+      setError(null);
 
       console.log(`Fetching product details for ID: ${productId}`);
 
-      const { data } = await axios.get(
+      const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/product/product/${productId}`,
         {
           headers: { "ngrok-skip-browser-warning": "true" },
         }
       );
 
-      // console.log("Product details response status:", response.status);
+      console.log("Product details response:", response.data);
 
-      // if (!response.ok) {
-      //   throw new Error(`HTTP error! status: ${response.status}`);
-      // }
-
-      // Check if response is HTML (ngrok warning page)
-      // const contentType = response.headers.get("content-type");
-      // if (contentType && contentType.includes("text/html")) {
-      //   console.error(
-      //     "Received HTML response instead of JSON - likely ngrok warning page"
-      //   );
-      //   throw new Error(
-      //     "Received ngrok warning page instead of API response. Please check your ngrok configuration."
-      //   );
-      // }
-
-      if (data) {
+      if (response.data.message === "Product fetched successfully" && response.data.data) {
         // Transform the detailed product data
         const detailedProduct = {
-          id: data.data.id,
-          title: data.data.productName,
-          description: data.data.description,
-          images: data.data.images || [],
-          document: data.data.document,
-          category: data.data.category?.name || "Uncategorized",
-          subcategory: data.data.subcategory?.name || null,
-          parentCategory: data.data.category?.name || "Uncategorized",
-          categoryId: data.data.category_id,
-          subcategoryId: data.data.subcategory_id,
-          is_active: data.data.is_active,
-          created_at: data.data.created_at,
-          updated_at: data.data.updated_at,
-          apiData: data.data,
+          id: response.data.data.id,
+          title: response.data.data.productName,
+          description: response.data.data.description,
+          images: response.data.data.images || [],
+          document: response.data.data.document,
+          category: response.data.data.category?.name || "Uncategorized",
+          subcategory: response.data.data.subcategory?.name || null,
+          parentCategory: response.data.data.category?.name || "Uncategorized",
+          categoryId: response.data.data.category_id,
+          subcategoryId: response.data.data.subcategory_id,
+          is_active: response.data.data.is_active,
+          created_at: response.data.data.created_at,
+          updated_at: response.data.data.updated_at,
+          apiData: response.data.data,
         };
 
+        console.log("Transformed product data:", detailedProduct);
         return detailedProduct;
       } else {
         throw new Error("Invalid product details API response format");
       }
     } catch (err) {
       console.error("Error fetching product details:", err);
-
-      // More specific error handling
-      if (err.message.includes("ngrok warning")) {
-        setError(
-          "Unable to bypass ngrok warning page. Please check your API configuration or try refreshing."
-        );
-      } else if (err.message.includes("Failed to fetch")) {
-        setError(
-          "Network error. Please check your internet connection and try again."
-        );
+      
+      if (err.response) {
+        setError(`Server error: ${err.response.status} - ${err.response.data?.message || 'Unknown error'}`);
+      } else if (err.request) {
+        setError("Network error. Please check your internet connection and try again.");
       } else {
         setError(`Failed to load product details: ${err.message}`);
       }
@@ -170,54 +162,43 @@ const ProductCom = () => {
 
   const applyUrlFilters = async () => {
     try {
-      const category = categories.find(
-        (cat) => cat.id === urlFilters.category.toString()
-      );
-
+      const category = categories.find(cat => cat.id === urlFilters.category.toString());
+      
       if (category) {
-        // Set category selection
         setSelectedCategory(category.category || category.title);
         setParentCategory(category.category || category.title);
         setExpandedPanel(`panel${categories.indexOf(category) + 1}`);
 
         if (urlFilters.product) {
-          // If product is specified, load product details
           await handleProductByUrl(urlFilters.product, category);
         } else if (urlFilters.subcategory) {
-          // If subcategory is specified, load subcategory products
           await handleSubcategoryByUrl(urlFilters.subcategory, category);
         } else {
-          // Just load category products
-          await fetchProductsByCategory(
-            category.id,
-            category.category || category.title
-          );
+          await fetchProductsByCategory(category.id, category.category || category.title);
         }
       }
     } catch (error) {
-      console.error("Error applying URL filters:", error);
+      console.error('Error applying URL filters:', error);
     }
   };
 
   const handleProductByUrl = async (productId, category) => {
     try {
       setLoading(true);
-
-      // First, load the detailed product data
+      
       const detailedProduct = await fetchProductDetails(productId);
-
+      
       if (detailedProduct) {
         setSelectedProduct(detailedProduct);
         setViewMode("details");
         setShowDetails(true);
-
-        // Also load category products for navigation
+        
         const searchResults = await searchProducts("", category.id);
         setProducts(searchResults);
       }
     } catch (error) {
-      console.error("Error loading product by URL:", error);
-      setError("Failed to load product details");
+      console.error('Error loading product by URL:', error);
+      setError('Failed to load product details');
     } finally {
       setLoading(false);
     }
@@ -226,45 +207,24 @@ const ProductCom = () => {
   const handleSubcategoryByUrl = async (subcategoryId, category) => {
     try {
       setLoading(true);
-
-      // Find subcategory in category data
-      const subcategory = category.children?.find(
-        (child) => child.isSubCategory && child.subcategoryId === subcategoryId
+      
+      const subcategory = category.children?.find(child => 
+        child.isSubCategory && child.subcategoryId === subcategoryId
       );
 
       if (subcategory) {
         setSelectedCategory(subcategory.title);
         setParentCategory(category.category || category.title);
-        setExpandedSubPanel(
-          `subpanel${category.children.indexOf(subcategory)}`
-        );
-
-        // Load subcategory products
+        setExpandedSubPanel(`subpanel${category.children.indexOf(subcategory)}`);
+        
         const products = await searchProducts(subcategory.title, category.id);
         setProducts(products);
       }
     } catch (error) {
-      console.error("Error loading subcategory by URL:", error);
+      console.error('Error loading subcategory by URL:', error);
     } finally {
       setLoading(false);
     }
-  };
-
-  // Function to update URL parameters
-  const updateUrlParams = (params) => {
-    const newSearchParams = new URLSearchParams();
-
-    if (params.category) {
-      newSearchParams.set("category", params.category.toString());
-    }
-    if (params.subcategory) {
-      newSearchParams.set("subcategory", params.subcategory.toString());
-    }
-    if (params.product) {
-      newSearchParams.set("product", params.product.toString());
-    }
-
-    setSearchParams(newSearchParams);
   };
 
   const fetchCategories = async () => {
@@ -272,41 +232,22 @@ const ProductCom = () => {
       setLoading(true);
       setError(null);
 
-      console.log("Fetching categories...");
+      console.log('Fetching categories...');
 
-      const response = await fetch(
+      const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/product/chart`,
         {
-          method: "GET",
-          headers: getRequestHeaders(),
+          headers: { "ngrok-skip-browser-warning": "true" },
         }
       );
+      
+      console.log('Categories response:', response.data);
 
-      console.log("Categories response status:", response.status);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      // Check content type to detect ngrok warning page
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("text/html")) {
-        console.error(
-          "Received HTML response instead of JSON - likely ngrok warning page"
-        );
-        throw new Error(
-          "Received ngrok warning page instead of API response. Please check your ngrok configuration."
-        );
-      }
-
-      const result = await response.json();
-      console.log("Categories response:", result);
-
-      if (result.message === "Chart fetched successfully" && result.data) {
-        const transformedCategories = transformApiData(result.data);
+      if (response.data.message === "Chart fetched successfully" && response.data.data) {
+        const transformedCategories = transformApiData(response.data.data);
         setCategories(transformedCategories);
 
-        const allProducts = extractAllProducts(result.data);
+        const allProducts = extractAllProducts(response.data.data);
         setProducts(allProducts);
 
         if (transformedCategories.length > 0 && !urlFilters.category) {
@@ -320,7 +261,14 @@ const ProductCom = () => {
       }
     } catch (err) {
       console.error("Error fetching categories:", err);
-      setError(err.message);
+      
+      if (err.response) {
+        setError(`Server error: ${err.response.status} - ${err.response.data?.message || 'Unknown error'}`);
+      } else if (err.request) {
+        setError("Network error. Please check your internet connection.");
+      } else {
+        setError(err.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -330,38 +278,22 @@ const ProductCom = () => {
     try {
       setIsSearching(true);
 
-      let url = `${
-        import.meta.env.VITE_BACKEND_URL
-      }/product/product/search?search=${encodeURIComponent(query)}`;
+      let url = `${import.meta.env.VITE_BACKEND_URL}/product/product/search?search=${encodeURIComponent(query)}`;
 
       if (categoryId) {
         url += `&category_id=${categoryId}`;
       }
 
-      console.log("Searching products:", url);
+      console.log('Searching products:', url);
 
-      const response = await fetch(url, {
-        method: "GET",
-        headers: getRequestHeaders(),
+      const response = await axios.get(url, {
+        headers: { "ngrok-skip-browser-warning": "true" },
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      console.log('Search response:', response.data);
 
-      // Check content type to detect ngrok warning page
-      const contentType = response.headers.get("content-type");
-      if (contentType && contentType.includes("text/html")) {
-        console.error(
-          "Received HTML response instead of JSON - likely ngrok warning page"
-        );
-        throw new Error("Received ngrok warning page instead of API response");
-      }
-
-      const result = await response.json();
-
-      if (result.message === "Products fetched successfully" && result.data) {
-        const transformedProducts = result.data.map((product) => ({
+      if (response.data.message === "Products fetched successfully" && response.data.data) {
+        const transformedProducts = response.data.data.map((product) => ({
           id: product.id,
           title: product.productName,
           category: product.category?.name || "Uncategorized",
@@ -385,7 +317,14 @@ const ProductCom = () => {
       }
     } catch (err) {
       console.error("Error searching products:", err);
-      setError(err.message);
+      
+      if (err.response) {
+        setError(`Search error: ${err.response.status} - ${err.response.data?.message || 'Unknown error'}`);
+      } else if (err.request) {
+        setError("Network error during search. Please try again.");
+      } else {
+        setError(err.message);
+      }
       return [];
     } finally {
       setIsSearching(false);
@@ -443,8 +382,7 @@ const ProductCom = () => {
       setProducts(products);
       setSelectedCategory(categoryName);
       setParentCategory(categoryName);
-
-      // Update URL - category only
+      
       updateUrlParams({ category: categoryId });
     } catch (error) {
       console.error("Error fetching category products:", error);
@@ -509,32 +447,28 @@ const ProductCom = () => {
     }
   };
 
-  const handleSubAccordionChange =
-    (subPanel, subCategory) => (event, isExpanded) => {
-      setExpandedSubPanel(isExpanded ? subPanel : false);
+  const handleSubAccordionChange = (subPanel, subCategory) => (event, isExpanded) => {
+    setExpandedSubPanel(isExpanded ? subPanel : false);
 
-      if (isExpanded && subCategory) {
-        const parentCategory = categories.find(
-          (cat) =>
-            cat.category === subCategory.category ||
-            cat.title === subCategory.category
-        );
+    if (isExpanded && subCategory) {
+      const parentCategory = categories.find(
+        (cat) => cat.category === subCategory.category || cat.title === subCategory.category
+      );
 
-        if (parentCategory) {
-          setSelectedCategory(subCategory.title);
-          setParentCategory(subCategory.category);
-          setViewMode("products");
-          setShowDetails(false);
-          setSearchQuery("");
+      if (parentCategory) {
+        setSelectedCategory(subCategory.title);
+        setParentCategory(subCategory.category);
+        setViewMode("products");
+        setShowDetails(false);
+        setSearchQuery("");
 
-          // Update URL - category + subcategory
-          updateUrlParams({
-            category: subCategory.categoryId,
-            subcategory: subCategory.subcategoryId,
-          });
-        }
+        updateUrlParams({ 
+          category: subCategory.categoryId,
+          subcategory: subCategory.subcategoryId 
+        });
       }
-    };
+    }
+  };
 
   const handleCategoryItemClick = (categoryName, parentCategoryName) => {
     const category = categories.find(
@@ -553,40 +487,31 @@ const ProductCom = () => {
     setSearchQuery("");
   };
 
-  const handleProductItemClick = async (
-    productTitle,
-    category,
-    productData = null
-  ) => {
+  const handleProductItemClick = async (productTitle, category, productData = null) => {
     try {
-      // If we have productData with productId, use it directly
       if (productData?.productId) {
-        const detailedProduct = await fetchProductDetails(
-          productData.productId
-        );
-
+        const detailedProduct = await fetchProductDetails(productData.productId);
+        
         if (detailedProduct) {
           setSelectedProduct(detailedProduct);
           setViewMode("details");
           setShowDetails(true);
           setParentCategory(category);
 
-          // Update URL - category + subcategory (if exists) + product
-          const urlParams = {
+          const urlParams = { 
             category: productData.categoryId,
-            product: detailedProduct.id,
+            product: detailedProduct.id 
           };
-
+          
           if (productData.subcategoryId) {
             urlParams.subcategory = productData.subcategoryId;
           }
-
+          
           updateUrlParams(urlParams);
         }
         return;
       }
 
-      // Fallback to search method
       setLoading(true);
 
       const categoryObj = categories.find(
@@ -594,39 +519,34 @@ const ProductCom = () => {
       );
 
       if (categoryObj) {
-        const searchResults = await searchProducts(
-          productTitle,
-          categoryObj.id
-        );
+        const searchResults = await searchProducts(productTitle, categoryObj.id);
         const product = searchResults.find((p) => p.title === productTitle);
 
         if (product) {
-          // Fetch detailed product information
           const detailedProduct = await fetchProductDetails(product.id);
-
+          
           if (detailedProduct) {
             setSelectedProduct(detailedProduct);
             setViewMode("details");
             setShowDetails(true);
             setParentCategory(category);
 
-            // Update URL - category + subcategory (if exists) + product
-            const urlParams = {
+            const urlParams = { 
               category: detailedProduct.categoryId,
-              product: detailedProduct.id,
+              product: detailedProduct.id 
             };
-
+            
             if (detailedProduct.subcategoryId) {
               urlParams.subcategory = detailedProduct.subcategoryId;
             }
-
+            
             updateUrlParams(urlParams);
           }
         }
       }
     } catch (error) {
       console.error("Error fetching product details:", error);
-      setError("Failed to load product details");
+      setError('Failed to load product details');
     } finally {
       setLoading(false);
     }
@@ -634,29 +554,30 @@ const ProductCom = () => {
 
   const handleProductClick = async (product) => {
     try {
-      // Fetch detailed product information
+      console.log('Product clicked:', product);
+      
       const detailedProduct = await fetchProductDetails(product.id);
-
+      
       if (detailedProduct) {
+        console.log('Setting detailed product:', detailedProduct);
         setSelectedProduct(detailedProduct);
         setViewMode("details");
         setShowDetails(true);
 
-        // Update URL - category + subcategory (if exists) + product
-        const urlParams = {
+        const urlParams = { 
           category: detailedProduct.categoryId,
-          product: detailedProduct.id,
+          product: detailedProduct.id 
         };
-
+        
         if (detailedProduct.subcategoryId) {
           urlParams.subcategory = detailedProduct.subcategoryId;
         }
-
+        
         updateUrlParams(urlParams);
       }
     } catch (error) {
       console.error("Error fetching product details:", error);
-      setError("Failed to load product details");
+      setError('Failed to load product details');
     }
   };
 
@@ -665,14 +586,13 @@ const ProductCom = () => {
     setShowDetails(false);
     setSelectedProduct(null);
 
-    // Update URL - remove product parameter
-    const currentCategory = searchParams.get("category");
-    const currentSubcategory = searchParams.get("subcategory");
-
+    const currentCategory = searchParams.get('category');
+    const currentSubcategory = searchParams.get('subcategory');
+    
     const urlParams = {};
     if (currentCategory) urlParams.category = currentCategory;
     if (currentSubcategory) urlParams.subcategory = currentSubcategory;
-
+    
     updateUrlParams(urlParams);
   };
 
@@ -718,38 +638,6 @@ const ProductCom = () => {
       </div>
     );
   }
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.02,
-        delayChildren: 0.1,
-        duration: 0.4,
-      },
-    },
-  };
-
-  const letterVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 25,
-        duration: 0.3,
-      },
-    },
-  };
-
-  const splitText = (text) =>
-    text.split("").map((char, i) => (
-      <motion.span key={i} variants={letterVariants} className="inline-block">
-        {char === " " ? "\u00A0" : char}
-      </motion.span>
-    ));
 
   return (
     <div className="min-h-screen bg-white px-4 md:px-12 py-10">
@@ -760,15 +648,9 @@ const ProductCom = () => {
         transition={{ duration: 0.6 }}
         className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8"
       >
-        <motion.h1
-          className="text-3xl md:text-4xl font-bold text-[#BABEC8]"
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-        >
-          {splitText("Our Products")}
-        </motion.h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-[#2E437C]">
+          Our Products
+        </h1>
 
         <div className="relative w-full md:max-w-md lg:max-w-lg xl:max-w-lg">
           <motion.input
@@ -1036,9 +918,7 @@ const ProductCom = () => {
                           product.image && product.image.startsWith("http")
                             ? product.image
                             : product.image && product.image.includes("/")
-                            ? `${import.meta.env.VITE_BACKEND_URL}/${
-                                product.image
-                              }`
+                            ? `${import.meta.env.VITE_BACKEND_URL}/${product.image}`
                             : productImage
                         }
                         alt={product.title}
@@ -1122,9 +1002,7 @@ const ProductCom = () => {
               {productDetailsLoading ? (
                 <div className="flex items-center justify-center py-20">
                   <CircularProgress size={60} sx={{ color: "#2E437C" }} />
-                  <p className="ml-4 text-gray-600">
-                    Loading product details...
-                  </p>
+                  <p className="ml-4 text-gray-600">Loading product details...</p>
                 </div>
               ) : (
                 <ProductDetails selectedProduct={selectedProduct} />
