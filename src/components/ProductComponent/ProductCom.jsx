@@ -100,7 +100,7 @@ const ProductCom = () => {
 
       console.log(`Fetching product details for ID: ${productId}`);
 
-      const {data} = await axios.get(
+      const { data } = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/product/product/${productId}`,
         {
           headers: { "ngrok-skip-browser-warning": "true" },
@@ -108,7 +108,6 @@ const ProductCom = () => {
       );
 
       // console.log("Product details response status:", response.status);
-      
 
       // if (!response.ok) {
       //   throw new Error(`HTTP error! status: ${response.status}`);
@@ -124,7 +123,6 @@ const ProductCom = () => {
       //     "Received ngrok warning page instead of API response. Please check your ngrok configuration."
       //   );
       // }
-
 
       if (data) {
         // Transform the detailed product data
@@ -528,15 +526,12 @@ const ProductCom = () => {
           setViewMode("products");
           setShowDetails(false);
           setSearchQuery("");
-<<<<<<< HEAD
 
           // Update URL - category + subcategory
           updateUrlParams({
             category: subCategory.categoryId,
             subcategory: subCategory.subcategoryId,
           });
-=======
->>>>>>> b11eb9f1edfdff8cc7a802c9e6f2e8983c6a9044
         }
       }
     };
@@ -767,14 +762,13 @@ const ProductCom = () => {
       >
         <motion.h1
           className="text-3xl md:text-4xl font-bold text-[#BABEC8]"
-          variants={containerVariants} 
+          variants={containerVariants}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true }}
         >
           {splitText("Our Products")}
         </motion.h1>
-
 
         <div className="relative w-full md:max-w-md lg:max-w-lg xl:max-w-lg">
           <motion.input
