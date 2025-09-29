@@ -249,7 +249,7 @@ const ProductDetails = ({ selectedProduct }) => {
         {
           method: "POST",
           headers: {
-            "Content-Type": "application/json",
+            "ngrok-skip-browser-warning": "true",
           },
           body: JSON.stringify({
             ...formData,
@@ -376,7 +376,6 @@ const ProductDetails = ({ selectedProduct }) => {
         </div>
       </div>
       <div className="max-w-7xl mx-auto lg:px-8 px-4">
-        
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 lg:gap-8 mb-6 lg:mb-8">
           {/* Product Title and Description */}
           <div className="flex-1 min-w-0">
@@ -512,9 +511,6 @@ const ProductDetails = ({ selectedProduct }) => {
                           : "brightness-95 hover:brightness-100"
                       }`}
                     />
-
-                    
-                    
                   </div>
                 ))}
               </div>

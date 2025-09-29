@@ -174,14 +174,16 @@ const Career = () => {
         setLoading(true);
         setError(null);
 
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/settings/job`, {
-          method: "GET",
-          headers: {
-            Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImVtYWlsIjoiYmh1dmFwcml5ZXNoQGdtYWlsLmNvbSIsImlhdCI6MTc1ODU1NjI4MH0.O7lBh3uSaCt8A7WUgzIbViGkMA3DF9s_JFviF6l8aCg",
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `${import.meta.env.VITE_BACKEND_URL}/settings/job`,
+          {
+            method: "GET",
+            headers: {
+              "ngrok-skip-browser-warning": "true",
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

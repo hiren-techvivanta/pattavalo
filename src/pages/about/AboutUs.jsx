@@ -177,22 +177,19 @@ const AboutUs = () => {
         method: "GET",
         headers: {
           Accept: "application/json",
+          "ngrok-skip-browser-warning": "true",
         },
       });
 
-     
       if (!response.ok) {
         let errorMessage = `Request failed with status ${response.status}`;
 
-        
         try {
           const errorData = await response.json();
           if (errorData?.message) {
             errorMessage = errorData.message;
           }
-        } catch {
-          
-        }
+        } catch {}
 
         throw new Error(errorMessage);
       }
@@ -205,7 +202,6 @@ const AboutUs = () => {
         throw new Error("Failed to parse server response");
       }
 
-      
       if (!result || typeof result !== "object") {
         throw new Error("Unexpected response format");
       }
@@ -252,7 +248,7 @@ const AboutUs = () => {
       },
     },
   };
- 
+
   const slideInRight = {
     hidden: {
       opacity: 0,

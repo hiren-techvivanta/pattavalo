@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import logoBlack from "../../assets/images/atc_logo.png";
 import logoWhite from "../../assets/images/ATC Logo white.png";
+import QuickSelectMenu from "./QuickSelectMenu"; 
 
 export default function Navbar({ navStyle, show = true }) {
   const navigate = useNavigate();
@@ -80,10 +81,8 @@ export default function Navbar({ navStyle, show = true }) {
   };
 
   const handleContactClick = () => {
-    // Add your contact functionality here
     console.log("Contact clicked");
-    // Or navigate to contact page: navigate('/contact');
-     navigate('/contact')
+    navigate('/contact');
   };
 
   return (
@@ -131,35 +130,40 @@ export default function Navbar({ navStyle, show = true }) {
                       letterSpacing: "0.5px",
                       fontWeight: 550,
                     }}
-                    
                   >
                     {menu.name}
                   </motion.button>
                 ))}
               </div>
 
-              {/* Desktop Contact Button */}
-              <div className="hidden md:flex">
+              {/* Desktop Actions - Quick Select + Contact Button */}
+              <div className="hidden md:flex items-center space-x-4">
+                {/* Quick Select Menu */}
+                <QuickSelectMenu navBg={navBg} />
+                
+                {/* Contact Button */}
                 <motion.button
-
                   onClick={() => {
                     setIsOpen(false);
                     handleContactClick();
-                    navigate('/contact')
+                    navigate('/contact');
                   }}
-                  className={`w-full inline-flex justify-center items-center border font-medium px-6 py-2 rounded-full text-base ${
+                  className={`inline-flex justify-center items-center border font-medium px-6 py-2 rounded-full text-base transition-all duration-200 ${
                     navBg
                       ? "border-[#2E437C] text-[#2E437C] hover:bg-[#2E437C] hover:text-white"
                       : "border-white text-white hover:bg-white hover:text-[#2E437C]"
                   }`}
-
                   style={{
                     fontFamily: "'Articulat CF', sans-serif",
                     fontWeight: 500,
                     fontSize: "16px",
                     letterSpacing: "0.5px",
                   }}
-                 
+                  whileHover={{
+                    scale: 1.02,
+                    transition: { duration: 0.2 }
+                  }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   CONTACT US
                 </motion.button>

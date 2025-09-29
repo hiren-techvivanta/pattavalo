@@ -65,11 +65,11 @@ const JobApplicationModal = ({ isOpen, onClose, jobId }) => {
       }
     }
   };
-  
+
   const validateFile = (file) => {
     const allowedTypes = [
       "image/jpeg",
-      "image/jpg", 
+      "image/jpg",
       "image/png",
       "application/pdf",
     ];
@@ -111,7 +111,7 @@ const JobApplicationModal = ({ isOpen, onClose, jobId }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -126,31 +126,41 @@ const JobApplicationModal = ({ isOpen, onClose, jobId }) => {
 
     try {
       const formDataToSend = new FormData();
-      formDataToSend.append('job_id', jobId.toString());
-      formDataToSend.append('name', formData.name.trim());
-      formDataToSend.append('contact_number', formData.contactNumber.trim());
-      formDataToSend.append('file', formData.resume);
+      formDataToSend.append("job_id", jobId.toString());
+      formDataToSend.append("name", formData.name.trim());
+      formDataToSend.append("contact_number", formData.contactNumber.trim());
+      formDataToSend.append("file", formData.resume);
 
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/settings/apply-job`, {
-        method: 'POST',
-        body: formDataToSend,
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/settings/apply-job`,
+        {
+          method: "POST",
+          body: formDataToSend,
+          headers: {
+            "ngrok-skip-browser-warning": "true",
+          },
+        }
+      );
 
       if (response.ok) {
         const result = await response.json();
         setSuccess(true);
-        setSubmitMessage("Application submitted successfully! We will contact you soon.");
-        
+        setSubmitMessage(
+          "Application submitted successfully! We will contact you soon."
+        );
+
         setTimeout(() => {
           handleClose();
         }, 3000);
       } else {
         const errorData = await response.json().catch(() => null);
-        throw new Error(errorData?.message || 'Failed to submit application');
+        throw new Error(errorData?.message || "Failed to submit application");
       }
     } catch (error) {
-      console.error('Error submitting application:', error);
-      setSubmitMessage(`Failed to submit application: ${error.message}. Please try again.`);
+      console.error("Error submitting application:", error);
+      setSubmitMessage(
+        `Failed to submit application: ${error.message}. Please try again.`
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -211,11 +221,13 @@ const JobApplicationModal = ({ isOpen, onClose, jobId }) => {
 
         <div className="flex-1 overflow-y-auto p-6 pt-4">
           {submitMessage && (
-            <div className={`mb-6 p-4 rounded-lg text-center ${
-              success 
-                ? 'bg-green-50 text-green-700 border border-green-200'
-                : 'bg-red-50 text-red-700 border border-red-200'
-            }`}>
+            <div
+              className={`mb-6 p-4 rounded-lg text-center ${
+                success
+                  ? "bg-green-50 text-green-700 border border-green-200"
+                  : "bg-red-50 text-red-700 border border-red-200"
+              }`}
+            >
               {submitMessage}
             </div>
           )}
@@ -281,7 +293,9 @@ const JobApplicationModal = ({ isOpen, onClose, jobId }) => {
 
               <div
                 className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all duration-300 ${
-                  isSubmitting ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+                  isSubmitting
+                    ? "cursor-not-allowed opacity-50"
+                    : "cursor-pointer"
                 } ${
                   dragActive
                     ? "border-blue-400 bg-blue-50"
@@ -293,7 +307,11 @@ const JobApplicationModal = ({ isOpen, onClose, jobId }) => {
                 onDragLeave={!isSubmitting ? handleDrag : undefined}
                 onDragOver={!isSubmitting ? handleDrag : undefined}
                 onDrop={!isSubmitting ? handleDrop : undefined}
-                onClick={!isSubmitting ? () => fileInputRef.current?.click() : undefined}
+                onClick={
+                  !isSubmitting
+                    ? () => fileInputRef.current?.click()
+                    : undefined
+                }
               >
                 <IoCloudUploadOutline className="w-12 h-12 text-gray-400 mx-auto mb-4" />
 
