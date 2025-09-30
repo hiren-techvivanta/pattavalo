@@ -678,7 +678,7 @@ export default function IndustryCom() {
             </div>
 
             {/* Image Slider */}
-            <div className="relative overflow-hidden rounded-lg">
+            <div className="relative overflow-hidden">
               {categoryData?.images?.length > 0 ? (
                 <Swiper
                   modules={[Pagination, Autoplay]}
@@ -691,14 +691,14 @@ export default function IndustryCom() {
                   }}
                   loop={true}
                   slidesPerView={1}
-                  className="rounded-lg"
+                  className=""
                 >
                   {categoryData.images.map((img, idx) => (
                     <SwiperSlide key={idx}>
                       <img
                         src={img}
                         alt={`${categoryData.title} ${idx + 1}`}
-                        className="w-full h-60 sm:h-80 lg:h-110 object-cover transition-transform duration-500 hover:scale-105 rounded-lg"
+                        className="w-full h-60 sm:h-80 lg:h-110 object-cover transition-transform duration-500 hover:scale-105 "
                       />
                     </SwiperSlide>
                   ))}
@@ -707,7 +707,7 @@ export default function IndustryCom() {
                 <img
                   src={activeIndustry.image}
                   alt={activeIndustry.title}
-                  className="w-full h-60 sm:h-80 lg:h-110 object-cover transition-transform duration-500 hover:scale-105 rounded-lg"
+                  className="w-full h-60 sm:h-80 lg:h-110 object-cover transition-transform duration-500 hover:scale-105"
                 />
               )}
 

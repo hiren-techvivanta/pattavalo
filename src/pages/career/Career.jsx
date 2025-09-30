@@ -15,14 +15,13 @@ import Seo from "../../components/common/Seo";
 gsap.registerPlugin(ScrollTrigger);
 
 const Career = () => {
-  const [activeCategory, setActiveCategory] = useState("ENGINEERING");
+  const [activeCategory, setActiveCategory] = useState("HR_ADMIN");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedJobTitle, setSelectedJobTitle] = useState("");
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  
   const benefitsData = [
     {
       id: 1,
@@ -58,10 +57,11 @@ const Career = () => {
     },
   ];
 
-  const categories = [
+  // Fixed categories with "OTHER" added at the end
+  const [categories, setCategories] = useState([
     {
-      id: "HT_ADMIN",
-      name: "HT & ADMIN",
+      id: "HR_ADMIN",
+      name: "HR & ADMIN",
       count: 0,
       icon: (
         <svg
@@ -165,7 +165,27 @@ const Career = () => {
         </svg>
       ),
     },
-  ];
+    {
+      id: "OTHER",
+      name: "OTHER",
+      count: 0,
+      icon: (
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"
+          />
+        </svg>
+      ),
+    },
+  ]);
 
   // Fetch jobs from API
   useEffect(() => {
@@ -177,7 +197,6 @@ const Career = () => {
         const response = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/settings/job`,
           {
-            method: "GET",
             headers: {
               "ngrok-skip-browser-warning": "true",
               "Content-Type": "application/json",
@@ -197,7 +216,7 @@ const Career = () => {
             id: job.id,
             title: job.name,
             experience: job.experience,
-            category: "ENGINEERING",
+            department: job.department, 
             location: job.location,
             type: job.job_role,
             description: job.description,
@@ -209,12 +228,37 @@ const Career = () => {
 
           setJobs(transformedJobs);
 
-          // Update category counts dynamically
-          const engineeringCount = transformedJobs.filter(
-            (job) => job.category === "ENGINEERING"
-          ).length;
-          categories.find((cat) => cat.id === "ENGINEERING").count =
-            engineeringCount;
+          // Update category counts based on department
+          const updatedCategories = categories.map((category) => {
+            let count = 0;
+            
+            if (category.id === "OTHER") {
+              // Count jobs with department "other"
+              count = transformedJobs.filter(
+                (job) => job.department.toLowerCase() === "other"
+              ).length;
+            } else {
+              // For existing categories, map department to category
+              const departmentMap = {
+                "HR_ADMIN": "hr_admin",
+                "ENGINEERING": "engineering", 
+                "SUPPORT": "support",
+                "DESIGN": "design",
+                "DIGITAL_MARKETING": "digital_marketing"
+              };
+              
+              const targetDepartment = departmentMap[category.id];
+              if (targetDepartment) {
+                count = transformedJobs.filter(
+                  (job) => job.department.toLowerCase() === targetDepartment
+                ).length;
+              }
+            }
+
+            return { ...category, count };
+          });
+
+          setCategories(updatedCategories);
         }
       } catch (err) {
         console.error("Error fetching jobs:", err);
@@ -238,10 +282,24 @@ const Career = () => {
     setSelectedJobTitle("");
   };
 
-  const filteredJobs = jobs.filter((job) => job.category === activeCategory);
-
-  
- 
+  // Filter jobs by department based on selected category
+  const filteredJobs = jobs.filter((job) => {
+    if (activeCategory === "OTHER") {
+      return job.department.toLowerCase() === "other";
+    }
+    
+    // Map category to department
+    const departmentMap = {
+      "HR_ADMIN": "hr_admin",
+      "ENGINEERING": "engineering",
+      "SUPPORT": "support", 
+      "DESIGN": "design",
+      "DIGITAL_MARKETING": "digital_marketing"
+    };
+    
+    const targetDepartment = departmentMap[activeCategory];
+    return targetDepartment && job.department.toLowerCase() === targetDepartment;
+  });
 
   const fadeInUp = {
     hidden: {
@@ -376,37 +434,40 @@ const Career = () => {
       )}
     </button>
   );
-  const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.02,
-      delayChildren: 0.1,
-      duration: 0.4,
-    },
-  },
-};
-const letterVariants = {
-  hidden: { opacity: 0, y: 20 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 300,
-      damping: 25,
-      duration: 0.3,
-    },
-  },
-};
 
-const splitText = (text) =>
-  text.split("").map((char, i) => (
-    <motion.span key={i} variants={letterVariants} className="inline-block">
-      {char === " " ? "\u00A0" : char}
-    </motion.span>
-  ));
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.02,
+        delayChildren: 0.1,
+        duration: 0.4,
+      },
+    },
+  };
+
+  const letterVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 25,
+        duration: 0.3,
+      },
+    },
+  };
+
+  const splitText = (text) =>
+    text.split("").map((char, i) => (
+      <motion.span key={i} variants={letterVariants} className="inline-block">
+        {char === " " ? "\u00A0" : char}
+      </motion.span>
+    ));
+
   return (
     <>
       <Seo
@@ -426,15 +487,13 @@ const splitText = (text) =>
         <motion.h1
           className="font-[400] text-[#2E437C] text-[40px] md:text-[74px] text-center"
           style={{ lineHeight: "70px" }}
-          
         >
-           {splitText("Career")} <br />
+          {splitText("Career")} <br />
           <span className="font-[700] text-[#BABEC8]">{splitText("Openings")}</span>
         </motion.h1>
 
         <motion.p
           className="text-[20px] pt-5 text-center text-[#191919] max-w-4xl mx-auto leading-relaxed"
-          // variants={fadeInUp}
         >
           We're always looking for creative, talented self-starters to join the
           ATC family, <br className="hidden md:block" /> check out our open
@@ -453,7 +512,7 @@ const splitText = (text) =>
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Categories Sidebar */}
           <motion.div className="lg:col-span-1" variants={slideInLeft}>
-            <div className="bg-white rounded-xl p-6 sticky top-6 ">
+            <div className="bg-white rounded-xl p-6 sticky top-6">
               <div className="space-y-2">
                 {categories.map((category) => (
                   <CategoryButton key={category.id} category={category} />
@@ -557,9 +616,7 @@ const splitText = (text) =>
                         We don't have any positions in this category right now,
                         but we're always growing!
                       </p>
-                      <button className="text-[#2E437C] hover:text-[#1E2F5C] font-medium bg-blue-50 hover:bg-blue-100 px-6 py-3 rounded-lg transition-all duration-300 hover:scale-105 transform">
-                        Get notified when new jobs are posted →
-                      </button>
+                     
                     </motion.div>
                   )}
                 </motion.div>

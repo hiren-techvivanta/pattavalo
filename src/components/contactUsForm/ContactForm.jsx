@@ -102,10 +102,7 @@ const ContactForm = () => {
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/settings/enquiry`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          "ngrok-skip-browser-warning": "true"
-        },
+       
         body: JSON.stringify(formData),
       });
 

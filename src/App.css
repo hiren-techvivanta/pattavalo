@@ -1,5 +1,5 @@
 :root {
-  --brand-color: #2E437C;
+  --brand-color: #2e437c;
   /* --brand-color-dark: #007ACC; */
   /* --brand-color-light: #3AB0FF; */
 }
@@ -7,10 +7,10 @@
   background-color: var(--brand-color);
 }
 
-.scrollbar-hide::-webkit-scrollbar { 
-    width: 0;
-    height: 0;
-} 
+.scrollbar-hide::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
 
 @keyframes ripple {
   0% {
@@ -27,7 +27,6 @@
   }
 }
 
-
 .center-div {
   position: fixed;
   top: 10%;
@@ -35,67 +34,55 @@
   width: 1280px;
   max-width: 95vw;
   height: 490px;
-  
-  /* Center horizontally within the right-aligned container */
+
   transform: translateX(-50%);
   margin-right: 50%;
-  
-  /* OR Alternative centering approach */
-  /* left: 50%;
-  transform: translateX(-50%); */
-  
+
   z-index: 1000;
   background: white;
   border-radius: 16px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
-/* Media Queries for different screen sizes */
-
-/* Extra Large screens (1400px and up) */
 @media (min-width: 1400px) {
   .center-div {
     width: 1280px;
     height: 490px;
-    margin-right: calc(50% - 640px); /* Half of 1280px */
+    margin-right: calc(50% - 640px);
   }
 }
 
-/* Large screens (1024px to 1399px) */
 @media (min-width: 1024px) and (max-width: 1399px) {
   .center-div {
     width: 90vw;
     max-width: 1200px;
     height: 460px;
-    margin-right: calc(50% - 45vw); /* Half of 90vw */
+    margin-right: calc(50% - 45vw);
   }
 }
 
-/* Medium screens (768px to 1023px) - Tablets */
 @media (min-width: 768px) and (max-width: 1023px) {
   .center-div {
     width: 92vw;
     height: 420px;
-    margin-right: calc(50% - 46vw); /* Half of 92vw */
+    margin-right: calc(50% - 46vw);
   }
 }
 
-/* Small screens (640px to 767px) - Large phones */
 @media (min-width: 640px) and (max-width: 767px) {
   .center-div {
     width: 95vw;
     height: 380px;
-    margin-right: calc(50% - 47.5vw); /* Half of 95vw */
+    margin-right: calc(50% - 47.5vw);
   }
 }
 
-/* Extra Small screens (below 640px) - Mobile phones */
 @media (max-width: 639px) {
   .center-div {
     width: 95vw;
     height: auto;
     min-height: 300px;
     max-height: 85vh;
-    margin-right: calc(50% - 47.5vw); /* Half of 95vw */
+    margin-right: calc(50% - 47.5vw);
   }
 }

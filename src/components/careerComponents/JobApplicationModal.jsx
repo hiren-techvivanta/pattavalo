@@ -136,9 +136,6 @@ const JobApplicationModal = ({ isOpen, onClose, jobId }) => {
         {
           method: "POST",
           body: formDataToSend,
-          headers: {
-            "ngrok-skip-browser-warning": "true",
-          },
         }
       );
 
