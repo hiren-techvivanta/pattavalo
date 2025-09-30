@@ -34,9 +34,10 @@ export default function Navbar({ navStyle, show = true }) {
   const menuItems = [
     { name: "Home", url: "/" },
     { name: "Products", url: "/products" },
-    { name: "Downloads", url: "/downloads" },
+    { name: "Industries", url: "/#industries-section" },
     { name: "News", url: "/news" },
     { name: "Jobs", url: "/jobs" },
+    { name: "Downloads", url: "/downloads" },
     { name: "About Us", url: "/about" },
   ];
 
@@ -138,7 +139,7 @@ export default function Navbar({ navStyle, show = true }) {
 
               {/* Desktop Actions - Quick Select + Contact Button */}
               <div className="hidden md:flex items-center space-x-4">
-                {/* Quick Select Menu */}
+                
                 <QuickSelectMenu navBg={navBg} />
                 
                 {/* Contact Button */}

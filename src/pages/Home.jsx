@@ -211,7 +211,7 @@ export default function Home() {
           <ShowCase />
         </motion.div>
 
-        <motion.div variants={quickFadeInUp} className="fade-in-section">
+        <motion.div variants={quickFadeInUp} className="fade-in-section" id="industries-section">
           <IndustryCom />
         </motion.div>
 

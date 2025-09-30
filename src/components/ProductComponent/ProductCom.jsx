@@ -382,7 +382,8 @@ const ProductCom = () => {
       setProducts(products);
       setSelectedCategory(categoryName);
       setParentCategory(categoryName);
-      
+
+      // Update URL - category only
       updateUrlParams({ category: categoryId });
     } catch (error) {
       console.error("Error fetching category products:", error);
