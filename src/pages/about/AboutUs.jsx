@@ -3,7 +3,6 @@ import { motion, AnimatePresence, useInView } from "framer-motion";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
-import Lenis from "@studio-freight/lenis";
 import { HiDownload } from "react-icons/hi";
 
 // Components
@@ -18,9 +17,7 @@ import AnimatedButton from "../../components/aboutUsComponents/AnimatedButton";
 import BgVideo from "../../assets/Video/aboutUs.mp4";
 import a1 from "../../assets/images/a1.jpg";
 import a2 from "../../assets/images/a2.jpg";
-import t1 from "../../assets/images/t1.jpg";
-import t2 from "../../assets/images/t2.jpg";
-import t3 from "../../assets/images/t3.jpg";
+
 import i1 from "../../assets/images/i1.png";
 import i2 from "../../assets/images/i2.png";
 import i3 from "../../assets/images/i3.png";
@@ -52,12 +49,6 @@ const statsData = [
   { number: "120+", label: "Clients" },
   { number: "99%", label: "Satisfaction Rate" },
 ];
-
-// const teamData = [
-//   { img: t1, name: "Ajay Patel", role: "Managing Director" },
-//   { img: t2, name: "Harnish Patel", role: "General Manager (Sales&Marketing)" },
-//   { img: t3, name: "Shivam Patel", role: "Technical Director" },
-// ];
 
 const galleryImages = [i1, i2, i3, i4, i5, i6];
 
@@ -160,8 +151,13 @@ const AboutUs = () => {
   const [ourTeam, setOurTeam] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [hasAnimatedBefore, setHasAnimatedBefore] = useState(false);
   const videoRef = useRef(null);
   const scrollContainerRef = useRef(null);
+
+  // Local storage key for animation flag
+  const ANIMATION_KEY = "aboutUsAnimationCompleted";
+
   useEffect(() => {
     fetchTeam();
   }, []);
@@ -175,7 +171,10 @@ const AboutUs = () => {
 
       const response = await fetch(url, {
         method: "GET",
-      
+        headers: {
+          "ngrok-skip-browser-warning": "true",
+          "Content-Type": "application/json",
+        },
       });
 
       if (!response.ok) {
@@ -213,19 +212,6 @@ const AboutUs = () => {
       setLoading(false);
     }
   };
-
-  // // Faster Animation variants
-  // const containerVariants = {
-  //   hidden: { opacity: 0 },
-  //   visible: {
-  //     opacity: 1,
-  //     transition: {
-  //       duration: 0.3,
-  //       staggerChildren: 0.08,
-  //       delayChildren: 0.05,
-  //     },
-  //   },
-  // };
 
   const slideInLeft = {
     hidden: {
@@ -303,54 +289,44 @@ const AboutUs = () => {
     },
   };
 
-  // Smooth scrolling setup
-  // useEffect(() => {
-  //   const lenis = new Lenis({
-  //     duration: 0.8,
-  //     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-  //     direction: "vertical",
-  //     gestureDirection: "vertical",
-  //     smooth: true,
-  //     mouseMultiplier: 1.2,
-  //     smoothTouch: false,
-  //     touchMultiplier: 2,
-  //     infinite: false,
-  //   });
-
-  //   function raf(time) {
-  //     lenis.raf(time);
-  //     requestAnimationFrame(raf);
-  //   }
-
-  //   requestAnimationFrame(raf);
-  //   lenis.on("scroll", ScrollTrigger.update);
-  //   gsap.ticker.add((time) => {
-  //     lenis.raf(time * 1000);
-  //   });
-
-  //   return () => {
-  //     lenis.destroy();
-  //     gsap.ticker.remove(lenis.raf);
-  //   };
-  // }, []);
-
   useEffect(() => {
+    // Check if animation has been played before
+    const animationCompleted = localStorage.getItem(ANIMATION_KEY);
+    const hasAnimated = animationCompleted === "true";
+
+    setHasAnimatedBefore(hasAnimated);
+
     if (videoRef.current) {
       videoRef.current
         .play()
         .catch((err) => console.log("Autoplay prevented:", err));
     }
 
-    const timer = setTimeout(() => setIsVideoExpanded(true), 1500);
-    const navbarTimer = setTimeout(() => setShowNavbar(true), 2000);
+    if (hasAnimated) {
+      // If animation has been played before, show everything immediately
+      setIsVideoExpanded(true);
+      setShowNavbar(true);
+    } else {
+      // Run animation for first time
+      const timer = setTimeout(() => {
+        setIsVideoExpanded(true);
+        // Store in localStorage that animation has completed
+        localStorage.setItem(ANIMATION_KEY, "true");
+      }, 1500);
 
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(navbarTimer);
-    };
+      const navbarTimer = setTimeout(() => {
+        setShowNavbar(true);
+      }, 2000);
+
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(navbarTimer);
+      };
+    }
   }, []);
 
   const currentData = timelineData[selectedYear];
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -394,14 +370,18 @@ const AboutUs = () => {
       />
       <motion.div
         className="fixed top-0 left-0 right-0 z-50"
-        initial={{ opacity: 1, y: -100 }}
-        animate={showNavbar ? { opacity: 1, y: 0, scale: 1 } : { y: -100 }}
-        transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
+        initial={{ opacity: 1, y: hasAnimatedBefore ? 0 : -100 }}
+        animate={showNavbar ? { opacity: 1, y: 0, scale: 1 } : { y: hasAnimatedBefore ? 0 : -100 }}
+        transition={{ 
+          duration: hasAnimatedBefore ? 0 : 0.6, 
+          ease: "easeInOut", 
+          delay: hasAnimatedBefore ? 0 : 0.2 
+        }}
       >
         <Navbar />
       </motion.div>
 
-      {/* Hero Video Section - Same as original */}
+      {/* Hero Video Section */}
       <div className="relative h-[100vh] md:h-screen w-full overflow-hidden">
         <div className="absolute inset-0 w-full h-full overflow-hidden">
           <video
@@ -417,32 +397,53 @@ const AboutUs = () => {
           <div className="absolute inset-0 bg-black/60"></div>
         </div>
 
+        {/* White overlay animation - only animate once */}
         <motion.div
-          initial={{ opacity: 1, y: 1500, boxShadow: "0 0 0 9999px white" }}
-          animate={{
-            opacity: 1,
-            y: 0,
-            boxShadow: isVideoExpanded
-              ? "0 0 0 0px white"
-              : "0 0 0 9999px white",
+          initial={
+            hasAnimatedBefore
+              ? { opacity: 1, y: 0, boxShadow: "0 0 0 0px white" }
+              : { opacity: 1, y: 1500, boxShadow: "0 0 0 9999px white" }
+          }
+          animate={
+            hasAnimatedBefore
+              ? { opacity: 1, y: 0, boxShadow: "0 0 0 0px white" }
+              : {
+                  opacity: 1,
+                  y: 0,
+                  boxShadow: isVideoExpanded
+                    ? "0 0 0 0px white"
+                    : "0 0 0 9999px white",
+                }
+          }
+          transition={{
+            duration: hasAnimatedBefore ? 0 : 0.6,
+            ease: "easeOut",
           }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className={`absolute inset-0 transition-all duration-800 ease-out bg-transparent ${
-            isVideoExpanded
+          className={`absolute inset-0 bg-transparent ${
+            isVideoExpanded || hasAnimatedBefore
               ? "scale-110"
               : "scale-75 rounded-[15px] sm:scale-50 sm:rounded-3xl m-4"
           }`}
+          style={{
+            transitionDuration: hasAnimatedBefore ? "0ms" : "800ms",
+            transitionTimingFunction: "ease-out",
+            transitionProperty: "all",
+          }}
         />
 
-        {isVideoExpanded && (
+        {(isVideoExpanded || hasAnimatedBefore) && (
           <div className="relative z-10 w-full h-full flex items-center px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16">
             <div className="max-w-7xl mx-auto w-full">
               <div className="max-w-4xl text-white overflow-hidden">
                 <motion.h1
                   className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[100px] font-bold leading-none overflow-hidden tracking-tight"
-                  initial={{ opacity: 1, y: -100 }}
+                  initial={{ opacity: 1, y: hasAnimatedBefore ? 0 : -100 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, ease: "easeInOut", delay: 0.8 }}
+                  transition={{ 
+                    duration: hasAnimatedBefore ? 0 : 0.6, 
+                    ease: "easeInOut", 
+                    delay: hasAnimatedBefore ? 0 : 0.8 
+                  }}
                   style={{
                     fontFamily: "'Articulat CF', sans-serif",
                     fontWeight: 400,
@@ -454,9 +455,13 @@ const AboutUs = () => {
 
                 <motion.p
                   className="mt-4 sm:mt-5 md:mt-6 text-sm xs:text-base sm:text-lg md:text-xl text-gray-200 max-w-xl md:max-w-2xl"
-                  initial={{ opacity: 1, y: 100 }}
+                  initial={{ opacity: 1, y: hasAnimatedBefore ? 0 : 100 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, ease: "easeInOut", delay: 0.8 }}
+                  transition={{ 
+                    duration: hasAnimatedBefore ? 0 : 0.6, 
+                    ease: "easeInOut", 
+                    delay: hasAnimatedBefore ? 0 : 0.8 
+                  }}
                   style={{
                     fontFamily: "'Articulat CF', sans-serif",
                     fontWeight: 400,

@@ -123,7 +123,7 @@ export default function Navbar({ navStyle, show = true }) {
                     onClick={() => navigate(menu.url)}
                     className={`${
                       navBg ? "text-[#2E437C]" : "text-white"
-                    } transition-colors font-medium hover:text-[#2E437C] cursor-pointer`}
+                    } transition-colors font-medium hover:text-[#2E437C] cursor-pointer me-2 md:me-3 lg:me-6 xl:me-8`}
                     style={{
                       fontFamily: "'Articulat CF', sans-serif",
                       fontSize: "16px",
@@ -169,8 +169,12 @@ export default function Navbar({ navStyle, show = true }) {
                 </motion.button>
               </div>
 
-              {/* Mobile Menu Button */}
-              <div className="md:hidden flex items-center space-x-4">
+              {/* Mobile Actions - Quick Select + Menu Button */}
+              <div className="md:hidden flex items-center space-x-3">
+                {/* Quick Select Menu for Mobile */}
+                <QuickSelectMenu navBg={navBg} />
+                
+                {/* Mobile Menu Button */}
                 <motion.button
                   onClick={() => setIsOpen(!isOpen)}
                   className={`focus:outline-none p-2 rounded-md ${

@@ -329,11 +329,7 @@ const ProductDetails = ({ selectedProduct }) => {
             <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#2E437C] leading-tight">
               {productData.productName}
             </h2>
-            {productData.description && (
-              <p className="text-gray-600 mt-2 sm:mt-3 text-base sm:text-lg max-w-4xl leading-relaxed">
-                {productData.description}
-              </p>
-            )}
+           
           </div>
 
           {/* Action Buttons */}
@@ -361,7 +357,7 @@ const ProductDetails = ({ selectedProduct }) => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
           {/* Main Image Container - Takes 3 columns on desktop */}
           <div className="lg:col-span-3">
-            <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] lg:aspect-[4/3] xl:aspect-[5/4] bg-gray-100 rounded-lg overflow-hidden shadow-lg">
+            <div className="relative w-full aspect-[4/3] sm:aspect-[3/2] lg:aspect-[4/3] xl:aspect-[5/4] bg-gray-100  overflow-hidden shadow-lg">
               <Swiper
                 modules={[Navigation, Thumbs, Autoplay]}
                 spaceBetween={0}
@@ -418,7 +414,7 @@ const ProductDetails = ({ selectedProduct }) => {
                     <div
                       key={`mobile-thumb-${index}`}
                       onClick={() => thumbsSwiper?.slideTo(index)}
-                      className={`relative aspect-square overflow-hidden cursor-pointer transition-all duration-300 rounded-md ${
+                      className={`relative aspect-square overflow-hidden cursor-pointer transition-all duration-300  ${
                         index === activeIndex
                           ? "ring-2 ring-[#2E437C] opacity-100"
                           : "opacity-80 hover:opacity-100"
@@ -453,9 +449,9 @@ const ProductDetails = ({ selectedProduct }) => {
                   {images.map((image, index) => (
                     <SwiperSlide key={`side-thumb-${image.id}`} className="!h-auto">
                       <div
-                        className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 rounded-lg ${
+                        className={`relative w-35 aspect-square overflow-hidden cursor-pointer transition-all duration-300  ${
                           activeIndex === index
-                            ? "scale-[1.02] shadow-lg border-2 border-[#2E437C] transform-gpu"
+                            ? "scale-[1.02] shadow-lg transform-gpu"
                             : "opacity-90 hover:opacity-100 hover:scale-[1.01] grayscale-[0.1]"
                         }`}
                       >
