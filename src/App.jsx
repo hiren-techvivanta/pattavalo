@@ -12,12 +12,14 @@ import ScrollToTop from "./components/ScrollToTop";
 import Industries from "./pages/Industries/Industries";
 import OurProduct from "./pages/product/OurProduct";
 import Error from "./pages/error/Error";
+import WhatsappIcon from "./components/common/WhatsappIcon";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <ScrollToTop />
+        <WhatsappIcon />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<OurProduct />} />

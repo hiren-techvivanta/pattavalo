@@ -72,7 +72,10 @@ const ProductDetails = ({ selectedProduct }) => {
       return selectedProduct.images.map((imageUrl, index) => ({
         id: index + 1,
         src: getImageUrl(imageUrl),
-        alt: selectedProduct.title || selectedProduct.productName || "Product Image",
+        alt:
+          selectedProduct.title ||
+          selectedProduct.productName ||
+          "Product Image",
       }));
     }
 
@@ -92,8 +95,10 @@ const ProductDetails = ({ selectedProduct }) => {
     const items = [];
 
     // Handle both transformed and raw API data
-    const categoryName = selectedProduct.category || selectedProduct.apiData?.category?.name;
-    const subcategoryName = selectedProduct.subcategory || selectedProduct.apiData?.subcategory?.name;
+    const categoryName =
+      selectedProduct.category || selectedProduct.apiData?.category?.name;
+    const subcategoryName =
+      selectedProduct.subcategory || selectedProduct.apiData?.subcategory?.name;
     const productName = selectedProduct.title || selectedProduct.productName;
 
     if (categoryName) {
@@ -216,10 +221,13 @@ const ProductDetails = ({ selectedProduct }) => {
         `${import.meta.env.VITE_BACKEND_URL}/settings/enquiry`,
         {
           method: "POST",
-     
+
           body: JSON.stringify({
             ...formData,
-            product_name: selectedProduct?.title || selectedProduct?.productName || "Unknown Product",
+            product_name:
+              selectedProduct?.title ||
+              selectedProduct?.productName ||
+              "Unknown Product",
             product_id: selectedProduct?.id,
           }),
         }
@@ -295,8 +303,10 @@ const ProductDetails = ({ selectedProduct }) => {
     description: selectedProduct.description,
     document: selectedProduct.document,
     category: selectedProduct.category || selectedProduct.apiData?.category,
-    subcategory: selectedProduct.subcategory || selectedProduct.apiData?.subcategory,
-  };
+    subcategory:
+      selectedProduct.subcategory || selectedProduct.apiData?.subcategory,
+      url:selectedProduct.url
+  };  
 
   return (
     <div className="w-full min-h-screen bg-white">
@@ -329,11 +339,21 @@ const ProductDetails = ({ selectedProduct }) => {
             <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#2E437C] leading-tight">
               {productData.productName}
             </h2>
-           
           </div>
 
           {/* Action Buttons */}
           <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto lg:justify-end">
+            {productData.url && (
+              <button
+                onClick={() => {
+                  window.open(productData.url, "_blank", "noopener,noreferrer");
+                }}
+                className="px-4 sm:px-6 py-2.5 border border-black text-black text-xs sm:text-sm font-medium uppercase rounded-full hover:bg-gray-50 transition-colors"
+              >
+                Explore More
+              </button>
+            )}
+
             {productData.document && (
               <a
                 href={getImageUrl(productData.document)}
@@ -447,9 +467,12 @@ const ProductDetails = ({ selectedProduct }) => {
                   className="w-full h-full thumb-swiper"
                 >
                   {images.map((image, index) => (
-                    <SwiperSlide key={`side-thumb-${image.id}`} className="!h-auto">
+                    <SwiperSlide
+                      key={`side-thumb-${image.id}`}
+                      className="!h-auto"
+                    >
                       <div
-                        className={`relative w-35 aspect-square overflow-hidden cursor-pointer transition-all duration-300  ${
+                        className={`relative w-35 ms-auto aspect-square overflow-hidden cursor-pointer transition-all duration-300  ${
                           activeIndex === index
                             ? "scale-[1.02] shadow-lg transform-gpu"
                             : "opacity-90 hover:opacity-100 hover:scale-[1.01] grayscale-[0.1]"

@@ -81,7 +81,7 @@ const QuickSelectMenu = ({ navBg }) => {
         setCategories(transformedCategories);
 
         if (transformedCategories.length > 0) {
-          setSelectedCategory(transformedCategories[0].id);
+          // setSelectedCategory(transformedCategories[0].id);
         }
       } else {
         throw new Error("Invalid API response format");
@@ -142,7 +142,6 @@ const QuickSelectMenu = ({ navBg }) => {
         id: category.id,
         name: category.name,
         type: "category",
-        isActive: index === 0,
         subcategories: subcategories,
         directProducts: directProducts,
       };
@@ -498,18 +497,18 @@ const QuickSelectMenu = ({ navBg }) => {
                           <motion.div
                             key={category.id}
                             className={`flex items-center justify-between p-4 border-b border-gray-100 cursor-pointer transition-all duration-100 ${
-                              category.isActive || selectedCategory === category.id
+                               selectedCategory === category.id
                                 ? "bg-[#2E437C]/5 border-l-4 border-l-[#2E437C]"
                                 : "hover:bg-gray-50"
                             }`}
                             variants={itemVariants}
                             onMouseEnter={() => handleCategoryHover(category.id)}
-                            onClick={() => handleItemClick(category)}
+                            // onClick={() => handleItemClick(category)}
                             whileHover={{ x: 2, transition: { duration: 0.1 } }}
                           >
                             <span
                               className={`text-base transition-colors duration-100 ${
-                                category.isActive ||
+                        
                                 selectedCategory === category.id
                                   ? "text-[#2E437C] font-semibold"
                                   : "text-gray-600 font-medium"
@@ -574,7 +573,7 @@ const QuickSelectMenu = ({ navBg }) => {
                                     onMouseEnter={() =>
                                       handleSubcategoryHover(subcategory.id)
                                     }
-                                    onClick={() => handleItemClick(subcategory)}
+                                    // onClick={() => handleItemClick(subcategory)}
                                     whileHover={{
                                       x: 4,
                                       transition: { duration: 0.1 },
