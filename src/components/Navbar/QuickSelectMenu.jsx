@@ -20,7 +20,7 @@ const QuickSelectMenu = ({ navBg }) => {
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
 
-  // Common axios config with required header
+ 
   const axiosConfig = {
     headers: {
       "ngrok-skip-browser-warning": "true",
