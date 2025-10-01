@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import logoBlack from "../../assets/images/atc_logo.png";
 import logoWhite from "../../assets/images/ATC Logo white.png";
-import QuickSelectMenu from "./QuickSelectMenu"; 
+import QuickSelectMenu from "./QuickSelectMenu";
 
 export default function Navbar({ navStyle, show = true }) {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ export default function Navbar({ navStyle, show = true }) {
   const menuItems = [
     { name: "Home", url: "/" },
     { name: "Products", url: "/products" },
-    { name: "Industries", url: "/#industries-section" },
+    { name: "Industries" },
     { name: "News", url: "/news" },
     { name: "Jobs", url: "/jobs" },
     { name: "Downloads", url: "/downloads" },
@@ -71,9 +71,9 @@ export default function Navbar({ navStyle, show = true }) {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.3
-      }
-    }
+        delayChildren: 0.3,
+      },
+    },
   };
 
   const handleMobileMenuClick = (url) => {
@@ -83,7 +83,18 @@ export default function Navbar({ navStyle, show = true }) {
 
   const handleContactClick = () => {
     console.log("Contact clicked");
-    navigate('/contact');
+    navigate("/contact");
+  };
+  const handleScrollToIndustries = () => {
+    if (window.location.pathname !== "/") {
+      localStorage.setItem("scrollToIndustries", "true");
+      navigate("/");
+    } else {
+      const section = document.getElementById("industries-section");
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth" });
+      }
+    }
   };
 
   return (
@@ -91,7 +102,9 @@ export default function Navbar({ navStyle, show = true }) {
       {show && (
         <motion.nav
           className={`fixed w-full border-b border-white/50 top-0 left-0 z-50 transition-all duration-300 ${
-            navBg ? "bg-white shadow-md border-b border-gray-200" : "bg-transparent"
+            navBg
+              ? "bg-white shadow-md border-b border-gray-200"
+              : "bg-transparent"
           }`}
           initial={{ y: -100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -118,7 +131,7 @@ export default function Navbar({ navStyle, show = true }) {
 
               {/* Desktop Menu */}
               <div className="hidden md:flex items-center space-x-8">
-                {menuItems.map((menu, index) => (
+                {/* {menuItems.map((menu, index) => (
                   <motion.button
                     key={menu.name}
                     onClick={() => navigate(menu.url)}
@@ -134,20 +147,50 @@ export default function Navbar({ navStyle, show = true }) {
                   >
                     {menu.name}
                   </motion.button>
-                ))}
+                ))} */}
+                {menuItems.map((menu) =>
+                  menu.name === "Industries" ? (
+                    <motion.button
+                      key={menu.name}
+                      onClick={handleScrollToIndustries} 
+                      className={`${navBg ? "text-[#2E437C]" : "text-white"} 
+                  transition-colors font-medium hover:text-[#2E437C]`}
+                      style={{
+                        fontFamily: "'Articulat CF', sans-serif",
+                        fontSize: "16px",
+                        fontWeight: 550,
+                      }}
+                    >
+                      {menu.name}
+                    </motion.button>
+                  ) : (
+                    <motion.button
+                      key={menu.name}
+                      onClick={() => navigate(menu.url)} // normal pages ke liye
+                      className={`${navBg ? "text-[#2E437C]" : "text-white"} 
+                  transition-colors font-medium hover:text-[#2E437C]`}
+                      style={{
+                        fontFamily: "'Articulat CF', sans-serif",
+                        fontSize: "16px",
+                        fontWeight: 550,
+                      }}
+                    >
+                      {menu.name}
+                    </motion.button>
+                  )
+                )}
               </div>
 
               {/* Desktop Actions - Quick Select + Contact Button */}
               <div className="hidden md:flex items-center space-x-4">
-                
                 <QuickSelectMenu navBg={navBg} />
-                
+
                 {/* Contact Button */}
                 <motion.button
                   onClick={() => {
                     setIsOpen(false);
                     handleContactClick();
-                    navigate('/contact');
+                    navigate("/contact");
                   }}
                   className={`inline-flex justify-center items-center border font-medium px-6 py-2 rounded-full text-base transition-all duration-200 ${
                     navBg
@@ -162,7 +205,7 @@ export default function Navbar({ navStyle, show = true }) {
                   }}
                   whileHover={{
                     scale: 1.02,
-                    transition: { duration: 0.2 }
+                    transition: { duration: 0.2 },
                   }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -174,7 +217,7 @@ export default function Navbar({ navStyle, show = true }) {
               <div className="md:hidden flex items-center space-x-3">
                 {/* Quick Select Menu for Mobile */}
                 <QuickSelectMenu navBg={navBg} />
-                
+
                 {/* Mobile Menu Button */}
                 <motion.button
                   onClick={() => setIsOpen(!isOpen)}

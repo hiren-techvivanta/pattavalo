@@ -136,7 +136,18 @@ export default function Home() {
   //     gsap.ticker.remove(lenis.raf);
   //   };
   // }, []);
-
+   useEffect(() => {
+    const shouldScroll = localStorage.getItem("scrollToIndustries");
+    if (shouldScroll === "true") {
+      const section = document.getElementById("industries-section");
+      if (section) {
+        setTimeout(() => {
+          section.scrollIntoView({ behavior: "smooth" });
+        }, 300); 
+      }
+      localStorage.removeItem("scrollToIndustries");
+    }
+  }, []);
   const handleBannerAnimationComplete = () => {
     setShowNavbar(true);
   };
