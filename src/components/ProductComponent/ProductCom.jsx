@@ -17,6 +17,7 @@ import {
 import { FaChevronDown, FaSearch, FaArrowLeft, FaTimes } from "react-icons/fa";
 import productImage from "../../assets/images/productdefault.png";
 import ProductDetails from "./ProductDetails";
+import SubcategoryCards from "./SubcategoryCards";
 import axios from "axios";
 
 const ProductCom = () => {
@@ -27,23 +28,35 @@ const ProductCom = () => {
   const [selectedCategory, setSelectedCategory] = useState("Bearing");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
-  const [viewMode, setViewMode] = useState("products");
+  const [viewMode, setViewMode] = useState("categories");
   const [expandedPanel, setExpandedPanel] = useState("panel1");
   const [expandedSubPanel, setExpandedSubPanel] = useState("");
   const [parentCategory, setParentCategory] = useState("Bearing");
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [isSearching, setIsSearching] = useState(false);
   const [productDetailsLoading, setProductDetailsLoading] = useState(false);
+  const [productsLoading, setProductsLoading] = useState(false);
+  const [subcategoriesLoading, setSubcategoriesLoading] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // New state for mobile accordion
 
   // URL parameters
   const [urlFilters, setUrlFilters] = useState({
     category: null,
     subcategory: null,
     product: null,
+  });
+
+  // Common axios config with required headers
+  const getAxiosConfig = () => ({
+    headers: {
+      "ngrok-skip-browser-warning": "true",
+      "Content-Type": "application/json",
+    },
   });
 
   useEffect(() => {
@@ -61,12 +74,6 @@ const ProductCom = () => {
       subcategory: subcategoryParam ? parseInt(subcategoryParam) : null,
       product: productParam ? parseInt(productParam) : null,
     });
-
-    console.log("URL Filters:", {
-      category: categoryParam ? parseInt(categoryParam) : null,
-      subcategory: subcategoryParam ? parseInt(subcategoryParam) : null,
-      product: productParam ? parseInt(productParam) : null,
-    });
   }, [searchParams]);
 
   // Apply URL filters when categories are loaded
@@ -74,14 +81,12 @@ const ProductCom = () => {
     if (categories.length > 0 && urlFilters.category) {
       applyUrlFilters();
     } else if (categories.length > 0 && !urlFilters.category) {
-      // Default behavior when no URL params
       const firstCategory = categories[0];
       if (firstCategory?.id) {
         setSelectedCategory(firstCategory.category || firstCategory.title);
         setParentCategory(firstCategory.category || firstCategory.title);
-        searchProducts("", firstCategory.id).then((defaultProducts) => {
-          setProducts(defaultProducts);
-        });
+        setExpandedPanel(`panel1`);
+        fetchSubcategories(firstCategory.id);
       }
     }
   }, [categories, urlFilters]);
@@ -89,42 +94,107 @@ const ProductCom = () => {
   // Function to update URL parameters
   const updateUrlParams = (params) => {
     const newSearchParams = new URLSearchParams();
-    
+
     if (params.category) {
-      newSearchParams.set('category', params.category.toString());
+      newSearchParams.set("category", params.category.toString());
     }
     if (params.subcategory) {
-      newSearchParams.set('subcategory', params.subcategory.toString());
+      newSearchParams.set("subcategory", params.subcategory.toString());
     }
     if (params.product) {
-      newSearchParams.set('product', params.product.toString());
+      newSearchParams.set("product", params.product.toString());
     }
 
     setSearchParams(newSearchParams);
   };
 
-  // Fetch individual product details with enhanced error handling
+  // Function to fetch subcategories
+  const fetchSubcategories = async (categoryId) => {
+    try {
+      setSubcategoriesLoading(true);
+      setError(null);
+
+      const response = await axios.get(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }/product/subcategory?category_id=${categoryId}`,
+        getAxiosConfig()
+      );
+
+      if (
+        response.data.message === "Subcategories fetched successfully" &&
+        response.data.data
+      ) {
+        setSubcategories(response.data.data);
+        setViewMode("categories");
+      } else {
+        setSubcategories([]);
+      }
+    } catch (err) {
+      console.error("Error fetching subcategories:", err);
+      setSubcategories([]);
+      if (err.response) {
+        setError(
+          `Failed to load subcategories: ${err.response.status} - ${
+            err.response.data?.message || "Unknown error"
+          }`
+        );
+      } else if (err.request) {
+        setError(
+          "Network error while loading subcategories. Please try again."
+        );
+      } else {
+        setError(`Failed to load subcategories: ${err.message}`);
+      }
+    } finally {
+      setSubcategoriesLoading(false);
+    }
+  };
+
+  // Function to handle subcategory card click
+  const handleSubcategoryCardClick = async (subcategory) => {
+    try {
+      setProductsLoading(true);
+      setViewMode("products");
+      setShowDetails(false);
+
+      const fetchedProducts = await searchProducts(
+        "",
+        subcategory.category_id,
+        subcategory.id
+      );
+      setProducts(fetchedProducts);
+
+      updateUrlParams({
+        category: subcategory.category_id,
+        subcategory: subcategory.id,
+      });
+    } catch (error) {
+      setError("Failed to load products for this subcategory");
+    } finally {
+      setProductsLoading(false);
+    }
+  };
+
+  // Fetch individual product details
   const fetchProductDetails = async (productId) => {
     try {
       setProductDetailsLoading(true);
       setError(null);
 
-      console.log(`Fetching product details for ID: ${productId}`);
-
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/product/product/${productId}`,
-        {
-          headers: { "ngrok-skip-browser-warning": "true" },
-        }
+        getAxiosConfig()
       );
 
-      console.log("Product details response:", response.data);
-
-      if (response.data.message === "Product fetched successfully" && response.data.data) {
-        // Transform the detailed product data
+      if (
+        response.data.message === "Product fetched successfully" &&
+        response.data.data
+      ) {
         const detailedProduct = {
           id: response.data.data.id,
           title: response.data.data.productName,
+          url: response.data.data.url,
           description: response.data.data.description,
           images: response.data.data.images || [],
           document: response.data.data.document,
@@ -139,18 +209,21 @@ const ProductCom = () => {
           apiData: response.data.data,
         };
 
-        console.log("Transformed product data:", detailedProduct);
         return detailedProduct;
       } else {
         throw new Error("Invalid product details API response format");
       }
     } catch (err) {
-      console.error("Error fetching product details:", err);
-      
       if (err.response) {
-        setError(`Server error: ${err.response.status} - ${err.response.data?.message || 'Unknown error'}`);
+        setError(
+          `Server error: ${err.response.status} - ${
+            err.response.data?.message || "Unknown error"
+          }`
+        );
       } else if (err.request) {
-        setError("Network error. Please check your internet connection and try again.");
+        setError(
+          "Network error. Please check your internet connection and try again."
+        );
       } else {
         setError(`Failed to load product details: ${err.message}`);
       }
@@ -162,8 +235,10 @@ const ProductCom = () => {
 
   const applyUrlFilters = async () => {
     try {
-      const category = categories.find(cat => cat.id === urlFilters.category.toString());
-      
+      const category = categories.find(
+        (cat) => cat.id === urlFilters.category.toString()
+      );
+
       if (category) {
         setSelectedCategory(category.category || category.title);
         setParentCategory(category.category || category.title);
@@ -174,56 +249,66 @@ const ProductCom = () => {
         } else if (urlFilters.subcategory) {
           await handleSubcategoryByUrl(urlFilters.subcategory, category);
         } else {
-          await fetchProductsByCategory(category.id, category.category || category.title);
+          await fetchSubcategories(category.id);
+          setViewMode("categories");
+          setShowDetails(false);
+          setProducts([]);
         }
       }
     } catch (error) {
-      console.error('Error applying URL filters:', error);
+      console.error("Error applying URL filters:", error);
     }
   };
 
   const handleProductByUrl = async (productId, category) => {
     try {
-      setLoading(true);
-      
+      setProductsLoading(true);
+
       const detailedProduct = await fetchProductDetails(productId);
-      
+
       if (detailedProduct) {
         setSelectedProduct(detailedProduct);
         setViewMode("details");
         setShowDetails(true);
-        
-        const searchResults = await searchProducts("", category.id);
+
+        const searchResults = await searchProducts(
+          "",
+          category.id,
+          detailedProduct.subcategoryId
+        );
         setProducts(searchResults);
       }
     } catch (error) {
-      console.error('Error loading product by URL:', error);
-      setError('Failed to load product details');
+      setError("Failed to load product details");
     } finally {
-      setLoading(false);
+      setProductsLoading(false);
     }
   };
 
   const handleSubcategoryByUrl = async (subcategoryId, category) => {
     try {
-      setLoading(true);
-      
-      const subcategory = category.children?.find(child => 
-        child.isSubCategory && child.subcategoryId === subcategoryId
+      setProductsLoading(true);
+
+      const subcategory = category.children?.find(
+        (child) => child.isSubCategory && child.subcategoryId === subcategoryId
       );
 
       if (subcategory) {
-        setSelectedCategory(subcategory.title);
+        setSelectedCategory(subcategory.category);
         setParentCategory(category.category || category.title);
-        setExpandedSubPanel(`subpanel${category.children.indexOf(subcategory)}`);
-        
-        const products = await searchProducts(subcategory.title, category.id);
+        setExpandedSubPanel(
+          `subpanel${category.children.indexOf(subcategory)}`
+        );
+
+        const products = await searchProducts("", category.id, subcategoryId);
         setProducts(products);
+        setViewMode("products");
+        setShowDetails(false);
       }
     } catch (error) {
-      console.error('Error loading subcategory by URL:', error);
+      console.error("Error loading subcategory by URL:", error);
     } finally {
-      setLoading(false);
+      setProductsLoading(false);
     }
   };
 
@@ -232,38 +317,35 @@ const ProductCom = () => {
       setLoading(true);
       setError(null);
 
-      console.log('Fetching categories...');
-
       const response = await axios.get(
         `${import.meta.env.VITE_BACKEND_URL}/product/chart`,
-        {
-          headers: { "ngrok-skip-browser-warning": "true" },
-        }
+        getAxiosConfig()
       );
-      
-      console.log('Categories response:', response.data);
 
-      if (response.data.message === "Chart fetched successfully" && response.data.data) {
+      if (
+        response.data.message === "Chart fetched successfully" &&
+        response.data.data
+      ) {
         const transformedCategories = transformApiData(response.data.data);
         setCategories(transformedCategories);
-
-        const allProducts = extractAllProducts(response.data.data);
-        setProducts(allProducts);
 
         if (transformedCategories.length > 0 && !urlFilters.category) {
           const firstCategory = transformedCategories[0];
           setSelectedCategory(firstCategory.category || firstCategory.title);
           setParentCategory(firstCategory.category || firstCategory.title);
           setExpandedPanel(`panel1`);
+          fetchSubcategories(firstCategory.id);
         }
       } else {
         throw new Error("Invalid API response format");
       }
     } catch (err) {
-      console.error("Error fetching categories:", err);
-      
       if (err.response) {
-        setError(`Server error: ${err.response.status} - ${err.response.data?.message || 'Unknown error'}`);
+        setError(
+          `Server error: ${err.response.status} - ${
+            err.response.data?.message || "Unknown error"
+          }`
+        );
       } else if (err.request) {
         setError("Network error. Please check your internet connection.");
       } else {
@@ -274,25 +356,33 @@ const ProductCom = () => {
     }
   };
 
-  const searchProducts = async (query, categoryId = null) => {
+  const searchProducts = async (
+    query,
+    categoryId = null,
+    subcategoryId = null
+  ) => {
     try {
-      setIsSearching(true);
+      setIsSearching(query ? true : false);
+      if (!query) setProductsLoading(true);
 
-      let url = `${import.meta.env.VITE_BACKEND_URL}/product/product/search?search=${encodeURIComponent(query)}`;
+      let url = `${
+        import.meta.env.VITE_BACKEND_URL
+      }/product/product/search?search=${encodeURIComponent(query)}`;
 
       if (categoryId) {
         url += `&category_id=${categoryId}`;
       }
 
-      console.log('Searching products:', url);
+      if (subcategoryId) {
+        url += `&subcategory_id=${subcategoryId}`;
+      }
 
-      const response = await axios.get(url, {
-        headers: { "ngrok-skip-browser-warning": "true" },
-      });
+      const response = await axios.get(url, getAxiosConfig());
 
-      console.log('Search response:', response.data);
-
-      if (response.data.message === "Products fetched successfully" && response.data.data) {
+      if (
+        response.data.message === "Products fetched successfully" &&
+        response.data.data
+      ) {
         const transformedProducts = response.data.data.map((product) => ({
           id: product.id,
           title: product.productName,
@@ -300,7 +390,7 @@ const ProductCom = () => {
           parentCategory: product.category?.name || "Uncategorized",
           image:
             product.images && product.images.length > 0
-              ? product?.images[0]
+              ? product.images[0]
               : productImage,
           description: product.description,
           document: product.document,
@@ -310,16 +400,21 @@ const ProductCom = () => {
           apiData: product,
         }));
 
-        setSearchResults(transformedProducts);
+        if (query) {
+          setSearchResults(transformedProducts);
+        }
+
         return transformedProducts;
       } else {
         throw new Error("Invalid search API response format");
       }
     } catch (err) {
-      console.error("Error searching products:", err);
-      
       if (err.response) {
-        setError(`Search error: ${err.response.status} - ${err.response.data?.message || 'Unknown error'}`);
+        setError(
+          `Search error: ${err.response.status} - ${
+            err.response.data?.message || "Unknown error"
+          }`
+        );
       } else if (err.request) {
         setError("Network error during search. Please try again.");
       } else {
@@ -328,6 +423,7 @@ const ProductCom = () => {
       return [];
     } finally {
       setIsSearching(false);
+      setProductsLoading(false);
     }
   };
 
@@ -361,6 +457,7 @@ const ProductCom = () => {
             category: category.name,
             productId: product.id,
             categoryId: category.id,
+            isProduct: true,
           });
         });
       }
@@ -371,65 +468,11 @@ const ProductCom = () => {
         category: category.name,
         image: category.image || productImage,
         children: children,
+        hasSubcategories:
+          category.subcategories && category.subcategories.length > 0,
+        hasDirectProducts: category.products && category.products.length > 0,
       };
     });
-  };
-
-  const fetchProductsByCategory = async (categoryId, categoryName) => {
-    try {
-      setLoading(true);
-      const products = await searchProducts("", categoryId);
-      setProducts(products);
-      setSelectedCategory(categoryName);
-      setParentCategory(categoryName);
-
-      // Update URL - category only
-      updateUrlParams({ category: categoryId });
-    } catch (error) {
-      console.error("Error fetching category products:", error);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const extractAllProducts = (apiData) => {
-    const allProducts = [];
-
-    apiData.forEach((category) => {
-      if (category.subcategories) {
-        category.subcategories.forEach((subcategory) => {
-          if (subcategory.products) {
-            subcategory.products.forEach((product) => {
-              allProducts.push({
-                id: product.id,
-                title: product.productName || product.productname,
-                category: subcategory.name,
-                parentCategory: category.name,
-                image: productImage,
-                categoryId: category.id,
-                subcategoryId: subcategory.id,
-              });
-            });
-          }
-        });
-      }
-
-      if (category.products) {
-        category.products.forEach((product) => {
-          allProducts.push({
-            id: product.id,
-            title: product.productName || product.productname,
-            category: category.name,
-            parentCategory: category.name,
-            image: productImage,
-            categoryId: category.id,
-          });
-        });
-      }
-    });
-
-    return allProducts;
   };
 
   const handleAccordionChange = (panel) => (event, isExpanded) => {
@@ -439,172 +482,212 @@ const ProductCom = () => {
       const categoryIndex = parseInt(panel.replace("panel", "")) - 1;
       const category = categories[categoryIndex];
       if (category) {
-        fetchProductsByCategory(category.id, category.category);
-        setViewMode("products");
+        setSelectedCategory(category.category);
+        setParentCategory(category.category);
+        setViewMode("categories");
         setShowDetails(false);
         setExpandedSubPanel("");
         setSearchQuery("");
+
+        setProducts([]);
+
+        fetchSubcategories(category.id);
+
+        updateUrlParams({ category: category.id });
       }
     }
   };
 
-  const handleSubAccordionChange = (subPanel, subCategory) => (event, isExpanded) => {
-    setExpandedSubPanel(isExpanded ? subPanel : false);
+  const handleSubAccordionChange =
+    (subPanel, subCategory) => async (event, isExpanded) => {
+      setExpandedSubPanel(isExpanded ? subPanel : false);
 
-    if (isExpanded && subCategory) {
-      const parentCategory = categories.find(
-        (cat) => cat.category === subCategory.category || cat.title === subCategory.category
-      );
+      if (isExpanded && subCategory) {
+        try {
+          setProductsLoading(true);
 
-      if (parentCategory) {
-        setSelectedCategory(subCategory.title);
-        setParentCategory(subCategory.category);
-        setViewMode("products");
-        setShowDetails(false);
-        setSearchQuery("");
+          const parentCategory = categories.find(
+            (cat) =>
+              cat.category === subCategory.category ||
+              cat.title === subCategory.category
+          );
 
-        updateUrlParams({ 
-          category: subCategory.categoryId,
-          subcategory: subCategory.subcategoryId 
-        });
+          if (parentCategory) {
+            setSelectedCategory(subCategory.category);
+            setParentCategory(subCategory.category);
+            setViewMode("products");
+            setShowDetails(false);
+            setSearchQuery("");
+
+            const fetchedProducts = await searchProducts(
+              "",
+              subCategory.categoryId,
+              subCategory.subcategoryId
+            );
+            setProducts(fetchedProducts);
+
+            updateUrlParams({
+              category: subCategory.categoryId,
+              subcategory: subCategory.subcategoryId,
+            });
+          }
+        } catch (error) {
+          setError("Failed to load products for this subcategory");
+        } finally {
+          setProductsLoading(false);
+        }
+      } else {
+        setProducts([]);
       }
-    }
-  };
+    };
 
   const handleCategoryItemClick = (categoryName, parentCategoryName) => {
-    const category = categories.find(
-      (cat) => cat.category === categoryName || cat.title === categoryName
-    );
-
-    if (category) {
-      fetchProductsByCategory(category.id, categoryName);
-    } else {
-      setSelectedCategory(categoryName);
-      setParentCategory(parentCategoryName || categoryName);
-    }
-
+    setSelectedCategory(categoryName);
+    setParentCategory(parentCategoryName || categoryName);
     setViewMode("products");
     setShowDetails(false);
     setSearchQuery("");
   };
 
-  const handleProductItemClick = async (productTitle, category, productData = null) => {
+  const handleProductItemClick = async (
+    productTitle,
+    category,
+    productData = null
+  ) => {
     try {
+      setProductDetailsLoading(true);
+
       if (productData?.productId) {
-        const detailedProduct = await fetchProductDetails(productData.productId);
-        
+        const detailedProduct = await fetchProductDetails(
+          productData.productId
+        );
+
         if (detailedProduct) {
           setSelectedProduct(detailedProduct);
           setViewMode("details");
           setShowDetails(true);
           setParentCategory(category);
 
-          const urlParams = { 
+          const urlParams = {
             category: productData.categoryId,
-            product: detailedProduct.id 
+            product: detailedProduct.id,
           };
-          
+
           if (productData.subcategoryId) {
             urlParams.subcategory = productData.subcategoryId;
           }
-          
+
           updateUrlParams(urlParams);
         }
         return;
       }
 
-      setLoading(true);
+      setProductsLoading(true);
 
       const categoryObj = categories.find(
         (cat) => cat.category === category || cat.title === category
       );
 
       if (categoryObj) {
-        const searchResults = await searchProducts(productTitle, categoryObj.id);
+        const searchResults = await searchProducts(
+          productTitle,
+          categoryObj.id
+        );
         const product = searchResults.find((p) => p.title === productTitle);
 
         if (product) {
           const detailedProduct = await fetchProductDetails(product.id);
-          
+
           if (detailedProduct) {
             setSelectedProduct(detailedProduct);
             setViewMode("details");
             setShowDetails(true);
             setParentCategory(category);
 
-            const urlParams = { 
+            const urlParams = {
               category: detailedProduct.categoryId,
-              product: detailedProduct.id 
+              product: detailedProduct.id,
             };
-            
+
             if (detailedProduct.subcategoryId) {
               urlParams.subcategory = detailedProduct.subcategoryId;
             }
-            
+
             updateUrlParams(urlParams);
           }
         }
       }
     } catch (error) {
-      console.error("Error fetching product details:", error);
-      setError('Failed to load product details');
+      setError("Failed to load product details");
     } finally {
-      setLoading(false);
+      setProductsLoading(false);
+      setProductDetailsLoading(false);
     }
   };
 
   const handleProductClick = async (product) => {
     try {
-      console.log('Product clicked:', product);
-      
       const detailedProduct = await fetchProductDetails(product.id);
-      
+
       if (detailedProduct) {
-        console.log('Setting detailed product:', detailedProduct);
         setSelectedProduct(detailedProduct);
         setViewMode("details");
         setShowDetails(true);
 
-        const urlParams = { 
+        const urlParams = {
           category: detailedProduct.categoryId,
-          product: detailedProduct.id 
+          product: detailedProduct.id,
         };
-        
+
         if (detailedProduct.subcategoryId) {
           urlParams.subcategory = detailedProduct.subcategoryId;
         }
-        
+
         updateUrlParams(urlParams);
       }
     } catch (error) {
-      console.error("Error fetching product details:", error);
-      setError('Failed to load product details');
+      setError("Failed to load product details");
     }
   };
 
   const handleBackToProducts = () => {
-    setViewMode("products");
-    setShowDetails(false);
-    setSelectedProduct(null);
+    const currentCategory = searchParams.get("category");
+    const currentSubcategory = searchParams.get("subcategory");
 
-    const currentCategory = searchParams.get('category');
-    const currentSubcategory = searchParams.get('subcategory');
-    
-    const urlParams = {};
-    if (currentCategory) urlParams.category = currentCategory;
-    if (currentSubcategory) urlParams.subcategory = currentSubcategory;
-    
-    updateUrlParams(urlParams);
+    if (currentSubcategory) {
+      setViewMode("products");
+      setShowDetails(false);
+      setSelectedProduct(null);
+
+      const urlParams = {};
+      if (currentCategory) urlParams.category = currentCategory;
+      if (currentSubcategory) urlParams.subcategory = currentSubcategory;
+
+      updateUrlParams(urlParams);
+    } else {
+      setViewMode("categories");
+      setShowDetails(false);
+      setSelectedProduct(null);
+
+      const urlParams = {};
+      if (currentCategory) urlParams.category = currentCategory;
+
+      updateUrlParams(urlParams);
+    }
   };
 
   const filteredProducts = products.filter((product) => {
     const matchSearch = product.title
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
-    const matchCategory = selectedCategory
-      ? product.category === selectedCategory ||
-        product.parentCategory === selectedCategory
-      : true;
+
+    const matchCategory =
+      viewMode === "search" && selectedCategory
+        ? product.category === selectedCategory ||
+          product.parentCategory === selectedCategory ||
+          product.category?.toLowerCase() === selectedCategory?.toLowerCase()
+        : true;
+
     return matchSearch && matchCategory;
   });
 
@@ -649,9 +732,14 @@ const ProductCom = () => {
         transition={{ duration: 0.6 }}
         className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8"
       >
-        <h1 className="text-3xl md:text-4xl font-bold text-[#2E437C]">
+        <h1 className="text-3xl md:text-4xl font-bold text-[#BABEC8]">
           Our Products
         </h1>
+
+        {/* Line between title and search - only on desktop */}
+        <div className="hidden md:block flex-1 mx-6">
+          <div className="h-[4px] bg-[#BABEC8]"></div>
+        </div>
 
         <div className="relative w-full md:max-w-md lg:max-w-lg xl:max-w-lg">
           <motion.input
@@ -664,7 +752,9 @@ const ProductCom = () => {
 
               if (query.trim() === "") {
                 setSearchResults([]);
-                setViewMode("products");
+                setViewMode(
+                  subcategories.length > 0 ? "categories" : "products"
+                );
                 setShowDetails(false);
               } else {
                 setViewMode("search");
@@ -715,7 +805,7 @@ const ProductCom = () => {
         </div>
       </motion.div>
 
-      <div className="mt-10 flex flex-col md:flex-row gap-5">
+      <div className="mt-2 flex flex-col md:flex-row gap-5">
         {/* Left Sidebar - Accordion */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -725,165 +815,443 @@ const ProductCom = () => {
           className="w-full md:w-1/4"
         >
           <div className="p-4 rounded-lg">
-            {categories.map((category, index) => (
+            {/* Mobile: Single accordion wrapper */}
+            <div className="md:hidden">
               <Accordion
-                key={category.id}
-                expanded={expandedPanel === `panel${index + 1}`}
-                onChange={handleAccordionChange(`panel${index + 1}`)}
+                expanded={isMobileMenuOpen}
+                onChange={(event, isExpanded) =>
+                  setIsMobileMenuOpen(isExpanded)
+                }
                 sx={{
-                  boxShadow: "none",
+                  boxShadow: "0px 0.89px 1.78px 0px rgba(16, 24, 40, 0.05)",
                   "&:before": { display: "none" },
                   marginBottom: "4px",
                   backgroundColor: "transparent",
+                  border: "none",
+                  borderRadius: "27px",
+                  width: "100%",
+                  maxWidth: "396px",
+                  overflow: "hidden",
                 }}
               >
                 <AccordionSummary
-                  expandIcon={<FaChevronDown className="text-gray-600" />}
+                  expandIcon={
+                    <FaChevronDown className="text-black w-[9.58px] h-[5.42px]" />
+                  }
                   sx={{
-                    minHeight: "48px",
-                    padding: "0 8px",
-                    borderRadius: "6px",
-                    transition: "all 0.2s ease-in-out",
+                    backgroundColor: "#ffffff",
+                    border: "1px solid #000000",
+                    borderRadius: "27px",
+                    minHeight: "auto",
+                    padding: "10.66px 25px",
+                    margin: 0,
+                    "&.Mui-expanded": {
+                      backgroundColor: "#ffffff",
+                      borderRadius: "27px 27px 0 0",
+                      borderBottom: "none",
+                      minHeight: "auto",
+                    },
+                    "& .MuiAccordionSummary-content": {
+                      margin: 0,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      flex: 1,
+                    },
+                    "& .MuiAccordionSummary-expandIconWrapper": {
+                      transform: "rotate(0deg)",
+                      transition: "transform 0.2s",
+                    },
+                    "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+                      transform: "rotate(180deg)",
+                    },
                   }}
                 >
                   <Typography
                     sx={{
-                      fontSize: "17px",
+                      color: "#000000",
+                      textAlign: "left",
+                      fontFamily: "'Articulat CF', sans-serif",
+                      fontSize: "16px",
+                      lineHeight: "21.32px",
                       fontWeight: 500,
-                      fontStyle: "normal",
-                      color:
-                        expandedPanel === `panel${index + 1}`
-                          ? "#2E437C"
-                          : "#374151",
-                      transition: "color 0.2s ease-in-out",
+                      flex: 1,
                     }}
                   >
-                    {category.title}
+                    Explore our range
                   </Typography>
                 </AccordionSummary>
 
-                <AccordionDetails sx={{ padding: "0 0 8px 16px" }}>
-                  <List dense>
-                    {category.children.map((child, childIndex) => (
-                      <React.Fragment key={childIndex}>
-                        {child.isSubCategory ? (
-                          <Accordion
-                            expanded={
-                              expandedSubPanel === `subpanel${childIndex}`
-                            }
-                            onChange={handleSubAccordionChange(
-                              `subpanel${childIndex}`,
-                              child
-                            )}
+                <AccordionDetails
+                  sx={{
+                    backgroundColor: "#ffffff",
+                    border: "0.89px solid #000000",
+                    borderTop: "none",
+                    borderRadius: "0 0 27px 27px",
+                    padding: "8px 0",
+                    boxShadow: "0px 0.89px 1.78px 0px rgba(16, 24, 40, 0.05)",
+                  }}
+                >
+                  {categories.map((category, index) => (
+                    <Accordion
+                      key={category.id}
+                      expanded={expandedPanel === `panel${index + 1}`}
+                      onChange={handleAccordionChange(`panel${index + 1}`)}
+                      sx={{
+                        boxShadow: "none",
+                        "&:before": { display: "none" },
+                        marginBottom: "4px",
+                        backgroundColor: "transparent",
+                      }}
+                    >
+                      <AccordionSummary
+                        expandIcon={<FaChevronDown className="text-gray-600" />}
+                        sx={{
+                          minHeight: "48px",
+                          padding: "0 8px",
+                          borderRadius: "6px",
+                          transition: "all 0.2s ease-in-out",
+                        }}
+                      >
+                        <div className="flex items-center w-full">
+                          <Typography
                             sx={{
-                              boxShadow: "none",
-                              "&:before": { display: "none" },
-                              backgroundColor: "transparent",
-                              margin: 0,
+                              fontSize: "17px",
+                              fontWeight: 500,
+                              fontStyle: "normal",
+                              color:
+                                expandedPanel === `panel${index + 1}`
+                                  ? "#2E437C"
+                                  : "#000",
+                              transition: "color 0.2s ease-in-out",
+                              whiteSpace: "nowrap",
+                              marginRight: "12px",
                             }}
                           >
-                            <AccordionSummary
-                              expandIcon={
-                                <FaChevronDown className="text-gray-500 text-xs" />
-                              }
-                              sx={{
-                                minHeight: "36px",
-                                padding: "0 4px",
-                                borderRadius: "4px",
-                                transition: "all 0.2s ease-in-out",
-                              }}
-                            >
-                              <Typography
-                                sx={{
-                                  fontSize: "15px",
-                                  fontWeight: 500,
-                                  fontStyle: "normal",
-                                  color:
-                                    expandedSubPanel === `subpanel${childIndex}`
-                                      ? "#2E437C"
-                                      : "#4b5563",
-                                  transition: "color 0.2s ease-in-out",
-                                }}
-                              >
-                                {child.title}
-                              </Typography>
-                            </AccordionSummary>
+                            {category.title}
+                          </Typography>
+                          <div className="flex-1 h-[3px] bg-[#2E437C] rounded-lg"></div>
+                        </div>
+                      </AccordionSummary>
 
-                            <AccordionDetails sx={{ padding: "0 0 4px 12px" }}>
-                              <List dense>
-                                {child.subChildren.map((subChild, subIndex) => (
-                                  <ListItem key={subIndex} disablePadding>
-                                    <ListItemButton
-                                      onClick={() =>
-                                        handleProductItemClick(
-                                          subChild.title,
-                                          subChild.category,
-                                          subChild
-                                        )
-                                      }
-                                      sx={{
-                                        minHeight: "32px",
-                                        padding: "4px 8px",
-                                        borderRadius: "4px",
-                                        transition: "all 0.2s ease-in-out",
-                                      }}
-                                    >
-                                      •{" "}
-                                      <ListItemText
-                                        primary={subChild.title}
-                                        primaryTypographyProps={{
-                                          fontSize: "14px",
+                      <AccordionDetails sx={{ padding: "0 0 8px 16px" }}>
+                        <List dense>
+                          {category.children.map((child, childIndex) => (
+                            <React.Fragment key={childIndex}>
+                              {child.isSubCategory ? (
+                                <Accordion
+                                  expanded={
+                                    expandedSubPanel === `subpanel${childIndex}`
+                                  }
+                                  onChange={handleSubAccordionChange(
+                                    `subpanel${childIndex}`,
+                                    child
+                                  )}
+                                  sx={{
+                                    boxShadow: "none",
+                                    "&:before": { display: "none" },
+                                    backgroundColor: "transparent",
+                                    margin: 0,
+                                  }}
+                                >
+                                  <AccordionSummary
+                                    expandIcon={
+                                      <FaChevronDown className="text-gray-500 text-xs" />
+                                    }
+                                    sx={{
+                                      minHeight: "36px",
+                                      padding: "0 4px",
+                                      borderRadius: "4px",
+                                      transition: "all 0.2s ease-in-out",
+                                    }}
+                                  >
+                                    <div className="flex items-center w-full">
+                                      <Typography
+                                        sx={{
+                                          fontSize: "17px",
                                           fontWeight: 500,
                                           fontStyle: "normal",
-                                          color: "#6b7280",
-                                          marginLeft: "2px",
+                                          color:
+                                            expandedPanel ===
+                                            `panel${index + 1}`
+                                              ? "#666666"
+                                              : "#666666",
                                           transition: "color 0.2s ease-in-out",
+                                          whiteSpace: "nowrap",
+                                          marginRight: "12px",
                                         }}
-                                      />
-                                    </ListItemButton>
-                                  </ListItem>
-                                ))}
-                              </List>
-                            </AccordionDetails>
-                          </Accordion>
-                        ) : (
-                          <ListItem key={childIndex} disablePadding>
-                            <ListItemButton
-                              onClick={() =>
-                                handleProductItemClick(
-                                  child.title,
-                                  child.category,
-                                  child
-                                )
-                              }
-                              sx={{
-                                minHeight: "36px",
-                                padding: "4px 8px",
-                                borderRadius: "4px",
-                                transition: "all 0.2s ease-in-out",
-                              }}
-                            >
-                              •
-                              <ListItemText
-                                primary={child.title}
-                                primaryTypographyProps={{
-                                  fontSize: "15px",
-                                  fontWeight: 500,
-                                  fontStyle: "normal",
-                                  color: "#4b5563",
-                                  marginLeft: "2px",
-                                  transition: "color 0.2s ease-in-out",
-                                }}
-                              />
-                            </ListItemButton>
-                          </ListItem>
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </List>
+                                      >
+                                        {child.title}
+                                      </Typography>
+                                      <div className="flex-1 h-[3px] bg-[#2E437C] rounded-lg"></div>
+                                    </div>
+                                  </AccordionSummary>
+
+                                  <AccordionDetails
+                                    sx={{ padding: "0 0 4px 12px" }}
+                                  >
+                                    <List dense>
+                                      {child.subChildren.map(
+                                        (subChild, subIndex) => (
+                                          <ListItem
+                                            key={subIndex}
+                                            disablePadding
+                                          >
+                                            <ListItemButton
+                                              onClick={() =>
+                                                handleProductItemClick(
+                                                  subChild.title,
+                                                  subChild.category,
+                                                  subChild
+                                                )
+                                              }
+                                              sx={{
+                                                minHeight: "32px",
+                                                padding: "4px 8px",
+                                                borderRadius: "4px",
+                                                transition:
+                                                  "all 0.2s ease-in-out",
+                                              }}
+                                            >
+                                              •{" "}
+                                              <ListItemText
+                                                primary={subChild.title}
+                                                primaryTypographyProps={{
+                                                  fontSize: "14px",
+                                                  fontWeight: 500,
+                                                  fontStyle: "normal",
+                                                  color: "#6b7280",
+                                                  marginLeft: "2px",
+                                                  transition:
+                                                    "color 0.2s ease-in-out",
+                                                }}
+                                              />
+                                            </ListItemButton>
+                                          </ListItem>
+                                        )
+                                      )}
+                                    </List>
+                                  </AccordionDetails>
+                                </Accordion>
+                              ) : (
+                                <ListItem key={childIndex} disablePadding>
+                                  <ListItemButton
+                                    onClick={() =>
+                                      handleProductItemClick(
+                                        child.title,
+                                        child.category,
+                                        child
+                                      )
+                                    }
+                                    sx={{
+                                      minHeight: "36px",
+                                      padding: "4px 8px",
+                                      borderRadius: "4px",
+                                      transition: "all 0.2s ease-in-out",
+                                    }}
+                                  >
+                                    •
+                                    <ListItemText
+                                      primary={child.title}
+                                      primaryTypographyProps={{
+                                        fontSize: "15px",
+                                        fontWeight: 500,
+                                        fontStyle: "normal",
+                                        color: "#4b5563",
+                                        marginLeft: "2px",
+                                        transition: "color 0.2s ease-in-out",
+                                      }}
+                                    />
+                                  </ListItemButton>
+                                </ListItem>
+                              )}
+                            </React.Fragment>
+                          ))}
+                        </List>
+                      </AccordionDetails>
+                    </Accordion>
+                  ))}
                 </AccordionDetails>
               </Accordion>
-            ))}
+            </div>
+
+            {/* Desktop: Individual accordions as before */}
+            <div className="hidden md:block">
+              {categories.map((category, index) => (
+                <Accordion
+                  key={category.id}
+                  expanded={expandedPanel === `panel${index + 1}`}
+                  onChange={handleAccordionChange(`panel${index + 1}`)}
+                  sx={{
+                    boxShadow: "none",
+                    "&:before": { display: "none" },
+                    marginBottom: "4px",
+                    backgroundColor: "transparent",
+                  }}
+                >
+                  <AccordionSummary
+                    expandIcon={<FaChevronDown className="text-gray-600" />}
+                    sx={{
+                      minHeight: "48px",
+                      padding: "0 8px",
+                      borderRadius: "6px",
+                      transition: "all 0.2s ease-in-out",
+                    }}
+                  >
+                    <div className="flex items-center w-full">
+                      <Typography
+                        sx={{
+                          fontSize: "17px",
+                          fontWeight: 500,
+                          fontStyle: "normal",
+                          color:
+                            expandedPanel === `panel${index + 1}`
+                              ? "#2E437C"
+                              : "#374151",
+                          transition: "color 0.2s ease-in-out",
+                          whiteSpace: "nowrap",
+                          marginRight: "12px",
+                        }}
+                      >
+                        {category.title}
+                      </Typography>
+                      <div className="flex-1 h-[3px] bg-[#2E437C] rounded-lg"></div>
+                    </div>
+                  </AccordionSummary>
+
+                  <AccordionDetails sx={{ padding: "0 0 8px 16px" }}>
+                    <List dense>
+                      {category.children.map((child, childIndex) => (
+                        <React.Fragment key={childIndex}>
+                          {child.isSubCategory ? (
+                            <Accordion
+                              expanded={
+                                expandedSubPanel === `subpanel${childIndex}`
+                              }
+                              onChange={handleSubAccordionChange(
+                                `subpanel${childIndex}`,
+                                child
+                              )}
+                              sx={{
+                                boxShadow: "none",
+                                "&:before": { display: "none" },
+                                backgroundColor: "transparent",
+                                margin: 0,
+                              }}
+                            >
+                              <AccordionSummary
+                                expandIcon={
+                                  <FaChevronDown className="text-gray-500 text-xs" />
+                                }
+                                sx={{
+                                  minHeight: "36px",
+                                  padding: "0 4px",
+                                  borderRadius: "4px",
+                                  transition: "all 0.2s ease-in-out",
+                                }}
+                              >
+                                <div className="flex items-center w-full">
+                                  <Typography
+                                    sx={{
+                                      fontSize: "17px",
+                                      fontWeight: 500,
+                                      fontStyle: "normal",
+                                      color:
+                                        expandedPanel === `panel${index + 1}`
+                                          ? "#666666"
+                                          : "#666666",
+                                      transition: "color 0.2s ease-in-out",
+                                      whiteSpace: "nowrap",
+                                      marginRight: "12px",
+                                    }}
+                                  >
+                                    {child.title}
+                                  </Typography>
+                                  <div className="flex-1 h-[3px] bg-[#2E437C] rounded-lg"></div>
+                                </div>
+                              </AccordionSummary>
+
+                              <AccordionDetails
+                                sx={{ padding: "0 0 4px 12px" }}
+                              >
+                                <List dense>
+                                  {child.subChildren.map(
+                                    (subChild, subIndex) => (
+                                      <ListItem key={subIndex} disablePadding>
+                                        <ListItemButton
+                                          onClick={() =>
+                                            handleProductItemClick(
+                                              subChild.title,
+                                              subChild.category,
+                                              subChild
+                                            )
+                                          }
+                                          sx={{
+                                            minHeight: "32px",
+                                            padding: "4px 8px",
+                                            borderRadius: "4px",
+                                            transition: "all 0.2s ease-in-out",
+                                          }}
+                                        >
+                                          •{" "}
+                                          <ListItemText
+                                            primary={subChild.title}
+                                            primaryTypographyProps={{
+                                              fontSize: "14px",
+                                              fontWeight: 500,
+                                              fontStyle: "normal",
+                                              color: "#6b7280",
+                                              marginLeft: "2px",
+                                              transition:
+                                                "color 0.2s ease-in-out",
+                                            }}
+                                          />
+                                        </ListItemButton>
+                                      </ListItem>
+                                    )
+                                  )}
+                                </List>
+                              </AccordionDetails>
+                            </Accordion>
+                          ) : (
+                            <ListItem key={childIndex} disablePadding>
+                              <ListItemButton
+                                onClick={() =>
+                                  handleProductItemClick(
+                                    child.title,
+                                    child.category,
+                                    child
+                                  )
+                                }
+                                sx={{
+                                  minHeight: "36px",
+                                  padding: "4px 8px",
+                                  borderRadius: "4px",
+                                  transition: "all 0.2s ease-in-out",
+                                }}
+                              >
+                                •
+                                <ListItemText
+                                  primary={child.title}
+                                  primaryTypographyProps={{
+                                    fontSize: "15px",
+                                    fontWeight: 500,
+                                    fontStyle: "normal",
+                                    color: "#4b5563",
+                                    marginLeft: "2px",
+                                    transition: "color 0.2s ease-in-out",
+                                  }}
+                                />
+                              </ListItemButton>
+                            </ListItem>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </List>
+                  </AccordionDetails>
+                </Accordion>
+              ))}
+            </div>
           </div>
         </motion.div>
 
@@ -895,9 +1263,24 @@ const ProductCom = () => {
           transition={{ duration: 0.8 }}
           className="w-full md:w-3/4"
         >
-          {viewMode === "products" || viewMode === "search" ? (
+          {/* Show subcategory cards when viewMode is "categories" */}
+          {viewMode === "categories" && (
+            <SubcategoryCards
+              subcategories={subcategories}
+              onSubcategoryClick={handleSubcategoryCardClick}
+              loading={subcategoriesLoading}
+            />
+          )}
+
+          {/* Show products when viewMode is "products" or "search" */}
+          {(viewMode === "products" || viewMode === "search") && (
             <>
-              {isSearching ? (
+              {productsLoading ? (
+                <div className="text-center py-20">
+                  <CircularProgress size={40} sx={{ color: "#2E437C" }} />
+                  <p className="mt-4 text-gray-600">Loading products...</p>
+                </div>
+              ) : isSearching ? (
                 <div className="text-center py-20">
                   <CircularProgress size={40} sx={{ color: "#2E437C" }} />
                   <p className="mt-4 text-gray-600">Searching products...</p>
@@ -912,14 +1295,16 @@ const ProductCom = () => {
                       viewport={{ once: true }}
                       transition={{ duration: 0.5, delay: index * 0.1 }}
                       onClick={() => handleProductClick(product)}
-                      className="flex flex-col items-center text-center p-6 rounded-lg cursor-pointer transition-all duration-200 hover:shadow-lg border border-gray-100 hover:border-[#2E437C]/20"
+                      className="flex flex-col items-center text-center cursor-pointer"
                     >
                       <motion.img
                         src={
                           product.image && product.image.startsWith("http")
                             ? product.image
                             : product.image && product.image.includes("/")
-                            ? `${import.meta.env.VITE_BACKEND_URL}/${product.image}`
+                            ? `${import.meta.env.VITE_BACKEND_URL}/${
+                                product.image
+                              }`
                             : productImage
                         }
                         alt={product.title}
@@ -963,17 +1348,24 @@ const ProductCom = () => {
                     </svg>
                   </div>
                   <h3 className="text-lg font-medium text-gray-600 mb-2">
-                    No products found
+                    {products.length === 0 && !searchQuery
+                      ? "Select a subcategory to view products"
+                      : "No products found"}
                   </h3>
                   <p className="text-gray-400">
                     {searchQuery && viewMode === "search"
                       ? `No products match "${searchQuery}"`
+                      : products.length === 0 && !searchQuery
+                      ? "Choose a subcategory from the left to explore products"
                       : `No products available in ${selectedCategory}`}
                   </p>
                 </motion.div>
               )}
             </>
-          ) : (
+          )}
+
+          {/* Show product details when viewMode is "details" */}
+          {viewMode === "details" && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -1003,7 +1395,9 @@ const ProductCom = () => {
               {productDetailsLoading ? (
                 <div className="flex items-center justify-center py-20">
                   <CircularProgress size={60} sx={{ color: "#2E437C" }} />
-                  <p className="ml-4 text-gray-600">Loading product details...</p>
+                  <p className="ml-4 text-gray-600">
+                    Loading product details...
+                  </p>
                 </div>
               ) : (
                 <ProductDetails selectedProduct={selectedProduct} />

@@ -1,119 +1,72 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import BEARING from "../../assets/SVG/BEARING.svg";
-import CHAIN from "../../assets/SVG/DRAG CHAIN.svg";
-import CONVEYOR from "../../assets/SVG/CONVEYOR COMPONENT.svg";
-import MODULAR from "../../assets/SVG/MODULAR BELT.svg";
-import SSCHAIN from "../../assets/SVG/SS CHAIN & SPROCKET.svg";
-import THERMOPLASTICCHAIN from "../../assets/SVG/THERMO PLASTIC CHAIN.svg";
-import FINGERCHAIN from "../../assets/SVG/FINGER CHAIN.svg";
-import ZBUCKET from "../../assets/SVG/BUCKET.svg";
-import WEARSTRIP from "../../assets/SVG/WEAR STRIP_1.svg";
-import SPIRALFREEZER from "../../assets/SVG/SPPIRAL T2800.svg";
-import SPIRALLOGISTICS from "../../assets/SVG/AF 400.svg";
-import FLEXZERO from "../../assets/SVG/FZ 90.svg";
+import { useNavigate } from "react-router-dom"; // Add this import
 
 export default function ModulerSolution() {
-  const solutions = [
-    {
-      title: "BEARING",
-      icon: BEARING,
-      animation: {
-        rotate: [0, 360],
-        transition: { duration: 3, repeat: Infinity, ease: "linear" },
-      },
-    },
-    {
-      title: "CABLE DRAG CHAIN",
-      icon: CHAIN,
-      animation: {
-        x: [0, 3, -3, 0],
-        transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
-      },
-    },
-    {
-      title: "CONVEYOR COMPONENT",
-      icon: CONVEYOR,
-      animation: {
-        y: [0, -2, 0, 2, 0],
-        transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
-      },
-    },
-    {
-      title: "MODULAR BELT",
-      icon: MODULAR,
-      animation: {
-        scale: [1, 1.05, 1],
-        transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
-      },
-    },
-    {
-      title: "SS CHAIN & SPROCKET",
-      icon: SSCHAIN,
-      animation: {
-        rotate: [0, 3, -3, 0],
-        transition: { duration: 2.5, repeat: Infinity, ease: "easeInOut" },
-      },
-    },
-    {
-      title: "THERMOPLASTIC CHAIN & SPROCKET",
-      icon: THERMOPLASTICCHAIN,
-      animation: {
-        y: [0, -1, 0],
-        rotate: [0, 2, 0, -2, 0],
-        transition: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-      },
-    },
-    {
-      title: "FINGER CHAIN & ASSEMBLY",
-      icon: FINGERCHAIN,
-      animation: {
-        scale: [1, 1.03, 1],
-        transition: { duration: 1.5, repeat: Infinity, ease: "easeInOut" },
-      },
-    },
-    {
-      title: "Z BUCKET ELEVATOR",
-      icon: ZBUCKET,
-      animation: {
-        y: [0, -3, 0],
-        transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
-      },
-    },
-    {
-      title: "WEAR STRIP",
-      icon: WEARSTRIP,
-      animation: {
-        x: [0, 2, -2, 0],
-        transition: { duration: 2.2, repeat: Infinity, ease: "easeInOut" },
-      },
-    },
-    {
-      title: "SPIRAL FREEZER",
-      icon: SPIRALFREEZER,
-      animation: {
-        rotate: [0, 360],
-        transition: { duration: 8, repeat: Infinity, ease: "linear" },
-      },
-    },
-    {
-      title: "SPIRAL LOGISTICS",
-      icon: SPIRALLOGISTICS,
-      animation: {
-        scale: [1, 1.06, 1],
-        transition: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-      },
-    },
-    {
-      title: "FLEXZERO",
-      icon: FLEXZERO,
-      animation: {
-        y: [0, -1.5, 0],
-        rotate: [0, 1, 0, -1, 0],
-        transition: { duration: 2.8, repeat: Infinity, ease: "easeInOut" },
-      },
-    },
-  ];
+  const navigate = useNavigate(); // Add navigation hook
+  const [solutions, setSolutions] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Empty animations array - no animations applied to icons
+  const animationTypes = [];
+
+  // Fetch categories from API
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const response = await fetch(
+          'https://kiroapi.techvivanta.com/product/category/',
+          {
+            headers: {
+              "ngrok-skip-browser-warning": "true",
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        if (result.message === "Categories fetched successfully" && result.data) {
+          // Transform API data to match the original structure
+          const transformedSolutions = result.data.map((category, index) => ({
+            id: category.id,
+            title: category.name.toUpperCase(),
+            icon: category.image.startsWith("http") 
+              ? category.image 
+              : `${import.meta.env.VITE_BACKEND_URL}/${category.image}`,
+            description: category.description,
+            animation: null, // No animation applied
+            created_at: category.created_at,
+            updated_at: category.updated_at,
+          }));
+
+          setSolutions(transformedSolutions);
+        } else {
+          throw new Error("Invalid API response format");
+        }
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+        setError(err.message || "Failed to fetch categories");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
+  // Handle category click navigation
+  const handleCategoryClick = (categoryId) => {
+    navigate(`/products?category=${categoryId}`);
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -126,6 +79,7 @@ export default function ModulerSolution() {
       },
     },
   };
+
   const cardGridVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -136,6 +90,7 @@ export default function ModulerSolution() {
       },
     },
   };
+
   const letterVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -149,7 +104,8 @@ export default function ModulerSolution() {
       },
     },
   };
-   const cardVariants = {
+
+  const cardVariants = {
     hidden: {
       opacity: 0,
       y: 30,
@@ -167,12 +123,75 @@ export default function ModulerSolution() {
       },
     },
   };
+
   const splitText = (text) =>
     text.split("").map((char, i) => (
       <motion.span key={i} variants={letterVariants} className="inline-block">
         {char === " " ? "\u00A0" : char}
       </motion.span>
     ));
+
+  // Loading state
+  if (loading) {
+    return (
+      <section className="container mx-auto w-full px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-10 bg-white">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={containerVariants}
+          className="mb-8 sm:mb-12 md:text-left px-3"
+        >
+          <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#BABEC8] leading-snug">
+            {splitText("Your Crafted, ")}
+            <span className="block text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#2E437C]">
+              {splitText("Modular Solution")}
+            </span>
+          </h2>
+        </motion.div>
+
+        <div className="flex items-center justify-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2E437C]"></div>
+          <p className="ml-4 text-gray-600">Loading solutions...</p>
+        </div>
+      </section>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <section className="container mx-auto w-full px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-10 bg-white">
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={containerVariants}
+          className="mb-8 sm:mb-12 md:text-left px-3"
+        >
+          <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#BABEC8] leading-snug">
+            {splitText("Your Crafted, ")}
+            <span className="block text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#2E437C]">
+              {splitText("Modular Solution")}
+            </span>
+          </h2>
+        </motion.div>
+
+        <div className="flex items-center justify-center py-20">
+          <div className="text-center">
+            <p className="text-red-500 mb-4">Failed to load solutions: {error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-[#2E437C] text-white px-6 py-2 rounded-lg hover:bg-[#1d3b72] transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="container mx-auto w-full px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-10 bg-white">
       <motion.div
@@ -199,9 +218,9 @@ export default function ModulerSolution() {
       >
         {solutions.map((item, idx) => (
           <motion.div
-            key={idx}
-        variants={containerVariants}
-            
+            key={item.id}
+            variants={cardVariants}
+            onClick={() => handleCategoryClick(item.id)} // Add click handler
             whileHover={{
               y: -2,
               scale: 1.01,
@@ -212,28 +231,33 @@ export default function ModulerSolution() {
                 mass: 0.5,
               },
             }}
-            className="group relative flex flex-col items-center justify-center p-5 bg-white
-             transition-all duration-300 cursor-pointer overflow-hidden rounded-lg"
-            style={{
-              boxShadow: "0 1px 3px rgba(0, 0, 0, 0.05)",
+            whileTap={{ // Add tap animation for better UX
+              scale: 0.98,
+              transition: { duration: 0.1 }
             }}
+            className="group relative flex flex-col items-center justify-center p-5 bg-white
+              cursor-pointer overflow-hidden hover:shadow-lg" // Added hover:shadow-lg for better UX
           >
             <motion.div
               className="absolute inset-0 bg-gradient-to-br from-[#2E437C] to-[#1d3b72]
                opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             />
 
-            {/* Icon */}
-            <motion.div className="relative z-10 w-12 h-12 sm:w-14 sm:h-14 mb-3 flex items-center justify-center">
+            {/* Icon without any continuous animation */}
+            <div className="relative z-10 w-12 h-12 sm:w-14 sm:h-14 mb-3 flex items-center justify-center">
               <img
                 src={item.icon}
                 alt={item.title}
                 className="w-full h-full object-contain transition-all duration-300
                  group-hover:brightness-0 group-hover:invert"
+                onError={(e) => {
+                  // Fallback for broken images
+                  e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpolyline points='21,15 16,10 5,21'/%3E%3C/svg%3E";
+                }}
               />
-            </motion.div>
+            </div>
 
-            {/* Title */}
+            {/* Title from API */}
             <motion.p
               className="relative z-10 text-xs sm:text-sm md:text-base font-medium
                text-gray-700 group-hover:text-white transition-colors duration-300

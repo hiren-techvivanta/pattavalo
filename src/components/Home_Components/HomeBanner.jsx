@@ -10,32 +10,55 @@ export default function HomeBanner({ onAnimationComplete }) {
   const [isHovered, setIsHovered] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [showNavbar, setShowNavbar] = useState(false);
+  const [hasAnimatedBefore, setHasAnimatedBefore] = useState(false);
   const videoRef = useRef(null);
 
+  // Local storage key for animation flag
+  const ANIMATION_KEY = "homeBannerAnimationCompleted";
+
   useEffect(() => {
+    // Check if animation has been played before
+    const animationCompleted = localStorage.getItem(ANIMATION_KEY);
+    const hasAnimated = animationCompleted === "true";
+
+    setHasAnimatedBefore(hasAnimated);
+
     if (videoRef.current) {
       videoRef.current
         .play()
         .catch((err) => console.log("Autoplay prevented:", err));
     }
 
-    const timer = setTimeout(() => setIsVideoExpanded(true), 1500);
-
-    const navbarTimer = setTimeout(() => {
+    if (hasAnimated) {
+      // If animation has been played before, show everything immediately
+      setIsVideoExpanded(true);
       setShowNavbar(true);
       setShowContent(true);
+      
       if (onAnimationComplete) {
         onAnimationComplete();
       }
-    }, 2000);
+    } else {
+      // Run animation for first time
+      const timer = setTimeout(() => {
+        setIsVideoExpanded(true);
+        // Store in localStorage that animation has completed
+        localStorage.setItem(ANIMATION_KEY, "true");
+      }, 1500);
 
-    const contentTimer = setTimeout(() => {}, 1900);
+      const navbarTimer = setTimeout(() => {
+        setShowNavbar(true);
+        setShowContent(true);
+        if (onAnimationComplete) {
+          onAnimationComplete();
+        }
+      }, 2000);
 
-    return () => {
-      clearTimeout(timer);
-      clearTimeout(navbarTimer);
-      clearTimeout(contentTimer);
-    };
+      return () => {
+        clearTimeout(timer);
+        clearTimeout(navbarTimer);
+      };
+    }
   }, [onAnimationComplete]);
 
   const titleVariants = {
@@ -43,7 +66,11 @@ export default function HomeBanner({ onAnimationComplete }) {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeInOut", delay: 0.3 },
+      transition: { 
+        duration: hasAnimatedBefore ? 0 : 0.6, 
+        ease: "easeInOut", 
+        delay: hasAnimatedBefore ? 0 : 0.3 
+      },
     },
   };
 
@@ -52,7 +79,11 @@ export default function HomeBanner({ onAnimationComplete }) {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeInOut", delay: 0.3 },
+      transition: { 
+        duration: hasAnimatedBefore ? 0 : 0.6, 
+        ease: "easeInOut", 
+        delay: hasAnimatedBefore ? 0 : 0.3 
+      },
     },
   };
 
@@ -61,18 +92,26 @@ export default function HomeBanner({ onAnimationComplete }) {
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: "easeInOut", delay: 0.3 },
+      transition: { 
+        duration: hasAnimatedBefore ? 0 : 0.6, 
+        ease: "easeInOut", 
+        delay: hasAnimatedBefore ? 0 : 0.3 
+      },
     },
   };
 
   return (
     <>
-      {/* Animated Navbar - same as AboutUs */}
+      {/* Animated Navbar */}
       <motion.div
         className="fixed top-0 left-0 right-0 z-50"
-        initial={{ opacity: 1, y: -100 }}
-        animate={showNavbar ? { opacity: 1, y: 0, scale: 1 } : { y: -100 }}
-        transition={{ duration: 0.6, ease: "easeInOut", delay: 0.2 }}
+        initial={{ opacity: 1, y: hasAnimatedBefore ? 0 : -100 }}
+        animate={showNavbar ? { opacity: 1, y: 0, scale: 1 } : { y: hasAnimatedBefore ? 0 : -100 }}
+        transition={{ 
+          duration: hasAnimatedBefore ? 0 : 0.6, 
+          ease: "easeInOut", 
+          delay: hasAnimatedBefore ? 0 : 0.2 
+        }}
       >
         <Navbar />
       </motion.div>
@@ -93,26 +132,40 @@ export default function HomeBanner({ onAnimationComplete }) {
           <div className="absolute inset-0 bg-black/60"></div>
         </div>
 
-        {/* White overlay animation - match AboutUs timing and transition */}
+        {/* White overlay animation - only animate once */}
         <motion.div
-          initial={{ opacity: 1, y: 1500, boxShadow: "0 0 0 9999px white" }}
-          animate={{
-            opacity: 1,
-            y: 0,
-            boxShadow: isVideoExpanded
-              ? "0 0 0 0px white"
-              : "0 0 0 9999px white",
+          initial={
+            hasAnimatedBefore
+              ? { opacity: 1, y: 0, boxShadow: "0 0 0 0px white" } // Final state if already animated
+              : { opacity: 1, y: 1500, boxShadow: "0 0 0 9999px white" } // Initial animation state
+          }
+          animate={
+            hasAnimatedBefore
+              ? { opacity: 1, y: 0, boxShadow: "0 0 0 0px white" } // Skip animation
+              : {
+                  opacity: 1,
+                  y: 0,
+                  boxShadow: isVideoExpanded
+                    ? "0 0 0 0px white"
+                    : "0 0 0 9999px white",
+                }
+          }
+          transition={{
+            duration: hasAnimatedBefore ? 0 : 0.6, // No animation duration if already played
+            ease: "easeOut",
           }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className={`absolute inset-0 transition-all duration-800 ease-out bg-transparent ${
-            isVideoExpanded
+          className={`absolute inset-0 transition-all ease-out bg-transparent ${
+            isVideoExpanded || hasAnimatedBefore
               ? "scale-110"
               : "scale-75 rounded-[15px] sm:scale-50 sm:rounded-3xl m-4"
           }`}
+          style={{
+            transitionDuration: hasAnimatedBefore ? "0ms" : "800ms", // Skip CSS transition if already animated
+          }}
         />
 
-        {/* Content - only show when isVideoExpanded is true and showContent is true px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 py-16*/}
-        {isVideoExpanded && showContent && (
+        {/* Content - show when conditions are met */}
+        {(isVideoExpanded || hasAnimatedBefore) && (showContent || hasAnimatedBefore) && (
           <div className="container mx-auto relative z-10 w-full h-full flex items-center px-4 sm:px-6 md:px-8 lg:px-12 xl:px-15 2xl:px-25 py-16">
             <div className=" w-full mt-10 sm:mt-0">
               <div className="max-w-4xl text-white overflow-hidden">
