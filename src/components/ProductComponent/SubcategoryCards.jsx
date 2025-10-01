@@ -77,9 +77,6 @@ const SubcategoryCards = ({ subcategories, onSubcategoryClick, loading }) => {
               {subcategory.description}
             </p>
           )}
-          <span className="text-xs text-[#2E437C] mt-3 bg-[#2E437C]/10 px-3 py-1 rounded-full">
-            Subcategory
-          </span>
         </motion.div>
       ))}
     </div>
