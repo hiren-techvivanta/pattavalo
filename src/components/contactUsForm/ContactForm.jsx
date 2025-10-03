@@ -182,7 +182,7 @@ const ContactForm = () => {
           <div className="space-y-6 lg:space-y-8">
             {/* Address */}
             <div className="flex items-start gap-4">
-              <IoLocationOutline className="w-[20px] h-[19px] lg:w-[22px] lg:h-[21px] text-gray-600 mt-1 flex-shrink-0" />
+              <IoLocationOutline className="w-[20px] h-[19px] lg:w-[22px] lg:h-[21px] text-[#2E437C] mt-1 flex-shrink-0" />
               <p className="text-black text-[18px] lg:text-[20px] leading-[145%] font-normal">
                 22, Kalyannagar Society, O/s Shahpur Gate, Shahpur, Ahmedabad -
                 380004
@@ -191,7 +191,7 @@ const ContactForm = () => {
 
             {/* Email */}
             <div className="flex items-center gap-4">
-              <IoMailOutline className="w-[20px] h-[16px] lg:w-[22px] lg:h-[18px] text-gray-600 flex-shrink-0" />
+              <IoMailOutline className="w-[20px] h-[16px] lg:w-[22px] lg:h-[18px] text-[#2E437C] flex-shrink-0" />
               <a
                 href="mailto:sales@atcchain.com"
                 className="text-black text-[18px] lg:text-[20px] leading-[145%] font-normal underline hover:text-[#2E437C] transition-colors break-all"
@@ -203,7 +203,7 @@ const ContactForm = () => {
             {/* Phone Numbers */}
             <div className="space-y-4">
               <div className="flex items-center gap-4">
-                <IoCallOutline className="w-[19px] h-[20px] lg:w-[21px] lg:h-[22px] text-gray-600 flex-shrink-0" />
+                <IoCallOutline className="w-[19px] h-[20px] lg:w-[21px] lg:h-[22px] text-[#2E437C] flex-shrink-0" />
                 <p className="text-black text-[18px] lg:text-[20px] leading-[145%] font-medium">
                   Quick Connect
                 </p>
@@ -212,8 +212,8 @@ const ContactForm = () => {
               {/* Phone Number 1 */}
               <div className="flex items-center gap-3 ml-8 lg:ml-10">
                 <div className="flex items-center gap-3">
-                  <IoCallOutline className="w-[16px] h-[16px] lg:w-[18px] lg:h-[18px] text-gray-600" />
-                  <IoLogoWhatsapp className="w-[17px] h-[18px] lg:w-[19.9px] lg:h-[20px] text-green-600" />
+                  <IoCallOutline className="w-[16px] h-[16px] lg:w-[18px] lg:h-[18px] text-[#2E437C]" />
+                  <IoLogoWhatsapp className="w-[17px] h-[18px] lg:w-[19.9px] lg:h-[20px] text-[#2E437C]" />
                 </div>
                 <a
                   href="tel:+919023725674"
@@ -226,8 +226,8 @@ const ContactForm = () => {
               {/* Phone Number 2 */}
               <div className="flex items-center gap-3 ml-8 lg:ml-10">
                 <div className="flex items-center gap-3">
-                  <IoCallOutline className="w-[16px] h-[16px] lg:w-[18px] lg:h-[18px] text-gray-600" />
-                  <IoLogoWhatsapp className="w-[17px] h-[18px] lg:w-[19.9px] lg:h-[20px] text-green-600" />
+                  <IoCallOutline className="w-[16px] h-[16px] lg:w-[18px] lg:h-[18px] text-[#2E437C]" />
+                  <IoLogoWhatsapp className="w-[17px] h-[18px] lg:w-[19.9px] lg:h-[20px] text-[#2E437C]" />
                 </div>
                 <a
                   href="tel:+919023725676"

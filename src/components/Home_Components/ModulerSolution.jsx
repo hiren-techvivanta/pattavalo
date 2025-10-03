@@ -140,7 +140,7 @@ export default function ModulerSolution() {
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
           variants={containerVariants}
-          className="mb-8 sm:mb-12 md:text-left px-3"
+          className="mb-8 sm:mb-12 md:text-left px-0"
         >
           <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#BABEC8] leading-snug">
             {splitText("Your Crafted, ")}
@@ -167,7 +167,7 @@ export default function ModulerSolution() {
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
           variants={containerVariants}
-          className="mb-8 sm:mb-12 md:text-left px-3"
+          className="mb-8 sm:mb-12 md:text-left px-0"
         >
           <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#BABEC8] leading-snug">
             {splitText("Your Crafted, ")}
@@ -199,7 +199,7 @@ export default function ModulerSolution() {
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
         variants={containerVariants}
-        className="mb-8 sm:mb-12 md:text-left px-3"
+        className="mb-8 sm:mb-12 md:text-left px-0"
       >
         <h2 className="text-[48px] md:text-[100px] font-semibold text-[#BABEC8] leading-snug" style={{lineHeight:"98px"}}>
 

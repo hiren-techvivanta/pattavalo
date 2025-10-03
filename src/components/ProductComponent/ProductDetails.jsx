@@ -967,11 +967,7 @@ const handleFileDownload = async (file) => {
   
   
   try {
-    const response = await fetch(file.url, {
-      headers: {
-        "ngrok-skip-browser-warning": "true",
-      },
-    });
+    const response = await fetch(file.url);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

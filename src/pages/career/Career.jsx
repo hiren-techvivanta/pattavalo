@@ -643,8 +643,7 @@ const Career = () => {
               Our Awesome Team
             </h2>
             <p className="text-[#001833] text-[14px] font-[400] mt-4 leading-relaxed">
-              We want to feel like home when you are working at ATC (Advanced
-              Technology & Consultancy) & for that we have curated a great set
+              We want to feel like home when you are working at ATC for that we have curated a great set
               of benefits for you. It all starts with the free lunch!
             </p>
           </motion.div>
