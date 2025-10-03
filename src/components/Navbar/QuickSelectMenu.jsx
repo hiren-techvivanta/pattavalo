@@ -4,6 +4,7 @@ import { IoChevronDown } from "react-icons/io5";
 import { HiOutlineViewGrid } from "react-icons/hi";
 import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { GoFilter } from "react-icons/go";
 import axios from "axios";
 
 const QuickSelectMenu = ({ navBg }) => {
@@ -218,21 +219,10 @@ const QuickSelectMenu = ({ navBg }) => {
 
   const buttonVariants = {
     closed: {
-      backgroundColor: navBg
-        ? "rgba(46, 67, 124, 0.1)"
-        : "rgba(255, 255, 255, 0.1)",
-      borderColor: navBg
-        ? "rgba(46, 67, 124, 0.2)"
-        : "rgba(255, 255, 255, 0.2)",
       width: "44px",
     },
     open: {
-      backgroundColor: navBg
-        ? "rgba(46, 67, 124, 0.15)"
-        : "rgba(255, 255, 255, 0.15)",
-      borderColor: navBg
-        ? "rgba(46, 67, 124, 0.4)"
-        : "rgba(255, 255, 255, 0.4)",
+    
       width: "44px",
     },
   };
@@ -280,18 +270,15 @@ const QuickSelectMenu = ({ navBg }) => {
       <motion.button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center justify-center h-11 rounded-xl border-2 font-medium transition-all duration-150 hover:shadow-lg overflow-hidden ${
+        className={` h-11 ${
           navBg ? "text-[#2E437C]" : "text-white"
         }`}
         variants={buttonVariants}
         animate={isOpen ? "open" : "closed"}
-        style={{
-          willChange: "transform, background-color, border-color, width",
-          fontFamily: "'Articulat CF', sans-serif",
-        }}
+      
       >
-        <div className="flex items-center justify-center w-6 h-6 flex-shrink-0">
-          <HiOutlineViewGrid className="w-5 h-5" />
+        <div className="">
+          <GoFilter className="w-5 h-5" />
         </div>
       </motion.button>
 
@@ -318,7 +305,7 @@ const QuickSelectMenu = ({ navBg }) => {
           >
             {/* Header */}
             <motion.div
-              className="bg-white px-6 py-4 border-b border-gray-100"
+              className="bg-white px-6 py-4"
               variants={itemVariants}
             >
               <div className="flex items-center gap-3">
@@ -496,7 +483,7 @@ const QuickSelectMenu = ({ navBg }) => {
                         {categories.map((category, index) => (
                           <motion.div
                             key={category.id}
-                            className={`flex items-center justify-between p-4 border-b border-gray-100 cursor-pointer transition-all duration-100 ${
+                            className={`flex items-center justify-between p-4 cursor-pointer transition-all duration-100 ${
                                selectedCategory === category.id
                                 ? "bg-[#2E437C]/5 border-l-4 border-l-[#2E437C]"
                                 : "hover:bg-gray-50"

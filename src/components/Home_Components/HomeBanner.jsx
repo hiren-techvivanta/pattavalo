@@ -4,8 +4,10 @@ import BgVideo from "../../assets/Video/HeroBg.mp4";
 import { MdArrowOutward } from "react-icons/md";
 import Navbar from "../Navbar/Navbar";
 import AnimatedButton from "../aboutUsComponents/AnimatedButton";
+import { useNavigate } from "react-router-dom";
 
 export default function HomeBanner({ onAnimationComplete }) {
+  const navigate = useNavigate()
   const [isVideoExpanded, setIsVideoExpanded] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [showContent, setShowContent] = useState(false);
@@ -227,6 +229,7 @@ export default function HomeBanner({ onAnimationComplete }) {
                     icon={MdArrowOutward}
                     color={"#2E437C"}
                     hoverColor={`#2E437C`}
+                    onClick={() => navigate(`/products`)}
                   >
                     FIND SOLUTION
                   </AnimatedButton>

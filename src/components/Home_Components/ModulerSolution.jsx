@@ -201,9 +201,10 @@ export default function ModulerSolution() {
         variants={containerVariants}
         className="mb-8 sm:mb-12 md:text-left px-3"
       >
-        <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#BABEC8] leading-snug">
+        <h2 className="text-[48px] md:text-[100px] font-semibold text-[#BABEC8] leading-snug" style={{lineHeight:"98px"}}>
+
           {splitText("Your Crafted, ")}
-          <span className="block text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#2E437C]">
+          <span className="block font-semibold text-[#2E437C]">
             {splitText("Modular Solution")}
           </span>
         </h2>

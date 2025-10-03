@@ -1,7 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import ConveyorImage from "../../assets/images/custom_conveyor.png";
-import { FaArrowRight } from "react-icons/fa6";
+import { RxArrowRight } from "react-icons/rx";
 import AnimatedButton from "../aboutUsComponents/AnimatedButton";
 
 export default function ExpertSolutions() {
@@ -114,19 +114,14 @@ export default function ExpertSolutions() {
           variants={containerVariants}
           className="
       text-[28px] sm:text-[34px] md:text-[42px] lg:text-[50px] xl:text-[54px]
-      leading-[36px] sm:leading-[44px] md:leading-[52px] lg:leading-[60px]
-      font-bold mb-6 sm:mb-8
-    "
+      leading-[36px] sm:leading-[44px] md:leading-[52px] lg:leading-[60px] text-[#BABEC8] font-normal
+      font-bold mb-6 sm:mb-8"
         >
-          <span className="text-[#BABEC8] font-normal">
-            {splitText("Expert ")}
-          </span>
+          Expert{" "}
           <span className="text-[#2E437C] font-bold">
-            {splitText("Solutions for Custom Conveyor ")}
-          </span>
-          <span className="text-[#BABEC8] font-normal">
-            {splitText("Needs.")}
-          </span>
+            Solutions for Custom Conveyor
+          </span>{" "}
+          Needs.
         </motion.h1>
 
         {/* Paragraph 1 */}
@@ -177,11 +172,11 @@ export default function ExpertSolutions() {
           className="mt-4"
         >
           <AnimatedButton
-            icon={FaArrowRight}
+            icon={RxArrowRight}
             color="#2E437C"
             hoverColor="#2E437C"
           >
-            READ MORE
+            Explore Product
           </AnimatedButton>
         </motion.div>
       </motion.div>

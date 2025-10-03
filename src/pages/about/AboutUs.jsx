@@ -12,6 +12,7 @@ import AnimatedImage from "../../components/aboutUsComponents/AnimatedImage";
 import TeamCard from "../../components/aboutUsComponents/TeamCard";
 import TimelineItem from "../../components/aboutUsComponents/TimelineItem";
 import AnimatedButton from "../../components/aboutUsComponents/AnimatedButton";
+import { LuDownload } from "react-icons/lu";
 
 // Assets
 import BgVideo from "../../assets/Video/aboutUs.mp4";
@@ -669,7 +670,7 @@ const AboutUs = () => {
 
       {/* History Section */}
       <motion.div
-        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20"
+        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 pt-16 sm:pt-20"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -852,7 +853,7 @@ const AboutUs = () => {
 
         <motion.div className="pt-16 flex justify-center" variants={fadeInUp}>
           <AnimatedButton
-            icon={HiDownload}
+            icon={LuDownload}
             color={"#2E437C"}
             hoverColor={`#2E437C`}
           >

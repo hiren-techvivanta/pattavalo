@@ -16,12 +16,11 @@ export default function Footer() {
   const socialLinks = [
     {
       icon: <FiInstagram />,
-      href: "https://instagram.com",
+      href: "https://www.instagram.com/atcchainsindia/?igsh=MTBtb3NhczAydjhpMA%3D%3D#",
       label: "Instagram",
     },
-    { icon: <FiLinkedin />, href: "https://www.linkedin.com/search/results/all/?fetchDeterministicClustersOnly=true&heroEntityKey=urn%3Ali%3Aorganization%3A70889976&keywords=atc%20chains%20india&origin=RICH_QUERY_SUGGESTION&position=0&searchId=37ffd02a-b0c6-4cd3-82ee-ab9547617e5b&sid=~hT&spellCorrectionEnabled=false", label: "LinkedIn" },
-    { icon: <RiTwitterXFill  />, href: "https://x.com/ChainsAtc", label: "X" },
-    { icon: <FiYoutube />, href: "https://www.youtube.com/results?search_query=atc+chains+india", label: "YouTube" },
+    { icon: <FiLinkedin />, href: "https://www.linkedin.com/company/atc-chains-india-ahmedabad/", label: "LinkedIn" },
+    { icon: <FiYoutube />, href: "https://www.youtube.com/@atcchainsindia", label: "YouTube" },
   ];
   return (
     <footer className="bg-[#2E437C] text-white">

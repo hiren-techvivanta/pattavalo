@@ -174,12 +174,12 @@ const ShowCase = () => {
           className="
       text-left
       text-[28px] sm:text-[32px] md:text-[36px] lg:text-[42px] xl:text-[48px]
-      font-normal text-[#2E437C] leading-tight
+      font-normal text-[#2E437C] leading-[44px]
     "
         >
           {splitText("Interactive")}
           <br />
-          <span className="text-[#BABEC8] font-bold">
+          <span className="text-[#BABEC8] font-[700]">
             {splitText("Product Showcase")}
           </span>
         </motion.h1>

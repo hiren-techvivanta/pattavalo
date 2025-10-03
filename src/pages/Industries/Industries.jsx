@@ -12,6 +12,7 @@ import bl3 from "../../assets/images/bl3.jpg";
 import bl4 from "../../assets/images/bl4.jpg";
 import { HiDownload } from "react-icons/hi";
 import AnimatedButton from "../../components/aboutUsComponents/AnimatedButton";
+import { LuDownload } from "react-icons/lu";
 import Seo from "../../components/common/Seo";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -336,7 +337,7 @@ const Industries = () => {
             {filteredData.length > 0 ? (
               filteredData.map((v, i) => (
                 <motion.div
-                  className="flex gap-6 p-4 bg-gradient-to-br shadow hover:shadow-lg from-white to-gray-50/50 fade-up-element"
+                  className="flex gap-6 p-4 bg-gradient-to-br  hover:shadow-lg from-white to-gray-50/50 fade-up-element"
                   key={v.id}
                   variants={cardVariants}
                   whileHover={{
@@ -413,7 +414,7 @@ const Industries = () => {
                       }}
                     >
                       <AnimatedButton
-                        icon={HiDownload}
+                        icon={LuDownload}
                         color={"#2E437C"}
                         hoverColor={`#2E437C`}
                         px={6}

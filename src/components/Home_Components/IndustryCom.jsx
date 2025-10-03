@@ -1075,7 +1075,7 @@ const industries = [
     image:
       "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
     icon: <FaWineBottle size={26} />,
-    color: "#1d4ed8",
+    color: "#E74623",
     targetRotation: -45,
     mobileTargetRotation: -165,
     categories: [
@@ -1094,7 +1094,7 @@ const industries = [
     image:
       "https://images.unsplash.com/photo-1581338834647-b0fb40704e21?auto=format&fit=crop&w=1200&q=80",
     icon: <FaFish size={26} />,
-    color: "#E74623",
+    color: "#F39314",
     targetRotation: -90,
     mobileTargetRotation: -210,
     categories: ["Seafood", "Meat", "Poultry"],
@@ -1107,7 +1107,7 @@ const industries = [
     image:
       "https://images.unsplash.com/photo-1566772940193-9c3ae2938d78?auto=format&fit=crop&w=1200&q=80",
     icon: <FaIceCream size={26} />,
-    color: "#f97316",
+    color: "#F5DC00",
     targetRotation: -135,
     mobileTargetRotation: -255,
     categories: ["Chocolate", "Milk & Milk Products", "Yogurt", "Cheese"],
@@ -1120,7 +1120,7 @@ const industries = [
     image:
       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
     icon: <FaShippingFast size={26} />,
-    color: "#10b981",
+    color: "#2E437C",
     targetRotation: -180,
     mobileTargetRotation: -300,
     categories: [
@@ -1139,7 +1139,7 @@ const industries = [
     image:
       "https://png.pngtree.com/png-vector/20221125/ourmid/pngtree-no-image-available-icon-flatvector-illustration-picture-coming-creative-vector-png-image_40968940.jpg",
     icon: <FaSprayCan size={26} />,
-    color: "#8b5cf6",
+    color: "#E74623",
     targetRotation: -225,
     mobileTargetRotation: -345,
     categories: ["No Category"],
@@ -1152,7 +1152,7 @@ const industries = [
     image:
       "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
     icon: <FaCar size={26} />,
-    color: "#06b6d4",
+    color: "#F39314",
     targetRotation: -270,
     mobileTargetRotation: -35,
     categories: [
@@ -1170,7 +1170,7 @@ const industries = [
     image:
       "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
     icon: <FaHospital size={26} />,
-    color: "#ec4899",
+    color: "#F5DC00",
     targetRotation: -315,
     mobileTargetRotation: -80,
     categories: [
@@ -1319,7 +1319,7 @@ export default function IndustryCom() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
-        className="text-4xl sm:text-5xl md:text-6xl lg:text-[90px] xl:text-[90px] font-normal text-[#BABEC8] mb-10 text-center lg:text-left sm:px-6 md:px-10 lg:px-15"
+        className="text-[48px] md:text-[112px] font-[500] md:font-[400] text-[#BABEC8] mb-10 text-center md:text-left "
       >
         {splitText("Industries we serve")}
       </motion.h1>

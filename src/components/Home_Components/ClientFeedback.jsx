@@ -170,23 +170,23 @@ export default function ClientFeedback() {
         className="text-left mb-12 max-w-4xl"
       >
         <motion.p 
-          className="text-[#2E437C] font-medium"
+          className="text-[18px] text-[#2E437C] font-medium"
          
         >
            {splitText("Client Feedback")}
          
         </motion.p>
         
-        <motion.h1 
-          className="text-2xl md:text-4xl font-normal text-[#2E437C] mt-2"
+        <motion.h2 
+          className="text-[32px] md:text-[48px] font-normal text-[#2E437C] mt-2 leading-[44px]"
           
         >
           {splitText("Don't take our world for it!")}
           
-        </motion.h1>
+        </motion.h2>
         
         <motion.h3 
-          className="text-2xl md:text-4xl font-bold text-[#BABEC8]"
+          className="ext-[32px] md:text-[48px] font-bold text-[#BABEC8]"
          
         >
           {splitText("Hear it from our partners.")}

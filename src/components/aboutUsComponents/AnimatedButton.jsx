@@ -41,13 +41,13 @@ const AnimatedButton = ({
 
       <span className="relative z-10 ml-3 h-8 w-8 overflow-hidden flex items-center justify-center">
         <Icon
-          size={25}
+          size={20}
           className={`absolute transition-transform duration-[600ms] text-white ease-in-out ${
             isHovered ? "translate-x-6 opacity-0" : "translate-x-0 opacity-100"
           }`}
         />
         <Icon
-          size={25}
+          size={20}
           className={`absolute transition-transform duration-[600ms] text-white ease-in-out ${
             isHovered ? "translate-x-0 opacity-100" : "-translate-x-6 opacity-0"
           }`}
