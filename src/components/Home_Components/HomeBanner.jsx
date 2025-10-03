@@ -20,7 +20,7 @@ export default function HomeBanner({ onAnimationComplete }) {
 
   useEffect(() => {
     // Check if animation has been played before
-    const animationCompleted = localStorage.getItem(ANIMATION_KEY);
+    const animationCompleted = sessionStorage.getItem(ANIMATION_KEY);
     const hasAnimated = animationCompleted === "true";
 
     setHasAnimatedBefore(hasAnimated);
@@ -44,8 +44,8 @@ export default function HomeBanner({ onAnimationComplete }) {
       // Run animation for first time
       const timer = setTimeout(() => {
         setIsVideoExpanded(true);
-        // Store in localStorage that animation has completed
-        localStorage.setItem(ANIMATION_KEY, "true");
+        // Store in sessionStorage that animation has completed
+        sessionStorage.setItem(ANIMATION_KEY, "true");
       }, 1500);
 
       const navbarTimer = setTimeout(() => {
