@@ -166,7 +166,7 @@ export default function Navbar({ navStyle, show = true }) {
                   ) : (
                     <motion.button
                       key={menu.name}
-                      onClick={() => navigate(menu.url)} // normal pages ke liye
+                      onClick={() => navigate(menu.url)} 
                       className={`${navBg ? "text-[#2E437C]" : "text-white"} 
                   transition-colors font-medium hover:text-[#2E437C]`}
                       style={{

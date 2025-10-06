@@ -290,7 +290,7 @@ const AboutUs = () => {
   };
 
   useEffect(() => {
-    // Check if animation has been played before
+
     const animationCompleted = localStorage.getItem(ANIMATION_KEY);
     const hasAnimated = animationCompleted === "true";
 
@@ -303,7 +303,7 @@ const AboutUs = () => {
     }
 
     if (hasAnimated) {
-      // If animation has been played before, show everything immediately
+     
       setIsVideoExpanded(true);
       setShowNavbar(true);
     } else {
@@ -397,7 +397,7 @@ const AboutUs = () => {
           <div className="absolute inset-0 bg-black/60"></div>
         </div>
 
-        {/* White overlay animation - only animate once */}
+        
         <motion.div
           initial={
             hasAnimatedBefore
