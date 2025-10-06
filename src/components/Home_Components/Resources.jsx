@@ -8,6 +8,7 @@ import bl4 from "../../assets/images/bl4.jpg";
 import NewsCard from "../newsComponents/NewsCard";
 import AnimatedButton from "../aboutUsComponents/AnimatedButton";
 import NewsGrid from "../common/NewsGrid";
+import { CustomHeading } from "../common/CustomHeading";
 
 const tabs = ["Latest", "Blogs", "Events", "Featured Product"];
 
@@ -183,8 +184,8 @@ export default function Resources() {
           className="text-[48px] sm:text-4xl lg:text-5xl font-bold text-[#2E437C]"
           variants={headerVariants} 
         >
-          <span className="text-[#2E437C]">{splitText("Resources ")}</span>
-          <span className="text-[#BABEC8]">{splitText("& Insights")}</span>
+          <span className="text-[#2E437C]"><CustomHeading title="Resources " className="" /></span>
+          <span className="text-[#BABEC8]"><CustomHeading title="& Insights" className="" /></span>
         </motion.h2>
 
         <motion.p

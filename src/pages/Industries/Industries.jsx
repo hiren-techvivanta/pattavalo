@@ -14,6 +14,7 @@ import { HiDownload } from "react-icons/hi";
 import AnimatedButton from "../../components/aboutUsComponents/AnimatedButton";
 import { LuDownload } from "react-icons/lu";
 import Seo from "../../components/common/Seo";
+import { CustomHeading } from "../../components/common/CustomHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -251,7 +252,7 @@ const Industries = () => {
               className="text-[#BABEC8] font-bold text-3xl md:text-4xl lg:text-5xl"
               variants={containerVariants} 
             >
-              {splitText("Downloads")}
+              <CustomHeading title="Downloads" className="" />
             </motion.h1>
 
             <motion.p

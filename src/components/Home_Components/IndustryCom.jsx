@@ -33,6 +33,7 @@ import meat1 from "../../assets/images/industries/meat1.jpeg";
 import meat2 from "../../assets/images/industries/meat2.jpeg";
 import poultry1 from "../../assets/images/industries/meat2.jpeg";
 import milk from "../../assets/images/industries/milk.jfif";
+import { CustomHeading } from "../common/CustomHeading";
 
 const categoryContent = {
   // Food Industry
@@ -519,7 +520,8 @@ export default function IndustryCom() {
         viewport={{ once: true, margin: "-80px" }}
         className="text-[44px] md:text-[112px] font-[500] md:font-[400] text-[#BABEC8] mb-10 text-center md:text-left "
       >
-        {splitText("Industries we serve")}
+         <CustomHeading title="Industries we serve" className="" />
+        
       </motion.h1>
 
       <div className=" grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-center">

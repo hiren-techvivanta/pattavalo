@@ -22,6 +22,7 @@ import l4 from "../assets/images/l4.png";
 import l5 from "../assets/images/l5.png";
 import l6 from "../assets/images/l6.png";
 import Seo from "../components/common/Seo";
+import { CustomHeading } from "../components/common/CustomHeading";
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -136,14 +137,14 @@ export default function Home() {
   //     gsap.ticker.remove(lenis.raf);
   //   };
   // }, []);
-   useEffect(() => {
+  useEffect(() => {
     const shouldScroll = localStorage.getItem("scrollToIndustries");
     if (shouldScroll === "true") {
       const section = document.getElementById("industries-section");
       if (section) {
         setTimeout(() => {
           section.scrollIntoView({ behavior: "smooth" });
-        }, 300); 
+        }, 300);
       }
       localStorage.removeItem("scrollToIndustries");
     }
@@ -222,7 +223,11 @@ export default function Home() {
           <ShowCase />
         </motion.div>
 
-        <motion.div variants={quickFadeInUp} className="fade-in-section" id="industries-section">
+        <motion.div
+          variants={quickFadeInUp}
+          className="fade-in-section"
+          id="industries-section"
+        >
           <IndustryCom />
         </motion.div>
 
@@ -248,8 +253,12 @@ export default function Home() {
             className="mb-12 px-14"
           >
             <motion.h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
-              <span className="text-[#2E437C]">{splitText("Our ")}</span>
-              <span className="text-[#BABEC8]">{splitText("Clients")}</span>
+              <span className="text-[#2E437C]">
+                <CustomHeading title="Our " className="" />
+              </span>
+              <span className="text-[#BABEC8]">
+                <CustomHeading title="Clients" className="" />
+              </span>
             </motion.h1>
           </motion.div>
 

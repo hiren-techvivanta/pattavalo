@@ -114,7 +114,7 @@ export default function ExpertSolutions() {
           variants={containerVariants}
           className="
       text-[28px] sm:text-[34px] md:text-[42px] lg:text-[50px] xl:text-[54px]
-      leading-[36px] sm:leading-[44px] md:leading-[52px] lg:leading-[60px] text-[#BABEC8] font-normal
+      leading-[36px] sm:leading-[44px] md:leading-[52px] lg:leading-[60px] text-[#BABEC8] font-bold
       font-bold mb-6 sm:mb-8"
         >
           Expert{" "}

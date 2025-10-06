@@ -10,6 +10,7 @@ import { MdOutlineSecurity } from "react-icons/md";
 import { PiStudentBold } from "react-icons/pi";
 import { BsBarChart } from "react-icons/bs";
 import Seo from "../../components/common/Seo";
+import { CustomHeading } from "../../components/common/CustomHeading";
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -488,8 +489,8 @@ const Career = () => {
           className="font-[400] text-[#2E437C] text-[40px] md:text-[74px] text-center"
           style={{ lineHeight: "70px" }}
         >
-          {splitText("Career")} <br />
-          <span className="font-[700] text-[#BABEC8]">{splitText("Openings")}</span>
+          <CustomHeading title="Career " className="" /> <br />
+          <span className="font-[700] text-[#BABEC8]"><CustomHeading title="Openings" className="" /></span>
         </motion.h1>
 
         <motion.p

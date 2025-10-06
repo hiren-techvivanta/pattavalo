@@ -154,11 +154,11 @@ export default function Navbar({ navStyle, show = true }) {
                       key={menu.name}
                       onClick={handleScrollToIndustries} 
                       className={`${navBg ? "text-[#2E437C]" : "text-white"} 
-                  transition-colors font-medium hover:text-[#2E437C]`}
+                  transition-colors hover:text-[#2E437C]`}
                       style={{
                         fontFamily: "'Articulat CF', sans-serif",
                         fontSize: "16px",
-                        fontWeight: 550,
+                        fontWeight: 450,
                       }}
                     >
                       {menu.name}
@@ -172,7 +172,7 @@ export default function Navbar({ navStyle, show = true }) {
                       style={{
                         fontFamily: "'Articulat CF', sans-serif",
                         fontSize: "16px",
-                        fontWeight: 550,
+                        fontWeight: 450,
                       }}
                     >
                       {menu.name}

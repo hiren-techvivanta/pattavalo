@@ -4,6 +4,7 @@ import showcaseImg from "../../assets/images/Showcase.png";
 import { CgArrowTopLeftO } from "react-icons/cg";
 import { BsArrowDownLeftCircle } from "react-icons/bs";
 import { TiPlus } from "react-icons/ti";
+import { CustomHeading } from "../common/CustomHeading";
 
 const ShowCase = () => {
   const [activePoint, setActivePoint] = useState(null);
@@ -174,36 +175,16 @@ const ShowCase = () => {
           className="
       text-left
       text-[28px] sm:text-[32px] md:text-[36px] lg:text-[42px] xl:text-[48px]
-      font-normal text-[#2E437C] leading-[44px]
+      text-[#2E437C] leading-[44px] font-[700]
     "
         >
-          {splitText("Interactive")}
+          <CustomHeading title="Interactive" className="text-[#2E437C]" />
           <br />
-          <span className="text-[#BABEC8] font-[700]">
-            {splitText("Product Showcase")}
-          </span>
+          <CustomHeading title="Product Showcase" className="text-[#BABEC8]" />
         </motion.h1>
-
-        <motion.p
-          className="
-      text-[#191919]
-      mt-3 sm:mt-4
-      text-sm sm:text-base md:text-lg
-      max-w-xl
-      mx-auto md:mx-0
-      leading-relaxed
-    "
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
-        >
-          {isDesktop
-            ? "Click or hover over the hotspots to explore our products"
-            : "Tap on the hotspots to explore our products"}
-        </motion.p>
       </div>
 
-      <div className="  relative w-full max-w-[950px] mx-auto px-4 sm:px-6 lg:px-8 overflow-visible">
+      <div className="  relative w-full max-w-[1050px] mx-auto px-4 sm:px-6 lg:px-1 overflow-visible">
         <div
           className="relative w-full aspect-[16/9]  overflow-visible cursor-not-allowed select-none lg:mb-12"
           onContextMenu={handleContextMenu}
@@ -278,7 +259,7 @@ const ShowCase = () => {
             </motion.div>
           ))}
         </div>
-        <div className="absolute top-0 w-full flex justify-end text-black px-2 sm:px-4">
+        <div className="absolute bottom-[-18%] right-[0%] md:bottom-[0%] md:right-[-20%] w-full flex justify-end text-black px-2 sm:px-4">
           <div className="flex flex-col items-start leading-tight text-left">
             {/* Title */}
             <span className="font-bold text-xs sm:text-sm md:text-base lg:text-lg">

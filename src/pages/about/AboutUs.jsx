@@ -33,6 +33,7 @@ import l4 from "../../assets/images/l4.png";
 import l5 from "../../assets/images/l5.png";
 import l6 from "../../assets/images/l6.png";
 import Seo from "../../components/common/Seo";
+import { CustomHeading } from "../../components/common/CustomHeading";
 
 // Data
 const partners = [
@@ -498,7 +499,7 @@ const AboutUs = () => {
                   initial="hidden"
                   animate="visible"
                 >
-                  {splitText("Our Quality,")}
+                  <CustomHeading title="Our Quality," className="font-[700]" />
                 </motion.div>
               }
               subtitle={
@@ -507,7 +508,7 @@ const AboutUs = () => {
                   initial="hidden"
                   animate="visible"
                 >
-                  {splitText("Our Integrity")}
+                   <CustomHeading title="Our Integrity" className="font-[700]" />
                 </motion.div>
               }
               description="Atcchains is always high in demand due to its wide variety of sub-products in the Plastic slat chain series, Modular belts series & conveyor components. We lead due to our consistent efforts in delivering the best suited services for our clients."
@@ -556,7 +557,7 @@ const AboutUs = () => {
                   initial="hidden"
                   animate="visible"
                 >
-                  {splitText("Why")}
+                   <CustomHeading title="Why" className="font-[700]" />
                 </motion.div>
               }
               subtitle={
@@ -565,7 +566,7 @@ const AboutUs = () => {
                   initial="hidden"
                   animate="visible"
                 >
-                  {splitText("Atc Chains?")}
+                   <CustomHeading title="Atc Chains?" className="font-[700]" />
                 </motion.div>
               }
               description="One year warranty. Our policies also include accidental warranty which is provided by no other company in the world. A diverse and wide variety of 1100+ products. 24*7 available technical assistance."
@@ -633,18 +634,11 @@ const AboutUs = () => {
                   initial="hidden"
                   animate="visible"
                 >
-                  {splitText("Our")}
+                  <CustomHeading title="Our" className="font-[700]" />
+                  <CustomHeading title="Team" className="font-[700] text-[#BABEC8]" /> 
                 </motion.div>
               }
-              subtitle={
-                <motion.div
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  {splitText("Team")}
-                </motion.div>
-              }
+             
               alignment="center"
             />
           </motion.div>
@@ -693,7 +687,7 @@ const AboutUs = () => {
                   initial="hidden"
                   animate="visible"
                 >
-                  {splitText("Foundation of excellences")}
+                  <CustomHeading title="Foundation of excellences" className="font-[700]" />
                 </motion.div>
               }
               subtitle={
@@ -702,7 +696,7 @@ const AboutUs = () => {
                   initial="hidden"
                   animate="visible"
                 >
-                  {splitText("in Industry")}
+                   <CustomHeading title="in Industry" className="font-[700]" /> 
                 </motion.div>
               }
               alignment="center"
@@ -812,7 +806,7 @@ const AboutUs = () => {
                 initial="hidden"
                 animate="visible"
               >
-                {splitText("Our")}
+                <CustomHeading title="Our " className="font-[700]" />
               </motion.div>
             }
             subtitle={
@@ -821,7 +815,7 @@ const AboutUs = () => {
                 initial="hidden"
                 animate="visible"
               >
-                {splitText("Recent Images")}
+               <CustomHeading title="Recent Images" className="" /> 
               </motion.div>
             }
             alignment="center"

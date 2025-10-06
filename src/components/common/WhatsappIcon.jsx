@@ -36,7 +36,7 @@ const WhatsappIcon = () => {
         href={whatsappUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className={`relative flex items-center bg-green-500 text-white rounded-full shadow-lg hover:bg-green-600 transition-all duration-700 hover:scale-105 hover:shadow-xl group overflow-hidden ${
+        className={`relative flex items-center bg-[#2E437C] text-white rounded-full shadow-lg hover:bg-[#213879] transition-all duration-700 hover:scale-105 hover:shadow-xl group overflow-hidden ${
           isVisible ? 'opacity-100' : 'opacity-0'
         }`}
         style={{
