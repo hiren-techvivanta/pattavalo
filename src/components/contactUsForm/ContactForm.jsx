@@ -169,7 +169,7 @@ const ContactForm = () => {
           {/* Header */}
           <div className="space-y-4">
             <h1 className="text-[32px] md:text-[40px] lg:text-[48px] font-bold leading-tight">
-              <span className="text-[#2E437C]"><CustomHeading title="Contact " className="" /></span>
+              <span className="text-[#2E437C]"><CustomHeading title="Contact" className="" /></span>
               <span className="text-[#BABEC8]"> <CustomHeading title="Us" className="" /></span>
             </h1>
             <p className="text-[#343434] text-[16px] lg:text-[17.76px] leading-relaxed">

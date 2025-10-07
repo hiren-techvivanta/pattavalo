@@ -54,9 +54,9 @@ const SubcategoryCards = ({ subcategories, onSubcategoryClick, loading }) => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: index * 0.1 }}
           onClick={() => onSubcategoryClick(subcategory)}
-          className="flex flex-col items-center text-center rounded-lg cursor-pointer bg-white"
+          className="flex flex-col items-center text-start rounded-lg cursor-pointer bg-white"
         >
-          <div className="aspect-[4/3]">
+          <div className="aspect-[4/3] overflow-hidden">
             <motion.img
               src={
                 subcategory.image && subcategory.image.startsWith("http")

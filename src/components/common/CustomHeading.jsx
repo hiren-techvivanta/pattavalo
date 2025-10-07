@@ -61,7 +61,7 @@ export function CustomHeading({
       className={`inline-block ${className}`}
     >
       {/* Remove overflow-hidden from heading to prevent Y clipping */}
-      <HeadingTag className="flex flex-wrap gap-2 leading-tight">
+      <HeadingTag className="flex flex-wrap gap-2">
         {words.map((word, index) => (
           <motion.span
             key={index}

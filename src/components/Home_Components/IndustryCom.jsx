@@ -807,3 +807,504 @@ export default function IndustryCom() {
     </section>
   );
 }
+
+
+
+// import React, { useState, useEffect } from "react";
+// import { motion } from "framer-motion";
+// import {
+//   FaIndustry,
+//   FaWineBottle,
+//   FaFish,
+//   FaIceCream,
+//   FaShippingFast,
+//   FaSprayCan,
+//   FaCar,
+//   FaHospital,
+// } from "react-icons/fa";
+// import { Swiper, SwiperSlide } from "swiper/react";
+// import "swiper/css";
+// import "swiper/css/navigation";
+// import "swiper/css/pagination";
+// import { Pagination, Autoplay } from "swiper/modules";
+// import food1 from "../../assets/images/industries/food1.jpg";
+// import food2 from "../../assets/images/industries/food2.jpeg";
+// import water1 from "../../assets/images/industries/water1.jpeg";
+// import water2 from "../../assets/images/industries/water2.jpeg";
+// import juice1 from "../../assets/images/industries/juice1.jpeg";
+// import juice2 from "../../assets/images/industries/juice2.jpeg";
+// import tetra1 from "../../assets/images/industries/tetra1.jpeg";
+// import tetra2 from "../../assets/images/industries/tetra2.jpeg";
+// import beer1 from "../../assets/images/industries/beer1.jpeg";
+// import beer2 from "../../assets/images/industries/beer2.jpeg";
+// import softdrink1 from "../../assets/images/industries/softdrink1.jpeg";
+// import softdrink2 from "../../assets/images/industries/softdrink2.jpeg";
+// import seafood1 from "../../assets/images/industries/seafood1.jpeg";
+// import seafood2 from "../../assets/images/industries/seafood2.jpeg";
+// import meat1 from "../../assets/images/industries/meat1.jpeg";
+// import meat2 from "../../assets/images/industries/meat2.jpeg";
+// import poultry1 from "../../assets/images/industries/meat2.jpeg";
+// import milk from "../../assets/images/industries/milk.jfif";
+// import { CustomHeading } from "../common/CustomHeading";
+
+// const categoryContent = {
+//   // ... (keep all your existing categoryContent as is)
+// };
+
+// const industries = [
+//   // ... (keep all your existing industries array as is)
+// ];
+
+// export default function IndustryCom() {
+//   const [activeIndustry, setActiveIndustry] = useState(industries[0]);
+//   const [activeCategory, setActiveCategory] = useState(
+//     industries[0].categories?.[0] || null
+//   );
+//   const [expandedDescriptions, setExpandedDescriptions] = useState({});
+
+//   const [rotation, setRotation] = useState(-20);
+//   const [isMobile, setIsMobile] = useState(false);
+
+//   // Dynamic angle calculation
+//   const getSegmentAngles = () => {
+//     const activeSliceAngle = 65; // Active slice angle
+//     const remainingAngle = 360 - activeSliceAngle; // Remaining angle for other slices
+//     const inactiveSliceAngle = remainingAngle / (industries.length - 1); // Angle for each inactive slice
+    
+//     let currentAngle = 0;
+//     const angles = industries.map((industry, index) => {
+//       const isActive = industry.id === activeIndustry.id;
+//       const segmentAngle = isActive ? activeSliceAngle : inactiveSliceAngle;
+      
+//       const result = {
+//         startAngle: currentAngle,
+//         endAngle: currentAngle + segmentAngle,
+//         segmentAngle: segmentAngle,
+//         midAngle: currentAngle + segmentAngle / 2,
+//       };
+      
+//       currentAngle += segmentAngle;
+//       return result;
+//     });
+    
+//     return angles;
+//   };
+
+//   useEffect(() => {
+//     const checkScreenSize = () => {
+//       const mobile = window.innerWidth < 1024;
+//       setIsMobile(mobile);
+
+//       if (mobile) {
+//         setRotation(-170);
+//       } else {
+//         setRotation(0);
+//       }
+//     };
+
+//     checkScreenSize();
+
+//     window.addEventListener("resize", checkScreenSize);
+
+//     return () => window.removeEventListener("resize", checkScreenSize);
+//   }, []);
+
+//   const handleButtonClick = (industry) => {
+//     setActiveIndustry(industry);
+//     setActiveCategory(industry.categories?.[0] || null);
+
+//     const currentRotation = rotation % 360;
+//     let targetRotation = industry.targetRotation;
+
+//     if (isMobile) {
+//       targetRotation = industry.mobileTargetRotation;
+//     }
+
+//     const normalizedCurrent = ((currentRotation % 360) + 360) % 360;
+//     const normalizedTarget = ((targetRotation % 360) + 360) % 360;
+
+//     let diff = normalizedTarget - normalizedCurrent;
+
+//     if (diff > 180) {
+//       diff -= 360;
+//     } else if (diff < -180) {
+//       diff += 360;
+//     }
+
+//     setRotation(rotation + diff);
+//   };
+
+//   const handleCategoryClick = (category) => {
+//     setActiveCategory(category);
+//   };
+
+//   const toggleReadMore = (industryId, category) => {
+//     const key = category ? `${industryId}-${category}` : industryId;
+//     setExpandedDescriptions((prev) => ({
+//       ...prev,
+//       [key]: !prev[key],
+//     }));
+//   };
+
+//   const getConicGradient = () => {
+//     const segmentAngles = getSegmentAngles();
+//     const gapAngle = isMobile ? 2 : 3; // Smaller gaps for better visual
+
+//     let gradientString = "";
+
+//     segmentAngles.forEach((angleData, index) => {
+//       const industry = industries[index];
+//       const startAngle = angleData.startAngle;
+//       const endAngle = angleData.endAngle - gapAngle;
+
+//       gradientString += `${industry.color} ${startAngle}deg ${endAngle}deg, `;
+//       gradientString += `transparent ${endAngle}deg ${
+//         endAngle + gapAngle
+//       }deg, `;
+//     });
+
+//     return gradientString.slice(0, -2);
+//   };
+
+//   const getCategoryContent = () => {
+//     return (
+//       categoryContent[activeCategory] || {
+//         title: `${activeIndustry.title} - ${activeCategory}`,
+//         description: activeIndustry.description,
+//         image: activeIndustry.image,
+//       }
+//     );
+//   };
+
+//   const categoryData = getCategoryContent();
+//   const containerVariants = {
+//     hidden: { opacity: 0 },
+//     visible: {
+//       opacity: 1,
+//       transition: {
+//         staggerChildren: 0.02,
+//         delayChildren: 0.1,
+//         duration: 0.4,
+//       },
+//     },
+//   };
+
+//   const letterVariants = {
+//     hidden: { opacity: 0, y: 20 },
+//     visible: {
+//       opacity: 1,
+//       y: 0,
+//       transition: {
+//         type: "spring",
+//         stiffness: 300,
+//         damping: 25,
+//         duration: 0.3,
+//       },
+//     },
+//   };
+
+//   const splitText = (text) =>
+//     text.split("").map((char, i) => (
+//       <motion.span key={i} variants={letterVariants} className="inline-block">
+//         {char === " " ? "\u00A0" : char}
+//       </motion.span>
+//     ));
+
+//   return (
+//     <section className="container mx-auto w-full  px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-10 lg:pr-16 lg:pl-0 xl:pr-20 xl:pl-0  sm:py-20">
+//       {/* Heading */}
+//       <motion.h1
+//         variants={containerVariants}
+//         initial="hidden"
+//         whileInView="visible"
+//         viewport={{ once: true, margin: "-80px" }}
+//         className="text-[44px] md:text-[112px] font-[500] md:font-[400] text-[#BABEC8] mb-10 text-center md:text-left "
+//       >
+//          <CustomHeading title="Industries we serve" className="" />
+//       </motion.h1>
+
+//       <div className=" grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-center">
+//         {/* Chart Section */}
+//         <div className="col-span-1 md:col-span-1 lg:col-span-1 relative flex justify-center lg:justify-start items-center overflow-hidden order-2 lg:order-1">
+//           <motion.div
+//             initial={{
+//               opacity: 0,
+//               x: -50,
+//               rotate: isMobile ? -170 : -20,
+//             }}
+//             whileInView={{
+//               opacity: 1,
+//               x: 0,
+//               rotate: isMobile ? -170 : -20,
+//             }}
+//             viewport={{ once: true }}
+//             transition={{ duration: 0.6 }}
+//             className="relative"
+//             style={{
+//               width: isMobile ? "320px" : "600px",
+//               height: isMobile ? "320px" : "600px",
+//               marginLeft: isMobile ? "0px" : "-250px",
+//               marginTop: isMobile ? "-180px" : "0",
+//             }}
+//           >
+//             <motion.div
+//               initial={{ rotate: isMobile ? -170 : -20 }}
+//               animate={{ rotate: rotation }}
+//               transition={{
+//                 duration: 0.7,
+//                 ease: "easeInOut",
+//               }}
+//               className="absolute w-full h-full rounded-full"
+//             >
+//               <div
+//                 className="absolute inset-0 rounded-full cursor-pointer"
+//                 style={{
+//                   background: `conic-gradient(${getConicGradient()})`,
+//                 }}
+//               ></div>
+
+//               <div
+//                 className="absolute bg-white rounded-full z-10 flex items-center justify-center"
+//                 style={{
+//                   inset: isMobile ? "80px" : "150px",
+//                   boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)",
+//                 }}
+//               ></div>
+
+//               {industries.map((industry, index) => {
+//                 const segmentAngles = getSegmentAngles();
+//                 const angleData = segmentAngles[index];
+//                 const midAngle = angleData.midAngle;
+//                 const radian = (midAngle * Math.PI) / 180;
+//                 const radius = isMobile ? 120 : 220;
+//                 const x = radius * Math.cos(radian);
+//                 const y = radius * Math.sin(radian);
+
+//                 const isActive = industry.id === activeIndustry.id;
+//                 const centerPoint = isMobile ? 200 : 300;
+//                 const pathRadius = isMobile ? 200 : 300;
+
+//                 return (
+//                   <div key={industry.id}>
+//                     <div
+//                       onClick={() => handleButtonClick(industry)}
+//                       className="absolute inset-0 rounded-full cursor-pointer"
+//                       style={{
+//                         clipPath: `path('M${centerPoint},${centerPoint} L${
+//                           centerPoint +
+//                           pathRadius * Math.cos((angleData.startAngle * Math.PI) / 180)
+//                         },${
+//                           centerPoint +
+//                           pathRadius * Math.sin((angleData.startAngle * Math.PI) / 180)
+//                         } A${pathRadius},${pathRadius} 0 0,1 ${
+//                           centerPoint +
+//                           pathRadius * Math.cos((angleData.endAngle * Math.PI) / 180)
+//                         },${
+//                           centerPoint +
+//                           pathRadius * Math.sin((angleData.endAngle * Math.PI) / 180)
+//                         } Z')`,
+//                         zIndex: 15,
+//                         border: isActive
+//                           ? "3px solid #fff"
+//                           : "2px solid transparent",
+//                         filter: isActive
+//                           ? "drop-shadow(0 0 20px rgba(255,255,255,0.8))"
+//                           : "none",
+//                         transition: "all 0.4s ease",
+//                         transform: isActive ? "scale(1.02)" : "scale(1)",
+//                       }}
+//                     ></div>
+
+//                     <motion.div
+//                       initial={{ rotate: isMobile ? 170 : 20 }}
+//                       animate={{ rotate: -rotation + (isMobile ? 170 : 20) }}
+//                       transition={{ duration: 0.7, ease: "easeInOut" }}
+//                       className={`absolute z-20 flex flex-col items-center justify-center ${
+//                         isMobile ? "w-12 h-12" : "w-16 h-16"
+//                       } ${isActive ? "transform scale-110" : ""}`}
+//                       style={{
+//                         left: `calc(50% + ${x}px - ${
+//                           isMobile ? "1.5rem" : "2rem"
+//                         })`,
+//                         top: `calc(50% + ${y}px - ${
+//                           isMobile ? "1.5rem" : "2rem"
+//                         })`,
+//                         color: isActive ? "#fff" : "rgba(255,255,255,0.9)",
+//                         borderColor: "white",
+//                         pointerEvents: "none",
+//                         textShadow: isActive ? "0 0 10px rgba(0,0,0,0.3)" : "none",
+//                         transition: "all 0.3s ease",
+//                       }}
+//                     >
+//                       <span className={isMobile ? "text-lg" : "text-xl"}>
+//                         {React.cloneElement(industry.icon, {
+//                           size: isMobile ? 23 : isActive ? 30 : 26,
+//                         })}
+//                       </span>
+//                       <span
+//                         className={`${
+//                           isMobile ? "text-[8px]" : isActive ? "text-sm font-semibold" : "text-xs"
+//                         } mt-1 font-medium text-center leading-tight`}
+//                       >
+//                         {industry.title.split(" ")[0]}
+//                       </span>
+//                     </motion.div>
+//                   </div>
+//                 );
+//               })}
+//             </motion.div>
+//           </motion.div>
+//         </div>
+
+//         {/* Content Section - Keep all your existing content section code as is */}
+//         <div className="col-span-1 md:col-span-1 lg:col-span-2 order-1 lg:order-2">
+//           <motion.div
+//             key={activeIndustry.id}
+//             initial={{ opacity: 0, x: 50 }}
+//             animate={{ opacity: 1, x: 0 }}
+//             transition={{ duration: 0.6 }}
+//             className="flex flex-col w-full px-4 sm:px-6 lg:px-0 order-1 lg:order-2"
+//           >
+//             {/* Category Buttons */}
+//             <div className="flex flex-wrap gap-2 mb-4">
+//               {activeIndustry.categories?.length > 0 && (
+//                 <div className="flex flex-wrap gap-2 mb-4">
+//                   {activeIndustry.categories.map((category, index) => (
+//                     <button
+//                       key={index}
+//                       onClick={() => handleCategoryClick(category)}
+//                       className={`px-3 py-1.5 rounded-full text-sm font-medium transition-colors ${
+//                         activeCategory === category
+//                           ? "text-white"
+//                           : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+//                       }`}
+//                       style={{
+//                         backgroundColor:
+//                           activeCategory === category ? "#2E437C" : "",
+//                       }}
+//                     >
+//                       {category}
+//                     </button>
+//                   ))}
+//                 </div>
+//               )}
+//             </div>
+
+//             {/* Image Slider */}
+//             <div className="relative overflow-hidden">
+//               {categoryData?.images?.length > 0 ? (
+//                 <Swiper
+//                   modules={[Pagination, Autoplay]}
+//                   navigation
+//                   pagination={{ clickable: true }}
+//                   spaceBetween={10}
+//                   autoplay={{
+//                     delay: 3000,
+//                     disableOnInteraction: false,
+//                   }}
+//                   loop={true}
+//                   slidesPerView={1}
+//                   className=""
+//                 >
+//                   {categoryData.images.map((img, idx) => (
+//                     <SwiperSlide key={idx}>
+//                       <img
+//                         src={img}
+//                         alt={`${categoryData.title} ${idx + 1}`}
+//                         className="w-full h-60 sm:h-80 lg:h-110 object-cover transition-transform duration-500 hover:scale-105 "
+//                       />
+//                     </SwiperSlide>
+//                   ))}
+//                 </Swiper>
+//               ) : (
+//                 <img
+//                   src={activeIndustry.image}
+//                   alt={activeIndustry.title}
+//                   className="w-full h-60 sm:h-80 lg:h-110 object-cover transition-transform duration-500 hover:scale-105"
+//                 />
+//               )}
+
+//               <div className="absolute top-0 left-0 w-full p-3 bg-gradient-to-b from-black/70 to-transparent">
+//                 <h3 className="text-lg lg:text-xl font-semibold text-white">
+//                   {categoryData.title}
+//                 </h3>
+//               </div>
+//               <div className="absolute bottom-0 left-0 w-full h-16 bg-gradient-to-t from-black/70 to-transparent"></div>
+//             </div>
+
+//             {/* Title and Description */}
+//             <h3 className="mt-4 text-2xl lg:text-3xl font-semibold text-gray-800">
+//               Solutions for{" "}
+//               <span style={{ color: "#2E437C" }}>{activeIndustry.title}</span>
+//             </h3>
+//             <div className="mt-2 text-gray-600">
+//               <p
+//                 className={`text-sm lg:text-base leading-relaxed ${
+//                   !expandedDescriptions[
+//                     activeCategory
+//                       ? `${activeIndustry.id}-${activeCategory}`
+//                       : activeIndustry.id
+//                   ]
+//                     ? "line-clamp-3"
+//                     : ""
+//                 }`}
+//               >
+//                 {categoryData.description}
+//               </p>
+
+//               {/* Read More/Less Button */}
+//               {categoryData.description.length > 150 && (
+//                 <button
+//                   onClick={() =>
+//                     toggleReadMore(activeIndustry.id, activeCategory)
+//                   }
+//                   className="mt-2 text-[#2E437C] font-medium hover:text-[#1E2F5C] transition-colors flex items-center"
+//                 >
+//                   {expandedDescriptions[
+//                     activeCategory
+//                       ? `${activeIndustry.id}-${activeCategory}`
+//                       : activeIndustry.id
+//                   ] ? (
+//                     <>
+//                       Read Less
+//                       <svg
+//                         className="w-4 h-4 ml-1"
+//                         fill="none"
+//                         stroke="currentColor"
+//                         viewBox="0 0 24 24"
+//                       >
+//                         <path
+//                           strokeLinecap="round"
+//                           strokeLinejoin="round"
+//                           strokeWidth={2}
+//                           d="M5 15l7-7 7 7"
+//                         />
+//                       </svg>
+//                     </>
+//                   ) : (
+//                     <>
+//                       Read More
+//                       <svg
+//                         className="w-4 h-4 ml-1"
+//                         fill="none"
+//                         stroke="currentColor"
+//                         viewBox="0 0 24 24"
+//                       >
+//                         <path
+//                           strokeLinecap="round"
+//                           strokeLinejoin="round"
+//                           strokeWidth={2}
+//                           d="M19 9l-7 7-7-7"
+//                         />
+//                       </svg>
+//                     </>
+//                   )}
+//                 </button>
+//               )}
+//             </div>
+//           </motion.div>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// }

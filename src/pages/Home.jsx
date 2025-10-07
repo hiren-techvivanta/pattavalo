@@ -244,7 +244,7 @@ export default function Home() {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
       >
-        <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-0 xl:px-0 py-16 sm:py-20">
+        <div className="">
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -286,7 +286,7 @@ export default function Home() {
                   {partners.map((partner) => (
                     <motion.div
                       key={`${set}-${partner.id}`}
-                      className="flex-shrink-0 mx-12 px-0 md:px-5"
+                      className="flex-shrink-0 mx-15 px-0 md:px-5"
                       whileHover={{
                         scale: 1.05,
 

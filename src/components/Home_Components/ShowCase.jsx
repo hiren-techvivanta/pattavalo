@@ -5,8 +5,22 @@ import { CgArrowTopLeftO } from "react-icons/cg";
 import { BsArrowDownLeftCircle } from "react-icons/bs";
 import { TiPlus } from "react-icons/ti";
 import { CustomHeading } from "../common/CustomHeading";
+import { useNavigate } from "react-router-dom";
+
+import i1 from '../../assets/SVG/BEARING.svg'
+import i2 from '../../assets/SVG/BUCKET.svg'
+import i3 from '../../assets/SVG/SPPIRAL T2800.svg'
+import i4 from '../../assets/SVG/AF 400.svg'
+import i5 from '../../assets/SVG/MODULAR BELT.svg'
+import i6 from '../../assets/SVG/FZ 90.svg'
+import i7 from '../../assets/SVG/SS CHAIN & SPROCKET.svg'
+import i8 from '../../assets/SVG/CONVEYOR COMPONENT.svg'
+import i9 from '../../assets/SVG/FINGER CHAIN.svg'
+import i10 from '../../assets/SVG/WEAR STRIP_1.svg'
+import i11 from '../../assets/SVG/THERMO PLASTIC CHAIN.svg'
 
 const ShowCase = () => {
+  const navigate = useNavigate();
   const [activePoint, setActivePoint] = useState(null);
   const [selectedPoint, setSelectedPoint] = useState(null);
   const [isDesktop, setIsDesktop] = useState(window.innerWidth >= 768);
@@ -57,79 +71,90 @@ const ShowCase = () => {
       id: 1,
       top: "30%",
       left: "12%",
-      title: "Elevator",
-      desc: "Vertical lift system for material handling.",
+      title: "Bucket Elevator",
+      desc: "",
+      img:i2
     },
     {
       id: 2,
       top: "75%",
       left: "13%",
-      title: "Spiral Conveyor",
-      desc: "Smooth spiral conveyor for high throughput.",
+      title: "BEARING",
+      desc: "",
+      img:i1
     },
     {
       id: 3,
       top: "42%",
       left: "58%",
-      title: "Storage System",
+      title: "Spiral Freezer",
       desc: "Multi-level storage for efficiency.",
+      img:i3
     },
     {
       id: 4,
       top: "31%",
       left: "31%",
-      title: "Conveyor Belt",
+      title: "Spiral logistics",
       desc: "Durable and efficient conveyor systems.",
+      img:i4
     },
     {
       id: 5,
       top: "47%",
       left: "84%",
-      title: "Bearing",
+      title: "MODULAR BELT",
       desc: "Explore our wide range of high-performance bearings.",
+      img:i5
     },
     {
       id: 6,
       top: "67%",
       left: "39%",
-      title: "Motor Drive",
+      title: "Flexzero",
       desc: "High-efficiency motors for performance.",
+      img:i6
     },
     {
       id: 7,
       top: "76%",
       left: "90%",
-      title: "Inspection Station",
+      title: "SS CHAIN & SPROCKET",
       desc: "Quality assurance with advanced inspection tools.",
+      img:i7
     },
 
     {
       id: 8,
       top: "86%",
       left: "54.5%",
-      title: "Control Panel",
+      title: "CONVEYOR COMPONENT",
       desc: "Centralized control unit for monitoring operations.",
+      img:i8
     },
     {
       id: 9,
       top: "60%",
       left: "22%",
-      title: "Packaging Unit",
+      title: "FINGER CHAIN & ASSEMBLY",
       desc: "Automated packaging for efficiency and safety.",
+      img:i9
     },
     {
       id: 10,
       top: "65%",
       left: "77%",
-      title: "Cooling System",
+      title: "WEAR STRIP",
       desc: "Maintains optimal temperature for smooth operation.",
+      img:i10
     },
     {
       id: 11,
       top: "83%",
       left: "80%",
-      title: "Safety Guard",
+      title: "THERMOPLASTIC CHAIN & SPROCKET",
       desc: "Protective guard ensuring operator safety.",
+      img:i11
     },
   ];
   const containerVariants = {
@@ -220,6 +245,7 @@ const ShowCase = () => {
           bg-orange-500 text-white rounded-full shadow-lg
           cursor-pointer transition-transform duration-200
           hover:scale-110 active:scale-95"
+                onClick={() => navigate("/products")}
               >
                 <span className="absolute inset-0 rounded-full bg-orange-500/40 animate-[ripple_2.5s_linear_infinite]" />
                 <span className="absolute inset-0 rounded-full bg-orange-500/40 animate-[ripple_2.5s_linear_infinite] [animation-delay:1.25s]" />
@@ -237,12 +263,11 @@ const ShowCase = () => {
                     className="absolute z-50 w-52 sm:w-60 md:w-64 bg-white rounded-xl shadow-xl p-3 sm:p-4"
                     style={getTooltipPosition(point)}
                   >
+                  <img src={point.img} className="w-10" alt= {point.title} />
                     <h4 className="text-base sm:text-lg font-semibold text-[#2E437C]">
                       {point.title}
                     </h4>
-                    <p className="text-gray-600 text-xs sm:text-sm mt-1">
-                      {point.desc}
-                    </p>
+
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
@@ -250,6 +275,7 @@ const ShowCase = () => {
                    rounded-full border border-[#2E437C] text-[#2E437C]
                    text-xs sm:text-sm font-medium hover:bg-[#2E437C]
                    hover:text-white transition-all"
+                      onClick={() => navigate("/products")}
                     >
                       VIEW →
                     </motion.button>

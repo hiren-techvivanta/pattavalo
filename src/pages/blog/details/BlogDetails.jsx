@@ -293,7 +293,7 @@ const BlogDetails = () => {
 
         {/* Post Content */}
         <motion.article
-          className="max-w-4xl mx-auto prose prose-lg prose-gray"
+          className=""
           variants={contentVariants}
           initial="hidden"
           whileInView="visible"
@@ -310,6 +310,7 @@ const BlogDetails = () => {
               }}
             />
           )}
+          
         </motion.article>
 
         {/* Related Posts Section */}
@@ -392,10 +393,10 @@ const BlogDetails = () => {
           font-weight: 600;
         }
         .prose-custom img {
-          width: 100%;
+          width: 50%;
           height: auto;
           border-radius: 12px;
-          margin: 2rem 0;
+          margin: 2rem auto;
           box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
         }
         .prose-custom .dest-block {

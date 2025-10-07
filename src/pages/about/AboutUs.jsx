@@ -19,13 +19,6 @@ import BgVideo from "../../assets/Video/aboutUs.mp4";
 import a1 from "../../assets/images/a1.jpg";
 import a2 from "../../assets/images/a2.jpg";
 
-import i1 from "../../assets/images/i1.png";
-import i2 from "../../assets/images/i2.png";
-import i3 from "../../assets/images/i3.png";
-import i4 from "../../assets/images/i4.png";
-import i5 from "../../assets/images/i5.png";
-import i6 from "../../assets/images/i6.png";
-
 import l1 from "../../assets/images/l1.png";
 import l2 from "../../assets/images/l2.png";
 import l3 from "../../assets/images/l3.png";
@@ -51,8 +44,6 @@ const statsData = [
   { number: "120+", label: "Clients" },
   { number: "99%", label: "Satisfaction Rate" },
 ];
-
-const galleryImages = [i1, i2, i3, i4, i5, i6];
 
 const timelineData = {
   2015: {
@@ -154,6 +145,14 @@ const AboutUs = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [hasAnimatedBefore, setHasAnimatedBefore] = useState(false);
+  
+  // Gallery states
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [displayedImages, setDisplayedImages] = useState([]);
+  const [galleryLoading, setGalleryLoading] = useState(false);
+  const [galleryError, setGalleryError] = useState(null);
+  const [showLoadMore, setShowLoadMore] = useState(false);
+  
   const videoRef = useRef(null);
   const scrollContainerRef = useRef(null);
 
@@ -162,7 +161,15 @@ const AboutUs = () => {
 
   useEffect(() => {
     fetchTeam();
+    fetchGalleryImages();
   }, []);
+
+  // Helper function to construct full URL for images
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return null;
+    if (imagePath.startsWith('http')) return imagePath;
+    return `${import.meta.env.VITE_BACKEND_URL}/${imagePath}`;
+  };
 
   const fetchTeam = async () => {
     try {
@@ -212,6 +219,72 @@ const AboutUs = () => {
       );
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchGalleryImages = async () => {
+    try {
+      setGalleryLoading(true);
+      setGalleryError(null);
+
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/banner`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Failed to fetch gallery images: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      if (result.data && Array.isArray(result.data)) {
+        const activeImages = result.data
+          .filter(item => item.is_active)
+          .sort((a, b) => a.displayOrder - b.displayOrder)
+          .map(item => ({
+            id: item.id,
+            url: getImageUrl(item.imageUrl),
+            alt: `Gallery image ${item.id}`
+          }));
+        
+        setGalleryImages(activeImages);
+        
+        // Show first 6 images
+        setDisplayedImages(activeImages.slice(0, 6));
+        
+        // Show load more button if there are more than 6 images
+        setShowLoadMore(activeImages.length > 6);
+      } else {
+        // If no data or invalid format, set empty arrays
+        setGalleryImages([]);
+        setDisplayedImages([]);
+        setShowLoadMore(false);
+      }
+    } catch (err) {
+      console.error("Error fetching gallery images:", err);
+      setGalleryError(err.message);
+      
+      // On error, set empty arrays
+      setGalleryImages([]);
+      setDisplayedImages([]);
+      setShowLoadMore(false);
+    } finally {
+      setGalleryLoading(false);
+    }
+  };
+
+  const handleLoadMore = () => {
+    const currentCount = displayedImages.length;
+    const nextImages = galleryImages.slice(currentCount, currentCount + 6);
+    
+    setDisplayedImages(prev => [...prev, ...nextImages]);
+    
+    // Hide load more button if all images are displayed
+    if (currentCount + nextImages.length >= galleryImages.length) {
+      setShowLoadMore(false);
     }
   };
 
@@ -292,7 +365,6 @@ const AboutUs = () => {
   };
 
   useEffect(() => {
-
     const animationCompleted = sessionStorage.getItem(ANIMATION_KEY);
     const hasAnimated = animationCompleted === "true";
 
@@ -305,7 +377,6 @@ const AboutUs = () => {
     }
 
     if (hasAnimated) {
-     
       setIsVideoExpanded(true);
       setShowNavbar(true);
     } else {
@@ -399,7 +470,6 @@ const AboutUs = () => {
           <div className="absolute inset-0 bg-black/60"></div>
         </div>
 
-        
         <motion.div
           initial={
             hasAnimatedBefore
@@ -485,7 +555,7 @@ const AboutUs = () => {
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
+        viewport={{ once: false, amount: 0.3, margin: "-100px" }}
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           <motion.div
@@ -544,7 +614,7 @@ const AboutUs = () => {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: false, amount: 0.3, margin: "-100px" }}
         >
           <motion.div
             className="lg:col-span-7 p-4 sm:p-5 sm:order-1 md:order-2"
@@ -599,11 +669,11 @@ const AboutUs = () => {
 
       {/* Stats Section - ORIGINAL UI WITH ANIMATED COUNTERS */}
       <motion.div
-        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20"
+        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-0 sm:py-0"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
+        viewport={{ once: false, amount: 0.3, margin: "-80px" }}
       >
         <motion.div
           className="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-12 text-center"
@@ -619,13 +689,13 @@ const AboutUs = () => {
 
       {/* Team Section */}
       <motion.div
-        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20"
+        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-5"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
+        viewport={{ once: false, amount: 0.2, margin: "-80px" }}
       >
-        <div className="p-8">
+        <div className="">
           <motion.div variants={fadeInUp}>
             <SectionTitle
               title={
@@ -638,18 +708,20 @@ const AboutUs = () => {
                   <CustomHeading title="Team" className="font-[700] text-[#BABEC8]" /> 
                 </motion.div>
               }
-             
               alignment="center"
             />
           </motion.div>
 
           {loading && <p className="text-center">Loading team...</p>}
           {error && <p className="text-center text-red-500">{error}</p>}
-          {!loading && !error && (
+          {!loading && !error && ourTeam.length > 0 && (
             <div className="overflow-x-auto scrollbar-hide">
               <motion.div
                 className="flex justify-center align-top gap-8 pb-4 min-w-max"
                 variants={containerVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: false, amount: 0.1 }}
               >
                 {ourTeam.map((member, index) => (
                   <motion.div key={index} variants={scaleInVariants}>
@@ -668,7 +740,7 @@ const AboutUs = () => {
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
+        viewport={{ once: false, amount: 0.3, margin: "-80px" }}
       >
         <div className="p-8">
           <motion.p
@@ -722,11 +794,11 @@ const AboutUs = () => {
 
       {/* Timeline Section */}
       <motion.div
-        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20"
+        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 pb-16 sm:pb-20"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
+        viewport={{ once: false, amount: 0.3, margin: "-80px" }}
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12">
           <motion.div
@@ -791,12 +863,13 @@ const AboutUs = () => {
         </div>
       </motion.div>
 
+      {/* Gallery Section */}
       <motion.div
-        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20"
+        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 pb-16 sm:pb-20"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
+        viewport={{ once: false, amount: 0.2, margin: "-80px" }}
       >
         <motion.div variants={fadeInUp}>
           <SectionTitle
@@ -822,38 +895,65 @@ const AboutUs = () => {
           />
         </motion.div>
 
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8"
-          variants={containerVariants}
-        >
-          {galleryImages.map((image, index) => (
-            <motion.div
-              key={index}
-              variants={scaleInVariants}
-              whileHover={{
-                scale: 1.03,
-                transition: { duration: 0.2 },
-              }}
-            >
-              <AnimatedImage
-                src={image}
-                alt={`Gallery image ${index + 1}`}
-                className="w-full h-40 lg:h-80"
-                containerClassName=""
-              />
-            </motion.div>
-          ))}
-        </motion.div>
+        {galleryLoading && (
+          <div className="text-center py-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#2E437C] mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading gallery images...</p>
+          </div>
+        )}
 
-        <motion.div className="pt-16 flex justify-center" variants={fadeInUp}>
-          <AnimatedButton
-            icon={LuDownload}
-            color={"#2E437C"}
-            hoverColor={`#2E437C`}
+        {galleryError && (
+          <div className="text-center py-8">
+            <p className="text-red-500 mb-4">Failed to load gallery images: {galleryError}</p>
+          </div>
+        )}
+
+        {!galleryLoading && displayedImages.length > 0 && (
+          <motion.div
+            className="grid grid-cols-2 md:grid-cols-3 gap-6 lg:gap-8"
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: false, amount: 0.1 }}
           >
-            Load More
-          </AnimatedButton>
-        </motion.div>
+            {displayedImages.map((image, index) => (
+              <motion.div
+                key={image.id}
+                variants={scaleInVariants}
+                whileHover={{
+                  scale: 1.03,
+                  transition: { duration: 0.2 },
+                }}
+              >
+                <AnimatedImage
+                  src={image.url}
+                  alt={image.alt}
+                  className="w-full h-40 lg:h-80"
+                  containerClassName=""
+                />
+              </motion.div>
+            ))}
+          </motion.div>
+        )}
+
+        {!galleryLoading && displayedImages.length === 0 && !galleryError && (
+          <div className="text-center py-8">
+            <p className="text-gray-500">No gallery images available.</p>
+          </div>
+        )}
+
+        {showLoadMore && !galleryLoading && (
+          <motion.div className="pt-16 flex justify-center" variants={fadeInUp}>
+            <AnimatedButton
+              icon={LuDownload}
+              color={"#2E437C"}
+              hoverColor={`#2E437C`}
+              onClick={handleLoadMore}
+            >
+              Load More
+            </AnimatedButton>
+          </motion.div>
+        )}
       </motion.div>
 
       {/* Partners Section */}
@@ -862,7 +962,7 @@ const AboutUs = () => {
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
-        viewport={{ once: true }}
+        viewport={{ once: false }}
       >
         <div className="overflow-hidden">
           <div className="flex">

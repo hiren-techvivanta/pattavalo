@@ -40,14 +40,7 @@ const usePosts = (endpoint = "settings/post") => {
               tempDiv.textContent || tempDiv.innerText || "";
 
             // Format date
-            const formattedDate = new Date(post.date_time).toLocaleDateString(
-              "en-US",
-              {
-                month: "short",
-                day: "numeric",
-                year: "numeric",
-              }
-            );
+            const formattedDate = post.date_time;
 
             // Map API type to frontend categories
             const getNewsCategory = (type) => {
@@ -79,6 +72,7 @@ const usePosts = (endpoint = "settings/post") => {
               id: post.id,
               fullDescription: post.description || '',
               type: post.type,
+              location:post.location
             };
           });
 

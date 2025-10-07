@@ -7,9 +7,6 @@ import Navbar from "../../components/Navbar/Navbar";
 import { IoSearchOutline, IoCloseCircle } from "react-icons/io5";
 
 import bl1 from "../../assets/images/bl1.jpg";
-import bl2 from "../../assets/images/bl2.jpg";
-import bl3 from "../../assets/images/bl3.jpg";
-import bl4 from "../../assets/images/bl4.jpg";
 import { HiDownload } from "react-icons/hi";
 import AnimatedButton from "../../components/aboutUsComponents/AnimatedButton";
 import { LuDownload } from "react-icons/lu";
@@ -25,6 +22,13 @@ const Industries = () => {
   const [error, setError] = useState(null);
 
   const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+
+  // Helper function to construct full URL for images and documents
+  const getFileUrl = (filePath) => {
+    if (!filePath) return null;
+    if (filePath.startsWith('http')) return filePath;
+    return `${BASE_URL}/${filePath}`;
+  };
 
   // Fetch brochures from API
   useEffect(() => {
@@ -50,10 +54,8 @@ const Industries = () => {
         } else if (data.results && Array.isArray(data.results)) {
           brochuresData = data.results;
         } else {
-          console.warn(
-            "API response format not recognized, using fallback data"
-          );
-          brochuresData = getFallbackData();
+          console.warn("API response format not recognized");
+          brochuresData = [];
         }
 
         setBrochures(brochuresData);
@@ -61,8 +63,7 @@ const Industries = () => {
       } catch (err) {
         console.error("Error fetching brochures:", err);
         setError(err.message);
-
-        setBrochures(getFallbackData());
+        setBrochures([]);
       } finally {
         setLoading(false);
       }
@@ -70,45 +71,13 @@ const Industries = () => {
 
     fetchBrochures();
   }, [BASE_URL]);
-  const getFallbackData = () => {
-    return [
-      {
-        id: 1,
-        img: bl1,
-        title: "Vision 2025",
-        description:
-          "A forward-looking brochure highlighting our roadmap, innovative goals, and the milestones we aim to achieve together.",
-      },
-      {
-        id: 2,
-        img: bl2,
-        title: "Vision 2025",
-        description:
-          "A forward-looking brochure highlighting our roadmap, innovative goals, and the milestones we aim to achieve together.",
-      },
-      {
-        id: 3,
-        img: bl3,
-        title: "Vision 2025",
-        description:
-          "A forward-looking brochure highlighting our roadmap, innovative goals, and the milestones we aim to achieve together.",
-      },
-      {
-        id: 4,
-        img: bl4,
-        title: "Vision 2025",
-        description:
-          "A forward-looking brochure highlighting our roadmap, innovative goals, and the milestones we aim to achieve together.",
-      },
-    ];
-  };
 
   const filteredData = Array.isArray(brochures)
     ? brochures.filter((item) => {
         if (!item) return false;
 
-        const title = item.title || "";
-        const description = item.description || item.destription || "";
+        const title = item.name || item.title || "";
+        const description = item.description || "";
 
         return (
           title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -120,27 +89,37 @@ const Industries = () => {
   // Handle download
   const handleDownload = async (brochure) => {
     try {
-      if (brochure.fileUrl || brochure.downloadUrl || brochure.file) {
-        const fileUrl =
-          brochure.fileUrl || brochure.downloadUrl || brochure.file;
-        const response = await fetch(fileUrl);
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.style.display = "none";
-        a.href = url;
-        a.download = brochure.title || brochure.fileName || "download";
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+      // Check if documents array exists and has files
+      if (brochure.documents && brochure.documents.length > 0) {
+        const documentUrl = brochure.documents[0]; // Get first document
+        const fileUrl = getFileUrl(documentUrl);
+        
+        if (fileUrl) {
+          const response = await fetch(fileUrl);
+          
+          if (!response.ok) {
+            throw new Error(`Failed to download file: ${response.status}`);
+          }
+          
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.style.display = "none";
+          a.href = url;
+          a.download = brochure.name || brochure.title || "download";
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        } else {
+          throw new Error("No valid file URL found");
+        }
       } else {
-        console.log("Downloading:", brochure.title);
-        alert(`Downloading: ${brochure.title}`);
+        throw new Error("No documents available for download");
       }
     } catch (err) {
       console.error("Download failed:", err);
-      alert("Download failed. Please try again.");
+      alert(`Download failed: ${err.message}`);
     }
   };
 
@@ -208,8 +187,6 @@ const Industries = () => {
     },
   };
 
- 
-
   const itemVariants = {
     hidden: {
       opacity: 0,
@@ -265,6 +242,7 @@ const Industries = () => {
       },
     },
   };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -297,6 +275,7 @@ const Industries = () => {
         {char === " " ? "\u00A0" : char}
       </motion.span>
     ));
+
   if (loading) {
     return (
       <>
@@ -331,6 +310,7 @@ const Industries = () => {
       </>
     );
   }
+
   return (
     <>
       <Seo
@@ -431,6 +411,7 @@ const Industries = () => {
             </AnimatePresence>
           </motion.div>
         </motion.div>
+
         {error && (
           <motion.div
             className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6"
@@ -440,6 +421,7 @@ const Industries = () => {
             <p>Error loading brochures: {error}</p>
           </motion.div>
         )}
+
         <AnimatePresence>
           <motion.div
             key={searchQuery}
@@ -470,25 +452,33 @@ const Industries = () => {
                     },
                   }}
                 >
-                  <motion.img
-                    src={v.img || v.image || v.thumbnail || bl1}
-                    className="w-32 h-40 lg:w-48 lg:h-60 object-cover shadow-md"
-                    alt={v.title}
-                    loading="lazy"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{
-                      duration: 0.5,
-                      delay: i * 0.1 + 0.3,
-                    }}
-                    whileHover={{
-                      rotateY: 5,
-                      transition: { duration: 0.3 },
-                    }}
-                    onError={(e) => {
-                      e.target.src = bl1;
-                    }}
-                  />
+                  {/* Image with 3:4 aspect ratio */}
+                  <div className="flex-shrink-0 w-32 lg:w-48">
+                    <motion.div
+                      className="w-full aspect-[3/4] overflow-hidden shadow-md bg-gray-100"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{
+                        duration: 0.5,
+                        delay: i * 0.1 + 0.3,
+                      }}
+                      whileHover={{
+                        rotateY: 5,
+                        transition: { duration: 0.3 },
+                      }}
+                    >
+                      <img
+                        src={getFileUrl(v.image) || bl1}
+                        className="w-full h-full object-cover"
+                        alt={v.name || v.title || "Brochure"}
+                        loading="lazy"
+                        onError={(e) => {
+                          e.target.src = bl1;
+                        }}
+                      />
+                    </motion.div>
+                  </div>
+
                   <motion.div
                     className="flex-1 flex flex-col justify-between"
                     initial={{ opacity: 0, x: 20 }}
@@ -508,7 +498,7 @@ const Industries = () => {
                           delay: i * 0.1 + 0.4,
                         }}
                       >
-                        {v.title || "Untitled Brochure"}
+                        {v.name || v.title || "Untitled Brochure"}
                       </motion.h6>
 
                       <motion.p
@@ -520,9 +510,7 @@ const Industries = () => {
                           delay: i * 0.1 + 0.5,
                         }}
                       >
-                        {v.description ||
-                          v.destription ||
-                          "No description available."}
+                        {v.description || "No description available."}
                       </motion.p>
                     </div>
 
@@ -544,6 +532,7 @@ const Industries = () => {
                         px={6}
                         py={2}
                         onClick={() => handleDownload(v)}
+                        disabled={!v.documents || v.documents.length === 0}
                       >
                         Download
                       </AnimatedButton>

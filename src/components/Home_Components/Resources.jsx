@@ -1,77 +1,17 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { MdArrowOutward } from "react-icons/md";
-import bl1 from "../../assets/images/bl1.jpg";
-import bl2 from "../../assets/images/bl2.jpg";
-import bl3 from "../../assets/images/bl3.jpg";
-import bl4 from "../../assets/images/bl4.jpg";
-import NewsCard from "../newsComponents/NewsCard";
 import AnimatedButton from "../aboutUsComponents/AnimatedButton";
 import NewsGrid from "../common/NewsGrid";
 import { CustomHeading } from "../common/CustomHeading";
+import { useNavigate } from "react-router-dom";
 
 const tabs = ["Latest", "Blogs", "Events", "Featured Product"];
-
-const allNews = [
-  {
-    image: bl1,
-    news: "Blog",
-    heading: "UX review presentations ",
-    details:
-      "Discover how our latest innovations are transforming manufacturing efficiency across industries.",
-    date: "Dec 15, 2024",
-    author: "Tech Team",
-  },
-  {
-    image: bl2,
-    news: "Events",
-    heading: "Industry Best Practices Guide",
-    details:
-      "How do you create compelling presentations that wow your colleagues and impress your managers?",
-    date: "Dec 12, 2024",
-    author: "John Smith",
-  },
-  {
-    image: bl3,
-    news: "Blog",
-    heading: "Manufacturing Expo 2025",
-    details:
-      "Join us at the biggest manufacturing exhibition showcasing cutting-edge conveyor solutions.",
-    date: "Jan 20, 2025",
-    author: "Event Team",
-  },
-  {
-    image: bl4,
-    news: "Featured Product",
-    heading: "Premium Modular Belt Series",
-    details:
-      "Our flagship product line featuring advanced materials and superior durability ratings.",
-    date: "Dec 10, 2024",
-    author: "Product Team",
-  },
-];
 
 export default function Resources() {
   const [activeTab, setActiveTab] = useState("Latest");
 
-  // const headerVariants = {
-  //   hidden: {
-  //     opacity: 0,
-  //     y: 30,
-  //     scale: 0.98,
-  //   },
-  //   visible: {
-  //     opacity: 1,
-  //     y: 0,
-  //     scale: 1,
-  //     transition: {
-  //       type: "spring",
-  //       stiffness: 300,
-  //       damping: 25,
-  //       duration: 0.6,
-  //     },
-  //   },
-  // };
+  const navigate = useNavigate();
 
   const tabContainerVariants = {
     hidden: { opacity: 0 },
@@ -99,38 +39,6 @@ export default function Resources() {
         stiffness: 400,
         damping: 25,
         duration: 0.3,
-      },
-    },
-  };
-
-  const cardGridVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-      scale: 0.95,
-      rotateX: 10,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      rotateX: 0,
-      transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 20,
-        duration: 0.5,
       },
     },
   };
@@ -164,13 +72,6 @@ export default function Resources() {
     },
   };
 
-  const splitText = (text) =>
-    text.split("").map((char, i) => (
-      <motion.span key={i} variants={letterVariants} className="inline-block">
-        {char === " " ? "\u00A0" : char}
-      </motion.span>
-    ));
-
   return (
     <div className="container mx-auto w-full bg-white px-4 sm:px-8 lg:px-16 py-12">
       <motion.div
@@ -182,10 +83,14 @@ export default function Resources() {
       >
         <motion.h2
           className="text-[48px] sm:text-4xl lg:text-5xl font-bold text-[#2E437C]"
-          variants={headerVariants} 
+          variants={headerVariants}
         >
-          <span className="text-[#2E437C]"><CustomHeading title="Resources " className="" /></span>
-          <span className="text-[#BABEC8]"><CustomHeading title="& Insights" className="" /></span>
+          <span className="text-[#2E437C]">
+            <CustomHeading title="Resources " className="" />
+          </span>
+          <span className="text-[#BABEC8]">
+            <CustomHeading title="& Insights" className="" />
+          </span>
         </motion.h2>
 
         <motion.p
@@ -300,6 +205,7 @@ export default function Resources() {
           icon={MdArrowOutward}
           color={"#2E437C"}
           hoverColor={`#2E437C`}
+          onClick={() => navigate("/news")}
         >
           VIEW ALL RESOURCES
         </AnimatedButton>

@@ -20,6 +20,7 @@ import ProductDetails from "./ProductDetails";
 import SubcategoryCards from "./SubcategoryCards";
 import axios from "axios";
 import { CustomHeading } from "../common/CustomHeading";
+import { CiSearch } from "react-icons/ci";
 
 const ProductCom = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -935,7 +936,7 @@ const ProductCom = () => {
             }}
           />
 
-          <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg md:text-xl transition-colors duration-300 pointer-events-none" />
+          <CiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg md:text-xl transition-colors duration-300 pointer-events-none" />
 
           {searchQuery && (
             <motion.button
@@ -1080,7 +1081,7 @@ const ProductCom = () => {
                           >
                             {category.title}
                           </Typography>
-                          <div className="flex-1 border-[#2E437C] border-[2px] me-2 rounded-lg"></div>
+                          <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
                         </div>
                       </AccordionSummary>
 
@@ -1134,7 +1135,7 @@ const ProductCom = () => {
                                       >
                                         {child.title}
                                       </Typography>
-                                      <div className="flex-1 border-[#2E437C] border-[2px] me-2 rounded-lg"></div>
+                                      <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
                                     </div>
                                   </AccordionSummary>
 
@@ -1279,7 +1280,7 @@ const ProductCom = () => {
                       >
                         {category.title}
                       </Typography>
-                      <div className="flex-1 border-[#2E437C] border-[2px] me-2 rounded-lg"></div>
+                      <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
                     </div>
                   </AccordionSummary>
 
@@ -1322,7 +1323,7 @@ const ProductCom = () => {
                                         selectedSubcategoryId ===
                                           child.subcategoryId &&
                                         !selectedProductId
-                                          ? 500
+                                          ? 600
                                           : 400,
                                       fontStyle: "normal",
                                       color:
@@ -1339,7 +1340,7 @@ const ProductCom = () => {
                                   >
                                     {child.title}
                                   </Typography>
-                                  <div className="flex-1 border-[#2E437C] border-[2px] me-2 rounded-lg"></div>
+                                  <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
                                 </div>
                               </AccordionSummary>
 
@@ -1492,7 +1493,7 @@ const ProductCom = () => {
                         onClick={() => handleDirectProductClick(product)}
                         className="flex flex-col items-center text-center cursor-pointer p-4"
                       >
-                        <div className="aspect-[4/3]">
+                        <div className="aspect-[4/3] max-w-[100%] overflow-hidden">
                           <motion.img
                             src={
                               product.image && product.image.startsWith("http")
@@ -1504,7 +1505,7 @@ const ProductCom = () => {
                                 : productImage
                             }
                             alt={product.title}
-                            className="w-full h-full object-cover p-3"
+                            className="max-w-[100%] w-full h-full object-cover p-3"
                             whileHover={{ scale: 1.05 }}
                             transition={{ duration: 0.3 }}
                           />
@@ -1580,21 +1581,23 @@ const ProductCom = () => {
                       onClick={() => handleProductClick(product)}
                       className="flex flex-col items-center text-center cursor-pointer"
                     >
-                      <motion.img
-                        src={
-                          product.image && product.image.startsWith("http")
-                            ? product.image
-                            : product.image && product.image.includes("/")
-                            ? `${import.meta.env.VITE_BACKEND_URL}/${
-                                product.image
-                              }`
-                            : productImage
-                        }
-                        alt={product.title}
-                        className="w-full h-48 object-contain mb-4"
-                        whileHover={{ scale: 1.05 }}
-                        transition={{ duration: 0.3 }}
-                      />
+                      <div className="aspect-[4/3] overflow-hidden">
+                        <motion.img
+                          src={
+                            product.image && product.image.startsWith("http")
+                              ? product.image
+                              : product.image && product.image.includes("/")
+                              ? `${import.meta.env.VITE_BACKEND_URL}/${
+                                  product.image
+                                }`
+                              : productImage
+                          }
+                          alt={product.title}
+                          className="w-full h-48 object-contain mb-4"
+                          whileHover={{ scale: 1.05 }}
+                          transition={{ duration: 0.3 }}
+                        />
+                      </div>
                       <h2 className="text-lg font-semibold mt-3 text-gray-800">
                         {product.title}
                       </h2>
