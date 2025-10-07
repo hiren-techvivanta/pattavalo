@@ -351,48 +351,27 @@ export default function Home() {
           />
         </motion.div>
       </motion.section> */}
-      <motion.section
-        className="relative w-full pt-10 bg-white overflow-hidden"
-        initial="hidden"
-        animate="visible"
+       <section
+        className="w-full pt-10 bg-white"
       >
-        {/* Map iframe container */}
         <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
           className="w-full h-[300px] sm:h-[400px] lg:h-[400px] overflow-hidden shadow-lg"
-          animate={{ opacity: showMap ? 1 : 0.3 }}
-          transition={{ duration: 0.5 }}
         >
           <iframe
             title="ATC CHAINS INDIA Location"
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3672.604152548122!2d72.580103!3d23.03987!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x395e8442629d0ef7%3A0x475a2529ab81e2dc!2sATC%20CHAINS%20INDIA!5e0!3m2!1sen!2sin!4v1726752975123!5m2!1sen!2sin"
-            className="w-full h-full pointer-events-none"
+            className="w-full h-full"
             allowFullScreen=""
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-          />
+          ></iframe>
         </motion.div>
+      </section>
 
-        {/* Clickable overlay */}
-        {!showMap && (
-          <motion.div
-            className="absolute inset-0 flex items-center justify-center cursor-pointer bg-black/40 "
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setShowMap(true)}
-          >
-            <motion.p
-              className="text-white text-md  sm:text-xl font-medium px-6 py-3 rounded-lg bg-[#2E437C] "
-              whileHover={{
-                scale: 1.05,
-              }}
-              transition={{ type: "spring", stiffness: 300 }}
-            >
-              Click to View Our Location
-            </motion.p>
-          </motion.div>
-        )}
-      </motion.section>
     </div>
   );
 }
