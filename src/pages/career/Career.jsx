@@ -10,6 +10,7 @@ import { MdOutlineSecurity } from "react-icons/md";
 import { PiStudentBold } from "react-icons/pi";
 import { BsBarChart } from "react-icons/bs";
 import Seo from "../../components/common/Seo";
+import { CustomHeading } from "../../components/common/CustomHeading";
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger);
@@ -488,8 +489,8 @@ const Career = () => {
           className="font-[400] text-[#2E437C] text-[40px] md:text-[74px] text-center"
           style={{ lineHeight: "70px" }}
         >
-          {splitText("Career")} <br />
-          <span className="font-[700] text-[#BABEC8]">{splitText("Openings")}</span>
+          <CustomHeading title="Career " className="" /> <br />
+          <span className="font-[700] text-[#BABEC8]"><CustomHeading title="Openings" className="" /></span>
         </motion.h1>
 
         <motion.p
@@ -643,8 +644,7 @@ const Career = () => {
               Our Awesome Team
             </h2>
             <p className="text-[#001833] text-[14px] font-[400] mt-4 leading-relaxed">
-              We want to feel like home when you are working at ATC (Advanced
-              Technology & Consultancy) & for that we have curated a great set
+              We want to feel like home when you are working at ATC for that we have curated a great set
               of benefits for you. It all starts with the free lunch!
             </p>
           </motion.div>

@@ -101,10 +101,10 @@ const News = () => {
                 <motion.button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`relative pb-3 px-2 text-sm font-medium whitespace-nowrap flex-shrink-0 ${
+                  className={`relative pb-3 px-5 me-0 text-sm font-medium whitespace-nowrap flex-shrink-0 ${
                     activeTab === tab
-                      ? "text-[#2E437C] font-semibold"
-                      : "text-gray-500 hover:text-gray-700"
+                      ? "text-[#2E437C] font-semibold border-b-2 border-[#2E437C]"
+                      : "text-gray-500 hover:text-gray-700 border-b border-[#f2f2f2]"
                   }`}
                   variants={tabVariants}
                 >

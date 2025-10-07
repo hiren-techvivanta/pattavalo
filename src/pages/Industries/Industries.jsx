@@ -12,49 +12,137 @@ import bl3 from "../../assets/images/bl3.jpg";
 import bl4 from "../../assets/images/bl4.jpg";
 import { HiDownload } from "react-icons/hi";
 import AnimatedButton from "../../components/aboutUsComponents/AnimatedButton";
+import { LuDownload } from "react-icons/lu";
 import Seo from "../../components/common/Seo";
+import { CustomHeading } from "../../components/common/CustomHeading";
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Industries = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [brochures, setBrochures] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const data = [
-    {
-      id: 1,
-      img: bl1,
-      title: "Vision 2025",
-      destription:
-        "A forward-looking brochure highlighting our roadmap, innovative goals, and the milestones we aim to achieve together.",
-    },
-    {
-      id: 2,
-      img: bl2,
-      title: "Vision 2025",
-      destription:
-        "A forward-looking brochure highlighting our roadmap, innovative goals, and the milestones we aim to achieve together.",
-    },
-    {
-      id: 3,
-      img: bl3,
-      title: "Vision 2025",
-      destription:
-        "A forward-looking brochure highlighting our roadmap, innovative goals, and the milestones we aim to achieve together.",
-    },
-    {
-      id: 4,
-      img: bl4,
-      title: "Vision 2025",
-      destription:
-        "A forward-looking brochure highlighting our roadmap, innovative goals, and the milestones we aim to achieve together.",
-    },
-  ];
+  const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 
-  const filteredData = data.filter(
-    (item) =>
-      item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      item.destription.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  // Fetch brochures from API
+  useEffect(() => {
+    const fetchBrochures = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch(`${BASE_URL}/settings/post/brochure`);
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch brochures: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        let brochuresData = [];
+
+        if (Array.isArray(data)) {
+          brochuresData = data;
+        } else if (data.data && Array.isArray(data.data)) {
+          brochuresData = data.data;
+        } else if (data.brochures && Array.isArray(data.brochures)) {
+          brochuresData = data.brochures;
+        } else if (data.results && Array.isArray(data.results)) {
+          brochuresData = data.results;
+        } else {
+          console.warn(
+            "API response format not recognized, using fallback data"
+          );
+          brochuresData = getFallbackData();
+        }
+
+        setBrochures(brochuresData);
+        setError(null);
+      } catch (err) {
+        console.error("Error fetching brochures:", err);
+        setError(err.message);
+
+        setBrochures(getFallbackData());
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBrochures();
+  }, [BASE_URL]);
+  const getFallbackData = () => {
+    return [
+      {
+        id: 1,
+        img: bl1,
+        title: "Vision 2025",
+        description:
+          "A forward-looking brochure highlighting our roadmap, innovative goals, and the milestones we aim to achieve together.",
+      },
+      {
+        id: 2,
+        img: bl2,
+        title: "Vision 2025",
+        description:
+          "A forward-looking brochure highlighting our roadmap, innovative goals, and the milestones we aim to achieve together.",
+      },
+      {
+        id: 3,
+        img: bl3,
+        title: "Vision 2025",
+        description:
+          "A forward-looking brochure highlighting our roadmap, innovative goals, and the milestones we aim to achieve together.",
+      },
+      {
+        id: 4,
+        img: bl4,
+        title: "Vision 2025",
+        description:
+          "A forward-looking brochure highlighting our roadmap, innovative goals, and the milestones we aim to achieve together.",
+      },
+    ];
+  };
+
+  const filteredData = Array.isArray(brochures)
+    ? brochures.filter((item) => {
+        if (!item) return false;
+
+        const title = item.title || "";
+        const description = item.description || item.destription || "";
+
+        return (
+          title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          description.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      })
+    : [];
+
+  // Handle download
+  const handleDownload = async (brochure) => {
+    try {
+      if (brochure.fileUrl || brochure.downloadUrl || brochure.file) {
+        const fileUrl =
+          brochure.fileUrl || brochure.downloadUrl || brochure.file;
+        const response = await fetch(fileUrl);
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.style.display = "none";
+        a.href = url;
+        a.download = brochure.title || brochure.fileName || "download";
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      } else {
+        console.log("Downloading:", brochure.title);
+        alert(`Downloading: ${brochure.title}`);
+      }
+    } catch (err) {
+      console.error("Download failed:", err);
+      alert("Download failed. Please try again.");
+    }
+  };
 
   const pageVariants = {
     hidden: {
@@ -120,16 +208,7 @@ const Industries = () => {
     },
   };
 
-  // const containerVariants = {
-  //   hidden: { opacity: 0 },
-  //   visible: {
-  //     opacity: 1,
-  //     transition: {
-  //       staggerChildren: 0.08,
-  //       delayChildren: 0.2,
-  //     },
-  //   },
-  // };
+ 
 
   const itemVariants = {
     hidden: {
@@ -218,7 +297,40 @@ const Industries = () => {
         {char === " " ? "\u00A0" : char}
       </motion.span>
     ));
-
+  if (loading) {
+    return (
+      <>
+        <Seo
+          title="Downloads | ATC Chain India"
+          description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
+          url="https://www.atcchain.com/downloads"
+        />
+        <Navbar navStyle={"white"} />
+        <motion.div
+          className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20 mt-10"
+          initial="hidden"
+          animate="visible"
+          variants={pageVariants}
+        >
+          <div className="flex justify-center items-center py-20">
+            <motion.div
+              className="text-center"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              <motion.div
+                className="w-16 h-16 border-4 border-[#2E437C] border-t-transparent rounded-full mx-auto mb-4"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+              />
+              <p className="text-gray-600 text-lg">Loading brochures...</p>
+            </motion.div>
+          </div>
+        </motion.div>
+      </>
+    );
+  }
   return (
     <>
       <Seo
@@ -248,9 +360,9 @@ const Industries = () => {
           >
             <motion.h1
               className="text-[#BABEC8] font-bold text-3xl md:text-4xl lg:text-5xl"
-              variants={containerVariants} 
+              variants={containerVariants}
             >
-              {splitText("Downloads")}
+              <CustomHeading title="Downloads" className="" />
             </motion.h1>
 
             <motion.p
@@ -319,7 +431,15 @@ const Industries = () => {
             </AnimatePresence>
           </motion.div>
         </motion.div>
-
+        {error && (
+          <motion.div
+            className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-6"
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+          >
+            <p>Error loading brochures: {error}</p>
+          </motion.div>
+        )}
         <AnimatePresence>
           <motion.div
             key={searchQuery}
@@ -336,8 +456,8 @@ const Industries = () => {
             {filteredData.length > 0 ? (
               filteredData.map((v, i) => (
                 <motion.div
-                  className="flex gap-6 p-4 bg-gradient-to-br shadow hover:shadow-lg from-white to-gray-50/50 fade-up-element"
-                  key={v.id}
+                  className="flex gap-6 p-4 bg-gradient-to-br hover:shadow-lg from-white to-gray-50/50 fade-up-element"
+                  key={v.id || i}
                   variants={cardVariants}
                   whileHover={{
                     y: -8,
@@ -351,7 +471,7 @@ const Industries = () => {
                   }}
                 >
                   <motion.img
-                    src={v.img}
+                    src={v.img || v.image || v.thumbnail || bl1}
                     className="w-32 h-40 lg:w-48 lg:h-60 object-cover shadow-md"
                     alt={v.title}
                     loading="lazy"
@@ -364,6 +484,9 @@ const Industries = () => {
                     whileHover={{
                       rotateY: 5,
                       transition: { duration: 0.3 },
+                    }}
+                    onError={(e) => {
+                      e.target.src = bl1;
                     }}
                   />
                   <motion.div
@@ -385,7 +508,7 @@ const Industries = () => {
                           delay: i * 0.1 + 0.4,
                         }}
                       >
-                        {v.title}
+                        {v.title || "Untitled Brochure"}
                       </motion.h6>
 
                       <motion.p
@@ -397,7 +520,9 @@ const Industries = () => {
                           delay: i * 0.1 + 0.5,
                         }}
                       >
-                        {v.destription}
+                        {v.description ||
+                          v.destription ||
+                          "No description available."}
                       </motion.p>
                     </div>
 
@@ -413,11 +538,12 @@ const Industries = () => {
                       }}
                     >
                       <AnimatedButton
-                        icon={HiDownload}
+                        icon={LuDownload}
                         color={"#2E437C"}
                         hoverColor={`#2E437C`}
                         px={6}
                         py={2}
+                        onClick={() => handleDownload(v)}
                       >
                         Download
                       </AnimatedButton>
@@ -478,26 +604,30 @@ const Industries = () => {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.3 }}
                 >
-                  No items match "{searchQuery}". Try a different search term.
+                  {brochures.length === 0
+                    ? "No brochures available at the moment."
+                    : `No items match "${searchQuery}". Try a different search term.`}
                 </motion.p>
 
-                <motion.button
-                  onClick={clearSearch}
-                  className="px-6 py-3 bg-[#2E437C] text-white rounded-xl font-medium hover:bg-[#1E2F5C] transition-all duration-300 shadow-lg hover:shadow-xl"
-                  whileHover={{
-                    y: -2,
-                    boxShadow: "0 10px 25px rgba(46, 67, 124, 0.3)",
-                    transition: { duration: 0.2 },
-                  }}
-                  whileTap={{
-                    transition: { duration: 0.1 },
-                  }}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                >
-                  Clear Search
-                </motion.button>
+                {searchQuery && (
+                  <motion.button
+                    onClick={clearSearch}
+                    className="px-6 py-3 bg-[#2E437C] text-white rounded-xl font-medium hover:bg-[#1E2F5C] transition-all duration-300 shadow-lg hover:shadow-xl"
+                    whileHover={{
+                      y: -2,
+                      boxShadow: "0 10px 25px rgba(46, 67, 124, 0.3)",
+                      transition: { duration: 0.2 },
+                    }}
+                    whileTap={{
+                      transition: { duration: 0.1 },
+                    }}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    Clear Search
+                  </motion.button>
+                )}
               </motion.div>
             )}
           </motion.div>

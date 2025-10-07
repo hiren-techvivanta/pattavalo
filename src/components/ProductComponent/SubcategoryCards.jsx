@@ -56,19 +56,22 @@ const SubcategoryCards = ({ subcategories, onSubcategoryClick, loading }) => {
           onClick={() => onSubcategoryClick(subcategory)}
           className="flex flex-col items-center text-center rounded-lg cursor-pointer bg-white"
         >
-          <motion.img
-            src={
-              subcategory.image && subcategory.image.startsWith("http")
-                ? subcategory.image
-                : subcategory.image
-                ? `${import.meta.env.VITE_BACKEND_URL}/${subcategory.image}`
-                : productImage
-            }
-            alt={subcategory.name}
-            className="w-full h-48 object-contain mb-4"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-          />
+          <div className="aspect-[4/3]">
+            <motion.img
+              src={
+                subcategory.image && subcategory.image.startsWith("http")
+                  ? subcategory.image
+                  : subcategory.image
+                  ? `${import.meta.env.VITE_BACKEND_URL}/${subcategory.image}`
+                  : productImage
+              }
+              alt={subcategory.name}
+              className="w-full h-full object-cover p-3"
+              whileHover={{ scale: 1.05 }}
+              transition={{ duration: 0.3 }}
+            />
+          </div>
+
           <h2 className="text-lg font-semibold mt-3 text-gray-800">
             {subcategory.name}
           </h2>
@@ -77,9 +80,6 @@ const SubcategoryCards = ({ subcategories, onSubcategoryClick, loading }) => {
               {subcategory.description}
             </p>
           )}
-          <span className="text-xs text-[#2E437C] mt-3 bg-[#2E437C]/10 px-3 py-1 rounded-full">
-            Subcategory
-          </span>
         </motion.div>
       ))}
     </div>

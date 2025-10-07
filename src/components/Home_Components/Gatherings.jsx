@@ -4,6 +4,7 @@ import next1 from "../../assets/images/next1.jpg";
 import next2 from "../../assets/images/next2.jpg";
 import next3 from "../../assets/images/next3.jpg";
 import next4 from "../../assets/images/next4.jpg";
+import { CustomHeading } from "../common/CustomHeading";
 
 const events = [
   {
@@ -133,13 +134,17 @@ export default function Gatherings() {
         className="container mx-auto mb-5 sm:mb-10 sm:px-6 lg:px-0 pb-1 md:text-left"
       >
         <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[74px] leading-17 md:leading-17">
-          <span className="font-normal text-[#2E437C] block">
-            {splitText("What's ")}
-          </span>
-          <span className="font-bold text-[#BABEC8] block">
-            {splitText("Happening Next")}
-          </span>
+          <CustomHeading
+            title="What's "
+            className="font-bold text-[#2E437C] block"
+          />
+          <br />
+          <CustomHeading
+            title="Happening Next"
+            className="font-bold text-[#BABEC8] block"
+          />
         </h1>
+
         <motion.p
           className="text-[#191919] mt-6 text-[20px] sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto md:mx-0"
           initial={{ opacity: 0, y: 15 }}

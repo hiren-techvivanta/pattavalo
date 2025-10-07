@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import {
@@ -19,6 +19,7 @@ import productImage from "../../assets/images/productdefault.png";
 import ProductDetails from "./ProductDetails";
 import SubcategoryCards from "./SubcategoryCards";
 import axios from "axios";
+import { CustomHeading } from "../common/CustomHeading";
 
 const ProductCom = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -35,6 +36,7 @@ const ProductCom = () => {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [subcategories, setSubcategories] = useState([]);
+  const [directProducts, setDirectProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
@@ -42,56 +44,123 @@ const ProductCom = () => {
   const [productDetailsLoading, setProductDetailsLoading] = useState(false);
   const [productsLoading, setProductsLoading] = useState(false);
   const [subcategoriesLoading, setSubcategoriesLoading] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // New state for mobile accordion
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [searchError, setSearchError] = useState(null);
+  const [selectedSubcategoryId, setSelectedSubcategoryId] = useState(null);
+  const [selectedProductId, setSelectedProductId] = useState(null);
 
-  // URL parameters
-  const [urlFilters, setUrlFilters] = useState({
-    category: null,
-    subcategory: null,
-    product: null,
-  });
+  const isInitialLoadRef = useRef(false);
+  const searchTimeoutRef = useRef(null);
+  const hasProcessedUrlRef = useRef(false);
+  const lastUrlParamsRef = useRef("");
 
-  // Common axios config with required headers
-  const getAxiosConfig = () => ({
-    headers: {
-      "ngrok-skip-browser-warning": "true",
-      "Content-Type": "application/json",
-    },
-  });
+  const getAxiosConfig = useCallback(
+    () => ({
+      headers: {
+        "ngrok-skip-browser-warning": "true",
+        "Content-Type": "application/json",
+      },
+    }),
+    []
+  );
 
   useEffect(() => {
-    fetchCategories();
+    const initializeComponent = async () => {
+      if (isInitialLoadRef.current) return;
+
+      try {
+        setLoading(true);
+        await fetchCategories();
+        isInitialLoadRef.current = true;
+      } catch (error) {
+        setError("Failed to load categories");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeComponent();
   }, []);
 
-  // Handle URL parameters on mount and when they change
   useEffect(() => {
+    if (!isInitialLoadRef.current || categories.length === 0) return;
+
     const categoryParam = searchParams.get("category");
     const subcategoryParam = searchParams.get("subcategory");
     const productParam = searchParams.get("product");
 
-    setUrlFilters({
+    // Create a unique string to compare with previous URL params
+    const currentUrlParams = `${categoryParam || ""}-${
+      subcategoryParam || ""
+    }-${productParam || ""}`;
+
+    // Skip if we've already processed these exact URL parameters
+    if (
+      hasProcessedUrlRef.current &&
+      lastUrlParamsRef.current === currentUrlParams
+    ) {
+      return;
+    }
+
+    lastUrlParamsRef.current = currentUrlParams;
+
+    const urlFilters = {
       category: categoryParam ? parseInt(categoryParam) : null,
       subcategory: subcategoryParam ? parseInt(subcategoryParam) : null,
       product: productParam ? parseInt(productParam) : null,
-    });
-  }, [searchParams]);
+    };
 
-  // Apply URL filters when categories are loaded
-  useEffect(() => {
-    if (categories.length > 0 && urlFilters.category) {
-      applyUrlFilters();
-    } else if (categories.length > 0 && !urlFilters.category) {
+    if (urlFilters.category || urlFilters.subcategory || urlFilters.product) {
+      hasProcessedUrlRef.current = true;
+      applyUrlFilters(urlFilters);
+    } else if (categories.length > 0 && !hasProcessedUrlRef.current) {
+      // Only show first category if no URL params and we haven't processed URL before
       const firstCategory = categories[0];
       if (firstCategory?.id) {
         setSelectedCategory(firstCategory.category || firstCategory.title);
         setParentCategory(firstCategory.category || firstCategory.title);
         setExpandedPanel(`panel1`);
-        fetchSubcategories(firstCategory.id);
+        setSelectedSubcategoryId(null);
+        setSelectedProductId(null);
+        fetchSubcategoriesAndDirectProducts(firstCategory.id);
+        updateUrlParams({ category: firstCategory.id });
+        hasProcessedUrlRef.current = true;
       }
     }
-  }, [categories, urlFilters]);
+  }, [categories, searchParams]);
 
-  // Function to update URL parameters
+  const debouncedSearch = useCallback(
+    (query) => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+
+      searchTimeoutRef.current = setTimeout(() => {
+        if (query.trim() === "") {
+          setSearchResults([]);
+          setViewMode(
+            subcategories.length > 0 || directProducts.length > 0
+              ? "categories"
+              : "products"
+          );
+          setShowDetails(false);
+        } else {
+          setViewMode("search");
+          setShowDetails(false);
+          searchProducts(query);
+        }
+      }, 300);
+    },
+    [subcategories.length, directProducts.length]
+  );
+
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    setSearchError(null);
+    debouncedSearch(query);
+  };
+
   const updateUrlParams = (params) => {
     const newSearchParams = new URLSearchParams();
 
@@ -105,58 +174,218 @@ const ProductCom = () => {
       newSearchParams.set("product", params.product.toString());
     }
 
-    setSearchParams(newSearchParams);
+    const newUrlParams = newSearchParams.toString();
+    const currentUrlParams = `${searchParams.get("category") || ""}-${
+      searchParams.get("subcategory") || ""
+    }-${searchParams.get("product") || ""}`;
+    const newUrlParamsFormatted = `${params.category || ""}-${
+      params.subcategory || ""
+    }-${params.product || ""}`;
+
+    // Only update URL if it's actually different
+    if (currentUrlParams !== newUrlParamsFormatted) {
+      lastUrlParamsRef.current = newUrlParamsFormatted;
+      setSearchParams(newSearchParams);
+    }
   };
 
-  // Function to fetch subcategories
-  const fetchSubcategories = async (categoryId) => {
+  const fetchSubcategoriesAndDirectProducts = async (categoryId) => {
     try {
       setSubcategoriesLoading(true);
       setError(null);
 
-      const response = await axios.get(
-        `${
-          import.meta.env.VITE_BACKEND_URL
-        }/product/subcategory?category_id=${categoryId}`,
-        getAxiosConfig()
-      );
+      const [subcategoryResponse, directProductsResponse] = await Promise.all([
+        axios.get(
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/product/subcategory?category_id=${categoryId}`,
+          getAxiosConfig()
+        ),
+        axios.get(
+          `${
+            import.meta.env.VITE_BACKEND_URL
+          }/product/product/search?search=&category_id=${categoryId}`,
+          getAxiosConfig()
+        ),
+      ]);
 
+      let subcategoriesData = [];
       if (
-        response.data.message === "Subcategories fetched successfully" &&
-        response.data.data
+        subcategoryResponse.data.message ===
+          "Subcategories fetched successfully" &&
+        subcategoryResponse.data.data
       ) {
-        setSubcategories(response.data.data);
-        setViewMode("categories");
-      } else {
-        setSubcategories([]);
+        subcategoriesData = subcategoryResponse.data.data;
       }
+
+      let directProductsData = [];
+      if (
+        directProductsResponse.data.message ===
+          "Products fetched successfully" &&
+        directProductsResponse.data.data
+      ) {
+        directProductsData = directProductsResponse.data.data
+          .filter((product) => !product.subcategory_id)
+          .map((product) => ({
+            id: product.id,
+            title: product.productName,
+            category: product.category?.name || "Uncategorized",
+            parentCategory: product.category?.name || "Uncategorized",
+            image:
+              product.images && product.images.length > 0
+                ? product.images[0]
+                : productImage,
+            description: product.description,
+            document: product.document,
+            is_active: product.is_active,
+            categoryId: product.category_id,
+            subcategoryId: product.subcategory_id,
+            apiData: product,
+            isDirectProduct: true,
+          }));
+      }
+
+      setSubcategories(subcategoriesData);
+      setDirectProducts(directProductsData);
+      setViewMode("categories");
     } catch (err) {
-      console.error("Error fetching subcategories:", err);
       setSubcategories([]);
+      setDirectProducts([]);
       if (err.response) {
         setError(
-          `Failed to load subcategories: ${err.response.status} - ${
+          `Failed to load data: ${err.response.status} - ${
             err.response.data?.message || "Unknown error"
           }`
         );
       } else if (err.request) {
-        setError(
-          "Network error while loading subcategories. Please try again."
-        );
+        setError("Network error while loading data. Please try again.");
       } else {
-        setError(`Failed to load subcategories: ${err.message}`);
+        setError(`Failed to load data: ${err.message}`);
       }
     } finally {
       setSubcategoriesLoading(false);
     }
   };
 
-  // Function to handle subcategory card click
+  const applyUrlFilters = async (filters) => {
+    try {
+      if (filters.category) {
+        const category = categories.find(
+          (cat) => cat.id.toString() === filters.category.toString()
+        );
+
+        if (!category) return;
+
+        // Set category state
+        setSelectedCategory(category.category || category.title);
+        setParentCategory(category.category || category.title);
+        setExpandedPanel(`panel${categories.indexOf(category) + 1}`);
+
+        if (filters.product) {
+          // Handle product view
+          setSelectedProductId(filters.product);
+          setSelectedSubcategoryId(filters.subcategory || null);
+          await handleProductByUrl(
+            filters.product,
+            category,
+            filters.subcategory
+          );
+        } else if (filters.subcategory) {
+          // Handle subcategory view
+          setSelectedSubcategoryId(filters.subcategory);
+          setSelectedProductId(null);
+          await handleSubcategoryByUrl(filters.subcategory, category);
+        } else {
+          // Handle category view
+          setSelectedSubcategoryId(null);
+          setSelectedProductId(null);
+          await fetchSubcategoriesAndDirectProducts(category.id);
+          setViewMode("categories");
+          setShowDetails(false);
+          setProducts([]);
+        }
+      }
+    } catch (error) {
+      setError("Error applying URL filters");
+    }
+  };
+
+  const handleProductByUrl = async (
+    productId,
+    category,
+    subcategoryId = null
+  ) => {
+    try {
+      setProductDetailsLoading(true);
+
+      const detailedProduct = await fetchProductDetails(productId);
+
+      if (detailedProduct) {
+        setSelectedProduct(detailedProduct);
+        setViewMode("details");
+        setShowDetails(true);
+
+        // Load related products for context
+        if (subcategoryId || detailedProduct.subcategoryId) {
+          const searchResults = await searchProducts(
+            "",
+            category.id,
+            subcategoryId || detailedProduct.subcategoryId
+          );
+          setProducts(searchResults);
+        }
+      }
+    } catch (error) {
+      setError("Error loading product by URL");
+    } finally {
+      setProductDetailsLoading(false);
+    }
+  };
+
+  const handleSubcategoryByUrl = async (subcategoryId, category) => {
+    try {
+      setProductsLoading(true);
+
+      // Find the subcategory in the tree structure
+      let foundSubcategory = null;
+      let subPanelIndex = -1;
+
+      if (category.children) {
+        category.children.forEach((child, index) => {
+          if (
+            child.isSubCategory &&
+            child.subcategoryId.toString() === subcategoryId.toString()
+          ) {
+            foundSubcategory = child;
+            subPanelIndex = index;
+          }
+        });
+      }
+
+      if (foundSubcategory) {
+        setExpandedSubPanel(`subpanel${subPanelIndex}`);
+        setSelectedCategory(foundSubcategory.title);
+        setParentCategory(category.category || category.title);
+      }
+
+      const products = await searchProducts("", category.id, subcategoryId);
+      setProducts(products);
+      setViewMode("products");
+      setShowDetails(false);
+    } catch (error) {
+      setError("Error loading subcategory by URL");
+    } finally {
+      setProductsLoading(false);
+    }
+  };
+
   const handleSubcategoryCardClick = async (subcategory) => {
     try {
       setProductsLoading(true);
       setViewMode("products");
       setShowDetails(false);
+      setSelectedSubcategoryId(subcategory.id);
+      setSelectedProductId(null);
 
       const fetchedProducts = await searchProducts(
         "",
@@ -170,13 +399,63 @@ const ProductCom = () => {
         subcategory: subcategory.id,
       });
     } catch (error) {
-      setError("Failed to load products for this subcategory");
+      setProducts([]);
     } finally {
       setProductsLoading(false);
     }
   };
 
-  // Fetch individual product details
+  const handleDirectProductClick = async (product) => {
+    try {
+      const detailedProduct = await fetchProductDetails(product.id);
+
+      if (detailedProduct) {
+        setSelectedProduct(detailedProduct);
+        setSelectedProductId(product.id);
+        setSelectedSubcategoryId(null);
+        setViewMode("details");
+        setShowDetails(true);
+
+        const urlParams = {
+          category: detailedProduct.categoryId,
+          product: detailedProduct.id,
+        };
+
+        if (detailedProduct.subcategoryId) {
+          urlParams.subcategory = detailedProduct.subcategoryId;
+        }
+
+        updateUrlParams(urlParams);
+      }
+    } catch (error) {
+      setError("Error loading product details");
+    }
+  };
+
+  const handleAccordionChange = (panel) => (event, isExpanded) => {
+    setExpandedPanel(isExpanded ? panel : false);
+
+    if (isExpanded) {
+      const categoryIndex = parseInt(panel.replace("panel", "")) - 1;
+      const category = categories[categoryIndex];
+      if (category) {
+        setSelectedCategory(category.category);
+        setParentCategory(category.category);
+        setViewMode("categories");
+        setShowDetails(false);
+        setExpandedSubPanel("");
+        setSelectedSubcategoryId(null);
+        setSelectedProductId(null);
+        setSearchQuery("");
+        setProducts([]);
+
+        fetchSubcategoriesAndDirectProducts(category.id);
+        updateUrlParams({ category: category.id });
+      }
+    }
+  };
+
+  // Rest of your existing functions remain the same...
   const fetchProductDetails = async (productId) => {
     try {
       setProductDetailsLoading(true);
@@ -197,7 +476,7 @@ const ProductCom = () => {
           url: response.data.data.url,
           description: response.data.data.description,
           images: response.data.data.images || [],
-          document: response.data.data.document,
+          document: response.data.data.documents,
           category: response.data.data.category?.name || "Uncategorized",
           subcategory: response.data.data.subcategory?.name || null,
           parentCategory: response.data.data.category?.name || "Uncategorized",
@@ -233,88 +512,8 @@ const ProductCom = () => {
     }
   };
 
-  const applyUrlFilters = async () => {
-    try {
-      const category = categories.find(
-        (cat) => cat.id === urlFilters.category.toString()
-      );
-
-      if (category) {
-        setSelectedCategory(category.category || category.title);
-        setParentCategory(category.category || category.title);
-        setExpandedPanel(`panel${categories.indexOf(category) + 1}`);
-
-        if (urlFilters.product) {
-          await handleProductByUrl(urlFilters.product, category);
-        } else if (urlFilters.subcategory) {
-          await handleSubcategoryByUrl(urlFilters.subcategory, category);
-        } else {
-          await fetchSubcategories(category.id);
-          setViewMode("categories");
-          setShowDetails(false);
-          setProducts([]);
-        }
-      }
-    } catch (error) {
-      console.error("Error applying URL filters:", error);
-    }
-  };
-
-  const handleProductByUrl = async (productId, category) => {
-    try {
-      setProductsLoading(true);
-
-      const detailedProduct = await fetchProductDetails(productId);
-
-      if (detailedProduct) {
-        setSelectedProduct(detailedProduct);
-        setViewMode("details");
-        setShowDetails(true);
-
-        const searchResults = await searchProducts(
-          "",
-          category.id,
-          detailedProduct.subcategoryId
-        );
-        setProducts(searchResults);
-      }
-    } catch (error) {
-      setError("Failed to load product details");
-    } finally {
-      setProductsLoading(false);
-    }
-  };
-
-  const handleSubcategoryByUrl = async (subcategoryId, category) => {
-    try {
-      setProductsLoading(true);
-
-      const subcategory = category.children?.find(
-        (child) => child.isSubCategory && child.subcategoryId === subcategoryId
-      );
-
-      if (subcategory) {
-        setSelectedCategory(subcategory.category);
-        setParentCategory(category.category || category.title);
-        setExpandedSubPanel(
-          `subpanel${category.children.indexOf(subcategory)}`
-        );
-
-        const products = await searchProducts("", category.id, subcategoryId);
-        setProducts(products);
-        setViewMode("products");
-        setShowDetails(false);
-      }
-    } catch (error) {
-      console.error("Error loading subcategory by URL:", error);
-    } finally {
-      setProductsLoading(false);
-    }
-  };
-
   const fetchCategories = async () => {
     try {
-      setLoading(true);
       setError(null);
 
       const response = await axios.get(
@@ -328,14 +527,7 @@ const ProductCom = () => {
       ) {
         const transformedCategories = transformApiData(response.data.data);
         setCategories(transformedCategories);
-
-        if (transformedCategories.length > 0 && !urlFilters.category) {
-          const firstCategory = transformedCategories[0];
-          setSelectedCategory(firstCategory.category || firstCategory.title);
-          setParentCategory(firstCategory.category || firstCategory.title);
-          setExpandedPanel(`panel1`);
-          fetchSubcategories(firstCategory.id);
-        }
+        return transformedCategories;
       } else {
         throw new Error("Invalid API response format");
       }
@@ -351,8 +543,7 @@ const ProductCom = () => {
       } else {
         setError(err.message);
       }
-    } finally {
-      setLoading(false);
+      throw err;
     }
   };
 
@@ -363,18 +554,20 @@ const ProductCom = () => {
   ) => {
     try {
       setIsSearching(query ? true : false);
+      setSearchError(null);
       if (!query) setProductsLoading(true);
 
       let url = `${
         import.meta.env.VITE_BACKEND_URL
       }/product/product/search?search=${encodeURIComponent(query)}`;
 
-      if (categoryId) {
-        url += `&category_id=${categoryId}`;
-      }
-
-      if (subcategoryId) {
-        url += `&subcategory_id=${subcategoryId}`;
+      if (!query) {
+        if (categoryId) {
+          url += `&category_id=${categoryId}`;
+        }
+        if (subcategoryId) {
+          url += `&subcategory_id=${subcategoryId}`;
+        }
       }
 
       const response = await axios.get(url, getAxiosConfig());
@@ -406,20 +599,18 @@ const ProductCom = () => {
 
         return transformedProducts;
       } else {
-        throw new Error("Invalid search API response format");
+        const emptyResults = [];
+        if (query) {
+          setSearchResults(emptyResults);
+        }
+        return emptyResults;
       }
     } catch (err) {
-      if (err.response) {
-        setError(
-          `Search error: ${err.response.status} - ${
-            err.response.data?.message || "Unknown error"
-          }`
-        );
-      } else if (err.request) {
-        setError("Network error during search. Please try again.");
-      } else {
-        setError(err.message);
+      if (query) {
+        setSearchError("Search failed. Please try again.");
+        setSearchResults([]);
       }
+
       return [];
     } finally {
       setIsSearching(false);
@@ -463,7 +654,7 @@ const ProductCom = () => {
       }
 
       return {
-        id: category.id.toString(),
+        id: category.id,
         title: category.name,
         category: category.name,
         image: category.image || productImage,
@@ -475,29 +666,7 @@ const ProductCom = () => {
     });
   };
 
-  const handleAccordionChange = (panel) => (event, isExpanded) => {
-    setExpandedPanel(isExpanded ? panel : false);
-
-    if (isExpanded) {
-      const categoryIndex = parseInt(panel.replace("panel", "")) - 1;
-      const category = categories[categoryIndex];
-      if (category) {
-        setSelectedCategory(category.category);
-        setParentCategory(category.category);
-        setViewMode("categories");
-        setShowDetails(false);
-        setExpandedSubPanel("");
-        setSearchQuery("");
-
-        setProducts([]);
-
-        fetchSubcategories(category.id);
-
-        updateUrlParams({ category: category.id });
-      }
-    }
-  };
-
+  // Keep all your existing handlers for UI interactions...
   const handleSubAccordionChange =
     (subPanel, subCategory) => async (event, isExpanded) => {
       setExpandedSubPanel(isExpanded ? subPanel : false);
@@ -505,6 +674,8 @@ const ProductCom = () => {
       if (isExpanded && subCategory) {
         try {
           setProductsLoading(true);
+          setSelectedSubcategoryId(subCategory.subcategoryId);
+          setSelectedProductId(null);
 
           const parentCategory = categories.find(
             (cat) =>
@@ -513,7 +684,7 @@ const ProductCom = () => {
           );
 
           if (parentCategory) {
-            setSelectedCategory(subCategory.category);
+            setSelectedCategory(subCategory.title);
             setParentCategory(subCategory.category);
             setViewMode("products");
             setShowDetails(false);
@@ -532,7 +703,7 @@ const ProductCom = () => {
             });
           }
         } catch (error) {
-          setError("Failed to load products for this subcategory");
+          setProducts([]);
         } finally {
           setProductsLoading(false);
         }
@@ -540,14 +711,6 @@ const ProductCom = () => {
         setProducts([]);
       }
     };
-
-  const handleCategoryItemClick = (categoryName, parentCategoryName) => {
-    setSelectedCategory(categoryName);
-    setParentCategory(parentCategoryName || categoryName);
-    setViewMode("products");
-    setShowDetails(false);
-    setSearchQuery("");
-  };
 
   const handleProductItemClick = async (
     productTitle,
@@ -564,6 +727,8 @@ const ProductCom = () => {
 
         if (detailedProduct) {
           setSelectedProduct(detailedProduct);
+          setSelectedProductId(productData.productId);
+          setSelectedSubcategoryId(productData.subcategoryId || null);
           setViewMode("details");
           setShowDetails(true);
           setParentCategory(category);
@@ -600,6 +765,8 @@ const ProductCom = () => {
 
           if (detailedProduct) {
             setSelectedProduct(detailedProduct);
+            setSelectedProductId(product.id);
+            setSelectedSubcategoryId(detailedProduct.subcategoryId || null);
             setViewMode("details");
             setShowDetails(true);
             setParentCategory(category);
@@ -618,7 +785,7 @@ const ProductCom = () => {
         }
       }
     } catch (error) {
-      setError("Failed to load product details");
+      setError("Error loading product details");
     } finally {
       setProductsLoading(false);
       setProductDetailsLoading(false);
@@ -631,6 +798,8 @@ const ProductCom = () => {
 
       if (detailedProduct) {
         setSelectedProduct(detailedProduct);
+        setSelectedProductId(product.id);
+        setSelectedSubcategoryId(detailedProduct.subcategoryId || null);
         setViewMode("details");
         setShowDetails(true);
 
@@ -646,7 +815,7 @@ const ProductCom = () => {
         updateUrlParams(urlParams);
       }
     } catch (error) {
-      setError("Failed to load product details");
+      setError("Error loading product details");
     }
   };
 
@@ -658,6 +827,7 @@ const ProductCom = () => {
       setViewMode("products");
       setShowDetails(false);
       setSelectedProduct(null);
+      setSelectedProductId(null);
 
       const urlParams = {};
       if (currentCategory) urlParams.category = currentCategory;
@@ -668,6 +838,7 @@ const ProductCom = () => {
       setViewMode("categories");
       setShowDetails(false);
       setSelectedProduct(null);
+      setSelectedProductId(null);
 
       const urlParams = {};
       if (currentCategory) urlParams.category = currentCategory;
@@ -681,20 +852,21 @@ const ProductCom = () => {
       .toLowerCase()
       .includes(searchQuery.toLowerCase());
 
-    const matchCategory =
-      viewMode === "search" && selectedCategory
-        ? product.category === selectedCategory ||
-          product.parentCategory === selectedCategory ||
-          product.category?.toLowerCase() === selectedCategory?.toLowerCase()
-        : true;
-
-    return matchSearch && matchCategory;
+    return matchSearch;
   });
 
   const displayProducts =
     searchQuery.trim() !== "" && viewMode === "search"
       ? searchResults
       : filteredProducts;
+
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
+  }, []);
 
   if (loading) {
     return (
@@ -707,7 +879,7 @@ const ProductCom = () => {
     );
   }
 
-  if (error) {
+  if (error && !searchError) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center px-4">
         <Alert severity="error" className="max-w-md">
@@ -725,6 +897,7 @@ const ProductCom = () => {
 
   return (
     <div className="min-h-screen bg-white px-4 md:px-12 py-10">
+      {/* Your existing JSX remains the same */}
       <motion.div
         initial={{ opacity: 0, x: -40 }}
         whileInView={{ opacity: 1, x: 0 }}
@@ -733,12 +906,11 @@ const ProductCom = () => {
         className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8"
       >
         <h1 className="text-3xl md:text-4xl font-bold text-[#BABEC8]">
-          Our Products
+          <CustomHeading title="Our Products" className="" />
         </h1>
 
-        {/* Line between title and search - only on desktop */}
         <div className="hidden md:block flex-1 mx-6">
-          <div className="h-[4px] bg-[#BABEC8]"></div>
+          <div className="h-[6px] bg-[#BABEC8]"></div>
         </div>
 
         <div className="relative w-full md:max-w-md lg:max-w-lg xl:max-w-lg">
@@ -746,34 +918,7 @@ const ProductCom = () => {
             type="text"
             placeholder="Search products..."
             value={searchQuery}
-            onChange={(e) => {
-              const query = e.target.value;
-              setSearchQuery(query);
-
-              if (query.trim() === "") {
-                setSearchResults([]);
-                setViewMode(
-                  subcategories.length > 0 ? "categories" : "products"
-                );
-                setShowDetails(false);
-              } else {
-                setViewMode("search");
-                setShowDetails(false);
-
-                const selectedCat = categories.find(
-                  (cat) =>
-                    cat.category === selectedCategory ||
-                    cat.title === selectedCategory
-                );
-                const categoryId = selectedCat ? selectedCat.id : null;
-
-                const timeoutId = setTimeout(() => {
-                  searchProducts(query, categoryId);
-                }, 500);
-
-                return () => clearTimeout(timeoutId);
-              }
-            }}
+            onChange={handleSearchChange}
             className="w-full border border-gray-300 rounded-full pl-12 pr-6 py-3 md:py-2 outline-none focus:ring-3 focus:ring-[#2E437C]/20 focus:border-[#2E437C] transition-all duration-300 text-gray-800 placeholder-gray-500 text-base md:text-lg bg-white shadow-sm hover:shadow-md focus:shadow-lg"
             whileFocus={{
               scale: 1.01,
@@ -794,7 +939,10 @@ const ProductCom = () => {
 
           {searchQuery && (
             <motion.button
-              onClick={() => setSearchQuery("")}
+              onClick={() => {
+                setSearchQuery("");
+                setSearchError(null);
+              }}
               className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
@@ -805,8 +953,8 @@ const ProductCom = () => {
         </div>
       </motion.div>
 
+      {/* Rest of your existing JSX remains exactly the same */}
       <div className="mt-2 flex flex-col md:flex-row gap-5">
-        {/* Left Sidebar - Accordion */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -815,7 +963,7 @@ const ProductCom = () => {
           className="w-full md:w-1/4"
         >
           <div className="p-4 rounded-lg">
-            {/* Mobile: Single accordion wrapper */}
+            {/* Your existing accordion structure remains the same */}
             <div className="md:hidden">
               <Accordion
                 expanded={isMobileMenuOpen}
@@ -920,7 +1068,9 @@ const ProductCom = () => {
                               fontWeight: 500,
                               fontStyle: "normal",
                               color:
-                                expandedPanel === `panel${index + 1}`
+                                expandedPanel === `panel${index + 1}` &&
+                                !selectedSubcategoryId &&
+                                !selectedProductId
                                   ? "#2E437C"
                                   : "#000",
                               transition: "color 0.2s ease-in-out",
@@ -930,7 +1080,7 @@ const ProductCom = () => {
                           >
                             {category.title}
                           </Typography>
-                          <div className="flex-1 h-[3px] bg-[#2E437C] rounded-lg"></div>
+                          <div className="flex-1 border-[#2E437C] border-[2px] me-2 rounded-lg"></div>
                         </div>
                       </AccordionSummary>
 
@@ -972,9 +1122,10 @@ const ProductCom = () => {
                                           fontWeight: 500,
                                           fontStyle: "normal",
                                           color:
-                                            expandedPanel ===
-                                            `panel${index + 1}`
-                                              ? "#666666"
+                                            selectedSubcategoryId ===
+                                              child.subcategoryId &&
+                                            !selectedProductId
+                                              ? "#2E437C"
                                               : "#666666",
                                           transition: "color 0.2s ease-in-out",
                                           whiteSpace: "nowrap",
@@ -983,7 +1134,7 @@ const ProductCom = () => {
                                       >
                                         {child.title}
                                       </Typography>
-                                      <div className="flex-1 h-[3px] bg-[#2E437C] rounded-lg"></div>
+                                      <div className="flex-1 border-[#2E437C] border-[2px] me-2 rounded-lg"></div>
                                     </div>
                                   </AccordionSummary>
 
@@ -1020,7 +1171,11 @@ const ProductCom = () => {
                                                   fontSize: "14px",
                                                   fontWeight: 500,
                                                   fontStyle: "normal",
-                                                  color: "#6b7280",
+                                                  color:
+                                                    selectedProductId ===
+                                                    subChild.productId
+                                                      ? "#2E437C"
+                                                      : "#6b7280",
                                                   marginLeft: "2px",
                                                   transition:
                                                     "color 0.2s ease-in-out",
@@ -1057,7 +1212,10 @@ const ProductCom = () => {
                                         fontSize: "15px",
                                         fontWeight: 500,
                                         fontStyle: "normal",
-                                        color: "#4b5563",
+                                        color:
+                                          selectedProductId === child.productId
+                                            ? "#2E437C"
+                                            : "#4b5563",
                                         marginLeft: "2px",
                                         transition: "color 0.2s ease-in-out",
                                       }}
@@ -1075,7 +1233,6 @@ const ProductCom = () => {
               </Accordion>
             </div>
 
-            {/* Desktop: Individual accordions as before */}
             <div className="hidden md:block">
               {categories.map((category, index) => (
                 <Accordion
@@ -1102,12 +1259,19 @@ const ProductCom = () => {
                       <Typography
                         sx={{
                           fontSize: "17px",
-                          fontWeight: 500,
+                          fontWeight:
+                            expandedPanel === `panel${index + 1}` &&
+                            !selectedSubcategoryId &&
+                            !selectedProductId
+                              ? 600
+                              : 500,
                           fontStyle: "normal",
                           color:
-                            expandedPanel === `panel${index + 1}`
+                            expandedPanel === `panel${index + 1}` &&
+                            !selectedSubcategoryId &&
+                            !selectedProductId
                               ? "#2E437C"
-                              : "#374151",
+                              : "#000",
                           transition: "color 0.2s ease-in-out",
                           whiteSpace: "nowrap",
                           marginRight: "12px",
@@ -1115,7 +1279,7 @@ const ProductCom = () => {
                       >
                         {category.title}
                       </Typography>
-                      <div className="flex-1 h-[3px] bg-[#2E437C] rounded-lg"></div>
+                      <div className="flex-1 border-[#2E437C] border-[2px] me-2 rounded-lg"></div>
                     </div>
                   </AccordionSummary>
 
@@ -1153,21 +1317,29 @@ const ProductCom = () => {
                                 <div className="flex items-center w-full">
                                   <Typography
                                     sx={{
-                                      fontSize: "17px",
-                                      fontWeight: 500,
+                                      fontSize: "15px",
+                                      fontWeight:
+                                        selectedSubcategoryId ===
+                                          child.subcategoryId &&
+                                        !selectedProductId
+                                          ? 500
+                                          : 400,
                                       fontStyle: "normal",
                                       color:
-                                        expandedPanel === `panel${index + 1}`
-                                          ? "#666666"
+                                        selectedSubcategoryId ===
+                                          child.subcategoryId &&
+                                        !selectedProductId
+                                          ? "#2E437C"
                                           : "#666666",
                                       transition: "color 0.2s ease-in-out",
                                       whiteSpace: "nowrap",
                                       marginRight: "12px",
+                                      marginLeft: "10px",
                                     }}
                                   >
                                     {child.title}
                                   </Typography>
-                                  <div className="flex-1 h-[3px] bg-[#2E437C] rounded-lg"></div>
+                                  <div className="flex-1 border-[#2E437C] border-[2px] me-2 rounded-lg"></div>
                                 </div>
                               </AccordionSummary>
 
@@ -1177,7 +1349,11 @@ const ProductCom = () => {
                                 <List dense>
                                   {child.subChildren.map(
                                     (subChild, subIndex) => (
-                                      <ListItem key={subIndex} disablePadding>
+                                      <ListItem
+                                        key={subIndex}
+                                        sx={{ marginLeft: "25px" }}
+                                        disablePadding
+                                      >
                                         <ListItemButton
                                           onClick={() =>
                                             handleProductItemClick(
@@ -1197,10 +1373,18 @@ const ProductCom = () => {
                                           <ListItemText
                                             primary={subChild.title}
                                             primaryTypographyProps={{
-                                              fontSize: "14px",
-                                              fontWeight: 500,
+                                              fontSize: "13px",
+                                              fontWeight:
+                                                selectedProductId ===
+                                                subChild.productId
+                                                  ? 600
+                                                  : 400,
                                               fontStyle: "normal",
-                                              color: "#6b7280",
+                                              color:
+                                                selectedProductId ===
+                                                subChild.productId
+                                                  ? "#2E437C"
+                                                  : "#6b7280",
                                               marginLeft: "2px",
                                               transition:
                                                 "color 0.2s ease-in-out",
@@ -1237,7 +1421,10 @@ const ProductCom = () => {
                                     fontSize: "15px",
                                     fontWeight: 500,
                                     fontStyle: "normal",
-                                    color: "#4b5563",
+                                    color:
+                                      selectedProductId === child.productId
+                                        ? "#2E437C"
+                                        : "#4b5563",
                                     marginLeft: "2px",
                                     transition: "color 0.2s ease-in-out",
                                   }}
@@ -1255,7 +1442,6 @@ const ProductCom = () => {
           </div>
         </motion.div>
 
-        {/* Right Content */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -1263,16 +1449,113 @@ const ProductCom = () => {
           transition={{ duration: 0.8 }}
           className="w-full md:w-3/4"
         >
-          {/* Show subcategory cards when viewMode is "categories" */}
           {viewMode === "categories" && (
-            <SubcategoryCards
-              subcategories={subcategories}
-              onSubcategoryClick={handleSubcategoryCardClick}
-              loading={subcategoriesLoading}
-            />
+            <div>
+              {subcategories.length > 0 && (
+                <div className="mb-8">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
+                    <h2 className="text-xl font-semibold text-[#BABEC8]">
+                      Subcategories
+                    </h2>
+                    <div className="hidden md:block flex-1 mx-6">
+                      <div className="h-[6px] bg-[#BABEC8]"></div>
+                    </div>
+                  </div>
+
+                  <SubcategoryCards
+                    subcategories={subcategories}
+                    onSubcategoryClick={handleSubcategoryCardClick}
+                    loading={subcategoriesLoading}
+                  />
+                </div>
+              )}
+
+              {directProducts.length > 0 && (
+                <div>
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
+                    <h2 className="text-xl font-semibold text-[#BABEC8]">
+                      Products
+                    </h2>
+                    <div className="hidden md:block flex-1 mx-6">
+                      <div className="h-[6px] bg-[#BABEC8]"></div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {directProducts.map((product, index) => (
+                      <motion.div
+                        key={product.id}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.5, delay: index * 0.1 }}
+                        onClick={() => handleDirectProductClick(product)}
+                        className="flex flex-col items-center text-center cursor-pointer p-4"
+                      >
+                        <div className="aspect-[4/3]">
+                          <motion.img
+                            src={
+                              product.image && product.image.startsWith("http")
+                                ? product.image
+                                : product.image && product.image.includes("/")
+                                ? `${import.meta.env.VITE_BACKEND_URL}/${
+                                    product.image
+                                  }`
+                                : productImage
+                            }
+                            alt={product.title}
+                            className="w-full h-full object-cover p-3"
+                            whileHover={{ scale: 1.05 }}
+                            transition={{ duration: 0.3 }}
+                          />
+                        </div>
+                        <h2 className="text-lg font-semibold mt-3 text-gray-800">
+                          {product.title}
+                        </h2>
+                        <p className="text-gray-500 text-sm mt-1">
+                          {product.category}
+                        </p>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {subcategories.length === 0 &&
+                directProducts.length === 0 &&
+                !subcategoriesLoading && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center py-20"
+                  >
+                    <div className="text-gray-400 mb-4">
+                      <svg
+                        className="w-16 h-16 mx-auto"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={1}
+                          d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                        />
+                      </svg>
+                    </div>
+                    <h3 className="text-lg font-medium text-gray-600 mb-2">
+                      No content available
+                    </h3>
+                    <p className="text-gray-400">
+                      This category doesn't have any subcategories or products
+                      available
+                    </p>
+                  </motion.div>
+                )}
+            </div>
           )}
 
-          {/* Show products when viewMode is "products" or "search" */}
           {(viewMode === "products" || viewMode === "search") && (
             <>
               {productsLoading ? (
@@ -1348,13 +1631,17 @@ const ProductCom = () => {
                     </svg>
                   </div>
                   <h3 className="text-lg font-medium text-gray-600 mb-2">
-                    {products.length === 0 && !searchQuery
+                    {searchQuery && viewMode === "search"
+                      ? "No products found"
+                      : products.length === 0 && !searchQuery
                       ? "Select a subcategory to view products"
                       : "No products found"}
                   </h3>
                   <p className="text-gray-400">
                     {searchQuery && viewMode === "search"
-                      ? `No products match "${searchQuery}"`
+                      ? searchError
+                        ? `${searchError} Try searching with different keywords.`
+                        : `No products match "${searchQuery}". Try different search terms.`
                       : products.length === 0 && !searchQuery
                       ? "Choose a subcategory from the left to explore products"
                       : `No products available in ${selectedCategory}`}
@@ -1364,34 +1651,12 @@ const ProductCom = () => {
             </>
           )}
 
-          {/* Show product details when viewMode is "details" */}
           {viewMode === "details" && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5 }}
-                className="mb-6"
-              >
-                <button
-                  onClick={handleBackToProducts}
-                  className="flex items-center gap-2 text-gray-600 hover:text-[#2E437C] transition-colors group"
-                >
-                  <motion.div
-                    className="flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 group-hover:bg-[#2E437C]/10 transition-colors"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <FaArrowLeft className="text-sm" />
-                  </motion.div>
-                  <span className="font-medium">Back to {parentCategory}</span>
-                </button>
-              </motion.div>
-
               {productDetailsLoading ? (
                 <div className="flex items-center justify-center py-20">
                   <CircularProgress size={60} sx={{ color: "#2E437C" }} />

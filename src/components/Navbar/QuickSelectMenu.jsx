@@ -4,6 +4,7 @@ import { IoChevronDown } from "react-icons/io5";
 import { HiOutlineViewGrid } from "react-icons/hi";
 import { CircularProgress } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { GoFilter } from "react-icons/go";
 import axios from "axios";
 
 const QuickSelectMenu = ({ navBg }) => {
@@ -20,7 +21,6 @@ const QuickSelectMenu = ({ navBg }) => {
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
 
- 
   const axiosConfig = {
     headers: {
       "ngrok-skip-browser-warning": "true",
@@ -33,10 +33,10 @@ const QuickSelectMenu = ({ navBg }) => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
-    
+
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   useEffect(() => {
@@ -184,7 +184,9 @@ const QuickSelectMenu = ({ navBg }) => {
         setExpandedCategory(expandedCategory === item.id ? null : item.id);
         setExpandedSubcategory(null);
       } else if (item.type === "subcategory") {
-        setExpandedSubcategory(expandedSubcategory === item.id ? null : item.id);
+        setExpandedSubcategory(
+          expandedSubcategory === item.id ? null : item.id
+        );
       }
     } else {
       // Desktop behavior - navigate on any click
@@ -218,21 +220,9 @@ const QuickSelectMenu = ({ navBg }) => {
 
   const buttonVariants = {
     closed: {
-      backgroundColor: navBg
-        ? "rgba(46, 67, 124, 0.1)"
-        : "rgba(255, 255, 255, 0.1)",
-      borderColor: navBg
-        ? "rgba(46, 67, 124, 0.2)"
-        : "rgba(255, 255, 255, 0.2)",
       width: "44px",
     },
     open: {
-      backgroundColor: navBg
-        ? "rgba(46, 67, 124, 0.15)"
-        : "rgba(255, 255, 255, 0.15)",
-      borderColor: navBg
-        ? "rgba(46, 67, 124, 0.4)"
-        : "rgba(255, 255, 255, 0.4)",
       width: "44px",
     },
   };
@@ -275,60 +265,51 @@ const QuickSelectMenu = ({ navBg }) => {
   };
 
   return (
-    <div className="relative ">
+    <div className="relative">
       {/* Icon Quick Select Button */}
       <motion.button
         ref={buttonRef}
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center justify-center h-11 rounded-xl border-2 font-medium transition-all duration-150 hover:shadow-lg overflow-hidden ${
-          navBg ? "text-[#2E437C]" : "text-white"
-        }`}
+        className={`h-11 ${navBg ? "text-[#2E437C]" : "text-white"}`}
         variants={buttonVariants}
         animate={isOpen ? "open" : "closed"}
-        style={{
-          willChange: "transform, background-color, border-color, width",
-          fontFamily: "'Articulat CF', sans-serif",
-        }}
       >
-        <div className="flex items-center justify-center w-6 h-6 flex-shrink-0">
-          <HiOutlineViewGrid className="w-5 h-5" />
+        <div className="">
+          <GoFilter className="w-5 h-5" />
         </div>
       </motion.button>
-
 
       {/* Dropdown Menu */}
       <AnimatePresence mode="wait">
         {isOpen && (
           <motion.div
             ref={menuRef}
-            className={`absolute mt-2 bg-white rounded-2xl shadow-2xl border border-gray-200 z-50 overflow-hidden ${
-              isMobile 
-                ? "right-0 w-80 max-w-[90vw]" 
-                : "center-div"
+            className={`mt-2 bg-white shadow-2xl z-50 overflow-hidden ${
+              isMobile ? "absolute right-0 w-80 max-w-[90vw]" : "center-div"
             }`}
             variants={dropdownVariants}
             initial="hidden"
             animate="visible"
             exit="exit"
-            style={!isMobile ? {
-              willChange: "transform, opacity",
-              width: "1280px",
-              maxWidth: "95vw",
-            } : {}}
+            style={
+              isMobile
+                ? {}
+                : {
+                    position: "fixed",
+                    marginTop: 0,
+                  }
+            }
           >
             {/* Header */}
-            <motion.div
-              className="bg-white px-6 py-4 border-b border-gray-100"
-              variants={itemVariants}
-            >
-              <div className="flex items-center gap-3">
+            <motion.div className="bg-white px-6 py-4" variants={itemVariants}>
+              <div className="flex items-center gap-3 max-w-7xl mx-auto">
                 <h2
                   className="text-[#2E437C] font-bold text-2xl"
                   style={{ fontFamily: "'Articulat CF', sans-serif" }}
                 >
                   Quick Select
                 </h2>
-                <div className="flex-1 h-[4px] bg-[#2E437C]"></div>
+                <div className="flex-1 h-[6px] bg-[#2E437C]"></div>
               </div>
             </motion.div>
 
@@ -378,13 +359,16 @@ const QuickSelectMenu = ({ navBg }) => {
                                   ? "text-[#2E437C]"
                                   : "text-gray-700"
                               }`}
-                              style={{ fontFamily: "'Articulat CF', sans-serif" }}
+                              style={{
+                                fontFamily: "'Articulat CF', sans-serif",
+                              }}
                             >
                               {category.name}
                             </span>
                             <motion.div
                               animate={{
-                                rotate: expandedCategory === category.id ? 180 : 0,
+                                rotate:
+                                  expandedCategory === category.id ? 180 : 0,
                               }}
                               transition={{ duration: 0.2 }}
                             >
@@ -412,11 +396,14 @@ const QuickSelectMenu = ({ navBg }) => {
                                             ? "bg-[#2E437C]/5 border border-[#2E437C]/10"
                                             : "hover:bg-gray-50"
                                         }`}
-                                        onClick={() => handleItemClick(subcategory)}
+                                        onClick={() =>
+                                          handleItemClick(subcategory)
+                                        }
                                       >
                                         <span
                                           className={`text-sm font-medium ${
-                                            expandedSubcategory === subcategory.id
+                                            expandedSubcategory ===
+                                            subcategory.id
                                               ? "text-[#2E437C]"
                                               : "text-gray-600"
                                           }`}
@@ -425,7 +412,11 @@ const QuickSelectMenu = ({ navBg }) => {
                                         </span>
                                         <motion.div
                                           animate={{
-                                            rotate: expandedSubcategory === subcategory.id ? 180 : 0,
+                                            rotate:
+                                              expandedSubcategory ===
+                                              subcategory.id
+                                                ? 180
+                                                : 0,
                                           }}
                                           transition={{ duration: 0.2 }}
                                         >
@@ -435,26 +426,34 @@ const QuickSelectMenu = ({ navBg }) => {
 
                                       {/* Subcategory Products */}
                                       <AnimatePresence>
-                                        {expandedSubcategory === subcategory.id && (
+                                        {expandedSubcategory ===
+                                          subcategory.id && (
                                           <motion.div
                                             initial={{ height: 0, opacity: 0 }}
-                                            animate={{ height: "auto", opacity: 1 }}
+                                            animate={{
+                                              height: "auto",
+                                              opacity: 1,
+                                            }}
                                             exit={{ height: 0, opacity: 0 }}
                                             transition={{ duration: 0.3 }}
                                             className="overflow-hidden pl-4 pt-1"
                                           >
-                                            {subcategory.products.map((product) => (
-                                              <motion.div
-                                                key={product.id}
-                                                className="p-2 cursor-pointer hover:bg-[#2E437C]/5 rounded-lg transition-all duration-200"
-                                                onClick={() => handleItemClick(product)}
-                                                whileHover={{ x: 2 }}
-                                              >
-                                                <span className="text-sm text-[#2E437C] font-medium">
-                                                  • {product.title}
-                                                </span>
-                                              </motion.div>
-                                            ))}
+                                            {subcategory.products.map(
+                                              (product) => (
+                                                <motion.div
+                                                  key={product.id}
+                                                  className="p-2 cursor-pointer hover:bg-[#2E437C]/5 rounded-lg transition-all duration-200"
+                                                  onClick={() =>
+                                                    handleItemClick(product)
+                                                  }
+                                                  whileHover={{ x: 2 }}
+                                                >
+                                                  <span className="text-sm text-[#2E437C] font-medium">
+                                                    • {product.title}
+                                                  </span>
+                                                </motion.div>
+                                              )
+                                            )}
                                           </motion.div>
                                         )}
                                       </AnimatePresence>
@@ -486,255 +485,241 @@ const QuickSelectMenu = ({ navBg }) => {
 
                 {/* Desktop Mega Menu */}
                 {!isMobile && (
-                  <div className="flex">
-                    {/* Left Column - Main Categories */}
-                    <motion.div
-                      className="bg-white w-[369px] min-h-[424px] border-r border-gray-100"
-                      variants={itemVariants}
-                    >
-                      <div className="p-3.5">
-                        {categories.map((category, index) => (
-                          <motion.div
-                            key={category.id}
-                            className={`flex items-center justify-between p-4 border-b border-gray-100 cursor-pointer transition-all duration-100 ${
-                               selectedCategory === category.id
-                                ? "bg-[#2E437C]/5 border-l-4 border-l-[#2E437C]"
-                                : "hover:bg-gray-50"
-                            }`}
-                            variants={itemVariants}
-                            onMouseEnter={() => handleCategoryHover(category.id)}
-                            // onClick={() => handleItemClick(category)}
-                            whileHover={{ x: 2, transition: { duration: 0.1 } }}
-                          >
-                            <span
-                              className={`text-base transition-colors duration-100 ${
-                        
-                                selectedCategory === category.id
-                                  ? "text-[#2E437C] font-semibold"
-                                  : "text-gray-600 font-medium"
-                              }`}
-                              style={{
-                                fontFamily: "'Articulat CF', sans-serif",
-                                fontSize: "17px",
-                              }}
-                            >
-                              {category.name}
-                            </span>
+                  <div className="max-w-7xl mx-auto">
+                    <div className="flex justify-center mt-5">
+                      {/* Left Column - Main Categories */}
+                      <motion.div
+                        className="bg-white flex-1 max-w-md border-r-2 border-gray-100"
+                        variants={itemVariants}
+                        style={{ minHeight: "auto" }}
+                      >
+                        <div className="p-3.5 pt-0">
+                          {categories.map((category, index) => (
                             <motion.div
-                              animate={{
-                                rotate: selectedCategory === category.id ? -90 : 0,
-                                color:
+                              key={category.id}
+                              className={`flex items-center justify-between p-4 cursor-pointer transition-all duration-100`}
+                              variants={itemVariants}
+                              onClick={() =>
+                                handleCategoryHover(category.id)
+                              }
+                            
+                            >
+                              <span
+                                className={`text-base transition-colors duration-100 ${
                                   selectedCategory === category.id
-                                    ? "#2E437C"
-                                    : "#9CA3AF",
-                              }}
-                              transition={{ duration: 0.1 }}
-                            >
-                              <IoChevronDown className="w-6 h-6" />
+                                    ? "text-[#000] font-[500]"
+                                    : "text-[#666666] font-medium"
+                                }`}
+                                style={{
+                                  fontFamily: "'Articulat CF', sans-serif",
+                                  fontSize: "17px",
+                                }}
+                              >
+                                {category.name}
+                              </span>
+                              <motion.div
+                                animate={{
+                                  rotate: -90,
+                                  color:
+                                    selectedCategory === category.id
+                                      ? "#2E437C"
+                                      : "#9CA3AF",
+                                }}
+                                transition={{ duration: 0.1 }}
+                              >
+                                <IoChevronDown className="w-6 h-6" />
+                              </motion.div>
                             </motion.div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </motion.div>
+                          ))}
+                        </div>
+                      </motion.div>
 
-                    <div className="w-px bg-gray-200"></div>
-
-                    {/* Middle Column - Subcategories & Direct Products */}
-                    <motion.div
-                      className="bg-white w-[500px] min-h-[424px] border-r border-gray-100"
-                      variants={itemVariants}
-                    >
-                      <div className="p-7">
-                        <AnimatePresence mode="wait">
-                          {selectedCategory && (
-                            <motion.div
-                              key={selectedCategory}
-                              initial={{ opacity: 0, x: 15 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              exit={{ opacity: 0, x: -15 }}
-                              transition={{ duration: 0.15 }}
-                            >
-                              {/* Subcategories */}
-                              {getSelectedCategoryData()?.subcategories.map(
-                                (subcategory, index) => (
-                                  <motion.div
-                                    key={subcategory.id}
-                                    className={`flex items-center justify-between p-2.5 cursor-pointer rounded-lg transition-all duration-100 ${
-                                      selectedSubCategory === subcategory.id
-                                        ? "bg-[#2E437C]/10 border border-[#2E437C]/20"
-                                        : "hover:bg-gray-50"
-                                    }`}
-                                    initial={{ opacity: 0, y: 8 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{
-                                      delay: index * 0.02,
-                                      duration: 0.15,
-                                    }}
-                                    onMouseEnter={() =>
-                                      handleSubcategoryHover(subcategory.id)
-                                    }
-                                    // onClick={() => handleItemClick(subcategory)}
-                                    whileHover={{
-                                      x: 4,
-                                      transition: { duration: 0.1 },
-                                    }}
-                                  >
-                                    <span
-                                      className={`text-sm transition-colors duration-100 font-medium ${
-                                        selectedSubCategory === subcategory.id
-                                          ? "text-[#2E437C]"
-                                          : "text-gray-700"
-                                      }`}
-                                      style={{
-                                        fontFamily: "'Articulat CF', sans-serif",
-                                        fontSize: "15px",
-                                      }}
-                                    >
-                                      {subcategory.name}
-                                    </span>
+                      {/* Middle Column - Subcategories & Direct Products */}
+                      <motion.div
+                        className="bg-white flex-1 max-w-lg border-r-2 border-gray-100"
+                        variants={itemVariants}
+                        style={{ minHeight: "auto" }}
+                      >
+                        <div className="p-3.5 pt-0">
+                          <AnimatePresence mode="wait">
+                            {selectedCategory && (
+                              <motion.div
+                                key={selectedCategory}
+                                initial={{ opacity: 0, x: 15 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -15 }}
+                                transition={{ duration: 0.15 }}
+                              >
+                                {/* Subcategories */}
+                                {getSelectedCategoryData()?.subcategories.map(
+                                  (subcategory, index) => (
                                     <motion.div
-                                      animate={{
-                                        rotate:
-                                          selectedSubCategory === subcategory.id
-                                            ? -90
-                                            : 0,
-                                        color:
-                                          selectedSubCategory === subcategory.id
-                                            ? "#2E437C"
-                                            : "#9CA3AF",
-                                      }}
-                                      transition={{ duration: 0.1 }}
-                                    >
-                                      <IoChevronDown className="w-6 h-6" />
-                                    </motion.div>
-                                  </motion.div>
-                                )
-                              )}
-
-                              {/* Direct Products */}
-                              {getSelectedCategoryData()?.directProducts.map(
-                                (product, index) => (
-                                  <motion.div
-                                    key={product.id}
-                                    className="flex items-center justify-between p-2.5 cursor-pointer hover:bg-gray-50 rounded-lg transition-all duration-100"
-                                    initial={{ opacity: 0, y: 8 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{
-                                      delay:
-                                        (getSelectedCategoryData()?.subcategories
-                                          .length +
-                                          index) *
-                                        0.02,
-                                      duration: 0.15,
-                                    }}
-                                    onClick={() => handleItemClick(product)}
-                                    whileHover={{
-                                      x: 4,
-                                      backgroundColor: "rgba(46, 67, 124, 0.05)",
-                                      transition: { duration: 0.1 },
-                                    }}
-                                  >
-                                    <span
-                                      className="text-sm transition-colors duration-100 text-[#2E437C] font-medium"
-                                      style={{
-                                        fontFamily: "'Articulat CF', sans-serif",
-                                        fontSize: "15px",
-                                      }}
-                                    >
-                                      • {product.title}
-                                    </span>
-                                  </motion.div>
-                                )
-                              )}
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    </motion.div>
-
-                    <div className="w-px bg-gray-200"></div>
-
-                    {/* Right Column - Subcategory Products */}
-                    <motion.div
-                      className="bg-white w-[411px] min-h-[424px] rounded-r-2xl"
-                      variants={itemVariants}
-                    >
-                      <div className="p-7">
-                        <AnimatePresence mode="wait">
-                          {selectedSubCategory && getSelectedSubcategoryData() && (
-                            <motion.div
-                              key={selectedSubCategory}
-                              initial={{ opacity: 0, x: 15 }}
-                              animate={{ opacity: 1, x: 0 }}
-                              exit={{ opacity: 0, x: -15 }}
-                              transition={{ duration: 0.15 }}
-                            >
-                              {getSelectedSubcategoryData()?.products.length > 0 ? (
-                                getSelectedSubcategoryData().products.map(
-                                  (product, index) => (
-                                    <motion.div
-                                      key={product.id}
-                                      className="flex items-center justify-center p-2.5 cursor-pointer hover:bg-gray-50 rounded-lg transition-all duration-100"
+                                      key={subcategory.id}
+                                      className={`flex items-center justify-between p-2.5 cursor-pointer rounded-lg transition-all duration-100`}
                                       initial={{ opacity: 0, y: 8 }}
                                       animate={{ opacity: 1, y: 0 }}
                                       transition={{
                                         delay: index * 0.02,
                                         duration: 0.15,
                                       }}
-                                      onClick={() => handleItemClick(product)}
-                                      whileHover={{
-                                        x: 2,
-                                        backgroundColor: "rgba(46, 67, 124, 0.05)",
-                                        transition: { duration: 0.1 },
-                                      }}
+                                      onClick={() =>
+                                        handleSubcategoryHover(subcategory.id)
+                                      }
+                                      
                                     >
                                       <span
-                                        className="text-[#2E437C] font-medium opacity-80 transition-opacity duration-100 hover:opacity-100"
+                                        className={`text-sm transition-colors duration-100 font-medium ${
+                                          selectedSubCategory === subcategory.id
+                                            ? "text-[#000] font-[500]"
+                                            : "text-gray-700"
+                                        }`}
                                         style={{
-                                          fontFamily: "'Articulat CF', sans-serif",
+                                          fontFamily:
+                                            "'Articulat CF', sans-serif",
                                           fontSize: "15px",
-                                          lineHeight: "22px",
+                                        }}
+                                      >
+                                        {subcategory.name}
+                                      </span>
+                                      <motion.div
+                                        animate={{
+                                          rotate: -90,
+                                          color:
+                                            selectedSubCategory ===
+                                            subcategory.id
+                                              ? "#2E437C"
+                                              : "#9CA3AF",
+                                        }}
+                                        transition={{ duration: 0.1 }}
+                                      >
+                                        <IoChevronDown className="w-6 h-6" />
+                                      </motion.div>
+                                    </motion.div>
+                                  )
+                                )}
+
+                                {/* Direct Products */}
+                                {getSelectedCategoryData()?.directProducts.map(
+                                  (product, index) => (
+                                    <motion.div
+                                      key={product.id}
+                                      className="flex items-center justify-between p-2.5 cursor-pointer rounded-lg transition-all duration-100"
+                                      initial={{ opacity: 0, y: 8 }}
+                                      animate={{ opacity: 1, y: 0 }}
+                                      transition={{
+                                        delay:
+                                          (getSelectedCategoryData()
+                                            ?.subcategories.length +
+                                            index) *
+                                          0.02,
+                                        duration: 0.15,
+                                      }}
+                                      onClick={() => handleItemClick(product)}
+                                    
+                                    >
+                                      <span
+                                        className="text-sm transition-colors duration-100 text-[#666666] font-medium"
+                                        style={{
+                                          fontFamily:
+                                            "'Articulat CF', sans-serif",
+                                          fontSize: "15px",
                                         }}
                                       >
                                         • {product.title}
                                       </span>
                                     </motion.div>
                                   )
-                                )
-                              ) : (
+                                )}
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      </motion.div>
+
+                      {/* Right Column - Subcategory Products */}
+                      <motion.div
+                        className="bg-white flex-1 max-w-md rounded-r-2xl"
+                        variants={itemVariants}
+                        style={{ minHeight: "auto" }}
+                      >
+                        <div className="px-3">
+                          <AnimatePresence mode="wait">
+                            {selectedSubCategory &&
+                              getSelectedSubcategoryData() && (
                                 <motion.div
-                                  className="flex items-center justify-center h-full text-gray-400"
-                                  initial={{ opacity: 0 }}
-                                  animate={{ opacity: 1 }}
-                                  transition={{ delay: 0.1 }}
+                                  key={selectedSubCategory}
+                                  initial={{ opacity: 0, x: 15 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  exit={{ opacity: 0, x: -15 }}
+                                  transition={{ duration: 0.15 }}
                                 >
-                                  <p className="text-center">
-                                    No products available
-                                    <br />
-                                    in this subcategory
-                                  </p>
+                                  {getSelectedSubcategoryData()?.products
+                                    .length > 0 ? (
+                                    getSelectedSubcategoryData().products.map(
+                                      (product, index) => (
+                                        <motion.div
+                                          key={product.id}
+                                          className="flex items-center  p-2.5 cursor-pointer hover:bg-gray-50 rounded-lg transition-all duration-100"
+                                          initial={{ opacity: 0, y: 8 }}
+                                          animate={{ opacity: 1, y: 0 }}
+                                          transition={{
+                                            delay: index * 0.02,
+                                            duration: 0.15,
+                                          }}
+                                          onClick={() =>
+                                            handleItemClick(product)
+                                          }
+                                          
+                                        >
+                                          <span
+                                            className="text-[#666666] font-medium  duration-100 "
+                                            style={{
+                                              fontFamily:
+                                                "'Articulat CF', sans-serif",
+                                              fontSize: "15px",
+                                              lineHeight: "22px",
+                                            }}
+                                          >
+                                            • {product.title}
+                                          </span>
+                                        </motion.div>
+                                      )
+                                    )
+                                  ) : (
+                                    <motion.div
+                                      className="flex items-center justify-center h-32 text-gray-400"
+                                      initial={{ opacity: 0 }}
+                                      animate={{ opacity: 1 }}
+                                      transition={{ delay: 0.1 }}
+                                    >
+                                      <p className="text-center">
+                                        No products available
+                                        <br />
+                                        in this subcategory
+                                      </p>
+                                    </motion.div>
+                                  )}
                                 </motion.div>
                               )}
+                          </AnimatePresence>
+
+                          {!selectedSubCategory && (
+                            <motion.div
+                              className="flex items-center justify-center h-32 text-gray-400"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              transition={{ duration: 0.15 }}
+                            >
+                              <p className="text-center text-sm">
+                                Hover over a subcategory
+                                <br />
+                                to see its products
+                              </p>
                             </motion.div>
                           )}
-                        </AnimatePresence>
-
-                        {!selectedSubCategory && (
-                          <motion.div
-                            className="flex items-center justify-center h-full text-gray-400"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.15 }}
-                          >
-                            <p className="text-center text-sm">
-                              Hover over a subcategory
-                              <br />
-                              to see its products
-                            </p>
-                          </motion.div>
-                        )}
-                      </div>
-                    </motion.div>
+                        </div>
+                      </motion.div>
+                    </div>
                   </div>
                 )}
               </>

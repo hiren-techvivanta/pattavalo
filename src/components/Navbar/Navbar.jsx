@@ -152,13 +152,13 @@ export default function Navbar({ navStyle, show = true }) {
                   menu.name === "Industries" ? (
                     <motion.button
                       key={menu.name}
-                      onClick={handleScrollToIndustries} 
+                      onClick={handleScrollToIndustries}
                       className={`${navBg ? "text-[#2E437C]" : "text-white"} 
-                  transition-colors font-medium hover:text-[#2E437C]`}
+                  transition-colors cursor-pointer hover:text-[#2E437C]`}
                       style={{
                         fontFamily: "'Articulat CF', sans-serif",
                         fontSize: "16px",
-                        fontWeight: 550,
+                        fontWeight: 450,
                       }}
                     >
                       {menu.name}
@@ -166,13 +166,13 @@ export default function Navbar({ navStyle, show = true }) {
                   ) : (
                     <motion.button
                       key={menu.name}
-                      onClick={() => navigate(menu.url)} 
+                      onClick={() => navigate(menu.url)}
                       className={`${navBg ? "text-[#2E437C]" : "text-white"} 
-                  transition-colors font-medium hover:text-[#2E437C]`}
+                  transition-colors cursor-pointer font-medium hover:text-[#2E437C]`}
                       style={{
                         fontFamily: "'Articulat CF', sans-serif",
-                        fontSize: "16px",
-                        fontWeight: 550,
+                        fontSize: "16px", 
+                        fontWeight: 450,
                       }}
                     >
                       {menu.name}
@@ -181,7 +181,6 @@ export default function Navbar({ navStyle, show = true }) {
                 )}
               </div>
 
-              {/* Desktop Actions - Quick Select + Contact Button */}
               <div className="hidden md:flex items-center space-x-4">
                 <QuickSelectMenu navBg={navBg} />
 
@@ -213,12 +212,9 @@ export default function Navbar({ navStyle, show = true }) {
                 </motion.button>
               </div>
 
-              {/* Mobile Actions - Quick Select + Menu Button */}
               <div className="md:hidden flex items-center space-x-3">
-                {/* Quick Select Menu for Mobile */}
                 <QuickSelectMenu navBg={navBg} />
 
-                {/* Mobile Menu Button */}
                 <motion.button
                   onClick={() => setIsOpen(!isOpen)}
                   className={`focus:outline-none p-2 rounded-md ${

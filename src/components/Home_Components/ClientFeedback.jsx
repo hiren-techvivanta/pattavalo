@@ -1,13 +1,14 @@
 import React from "react";
 import { motion } from "framer-motion";
-import clientimg from "../../assets/images/clientfeedback.jpg"
+import clientimg from "../../assets/images/clientfeedback.jpg";
+import { CustomHeading } from "../common/CustomHeading";
 
 const testimonials = [
   {
     id: 1,
     name: "Mirana Mari",
     role: "3D Designer",
-    image: clientimg, 
+    image: clientimg,
     feedback:
       "Working with this team was a fantastic experience from start to finish. They took the time to really understand our requirements, asked the right questions, and even suggested improvements that we hadn't thought of. The final delivery was not only on time but exceeded our expectations in terms of quality and design.",
   },
@@ -39,10 +40,10 @@ const testimonials = [
 
 export default function ClientFeedback() {
   const headerVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 30,
-      scale: 0.98 
+      scale: 0.98,
     },
     visible: {
       opacity: 1,
@@ -57,14 +58,12 @@ export default function ClientFeedback() {
     },
   };
 
-
-
   const cardVariants = {
-    hidden: { 
-      opacity: 0, 
+    hidden: {
+      opacity: 0,
       y: 40,
       scale: 0.95,
-      rotateX: 15
+      rotateX: 15,
     },
     visible: {
       opacity: 1,
@@ -81,9 +80,9 @@ export default function ClientFeedback() {
   };
 
   const imageVariants = {
-    hidden: { 
+    hidden: {
       scale: 0.8,
-      opacity: 0
+      opacity: 0,
     },
     visible: {
       scale: 1,
@@ -98,9 +97,9 @@ export default function ClientFeedback() {
   };
 
   const textVariants = {
-    hidden: { 
+    hidden: {
       opacity: 0,
-      y: 15
+      y: 15,
     },
     visible: {
       opacity: 1,
@@ -114,9 +113,9 @@ export default function ClientFeedback() {
   };
 
   const nameVariants = {
-    hidden: { 
+    hidden: {
       opacity: 0,
-      x: -10
+      x: -10,
     },
     visible: {
       opacity: 1,
@@ -169,29 +168,16 @@ export default function ClientFeedback() {
         variants={containerVariants}
         className="text-left mb-12 max-w-4xl"
       >
-        <motion.p 
-          className="text-[#2E437C] font-medium"
-         
-        >
-           {splitText("Client Feedback")}
-         
+        <motion.p className="text-[18px] text-[#2E437C] font-medium">
+          <CustomHeading title="Client Feedback" className="" />
         </motion.p>
-        
-        <motion.h1 
-          className="text-2xl md:text-4xl font-normal text-[#2E437C] mt-2"
-          
-        >
-          {splitText("Don't take our world for it!")}
-          
-        </motion.h1>
-        
-        <motion.h3 
-          className="text-2xl md:text-4xl font-bold text-[#BABEC8]"
-         
-        >
-          {splitText("Hear it from our partners.")}
 
-          
+        <motion.h2 className="text-[32px] md:text-[48px] font-normal text-[#2E437C] mt-2 leading-[44px]">
+          <CustomHeading title="Don't take our world for it!" className="" />
+        </motion.h2>
+
+        <motion.h3 className="ext-[32px] md:text-[48px] font-bold text-[#BABEC8]">
+          <CustomHeading title="Hear it from our partners." className="" />
         </motion.h3>
       </motion.div>
 
@@ -223,12 +209,10 @@ export default function ClientFeedback() {
             }}
             className="bg-gradient-to-br from-[#F8F9FB] to-[#F0F2F7] p-6 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-50 relative overflow-hidden group"
           >
-            <motion.div
-              className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#2E437C]/5 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-            />
+            <motion.div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#2E437C]/5 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
             <div className="relative z-10">
-              <motion.div 
+              <motion.div
                 className="flex items-center mb-4"
                 variants={imageVariants}
                 initial="hidden"
@@ -259,7 +243,9 @@ export default function ClientFeedback() {
                 viewport={{ once: true }}
                 className="text-gray-700 text-[15px] leading-relaxed mb-4 relative"
               >
-                <span className="text-[#2E437C] text-xl absolute -top-2 -left-1 opacity-30">"</span>
+                <span className="text-[#2E437C] text-xl absolute -top-2 -left-1 opacity-30">
+                  "
+                </span>
                 {t.feedback}
                 <span className="text-[#2E437C] text-xl opacity-30">"</span>
               </motion.p>
@@ -270,11 +256,11 @@ export default function ClientFeedback() {
                 whileInView="visible"
                 viewport={{ once: true }}
               >
-                <motion.p 
+                <motion.p
                   className="font-semibold text-gray-800 mb-1"
                   whileHover={{
                     color: "#2E437C",
-                    transition: { duration: 0.2 }
+                    transition: { duration: 0.2 },
                   }}
                 >
                   {t.name}

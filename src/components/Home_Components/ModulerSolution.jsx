@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom"; // Add this import
+import { CustomHeading } from "../common/CustomHeading";
 
 export default function ModulerSolution() {
   const navigate = useNavigate(); // Add navigation hook
@@ -19,7 +20,7 @@ export default function ModulerSolution() {
         setError(null);
 
         const response = await fetch(
-          'https://kiroapi.techvivanta.com/product/category/',
+          "https://kiroapi.techvivanta.com/product/category/",
           {
             headers: {
               "ngrok-skip-browser-warning": "true",
@@ -34,13 +35,16 @@ export default function ModulerSolution() {
 
         const result = await response.json();
 
-        if (result.message === "Categories fetched successfully" && result.data) {
+        if (
+          result.message === "Categories fetched successfully" &&
+          result.data
+        ) {
           // Transform API data to match the original structure
           const transformedSolutions = result.data.map((category, index) => ({
             id: category.id,
             title: category.name.toUpperCase(),
-            icon: category.image.startsWith("http") 
-              ? category.image 
+            icon: category.image.startsWith("http")
+              ? category.image
               : `${import.meta.env.VITE_BACKEND_URL}/${category.image}`,
             description: category.description,
             animation: null, // No animation applied
@@ -140,7 +144,7 @@ export default function ModulerSolution() {
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
           variants={containerVariants}
-          className="mb-8 sm:mb-12 md:text-left px-3"
+          className="mb-8 sm:mb-12 md:text-left px-0"
         >
           <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#BABEC8] leading-snug">
             {splitText("Your Crafted, ")}
@@ -167,7 +171,7 @@ export default function ModulerSolution() {
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
           variants={containerVariants}
-          className="mb-8 sm:mb-12 md:text-left px-3"
+          className="mb-8 sm:mb-12 md:text-left px-0"
         >
           <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#BABEC8] leading-snug">
             {splitText("Your Crafted, ")}
@@ -179,7 +183,9 @@ export default function ModulerSolution() {
 
         <div className="flex items-center justify-center py-20">
           <div className="text-center">
-            <p className="text-red-500 mb-4">Failed to load solutions: {error}</p>
+            <p className="text-red-500 mb-4">
+              Failed to load solutions: {error}
+            </p>
             <button
               onClick={() => window.location.reload()}
               className="bg-[#2E437C] text-white px-6 py-2 rounded-lg hover:bg-[#1d3b72] transition-colors"
@@ -199,13 +205,20 @@ export default function ModulerSolution() {
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
         variants={containerVariants}
-        className="mb-8 sm:mb-12 md:text-left px-3"
+        className="mb-8 sm:mb-12 md:text-left px-0"
       >
-        <h2 className="text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#BABEC8] leading-snug">
-          {splitText("Your Crafted, ")}
-          <span className="block text-4xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-semibold text-[#2E437C]">
-            {splitText("Modular Solution")}
-          </span>
+        <h2
+          className="text-[48px] md:text-[100px] font-semibold text-[#BABEC8] leading-snug"
+          style={{ lineHeight: "98px" }}
+        >
+          <CustomHeading
+            title="Your Crafted, "
+            className="block font-semibold"
+          />
+          <CustomHeading
+            title="Modular Solution"
+            className="block font-semibold text-[#2E437C]"
+          />
         </h2>
       </motion.div>
 
@@ -231,9 +244,10 @@ export default function ModulerSolution() {
                 mass: 0.5,
               },
             }}
-            whileTap={{ // Add tap animation for better UX
+            whileTap={{
+              // Add tap animation for better UX
               scale: 0.98,
-              transition: { duration: 0.1 }
+              transition: { duration: 0.1 },
             }}
             className="group relative flex flex-col items-center justify-center p-5 bg-white
               cursor-pointer overflow-hidden hover:shadow-lg" // Added hover:shadow-lg for better UX
@@ -252,7 +266,8 @@ export default function ModulerSolution() {
                  group-hover:brightness-0 group-hover:invert"
                 onError={(e) => {
                   // Fallback for broken images
-                  e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpolyline points='21,15 16,10 5,21'/%3E%3C/svg%3E";
+                  e.target.src =
+                    "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='3' width='18' height='18' rx='2' ry='2'/%3E%3Ccircle cx='8.5' cy='8.5' r='1.5'/%3E%3Cpolyline points='21,15 16,10 5,21'/%3E%3C/svg%3E";
                 }}
               />
             </div>
