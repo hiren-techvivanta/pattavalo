@@ -1536,7 +1536,7 @@ const ProductCom = () => {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
                       {directProducts.map((product, index) => (
                         <motion.div
                           key={product.id}
@@ -1625,7 +1625,7 @@ const ProductCom = () => {
                     <p className="mt-4 text-gray-600">Searching products...</p>
                   </div>
                 ) : displayProducts.length > 0 ? (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
                     {displayProducts.map((product, index) => (
                       <motion.div
                         key={product.id}

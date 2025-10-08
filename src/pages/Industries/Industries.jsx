@@ -502,7 +502,7 @@ const Industries = () => {
                       </motion.h6>
 
                       <motion.p
-                        className="text-gray-600 text-sm lg:text-base leading-relaxed mb-4"
+                        className="text-[#667085] text-[12px] lg:text-[15px] leading-relaxed mb-4"
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{
