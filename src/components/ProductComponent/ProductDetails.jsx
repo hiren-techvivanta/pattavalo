@@ -486,10 +486,6 @@ const ProductDetails = ({ selectedProduct }) => {
           },
           body: JSON.stringify({
             ...formData,
-            product_name:
-              selectedProduct?.title ||
-              selectedProduct?.productName ||
-              "Unknown Product",
             product_id: selectedProduct?.id,
           }),
         }

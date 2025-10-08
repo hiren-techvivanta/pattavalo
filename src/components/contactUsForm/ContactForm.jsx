@@ -21,7 +21,7 @@ const ContactForm = () => {
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
+  const [submitStatus, setSubmitStatus] = useState({ type: "", message: "" });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +31,7 @@ const ContactForm = () => {
     }
     // Clear submit status when user starts typing
     if (submitStatus.message) {
-      setSubmitStatus({ type: '', message: '' });
+      setSubmitStatus({ type: "", message: "" });
     }
   };
 
@@ -42,13 +42,13 @@ const ContactForm = () => {
 
   const validatePhone = (phone) => {
     const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-    return phoneRegex.test(phone.replace(/\s/g, ''));
+    return phoneRegex.test(phone.replace(/\s/g, ""));
   };
 
   const validateURL = (url) => {
     if (!url) return true; // Optional field
     try {
-      new URL(url.startsWith('http') ? url : `https://${url}`);
+      new URL(url.startsWith("http") ? url : `https://${url}`);
       return true;
     } catch {
       return false;
@@ -57,33 +57,27 @@ const ContactForm = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    
+
+    // Required fields
     if (!formData.name.trim()) {
       newErrors.name = "Name is required";
     }
-    
+
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!validateEmail(formData.email)) {
       newErrors.email = "Please enter a valid email address";
     }
-    
+
     if (!formData.phone_number.trim()) {
       newErrors.phone_number = "Phone number is required";
     } else if (!validatePhone(formData.phone_number)) {
       newErrors.phone_number = "Please enter a valid phone number";
     }
-    
-    if (!formData.company_name.trim()) {
-      newErrors.company_name = "Company name is required";
-    }
-    
+
+    // Optional field validation (only validate if filled)
     if (formData.company_website && !validateURL(formData.company_website)) {
       newErrors.company_website = "Please enter a valid website URL";
-    }
-    
-    if (!formData.designation.trim()) {
-      newErrors.designation = "Designation is required";
     }
 
     setErrors(newErrors);
@@ -92,27 +86,33 @@ const ContactForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     setIsSubmitting(true);
-    setSubmitStatus({ type: '', message: '' });
+    setSubmitStatus({ type: "", message: "" });
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/settings/enquiry`, {
-        method: 'POST',
-       
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/settings/enquiry`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
+      );
 
       if (response.ok) {
         setSubmitStatus({
-          type: 'success',
-          message: 'Your message has been sent successfully! We will get back to you soon.'
+          type: "success",
+          message:
+            "Your message has been sent successfully! We will get back to you soon.",
         });
-        
+
         // Reset form after successful submission
         setFormData({
           name: "",
@@ -124,13 +124,13 @@ const ContactForm = () => {
           message: "",
         });
       } else {
-        throw new Error('Failed to send message');
+        throw new Error("Failed to send message");
       }
     } catch (error) {
-      console.error('Error submitting form:', error);
+      console.error("Error submitting form:", error);
       setSubmitStatus({
-        type: 'error',
-        message: 'Failed to send message. Please try again later.'
+        type: "error",
+        message: "Failed to send message. Please try again later.",
       });
     } finally {
       setIsSubmitting(false);
@@ -169,8 +169,13 @@ const ContactForm = () => {
           {/* Header */}
           <div className="space-y-4">
             <h1 className="text-[32px] md:text-[40px] lg:text-[48px] font-bold leading-tight">
-              <span className="text-[#2E437C]"><CustomHeading title="Contact" className="" /></span>
-              <span className="text-[#BABEC8]"> <CustomHeading title="Us" className="" /></span>
+              <span className="text-[#2E437C]">
+                <CustomHeading title="Contact" className="" />
+              </span>
+              <span className="text-[#BABEC8]">
+                {" "}
+                <CustomHeading title="Us" className="" />
+              </span>
             </h1>
             <p className="text-[#343434] text-[16px] lg:text-[17.76px] leading-relaxed">
               We are committed to processing the information in
@@ -248,36 +253,19 @@ const ContactForm = () => {
         >
           {/* Status Message */}
           {submitStatus.message && (
-            <div className={`mb-4 p-4 rounded-lg ${
-              submitStatus.type === 'success' 
-                ? 'bg-green-50 text-green-700 border border-green-200' 
-                : 'bg-red-50 text-red-700 border border-red-200'
-            }`}>
+            <div
+              className={`mb-4 p-4 rounded-lg ${
+                submitStatus.type === "success"
+                  ? "bg-green-50 text-green-700 border border-green-200"
+                  : "bg-red-50 text-red-700 border border-red-200"
+              }`}
+            >
               {submitStatus.message}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4 lg:space-y-6">
-            {/* Email Field */}
-            <div className="space-y-2">
-              <div className="relative">
-                <input
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  placeholder="Email"
-                  className={`w-full h-14 lg:h-16 px-4 lg:px-6 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
-                    errors.email ? "border-red-500" : "border-[#D8D8D8]"
-                  }`}
-                />
-              </div>
-              {errors.email && (
-                <p className="text-red-500 text-sm">{errors.email}</p>
-              )}
-            </div>
-
-            {/* Name Field */}
+            {/* Name Field - Required */}
             <div className="space-y-2">
               <div className="relative">
                 <input
@@ -285,7 +273,7 @@ const ContactForm = () => {
                   name="name"
                   value={formData.name}
                   onChange={handleInputChange}
-                  placeholder="Name"
+                  placeholder="Full Name *"
                   className={`w-full h-14 lg:h-16 px-4 lg:px-6 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
                     errors.name ? "border-red-500" : "border-[#D8D8D8]"
                   }`}
@@ -296,24 +284,57 @@ const ContactForm = () => {
               )}
             </div>
 
-            {/* Company Name and Website Row */}
+            {/* Email Field - Required */}
+            <div className="space-y-2">
+              <div className="relative">
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="Email *"
+                  className={`w-full h-14 lg:h-16 px-4 lg:px-6 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
+                    errors.email ? "border-red-500" : "border-[#D8D8D8]"
+                  }`}
+                />
+              </div>
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email}</p>
+              )}
+            </div>
+
+            {/* Phone Number Field - Required */}
+            <div className="space-y-2">
+              <div className="relative">
+                <input
+                  type="text"
+                  name="phone_number"
+                  value={formData.phone_number}
+                  onChange={handleInputChange}
+                  placeholder="Phone Number *"
+                  className={`w-full h-14 lg:h-16 px-4 lg:px-6 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
+                    errors.phone_number
+                      ? "border-red-500"
+                      : "border-[#D8D8D8]"
+                  }`}
+                />
+              </div>
+              {errors.phone_number && (
+                <p className="text-red-500 text-sm">{errors.phone_number}</p>
+              )}
+            </div>
+
+            {/* Company Name and Website Row - Optional */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
               <div className="space-y-2">
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="company_name"
-                    value={formData.company_name}
-                    onChange={handleInputChange}
-                    placeholder="Company Name"
-                    className={`w-full h-14 lg:h-16 px-3 lg:px-4 pr-8 lg:pr-10 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
-                      errors.company_name ? "border-red-500" : "border-[#D8D8D8]"
-                    }`}
-                  />
-                </div>
-                {errors.company_name && (
-                  <p className="text-red-500 text-sm">{errors.company_name}</p>
-                )}
+                <input
+                  type="text"
+                  name="company_name"
+                  value={formData.company_name}
+                  onChange={handleInputChange}
+                  placeholder="Company Name"
+                  className="w-full h-14 lg:h-16 px-3 lg:px-4 bg-white border border-[#D8D8D8] rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all"
+                />
               </div>
               <div className="space-y-2">
                 <input
@@ -323,54 +344,32 @@ const ContactForm = () => {
                   onChange={handleInputChange}
                   placeholder="Website"
                   className={`w-full h-14 lg:h-16 px-3 lg:px-4 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
-                    errors.company_website ? "border-red-500" : "border-[#D8D8D8]"
+                    errors.company_website
+                      ? "border-red-500"
+                      : "border-[#D8D8D8]"
                   }`}
                 />
                 {errors.company_website && (
-                  <p className="text-red-500 text-sm">{errors.company_website}</p>
+                  <p className="text-red-500 text-sm">
+                    {errors.company_website}
+                  </p>
                 )}
               </div>
             </div>
 
-            {/* Phone Number and Designation Row */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
-              <div className="space-y-2">
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="phone_number"
-                    value={formData.phone_number}
-                    onChange={handleInputChange}
-                    placeholder="Phone Number"
-                    className={`w-full h-14 lg:h-16 px-3 lg:px-4 pr-8 lg:pr-10 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
-                      errors.phone_number ? "border-red-500" : "border-[#D8D8D8]"
-                    }`}
-                  />
-                </div>
-                {errors.phone_number && (
-                  <p className="text-red-500 text-sm">{errors.phone_number}</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="designation"
-                    value={formData.designation}
-                    onChange={handleInputChange}
-                    placeholder="Designation"
-                    className={`w-full h-14 lg:h-16 px-3 lg:px-4 pr-8 lg:pr-10 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
-                      errors.designation ? "border-red-500" : "border-[#D8D8D8]"
-                    }`}
-                  />
-                </div>
-                {errors.designation && (
-                  <p className="text-red-500 text-sm">{errors.designation}</p>
-                )}
-              </div>
+            {/* Designation Field - Optional */}
+            <div className="space-y-2">
+              <input
+                type="text"
+                name="designation"
+                value={formData.designation}
+                onChange={handleInputChange}
+                placeholder="Designation"
+                className="w-full h-14 lg:h-16 px-4 lg:px-6 bg-white border border-[#D8D8D8] rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all"
+              />
             </div>
 
-            {/* Message Field */}
+            {/* Message Field - Optional */}
             <div className="space-y-2">
               <textarea
                 name="message"
@@ -390,8 +389,8 @@ const ContactForm = () => {
               whileTap={!isSubmitting ? { scale: 0.98 } : {}}
               className={`w-full h-14 lg:h-16 text-white text-[14px] lg:text-[16px] font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl ${
                 isSubmitting
-                  ? 'bg-gray-400 cursor-not-allowed'
-                  : 'bg-[#2E437C] hover:bg-[#1E2F5C]'
+                  ? "bg-gray-400 cursor-not-allowed"
+                  : "bg-[#2E437C] hover:bg-[#1E2F5C]"
               }`}
             >
               {isSubmitting ? (
@@ -400,7 +399,7 @@ const ContactForm = () => {
                   Submitting...
                 </div>
               ) : (
-                'Submit'
+                "Submit"
               )}
             </motion.button>
           </form>
