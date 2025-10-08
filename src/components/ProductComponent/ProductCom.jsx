@@ -21,6 +21,48 @@ import SubcategoryCards from "./SubcategoryCards";
 import axios from "axios";
 import { CustomHeading } from "../common/CustomHeading";
 import { CiSearch } from "react-icons/ci";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
+const theme = createTheme({
+  components: {
+    MuiAccordionSummary: {
+      styleOverrides: {
+        root: {
+          minHeight: "40px !important",
+          "&.Mui-expanded": {
+            minHeight: "10px !important",
+          },
+        },
+        content: {
+          margin: "0 0 !important",
+          "&.Mui-expanded": {
+            margin: "0 0 !important",
+          },
+        },
+      },
+    },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          margin: "0 !important",
+          "&:not(:last-child)": {
+            marginBottom: "0 !important",
+          },
+          "&:before": {
+            display: "none !important",
+          },
+        },
+      },
+    },
+    MuiAccordionDetails: {
+      styleOverrides: {
+        root: {
+          paddingBottom: "0 !important",
+        },
+      },
+    },
+  },
+});
 
 const ProductCom = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -897,603 +939,704 @@ const ProductCom = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white px-4 md:px-12 py-10">
-      {/* Your existing JSX remains the same */}
-      <motion.div
-        initial={{ opacity: 0, x: -40 }}
-        whileInView={{ opacity: 1, x: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8"
-      >
-        <h1 className="text-3xl md:text-4xl font-bold text-[#BABEC8]">
-          <CustomHeading title="Our Products" className="" />
-        </h1>
-
-        <div className="hidden md:block flex-1 mx-6">
-          <div className="h-[6px] bg-[#BABEC8]"></div>
-        </div>
-
-        <div className="relative w-full md:max-w-md lg:max-w-lg xl:max-w-lg">
-          <motion.input
-            type="text"
-            placeholder="Search products..."
-            value={searchQuery}
-            onChange={handleSearchChange}
-            className="w-full border border-gray-300 rounded-full pl-12 pr-6 py-3 md:py-2 outline-none focus:ring-3 focus:ring-[#2E437C]/20 focus:border-[#2E437C] transition-all duration-300 text-gray-800 placeholder-gray-500 text-base md:text-lg bg-white shadow-sm hover:shadow-md focus:shadow-lg"
-            whileFocus={{
-              scale: 1.01,
-              boxShadow: "0 10px 30px rgba(46, 67, 124, 0.15)",
-            }}
-            whileHover={{
-              scale: 1.005,
-              boxShadow: "0 5px 20px rgba(0, 0, 0, 0.08)",
-            }}
-            transition={{
-              type: "spring",
-              stiffness: 300,
-              damping: 20,
-            }}
-          />
-
-          <CiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg md:text-xl transition-colors duration-300 pointer-events-none" />
-
-          {searchQuery && (
-            <motion.button
-              onClick={() => {
-                setSearchQuery("");
-                setSearchError(null);
-              }}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <FaTimes className="text-lg" />
-            </motion.button>
-          )}
-        </div>
-      </motion.div>
-
-      {/* Rest of your existing JSX remains exactly the same */}
-      <div className="mt-2 flex flex-col md:flex-row gap-5">
+    <ThemeProvider theme={theme}>
+      <div className="min-h-screen bg-white px-4 md:px-12 py-10">
+        {/* Your existing JSX remains the same */}
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, x: -40 }}
+          whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="w-full md:w-1/4"
+          transition={{ duration: 0.6 }}
+          className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8"
         >
-          <div className="p-4 rounded-lg">
-            {/* Your existing accordion structure remains the same */}
-            <div className="md:hidden">
-              <Accordion
-                expanded={isMobileMenuOpen}
-                onChange={(event, isExpanded) =>
-                  setIsMobileMenuOpen(isExpanded)
-                }
-                sx={{
-                  boxShadow: "0px 0.89px 1.78px 0px rgba(16, 24, 40, 0.05)",
-                  "&:before": { display: "none" },
-                  marginBottom: "4px",
-                  backgroundColor: "transparent",
-                  border: "none",
-                  borderRadius: "27px",
-                  width: "100%",
-                  maxWidth: "396px",
-                  overflow: "hidden",
+          <h1 className="text-3xl md:text-4xl font-bold text-[#BABEC8]">
+            <CustomHeading title="Our Products" className="" />
+          </h1>
+
+          <div className="hidden md:block flex-1 mx-6">
+            <div className="h-[6px] bg-[#BABEC8]"></div>
+          </div>
+
+          <div className="relative w-full md:max-w-md lg:max-w-lg xl:max-w-lg">
+            <motion.input
+              type="text"
+              placeholder="Search products..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="w-full border border-gray-300 rounded-full pl-12 pr-6 py-3 md:py-2 outline-none focus:ring-3 focus:ring-[#2E437C]/20 focus:border-[#2E437C] transition-all duration-300 text-gray-800 placeholder-gray-500 text-base md:text-lg bg-white shadow-sm hover:shadow-md focus:shadow-lg"
+              whileFocus={{
+                scale: 1.01,
+                boxShadow: "0 10px 30px rgba(46, 67, 124, 0.15)",
+              }}
+              whileHover={{
+                scale: 1.005,
+                boxShadow: "0 5px 20px rgba(0, 0, 0, 0.08)",
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 20,
+              }}
+            />
+
+            <CiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg md:text-xl transition-colors duration-300 pointer-events-none" />
+
+            {searchQuery && (
+              <motion.button
+                onClick={() => {
+                  setSearchQuery("");
+                  setSearchError(null);
                 }}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
               >
-                <AccordionSummary
-                  expandIcon={
-                    <FaChevronDown className="text-black w-[9.58px] h-[5.42px]" />
-                  }
-                  sx={{
-                    backgroundColor: "#ffffff",
-                    border: "1px solid #000000",
-                    borderRadius: "27px",
-                    minHeight: "auto",
-                    padding: "10.66px 25px",
-                    margin: 0,
-                    "&.Mui-expanded": {
-                      backgroundColor: "#ffffff",
-                      borderRadius: "27px 27px 0 0",
-                      borderBottom: "none",
-                      minHeight: "auto",
-                    },
-                    "& .MuiAccordionSummary-content": {
-                      margin: 0,
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      flex: 1,
-                    },
-                    "& .MuiAccordionSummary-expandIconWrapper": {
-                      transform: "rotate(0deg)",
-                      transition: "transform 0.2s",
-                    },
-                    "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
-                      transform: "rotate(180deg)",
-                    },
-                  }}
-                >
-                  <Typography
-                    sx={{
-                      color: "#000000",
-                      textAlign: "left",
-                      fontFamily: "'Articulat CF', sans-serif",
-                      fontSize: "16px",
-                      lineHeight: "21.32px",
-                      fontWeight: 500,
-                      flex: 1,
-                    }}
-                  >
-                    Explore our range
-                  </Typography>
-                </AccordionSummary>
-
-                <AccordionDetails
-                  sx={{
-                    backgroundColor: "#ffffff",
-                    border: "0.89px solid #000000",
-                    borderTop: "none",
-                    borderRadius: "0 0 27px 27px",
-                    padding: "8px 0",
-                    boxShadow: "0px 0.89px 1.78px 0px rgba(16, 24, 40, 0.05)",
-                  }}
-                >
-                  {categories.map((category, index) => (
-                    <Accordion
-                      key={category.id}
-                      expanded={expandedPanel === `panel${index + 1}`}
-                      onChange={handleAccordionChange(`panel${index + 1}`)}
-                      sx={{
-                        boxShadow: "none",
-                        "&:before": { display: "none" },
-                        marginBottom: "4px",
-                        backgroundColor: "transparent",
-                      }}
-                    >
-                      <AccordionSummary
-                        expandIcon={<FaChevronDown className="text-gray-600" />}
-                        sx={{
-                          minHeight: "48px",
-                          padding: "0 8px",
-                          borderRadius: "6px",
-                          transition: "all 0.2s ease-in-out",
-                        }}
-                      >
-                        <div className="flex items-center w-full">
-                          <Typography
-                            sx={{
-                              fontSize: "17px",
-                              fontWeight: 500,
-                              fontStyle: "normal",
-                              color:
-                                expandedPanel === `panel${index + 1}` &&
-                                !selectedSubcategoryId &&
-                                !selectedProductId
-                                  ? "#2E437C"
-                                  : "#000",
-                              transition: "color 0.2s ease-in-out",
-                              whiteSpace: "nowrap",
-                              marginRight: "12px",
-                            }}
-                          >
-                            {category.title}
-                          </Typography>
-                          <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
-                        </div>
-                      </AccordionSummary>
-
-                      <AccordionDetails sx={{ padding: "0 0 8px 16px" }}>
-                        <List dense>
-                          {category.children.map((child, childIndex) => (
-                            <React.Fragment key={childIndex}>
-                              {child.isSubCategory ? (
-                                <Accordion
-                                  expanded={
-                                    expandedSubPanel === `subpanel${childIndex}`
-                                  }
-                                  onChange={handleSubAccordionChange(
-                                    `subpanel${childIndex}`,
-                                    child
-                                  )}
-                                  sx={{
-                                    boxShadow: "none",
-                                    "&:before": { display: "none" },
-                                    backgroundColor: "transparent",
-                                    margin: 0,
-                                  }}
-                                >
-                                  <AccordionSummary
-                                    expandIcon={
-                                      <FaChevronDown className="text-gray-500 text-xs" />
-                                    }
-                                    sx={{
-                                      minHeight: "36px",
-                                      padding: "0 4px",
-                                      borderRadius: "4px",
-                                      transition: "all 0.2s ease-in-out",
-                                    }}
-                                  >
-                                    <div className="flex items-center w-full">
-                                      <Typography
-                                        sx={{
-                                          fontSize: "17px",
-                                          fontWeight: 500,
-                                          fontStyle: "normal",
-                                          color:
-                                            selectedSubcategoryId ===
-                                              child.subcategoryId &&
-                                            !selectedProductId
-                                              ? "#2E437C"
-                                              : "#666666",
-                                          transition: "color 0.2s ease-in-out",
-                                          whiteSpace: "nowrap",
-                                          marginRight: "12px",
-                                        }}
-                                      >
-                                        {child.title}
-                                      </Typography>
-                                      <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
-                                    </div>
-                                  </AccordionSummary>
-
-                                  <AccordionDetails
-                                    sx={{ padding: "0 0 4px 12px" }}
-                                  >
-                                    <List dense>
-                                      {child.subChildren.map(
-                                        (subChild, subIndex) => (
-                                          <ListItem
-                                            key={subIndex}
-                                            disablePadding
-                                          >
-                                            <ListItemButton
-                                              onClick={() =>
-                                                handleProductItemClick(
-                                                  subChild.title,
-                                                  subChild.category,
-                                                  subChild
-                                                )
-                                              }
-                                              sx={{
-                                                minHeight: "32px",
-                                                padding: "4px 8px",
-                                                borderRadius: "4px",
-                                                transition:
-                                                  "all 0.2s ease-in-out",
-                                              }}
-                                            >
-                                              •{" "}
-                                              <ListItemText
-                                                primary={subChild.title}
-                                                primaryTypographyProps={{
-                                                  fontSize: "14px",
-                                                  fontWeight: 500,
-                                                  fontStyle: "normal",
-                                                  color:
-                                                    selectedProductId ===
-                                                    subChild.productId
-                                                      ? "#2E437C"
-                                                      : "#6b7280",
-                                                  marginLeft: "2px",
-                                                  transition:
-                                                    "color 0.2s ease-in-out",
-                                                }}
-                                              />
-                                            </ListItemButton>
-                                          </ListItem>
-                                        )
-                                      )}
-                                    </List>
-                                  </AccordionDetails>
-                                </Accordion>
-                              ) : (
-                                <ListItem key={childIndex} disablePadding>
-                                  <ListItemButton
-                                    onClick={() =>
-                                      handleProductItemClick(
-                                        child.title,
-                                        child.category,
-                                        child
-                                      )
-                                    }
-                                    sx={{
-                                      minHeight: "36px",
-                                      padding: "4px 8px",
-                                      borderRadius: "4px",
-                                      transition: "all 0.2s ease-in-out",
-                                    }}
-                                  >
-                                    •
-                                    <ListItemText
-                                      primary={child.title}
-                                      primaryTypographyProps={{
-                                        fontSize: "15px",
-                                        fontWeight: 500,
-                                        fontStyle: "normal",
-                                        color:
-                                          selectedProductId === child.productId
-                                            ? "#2E437C"
-                                            : "#4b5563",
-                                        marginLeft: "2px",
-                                        transition: "color 0.2s ease-in-out",
-                                      }}
-                                    />
-                                  </ListItemButton>
-                                </ListItem>
-                              )}
-                            </React.Fragment>
-                          ))}
-                        </List>
-                      </AccordionDetails>
-                    </Accordion>
-                  ))}
-                </AccordionDetails>
-              </Accordion>
-            </div>
-
-            <div className="hidden md:block">
-              {categories.map((category, index) => (
-                <Accordion
-                  key={category.id}
-                  expanded={expandedPanel === `panel${index + 1}`}
-                  onChange={handleAccordionChange(`panel${index + 1}`)}
-                  sx={{
-                    boxShadow: "none",
-                    "&:before": { display: "none" },
-                    marginBottom: "4px",
-                    backgroundColor: "transparent",
-                  }}
-                >
-                  <AccordionSummary
-                    expandIcon={<FaChevronDown className="text-gray-600" />}
-                    sx={{
-                      minHeight: "48px",
-                      padding: "0 8px",
-                      borderRadius: "6px",
-                      transition: "all 0.2s ease-in-out",
-                    }}
-                  >
-                    <div className="flex items-center w-full">
-                      <Typography
-                        sx={{
-                          fontSize: "17px",
-                          fontWeight:
-                            expandedPanel === `panel${index + 1}` &&
-                            !selectedSubcategoryId &&
-                            !selectedProductId
-                              ? 600
-                              : 500,
-                          fontStyle: "normal",
-                          color:
-                            expandedPanel === `panel${index + 1}` &&
-                            !selectedSubcategoryId &&
-                            !selectedProductId
-                              ? "#2E437C"
-                              : "#000",
-                          transition: "color 0.2s ease-in-out",
-                          whiteSpace: "nowrap",
-                          marginRight: "12px",
-                        }}
-                      >
-                        {category.title}
-                      </Typography>
-                      <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
-                    </div>
-                  </AccordionSummary>
-
-                  <AccordionDetails sx={{ padding: "0 0 8px 16px" }}>
-                    <List dense>
-                      {category.children.map((child, childIndex) => (
-                        <React.Fragment key={childIndex}>
-                          {child.isSubCategory ? (
-                            <Accordion
-                              expanded={
-                                expandedSubPanel === `subpanel${childIndex}`
-                              }
-                              onChange={handleSubAccordionChange(
-                                `subpanel${childIndex}`,
-                                child
-                              )}
-                              sx={{
-                                boxShadow: "none",
-                                "&:before": { display: "none" },
-                                backgroundColor: "transparent",
-                                margin: 0,
-                              }}
-                            >
-                              <AccordionSummary
-                                expandIcon={
-                                  <FaChevronDown className="text-gray-500 text-xs" />
-                                }
-                                sx={{
-                                  minHeight: "36px",
-                                  padding: "0 4px",
-                                  borderRadius: "4px",
-                                  transition: "all 0.2s ease-in-out",
-                                }}
-                              >
-                                <div className="flex items-center w-full">
-                                  <Typography
-                                    sx={{
-                                      fontSize: "15px",
-                                      fontWeight:
-                                        selectedSubcategoryId ===
-                                          child.subcategoryId &&
-                                        !selectedProductId
-                                          ? 600
-                                          : 400,
-                                      fontStyle: "normal",
-                                      color:
-                                        selectedSubcategoryId ===
-                                          child.subcategoryId &&
-                                        !selectedProductId
-                                          ? "#2E437C"
-                                          : "#666666",
-                                      transition: "color 0.2s ease-in-out",
-                                      whiteSpace: "nowrap",
-                                      marginRight: "12px",
-                                      marginLeft: "10px",
-                                    }}
-                                  >
-                                    {child.title}
-                                  </Typography>
-                                  <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
-                                </div>
-                              </AccordionSummary>
-
-                              <AccordionDetails
-                                sx={{ padding: "0 0 4px 12px" }}
-                              >
-                                <List dense>
-                                  {child.subChildren.map(
-                                    (subChild, subIndex) => (
-                                      <ListItem
-                                        key={subIndex}
-                                        sx={{ marginLeft: "25px" }}
-                                        disablePadding
-                                      >
-                                        <ListItemButton
-                                          onClick={() =>
-                                            handleProductItemClick(
-                                              subChild.title,
-                                              subChild.category,
-                                              subChild
-                                            )
-                                          }
-                                          sx={{
-                                            minHeight: "32px",
-                                            padding: "4px 8px",
-                                            borderRadius: "4px",
-                                            transition: "all 0.2s ease-in-out",
-                                          }}
-                                        >
-                                          •{" "}
-                                          <ListItemText
-                                            primary={subChild.title}
-                                            primaryTypographyProps={{
-                                              fontSize: "13px",
-                                              fontWeight:
-                                                selectedProductId ===
-                                                subChild.productId
-                                                  ? 600
-                                                  : 400,
-                                              fontStyle: "normal",
-                                              color:
-                                                selectedProductId ===
-                                                subChild.productId
-                                                  ? "#2E437C"
-                                                  : "#6b7280",
-                                              marginLeft: "2px",
-                                              transition:
-                                                "color 0.2s ease-in-out",
-                                            }}
-                                          />
-                                        </ListItemButton>
-                                      </ListItem>
-                                    )
-                                  )}
-                                </List>
-                              </AccordionDetails>
-                            </Accordion>
-                          ) : (
-                            <ListItem key={childIndex} disablePadding>
-                              <ListItemButton
-                                onClick={() =>
-                                  handleProductItemClick(
-                                    child.title,
-                                    child.category,
-                                    child
-                                  )
-                                }
-                                sx={{
-                                  minHeight: "36px",
-                                  padding: "4px 8px",
-                                  borderRadius: "4px",
-                                  transition: "all 0.2s ease-in-out",
-                                }}
-                              >
-                                •
-                                <ListItemText
-                                  primary={child.title}
-                                  primaryTypographyProps={{
-                                    fontSize: "15px",
-                                    fontWeight: 500,
-                                    fontStyle: "normal",
-                                    color:
-                                      selectedProductId === child.productId
-                                        ? "#2E437C"
-                                        : "#4b5563",
-                                    marginLeft: "2px",
-                                    transition: "color 0.2s ease-in-out",
-                                  }}
-                                />
-                              </ListItemButton>
-                            </ListItem>
-                          )}
-                        </React.Fragment>
-                      ))}
-                    </List>
-                  </AccordionDetails>
-                </Accordion>
-              ))}
-            </div>
+                <FaTimes className="text-lg" />
+              </motion.button>
+            )}
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="w-full md:w-3/4"
-        >
-          {viewMode === "categories" && (
-            <div>
-              {subcategories.length > 0 && (
-                <div className="mb-8">
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
-                    <h2 className="text-xl font-semibold text-[#BABEC8]">
-                      Subcategories
-                    </h2>
-                    <div className="hidden md:block flex-1 mx-6">
-                      <div className="h-[6px] bg-[#BABEC8]"></div>
+        {/* Rest of your existing JSX remains exactly the same */}
+        <div className="mt-2 flex flex-col md:flex-row gap-5">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+            className="w-full md:w-1/4"
+          >
+            <div className="p-4 rounded-lg">
+              {/* Your existing accordion structure remains the same */}
+              <div className="md:hidden">
+                <Accordion
+                  expanded={isMobileMenuOpen}
+                  onChange={(event, isExpanded) =>
+                    setIsMobileMenuOpen(isExpanded)
+                  }
+                  sx={{
+                    boxShadow: "0px 0.89px 1.78px 0px rgba(16, 24, 40, 0.05)",
+                    "&:before": { display: "none" },
+                    marginBottom: "4px",
+                    backgroundColor: "transparent",
+                    border: "none",
+                    borderRadius: "27px",
+                    width: "100%",
+                    maxWidth: "396px",
+                    overflow: "hidden",
+                  }}
+                >
+                  <AccordionSummary
+                    expandIcon={
+                      <FaChevronDown className="text-black w-[9.58px] h-[5.42px]" />
+                    }
+                    sx={{
+                      backgroundColor: "#ffffff",
+                      border: "1px solid #000000",
+                      borderRadius: "27px",
+                      minHeight: "auto",
+                      padding: "10.66px 25px",
+                      margin: 0,
+                      "&.Mui-expanded": {
+                        backgroundColor: "#ffffff",
+                        borderRadius: "27px 27px 0 0",
+                        borderBottom: "none",
+                        minHeight: "auto",
+                      },
+                      "& .MuiAccordionSummary-content": {
+                        margin: 0,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        flex: 1,
+                      },
+                      "& .MuiAccordionSummary-expandIconWrapper": {
+                        transform: "rotate(0deg)",
+                        transition: "transform 0.2s",
+                      },
+                      "& .MuiAccordionSummary-expandIconWrapper.Mui-expanded": {
+                        transform: "rotate(180deg)",
+                      },
+                    }}
+                  >
+                    <Typography
+                      sx={{
+                        color: "#000000",
+                        textAlign: "left",
+                        fontFamily: "'Articulat CF', sans-serif",
+                        fontSize: "16px",
+                        lineHeight: "21.32px",
+                        fontWeight: 500,
+                        flex: 1,
+                      }}
+                    >
+                      Explore our range
+                    </Typography>
+                  </AccordionSummary>
+
+                  <AccordionDetails
+                    sx={{
+                      backgroundColor: "#ffffff",
+                      border: "0.89px solid #000000",
+                      borderTop: "none",
+                      borderRadius: "0 0 27px 27px",
+                      padding: "8px 0",
+                      boxShadow: "0px 0.89px 1.78px 0px rgba(16, 24, 40, 0.05)",
+                    }}
+                  >
+                    {categories.map((category, index) => (
+                      <Accordion
+                        key={category.id}
+                        expanded={expandedPanel === `panel${index + 1}`}
+                        onChange={handleAccordionChange(`panel${index + 1}`)}
+                        sx={{
+                          boxShadow: "none",
+                          "&:before": { display: "none" },
+                          marginBottom: "4px",
+                          backgroundColor: "transparent",
+                        }}
+                      >
+                        <AccordionSummary
+                          expandIcon={
+                            <FaChevronDown className="text-gray-600" />
+                          }
+                          sx={{
+                            minHeight: "48px",
+                            padding: "0 8px",
+                            borderRadius: "6px",
+                            transition: "all 0.2s ease-in-out",
+                          }}
+                        >
+                          <div className="flex items-center w-full">
+                            <Typography
+                              sx={{
+                                fontSize: "17px",
+                                fontWeight: 500,
+                                fontStyle: "normal",
+                                color:
+                                  expandedPanel === `panel${index + 1}` &&
+                                  !selectedSubcategoryId &&
+                                  !selectedProductId
+                                    ? "#2E437C"
+                                    : "#000",
+                                transition: "color 0.2s ease-in-out",
+                                whiteSpace: "nowrap",
+                                marginRight: "12px",
+                              }}
+                            >
+                              {category.title}
+                            </Typography>
+                            <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
+                          </div>
+                        </AccordionSummary>
+
+                        <AccordionDetails sx={{ padding: "0 0 8px 16px" }}>
+                          <List dense>
+                            {category.children.map((child, childIndex) => (
+                              <React.Fragment key={childIndex}>
+                                {child.isSubCategory ? (
+                                  <Accordion
+                                    expanded={
+                                      expandedSubPanel ===
+                                      `subpanel${childIndex}`
+                                    }
+                                    onChange={handleSubAccordionChange(
+                                      `subpanel${childIndex}`,
+                                      child
+                                    )}
+                                    sx={{
+                                      boxShadow: "none",
+                                      "&:before": { display: "none" },
+                                      backgroundColor: "transparent",
+                                      margin: 0,
+                                    }}
+                                  >
+                                    <AccordionSummary
+                                      expandIcon={
+                                        <FaChevronDown className="text-gray-500 text-xs" />
+                                      }
+                                      sx={{
+                                        minHeight: "36px",
+                                        padding: "0 4px",
+                                        borderRadius: "4px",
+                                        transition: "all 0.2s ease-in-out",
+                                      }}
+                                    >
+                                      <div className="flex items-center w-full">
+                                        <Typography
+                                          sx={{
+                                            fontSize: "17px",
+                                            fontWeight: 500,
+                                            fontStyle: "normal",
+                                            color:
+                                              selectedSubcategoryId ===
+                                                child.subcategoryId &&
+                                              !selectedProductId
+                                                ? "#2E437C"
+                                                : "#666666",
+                                            transition:
+                                              "color 0.2s ease-in-out",
+                                            whiteSpace: "nowrap",
+                                            marginRight: "12px",
+                                          }}
+                                        >
+                                          {child.title}
+                                        </Typography>
+                                        <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
+                                      </div>
+                                    </AccordionSummary>
+
+                                    <AccordionDetails
+                                      sx={{ padding: "0 0 4px 12px" }}
+                                    >
+                                      <List dense>
+                                        {child.subChildren.map(
+                                          (subChild, subIndex) => (
+                                            <ListItem
+                                              key={subIndex}
+                                              disablePadding
+                                            >
+                                              <ListItemButton
+                                                onClick={() =>
+                                                  handleProductItemClick(
+                                                    subChild.title,
+                                                    subChild.category,
+                                                    subChild
+                                                  )
+                                                }
+                                                sx={{
+                                                  minHeight: "32px",
+                                                  padding: "4px 8px",
+                                                  borderRadius: "4px",
+                                                  transition:
+                                                    "all 0.2s ease-in-out",
+                                                }}
+                                              >
+                                                •{" "}
+                                                <ListItemText
+                                                  primary={subChild.title}
+                                                  primaryTypographyProps={{
+                                                    fontSize: "14px",
+                                                    fontWeight: 500,
+                                                    fontStyle: "normal",
+                                                    color:
+                                                      selectedProductId ===
+                                                      subChild.productId
+                                                        ? "#2E437C"
+                                                        : "#6b7280",
+                                                    marginLeft: "2px",
+                                                    transition:
+                                                      "color 0.2s ease-in-out",
+                                                  }}
+                                                />
+                                              </ListItemButton>
+                                            </ListItem>
+                                          )
+                                        )}
+                                      </List>
+                                    </AccordionDetails>
+                                  </Accordion>
+                                ) : (
+                                  <ListItem key={childIndex} disablePadding>
+                                    <ListItemButton
+                                      onClick={() =>
+                                        handleProductItemClick(
+                                          child.title,
+                                          child.category,
+                                          child
+                                        )
+                                      }
+                                      sx={{
+                                        minHeight: "36px",
+                                        padding: "4px 8px",
+                                        borderRadius: "4px",
+                                        transition: "all 0.2s ease-in-out",
+                                      }}
+                                    >
+                                      •
+                                      <ListItemText
+                                        primary={child.title}
+                                        primaryTypographyProps={{
+                                          fontSize: "15px",
+                                          fontWeight: 500,
+                                          fontStyle: "normal",
+                                          color:
+                                            selectedProductId ===
+                                            child.productId
+                                              ? "#2E437C"
+                                              : "#4b5563",
+                                          marginLeft: "2px",
+                                          transition: "color 0.2s ease-in-out",
+                                        }}
+                                      />
+                                    </ListItemButton>
+                                  </ListItem>
+                                )}
+                              </React.Fragment>
+                            ))}
+                          </List>
+                        </AccordionDetails>
+                      </Accordion>
+                    ))}
+                  </AccordionDetails>
+                </Accordion>
+              </div>
+
+              <div className="hidden md:block">
+                {categories.map((category, index) => (
+                  <Accordion
+                    key={category.id}
+                    expanded={expandedPanel === `panel${index + 1}`}
+                    onChange={handleAccordionChange(`panel${index + 1}`)}
+                    sx={{
+                      boxShadow: "none",
+                      "&:before": { display: "none" },
+                      marginBottom: "4px",
+                      backgroundColor: "transparent",
+                    }}
+                  >
+                    <AccordionSummary
+                      expandIcon={<FaChevronDown className="text-gray-600" />}
+                      sx={{
+                        minHeight: "48px",
+                        padding: "0 8px",
+                        borderRadius: "6px",
+                        transition: "all 0.2s ease-in-out",
+                      }}
+                    >
+                      <div className="flex items-center w-full">
+                        <Typography
+                          sx={{
+                            fontSize: "17px",
+                            fontWeight:
+                              expandedPanel === `panel${index + 1}` &&
+                              !selectedSubcategoryId &&
+                              !selectedProductId
+                                ? 600
+                                : 500,
+                            fontStyle: "normal",
+                            color:
+                              expandedPanel === `panel${index + 1}` &&
+                              !selectedSubcategoryId &&
+                              !selectedProductId
+                                ? "#2E437C"
+                                : "#000",
+                            transition: "color 0.2s ease-in-out",
+                            whiteSpace: "nowrap",
+                            marginRight: "12px",
+                          }}
+                        >
+                          {category.title}
+                        </Typography>
+                        <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
+                      </div>
+                    </AccordionSummary>
+
+                    <AccordionDetails sx={{ padding: "0 0 8px 16px" }}>
+                      <List dense sx={{
+                                  marginLeft:"25px",}}>
+                        {category.children.map((child, childIndex) => (
+                          <React.Fragment key={childIndex} >
+                            {child.isSubCategory ? (
+                              <Accordion
+                                expanded={
+                                  expandedSubPanel === `subpanel${childIndex}`
+                                }
+                                onChange={handleSubAccordionChange(
+                                  `subpanel${childIndex}`,
+                                  child
+                                )}
+                                sx={{
+                                  boxShadow: "none",
+                                  "&:before": { display: "none" },
+                                  backgroundColor: "transparent",
+                                  margin: 0,
+                                  "& .MuiAccordionSummary-root": {
+                                    flexDirection: "row-reverse",
+                                  },
+                                  
+                                }}
+                              >
+                                <AccordionSummary
+                                  expandIcon={
+                                    <FaChevronDown className="text-gray-500 text-xs" />
+                                  }
+                                  sx={{
+                                    minHeight: "36px",
+                                    padding: "0 4px",
+                                    borderRadius: "4px",
+                                    transition: "all 0.2s ease-in-out",
+                                  }}
+                                >
+                                  <div className="flex items-center w-full">
+                                    <Typography
+                                      sx={{
+                                        fontSize: "15px",
+                                        fontWeight:
+                                          selectedSubcategoryId ===
+                                            child.subcategoryId &&
+                                          !selectedProductId
+                                            ? 600
+                                            : 400,
+                                        fontStyle: "normal",
+                                        color:
+                                          selectedSubcategoryId ===
+                                            child.subcategoryId &&
+                                          !selectedProductId
+                                            ? "#2E437C"
+                                            : "#666666",
+                                        transition: "color 0.2s ease-in-out",
+                                        whiteSpace: "nowrap",
+                                        marginRight: "12px",
+                                        marginLeft: "10px",
+                                      }}
+                                    >
+                                      {child.title}
+                                    </Typography>
+                                    <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
+                                  </div>
+                                </AccordionSummary>
+
+                                <AccordionDetails
+                                  sx={{ padding: "0 0 4px 12px" }}
+                                >
+                                  <List dense>
+                                    {child.subChildren.map(
+                                      (subChild, subIndex) => (
+                                        <ListItem
+                                          key={subIndex}
+                                          sx={{ marginLeft: "25px" }}
+                                          disablePadding
+                                        >
+                                          <ListItemButton
+                                            onClick={() =>
+                                              handleProductItemClick(
+                                                subChild.title,
+                                                subChild.category,
+                                                subChild
+                                              )
+                                            }
+                                            sx={{
+                                              minHeight: "32px",
+                                              padding: "4px 8px",
+                                              borderRadius: "4px",
+                                              transition:
+                                                "all 0.2s ease-in-out",
+                                            }}
+                                          >
+                                            •{" "}
+                                            <ListItemText
+                                              primary={subChild.title}
+                                              primaryTypographyProps={{
+                                                fontSize: "13px",
+                                                fontWeight:
+                                                  selectedProductId ===
+                                                  subChild.productId
+                                                    ? 600
+                                                    : 400,
+                                                fontStyle: "normal",
+                                                color:
+                                                  selectedProductId ===
+                                                  subChild.productId
+                                                    ? "#2E437C"
+                                                    : "#6b7280",
+                                                marginLeft: "2px",
+                                                transition:
+                                                  "color 0.2s ease-in-out",
+                                              }}
+                                            />
+                                          </ListItemButton>
+                                        </ListItem>
+                                      )
+                                    )}
+                                  </List>
+                                </AccordionDetails>
+                              </Accordion>
+                            ) : (
+                              <ListItem key={childIndex} disablePadding>
+                                <ListItemButton
+                                  onClick={() =>
+                                    handleProductItemClick(
+                                      child.title,
+                                      child.category,
+                                      child
+                                    )
+                                  }
+                                  sx={{
+                                    minHeight: "36px",
+                                    padding: "4px 8px",
+                                    borderRadius: "4px",
+                                    transition: "all 0.2s ease-in-out",
+                                  }}
+                                >
+                                  •
+                                  <ListItemText
+                                    primary={child.title}
+                                    primaryTypographyProps={{
+                                      fontSize: "15px",
+                                      fontWeight: 500,
+                                      fontStyle: "normal",
+                                      color:
+                                        selectedProductId === child.productId
+                                          ? "#2E437C"
+                                          : "#4b5563",
+                                      marginLeft: "2px",
+                                      transition: "color 0.2s ease-in-out",
+                                    }}
+                                  />
+                                </ListItemButton>
+                              </ListItem>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </List>
+                    </AccordionDetails>
+                  </Accordion>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="w-full md:w-3/4"
+          >
+            {viewMode === "categories" && (
+              <div>
+                {subcategories.length > 0 && (
+                  <div className="mb-8">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
+                      <h2 className="text-xl font-semibold text-[#BABEC8]">
+                        Subcategories
+                      </h2>
+                      <div className="hidden md:block flex-1 mx-6">
+                        <div className="h-[6px] bg-[#BABEC8]"></div>
+                      </div>
+                    </div>
+
+                    <SubcategoryCards
+                      subcategories={subcategories}
+                      onSubcategoryClick={handleSubcategoryCardClick}
+                      loading={subcategoriesLoading}
+                    />
+                  </div>
+                )}
+
+                {directProducts.length > 0 && (
+                  <div>
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
+                      <h2 className="text-xl font-semibold text-[#BABEC8]">
+                        Products
+                      </h2>
+                      <div className="hidden md:block flex-1 mx-6">
+                        <div className="h-[6px] bg-[#BABEC8]"></div>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                      {directProducts.map((product, index) => (
+                        <motion.div
+                          key={product.id}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          whileInView={{ opacity: 1, scale: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ duration: 0.5, delay: index * 0.1 }}
+                          onClick={() => handleDirectProductClick(product)}
+                          className="flex flex-col items-start cursor-pointer p-4"
+                        >
+                          <div className="aspect-[3/3] max-w-[100%] overflow-hidden">
+                            <motion.img
+                              src={
+                                product.image &&
+                                product.image.startsWith("http")
+                                  ? product.image
+                                  : product.image && product.image.includes("/")
+                                  ? `${import.meta.env.VITE_BACKEND_URL}/${
+                                      product.image
+                                    }`
+                                  : productImage
+                              }
+                              alt={product.title}
+                              className="max-w-[100%] w-full h-full object-cover p-3"
+                              whileHover={{ scale: 1.05 }}
+                              transition={{ duration: 0.3 }}
+                            />
+                          </div>
+                          <h2 className="text-lg font-semibold mt-3 text-gray-800">
+                            {product.title}
+                          </h2>
+                          <p className="text-gray-500 text-sm mt-1">
+                            {product.category}
+                          </p>
+                        </motion.div>
+                      ))}
                     </div>
                   </div>
+                )}
 
-                  <SubcategoryCards
-                    subcategories={subcategories}
-                    onSubcategoryClick={handleSubcategoryCardClick}
-                    loading={subcategoriesLoading}
-                  />
-                </div>
-              )}
+                {subcategories.length === 0 &&
+                  directProducts.length === 0 &&
+                  !subcategoriesLoading && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="text-center py-20"
+                    >
+                      <div className="text-gray-400 mb-4">
+                        <svg
+                          className="w-16 h-16 mx-auto"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={1}
+                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                          />
+                        </svg>
+                      </div>
+                      <h3 className="text-lg font-medium text-gray-600 mb-2">
+                        No content available
+                      </h3>
+                      <p className="text-gray-400">
+                        This category doesn't have any subcategories or products
+                        available
+                      </p>
+                    </motion.div>
+                  )}
+              </div>
+            )}
 
-              {directProducts.length > 0 && (
-                <div>
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
-                    <h2 className="text-xl font-semibold text-[#BABEC8]">
-                      Products
-                    </h2>
-                    <div className="hidden md:block flex-1 mx-6">
-                      <div className="h-[6px] bg-[#BABEC8]"></div>
-                    </div>
+            {(viewMode === "products" || viewMode === "search") && (
+              <>
+                {productsLoading ? (
+                  <div className="text-center py-20">
+                    <CircularProgress size={40} sx={{ color: "#2E437C" }} />
+                    <p className="mt-4 text-gray-600">Loading products...</p>
                   </div>
-
+                ) : isSearching ? (
+                  <div className="text-center py-20">
+                    <CircularProgress size={40} sx={{ color: "#2E437C" }} />
+                    <p className="mt-4 text-gray-600">Searching products...</p>
+                  </div>
+                ) : displayProducts.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-                    {directProducts.map((product, index) => (
+                    {displayProducts.map((product, index) => (
                       <motion.div
                         key={product.id}
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: index * 0.1 }}
-                        onClick={() => handleDirectProductClick(product)}
-                        className="flex flex-col items-center text-center cursor-pointer p-4"
+                        onClick={() => handleProductClick(product)}
+                        className="flex flex-col items-start text-center cursor-pointer"
                       >
-                        <div className="aspect-[4/3] max-w-[100%] overflow-hidden">
+                        <div className="aspect-[4/3] overflow-hidden">
                           <motion.img
                             src={
                               product.image && product.image.startsWith("http")
@@ -1505,7 +1648,7 @@ const ProductCom = () => {
                                 : productImage
                             }
                             alt={product.title}
-                            className="max-w-[100%] w-full h-full object-cover p-3"
+                            className="w-full h-48 object-contain mb-4"
                             whileHover={{ scale: 1.05 }}
                             transition={{ duration: 0.3 }}
                           />
@@ -1516,15 +1659,15 @@ const ProductCom = () => {
                         <p className="text-gray-500 text-sm mt-1">
                           {product.category}
                         </p>
+                        {searchQuery.trim() !== "" && viewMode === "search" && (
+                          <span className="text-xs text-[#2E437C] mt-1 bg-[#2E437C]/10 px-2 py-1 rounded-full">
+                            Search Result
+                          </span>
+                        )}
                       </motion.div>
                     ))}
                   </div>
-                </div>
-              )}
-
-              {subcategories.length === 0 &&
-                directProducts.length === 0 &&
-                !subcategoriesLoading && (
+                ) : (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -1541,140 +1684,53 @@ const ProductCom = () => {
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth={1}
-                          d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                          d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.291-1.002-5.824-2.653M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
                         />
                       </svg>
                     </div>
                     <h3 className="text-lg font-medium text-gray-600 mb-2">
-                      No content available
+                      {searchQuery && viewMode === "search"
+                        ? "No products found"
+                        : products.length === 0 && !searchQuery
+                        ? "Select a subcategory to view products"
+                        : "No products found"}
                     </h3>
                     <p className="text-gray-400">
-                      This category doesn't have any subcategories or products
-                      available
+                      {searchQuery && viewMode === "search"
+                        ? searchError
+                          ? `${searchError} Try searching with different keywords.`
+                          : `No products match "${searchQuery}". Try different search terms.`
+                        : products.length === 0 && !searchQuery
+                        ? "Choose a subcategory from the left to explore products"
+                        : `No products available in ${selectedCategory}`}
                     </p>
                   </motion.div>
                 )}
-            </div>
-          )}
+              </>
+            )}
 
-          {(viewMode === "products" || viewMode === "search") && (
-            <>
-              {productsLoading ? (
-                <div className="text-center py-20">
-                  <CircularProgress size={40} sx={{ color: "#2E437C" }} />
-                  <p className="mt-4 text-gray-600">Loading products...</p>
-                </div>
-              ) : isSearching ? (
-                <div className="text-center py-20">
-                  <CircularProgress size={40} sx={{ color: "#2E437C" }} />
-                  <p className="mt-4 text-gray-600">Searching products...</p>
-                </div>
-              ) : displayProducts.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {displayProducts.map((product, index) => (
-                    <motion.div
-                      key={product.id}
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: index * 0.1 }}
-                      onClick={() => handleProductClick(product)}
-                      className="flex flex-col items-center text-center cursor-pointer"
-                    >
-                      <div className="aspect-[4/3] overflow-hidden">
-                        <motion.img
-                          src={
-                            product.image && product.image.startsWith("http")
-                              ? product.image
-                              : product.image && product.image.includes("/")
-                              ? `${import.meta.env.VITE_BACKEND_URL}/${
-                                  product.image
-                                }`
-                              : productImage
-                          }
-                          alt={product.title}
-                          className="w-full h-48 object-contain mb-4"
-                          whileHover={{ scale: 1.05 }}
-                          transition={{ duration: 0.3 }}
-                        />
-                      </div>
-                      <h2 className="text-lg font-semibold mt-3 text-gray-800">
-                        {product.title}
-                      </h2>
-                      <p className="text-gray-500 text-sm mt-1">
-                        {product.category}
-                      </p>
-                      {searchQuery.trim() !== "" && viewMode === "search" && (
-                        <span className="text-xs text-[#2E437C] mt-1 bg-[#2E437C]/10 px-2 py-1 rounded-full">
-                          Search Result
-                        </span>
-                      )}
-                    </motion.div>
-                  ))}
-                </div>
-              ) : (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="text-center py-20"
-                >
-                  <div className="text-gray-400 mb-4">
-                    <svg
-                      className="w-16 h-16 mx-auto"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={1}
-                        d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.291-1.002-5.824-2.653M15 9.75a3 3 0 11-6 0 3 3 0 016 0z"
-                      />
-                    </svg>
+            {viewMode === "details" && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6 }}
+              >
+                {productDetailsLoading ? (
+                  <div className="flex items-center justify-center py-20">
+                    <CircularProgress size={60} sx={{ color: "#2E437C" }} />
+                    <p className="ml-4 text-gray-600">
+                      Loading product details...
+                    </p>
                   </div>
-                  <h3 className="text-lg font-medium text-gray-600 mb-2">
-                    {searchQuery && viewMode === "search"
-                      ? "No products found"
-                      : products.length === 0 && !searchQuery
-                      ? "Select a subcategory to view products"
-                      : "No products found"}
-                  </h3>
-                  <p className="text-gray-400">
-                    {searchQuery && viewMode === "search"
-                      ? searchError
-                        ? `${searchError} Try searching with different keywords.`
-                        : `No products match "${searchQuery}". Try different search terms.`
-                      : products.length === 0 && !searchQuery
-                      ? "Choose a subcategory from the left to explore products"
-                      : `No products available in ${selectedCategory}`}
-                  </p>
-                </motion.div>
-              )}
-            </>
-          )}
-
-          {viewMode === "details" && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              {productDetailsLoading ? (
-                <div className="flex items-center justify-center py-20">
-                  <CircularProgress size={60} sx={{ color: "#2E437C" }} />
-                  <p className="ml-4 text-gray-600">
-                    Loading product details...
-                  </p>
-                </div>
-              ) : (
-                <ProductDetails selectedProduct={selectedProduct} />
-              )}
-            </motion.div>
-          )}
-        </motion.div>
+                ) : (
+                  <ProductDetails selectedProduct={selectedProduct} />
+                )}
+              </motion.div>
+            )}
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </ThemeProvider>
   );
 };
 

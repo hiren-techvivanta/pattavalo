@@ -6,6 +6,7 @@ import { BsArrowDownLeftCircle } from "react-icons/bs";
 import { TiPlus } from "react-icons/ti";
 import { CustomHeading } from "../common/CustomHeading";
 import { useNavigate } from "react-router-dom";
+import { RxArrowTopRight } from "react-icons/rx";
 
 import i1 from '../../assets/SVG/BEARING.svg'
 import i2 from '../../assets/SVG/BUCKET.svg'
@@ -66,97 +67,97 @@ const ShowCase = () => {
       transform: `translate(${translateX}, ${translateY})`,
     };
   };
-  const points = [
-    {
-      id: 1,
-      top: "30%",
-      left: "12%",
-      title: "Bucket Elevator",
-      desc: "",
-      img:i2
-    },
-    {
-      id: 2,
-      top: "75%",
-      left: "13%",
-      title: "BEARING",
-      desc: "",
-      img:i1
-    },
-    {
-      id: 3,
-      top: "42%",
-      left: "58%",
-      title: "Spiral Freezer",
-      desc: "Multi-level storage for efficiency.",
-      img:i3
-    },
-    {
-      id: 4,
-      top: "31%",
-      left: "31%",
-      title: "Spiral logistics",
-      desc: "Durable and efficient conveyor systems.",
-      img:i4
-    },
-    {
-      id: 5,
-      top: "47%",
-      left: "84%",
-      title: "MODULAR BELT",
-      desc: "Explore our wide range of high-performance bearings.",
-      img:i5
-    },
-    {
-      id: 6,
-      top: "67%",
-      left: "39%",
-      title: "Flexzero",
-      desc: "High-efficiency motors for performance.",
-      img:i6
-    },
-    {
-      id: 7,
-      top: "76%",
-      left: "90%",
-      title: "SS CHAIN & SPROCKET",
-      desc: "Quality assurance with advanced inspection tools.",
-      img:i7
-    },
+const points = [
+  {
+    id: 1,
+    top: "30%",
+    left: "12%",
+    title: "Bucket Elevator",
+    desc: "Vertical conveying system for bulk materials with high capacity and efficiency.",
+    img: i2
+  },
+  {
+    id: 2,
+    top: "75%",
+    left: "13%",
+    title: "BEARING",
+    desc: "High-quality bearings ensuring smooth operation and reduced maintenance.",
+    img: i1
+  },
+  {
+    id: 3,
+    top: "42%",
+    left: "58%",
+    title: "Spiral Freezer",
+    desc: "Multi-level spiral conveyor system for continuous freezing operations.",
+    img: i3
+  },
+  {
+    id: 4,
+    top: "31%",
+    left: "31%",
+    title: "Spiral Logistics",
+    desc: "Space-efficient spiral conveyor solutions for material handling and storage.",
+    img: i4
+  },
+  {
+    id: 5,
+    top: "47%",
+    left: "84%",
+    title: "MODULAR BELT",
+    desc: "Interlocking plastic belt system providing flexibility and easy maintenance.",
+    img: i5
+  },
+  {
+    id: 6,
+    top: "67%",
+    left: "39%",
+    title: "Flexzero",
+    desc: "Flexible chain system designed for tight radius turns and compact applications.",
+    img: i6
+  },
+  {
+    id: 7,
+    top: "76%",
+    left: "90%",
+    title: "SS CHAIN & SPROCKET",
+    desc: "Stainless steel chain and sprocket systems for food-grade applications.",
+    img: i7
+  },
+  {
+    id: 8,
+    top: "86%",
+    left: "54.5%",
+    title: "CONVEYOR COMPONENT",
+    desc: "Essential components including guides, wear strips, and support structures.",
+    img: i8
+  },
+  {
+    id: 9,
+    top: "60%",
+    left: "22%",
+    title: "FINGER CHAIN & ASSEMBLY",
+    desc: "Specialized chain system with fingers for secure product transport and positioning.",
+    img: i9
+  },
+  {
+    id: 10,
+    top: "65%",
+    left: "77%",
+    title: "WEAR STRIP",
+    desc: "Durable wear strips providing smooth surface for belt operation and longevity.",
+    img: i10
+  },
+  {
+    id: 11,
+    top: "83%",
+    left: "80%",
+    title: "THERMOPLASTIC CHAIN & SPROCKET",
+    desc: "Lightweight thermoplastic chain systems ideal for food processing environments.",
+    img: i11
+  },
+];
 
-    {
-      id: 8,
-      top: "86%",
-      left: "54.5%",
-      title: "CONVEYOR COMPONENT",
-      desc: "Centralized control unit for monitoring operations.",
-      img:i8
-    },
-    {
-      id: 9,
-      top: "60%",
-      left: "22%",
-      title: "FINGER CHAIN & ASSEMBLY",
-      desc: "Automated packaging for efficiency and safety.",
-      img:i9
-    },
-    {
-      id: 10,
-      top: "65%",
-      left: "77%",
-      title: "WEAR STRIP",
-      desc: "Maintains optimal temperature for smooth operation.",
-      img:i10
-    },
-    {
-      id: 11,
-      top: "83%",
-      left: "80%",
-      title: "THERMOPLASTIC CHAIN & SPROCKET",
-      desc: "Protective guard ensuring operator safety.",
-      img:i11
-    },
-  ];
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -263,22 +264,29 @@ const ShowCase = () => {
                     className="absolute z-50 w-52 sm:w-60 md:w-64 bg-white rounded-xl shadow-xl p-3 sm:p-4"
                     style={getTooltipPosition(point)}
                   >
-                  <img src={point.img} className="w-10" alt= {point.title} />
-                    <h4 className="text-base sm:text-lg font-semibold text-[#2E437C]">
+                 <div className="flex gap-6 items-start">
+                   <img src={point.img} className="w-10" alt= {point.title} />
+                    <div>
+                      <h4 className="text-base sm:text-lg font-semibold text-[#2E437C]">
                       {point.title}
                     </h4>
+                    <p className="text-[12px] font-[400] text-[#667085]">
+                      {point.desc}
+                    </p>
 
                     <motion.button
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       className="mt-2 sm:mt-3 inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2
-                   rounded-full border border-[#2E437C] text-[#2E437C]
+                   rounded-full border border-[#2E437C] text-[#000]
                    text-xs sm:text-sm font-medium hover:bg-[#2E437C]
                    hover:text-white transition-all"
                       onClick={() => navigate("/products")}
                     >
-                      VIEW →
+                      VIEW <RxArrowTopRight className="ms-2 text-[#2E437C]"/>
                     </motion.button>
+                    </div>
+                 </div>
                   </motion.div>
                 )}
               </AnimatePresence>

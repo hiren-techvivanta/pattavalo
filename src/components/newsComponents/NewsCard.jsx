@@ -21,7 +21,7 @@ const NewsCard = ({ props }) => {
           />
         </div>
         
-        <div className="md:p-[23px] p-[15px]">
+        <div className="md:p-[15px] p-[15px]">
           <p className="font-[600] text-[9px] md:text-[12px] text-[#868686] pb-1">
             {props.news}
           </p>
