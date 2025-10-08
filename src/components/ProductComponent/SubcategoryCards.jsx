@@ -54,9 +54,9 @@ const SubcategoryCards = ({ subcategories, onSubcategoryClick, loading }) => {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: index * 0.1 }}
           onClick={() => onSubcategoryClick(subcategory)}
-          className="flex flex-col items-center text-start rounded-lg cursor-pointer bg-white"
+          className="flex flex-col items-start text-start cursor-pointer bg-white"
         >
-          <div className="aspect-[4/3] overflow-hidden">
+          <div className="aspect-[4/4] w-full overflow-hidden">
             <motion.img
               src={
                 subcategory.image && subcategory.image.startsWith("http")
@@ -66,7 +66,7 @@ const SubcategoryCards = ({ subcategories, onSubcategoryClick, loading }) => {
                   : productImage
               }
               alt={subcategory.name}
-              className="w-full h-full object-cover p-3"
+              className="w-full min-w-full object-cover p-3"
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.3 }}
             />

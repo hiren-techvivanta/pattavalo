@@ -520,8 +520,7 @@ export default function IndustryCom() {
         viewport={{ once: true, margin: "-80px" }}
         className="text-[44px] md:text-[112px] font-[500] md:font-[400] text-[#BABEC8] mb-10 text-center md:text-left "
       >
-         <CustomHeading title="Industries we serve" className="" />
-        
+        <CustomHeading title="Industries we serve" className="" />
       </motion.h1>
 
       <div className=" grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-center">
@@ -690,37 +689,41 @@ export default function IndustryCom() {
             </div>
 
             {/* Image Slider */}
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-hidden w-[100%] mx-auto">
               {categoryData?.images?.length > 0 ? (
-                <Swiper
-                  modules={[Pagination, Autoplay]}
-                  navigation
-                  pagination={{ clickable: true }}
-                  spaceBetween={10}
-                  autoplay={{
-                    delay: 3000,
-                    disableOnInteraction: false,
-                  }}
-                  loop={true}
-                  slidesPerView={1}
-                  className=""
-                >
-                  {categoryData.images.map((img, idx) => (
-                    <SwiperSlide key={idx}>
-                      <img
-                        src={img}
-                        alt={`${categoryData.title} ${idx + 1}`}
-                        className="w-full h-60 sm:h-80 lg:h-110 object-cover transition-transform duration-500 hover:scale-105 "
-                      />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
+                <div className="w-full aspect-[6/3] overflow-hidden bg-gray-100">
+                  <Swiper
+                    modules={[Pagination, Autoplay]}
+                    navigation
+                    pagination={{ clickable: true }}
+                    spaceBetween={10}
+                    autoplay={{
+                      delay: 3000,
+                      disableOnInteraction: false,
+                    }}
+                    loop={true}
+                    slidesPerView={1}
+                    className="w-full h-full"
+                  >
+                    {categoryData.images.map((img, idx) => (
+                      <SwiperSlide key={idx} className="w-full h-full">
+                        <img
+                          src={img}
+                          alt={`${categoryData.title} ${idx + 1}`}
+                          className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                        />
+                      </SwiperSlide>
+                    ))}
+                  </Swiper>
+                </div>
               ) : (
-                <img
-                  src={activeIndustry.image}
-                  alt={activeIndustry.title}
-                  className="w-full h-60 sm:h-80 lg:h-110 object-cover transition-transform duration-500 hover:scale-105"
-                />
+                <div className="w-full aspect-[4/3] overflow-hidden bg-gray-100">
+                  <img
+                    src={activeIndustry.image}
+                    alt={activeIndustry.title}
+                    className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
+                  />
+                </div>
               )}
 
               <div className="absolute top-0 left-0 w-full p-3 bg-gradient-to-b from-black/70 to-transparent">
@@ -732,7 +735,7 @@ export default function IndustryCom() {
             </div>
 
             {/* Title and Description */}
-            <h3 className="mt-4 text-2xl lg:text-3xl font-semibold text-gray-800">
+            <h3 className="mt-4 text-2xl lg:text-[36px] font-semibold text-gray-800">
               Solutions for{" "}
               <span style={{ color: "#2E437C" }}>{activeIndustry.title}</span>
             </h3>
@@ -808,8 +811,6 @@ export default function IndustryCom() {
   );
 }
 
-
-
 // import React, { useState, useEffect } from "react";
 // import { motion } from "framer-motion";
 // import {
@@ -870,23 +871,23 @@ export default function IndustryCom() {
 //     const activeSliceAngle = 65; // Active slice angle
 //     const remainingAngle = 360 - activeSliceAngle; // Remaining angle for other slices
 //     const inactiveSliceAngle = remainingAngle / (industries.length - 1); // Angle for each inactive slice
-    
+
 //     let currentAngle = 0;
 //     const angles = industries.map((industry, index) => {
 //       const isActive = industry.id === activeIndustry.id;
 //       const segmentAngle = isActive ? activeSliceAngle : inactiveSliceAngle;
-      
+
 //       const result = {
 //         startAngle: currentAngle,
 //         endAngle: currentAngle + segmentAngle,
 //         segmentAngle: segmentAngle,
 //         midAngle: currentAngle + segmentAngle / 2,
 //       };
-      
+
 //       currentAngle += segmentAngle;
 //       return result;
 //     });
-    
+
 //     return angles;
 //   };
 
