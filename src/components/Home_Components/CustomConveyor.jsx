@@ -113,12 +113,12 @@ export default function ExpertSolutions() {
         <motion.h1
           variants={containerVariants}
           className="
-      text-[28px] sm:text-[34px] md:text-[42px] lg:text-[50px] xl:text-[54px]
-      leading-[36px] sm:leading-[44px] md:leading-[52px] lg:leading-[60px] text-[#BABEC8] font-bold
-      font-bold mb-6 sm:mb-8"
+      text-[38px] sm:text-[34px] md:text-[42px] lg:text-[50px] xl:text-[54px]
+      leading-[45px] sm:leading-[44px] md:leading-[52px] lg:leading-[60px] text-[#BABEC8]
+      font-[600] mb-6 sm:mb-8"
         >
           Expert{" "}
-          <span className="text-[#2E437C] font-bold">
+          <span className="text-[#2E437C] font-[600]">
             Solutions for Custom Conveyor
           </span>{" "}
           Needs.

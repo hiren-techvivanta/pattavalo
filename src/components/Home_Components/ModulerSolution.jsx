@@ -208,16 +208,12 @@ export default function ModulerSolution() {
         className="mb-8 sm:mb-12 md:text-left px-0"
       >
         <h2
-          className="text-[40px] md:text-[100px] font-semibold text-[#BABEC8] leading-snug"
-          style={{ lineHeight: "98px" }}
+          className=" text-[40px] md:text-[100px] font-[500] text-[#BABEC8] leading-[55px] md:leading-[98px]"
         >
-          <CustomHeading
-            title="Your Crafted, "
-            className="font-semibold"
-          />
+          <CustomHeading title="Your Crafted, " className=" font-[500]" />
           <CustomHeading
             title="Modular Solution"
-            className="font-semibold text-[#2E437C]"
+            className=" font-[500] text-[#2E437C]"
           />
         </h2>
       </motion.div>

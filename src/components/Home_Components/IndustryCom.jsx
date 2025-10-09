@@ -735,7 +735,7 @@ export default function IndustryCom() {
             </div>
 
             {/* Title and Description */}
-            <h3 className="mt-4 text-2xl lg:text-[36px] font-semibold text-gray-800">
+            <h3 className="mt-4 text-2xl lg:text-[36px] font-[500] text-gray-800">
               Solutions for{" "}
               <span style={{ color: "#2E437C" }}>{activeIndustry.title}</span>
             </h3>

@@ -145,14 +145,14 @@ const AboutUs = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [hasAnimatedBefore, setHasAnimatedBefore] = useState(false);
-  
+
   // Gallery states
   const [galleryImages, setGalleryImages] = useState([]);
   const [displayedImages, setDisplayedImages] = useState([]);
   const [galleryLoading, setGalleryLoading] = useState(false);
   const [galleryError, setGalleryError] = useState(null);
   const [showLoadMore, setShowLoadMore] = useState(false);
-  
+
   const videoRef = useRef(null);
   const scrollContainerRef = useRef(null);
 
@@ -167,7 +167,7 @@ const AboutUs = () => {
   // Helper function to construct full URL for images
   const getImageUrl = (imagePath) => {
     if (!imagePath) return null;
-    if (imagePath.startsWith('http')) return imagePath;
+    if (imagePath.startsWith("http")) return imagePath;
     return `${import.meta.env.VITE_BACKEND_URL}/${imagePath}`;
   };
 
@@ -227,12 +227,15 @@ const AboutUs = () => {
       setGalleryLoading(true);
       setGalleryError(null);
 
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/banner`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/banner`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Failed to fetch gallery images: ${response.status}`);
@@ -242,19 +245,19 @@ const AboutUs = () => {
 
       if (result.data && Array.isArray(result.data)) {
         const activeImages = result.data
-          .filter(item => item.is_active)
+          .filter((item) => item.is_active)
           .sort((a, b) => a.displayOrder - b.displayOrder)
-          .map(item => ({
+          .map((item) => ({
             id: item.id,
             url: getImageUrl(item.imageUrl),
-            alt: `Gallery image ${item.id}`
+            alt: `Gallery image ${item.id}`,
           }));
-        
+
         setGalleryImages(activeImages);
-        
+
         // Show first 6 images
         setDisplayedImages(activeImages.slice(0, 6));
-        
+
         // Show load more button if there are more than 6 images
         setShowLoadMore(activeImages.length > 6);
       } else {
@@ -266,7 +269,7 @@ const AboutUs = () => {
     } catch (err) {
       console.error("Error fetching gallery images:", err);
       setGalleryError(err.message);
-      
+
       // On error, set empty arrays
       setGalleryImages([]);
       setDisplayedImages([]);
@@ -279,9 +282,9 @@ const AboutUs = () => {
   const handleLoadMore = () => {
     const currentCount = displayedImages.length;
     const nextImages = galleryImages.slice(currentCount, currentCount + 6);
-    
-    setDisplayedImages(prev => [...prev, ...nextImages]);
-    
+
+    setDisplayedImages((prev) => [...prev, ...nextImages]);
+
     // Hide load more button if all images are displayed
     if (currentCount + nextImages.length >= galleryImages.length) {
       setShowLoadMore(false);
@@ -399,7 +402,7 @@ const AboutUs = () => {
   }, []);
 
   const currentData = timelineData[selectedYear];
-  
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -444,11 +447,15 @@ const AboutUs = () => {
       <motion.div
         className="fixed top-0 left-0 right-0 z-50"
         initial={{ opacity: 1, y: hasAnimatedBefore ? 0 : -100 }}
-        animate={showNavbar ? { opacity: 1, y: 0, scale: 1 } : { y: hasAnimatedBefore ? 0 : -100 }}
-        transition={{ 
-          duration: hasAnimatedBefore ? 0 : 0.6, 
-          ease: "easeInOut", 
-          delay: hasAnimatedBefore ? 0 : 0.2 
+        animate={
+          showNavbar
+            ? { opacity: 1, y: 0, scale: 1 }
+            : { y: hasAnimatedBefore ? 0 : -100 }
+        }
+        transition={{
+          duration: hasAnimatedBefore ? 0 : 0.6,
+          ease: "easeInOut",
+          delay: hasAnimatedBefore ? 0 : 0.2,
         }}
       >
         <Navbar />
@@ -508,17 +515,17 @@ const AboutUs = () => {
             <div className="max-w-7xl mx-auto w-full">
               <div className="max-w-4xl text-white overflow-hidden">
                 <motion.h1
-                  className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[100px] font-bold leading-none overflow-hidden tracking-tight"
+                  className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-[100px] leading-none overflow-hidden tracking-tight"
                   initial={{ opacity: 1, y: hasAnimatedBefore ? 0 : -100 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    duration: hasAnimatedBefore ? 0 : 0.6, 
-                    ease: "easeInOut", 
-                    delay: hasAnimatedBefore ? 0 : 0.8 
+                  transition={{
+                    duration: hasAnimatedBefore ? 0 : 0.6,
+                    ease: "easeInOut",
+                    delay: hasAnimatedBefore ? 0 : 0.8,
                   }}
                   style={{
                     fontFamily: "'Articulat CF', sans-serif",
-                    fontWeight: 400,
+                    fontWeight: 500,
                     lineHeight: 0.9,
                   }}
                 >
@@ -529,10 +536,10 @@ const AboutUs = () => {
                   className="mt-4 sm:mt-5 md:mt-6 text-sm xs:text-base sm:text-lg md:text-xl text-gray-200 max-w-xl md:max-w-2xl"
                   initial={{ opacity: 1, y: hasAnimatedBefore ? 0 : 100 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    duration: hasAnimatedBefore ? 0 : 0.6, 
-                    ease: "easeInOut", 
-                    delay: hasAnimatedBefore ? 0 : 0.8 
+                  transition={{
+                    duration: hasAnimatedBefore ? 0 : 0.6,
+                    ease: "easeInOut",
+                    delay: hasAnimatedBefore ? 0 : 0.8,
                   }}
                   style={{
                     fontFamily: "'Articulat CF', sans-serif",
@@ -578,7 +585,7 @@ const AboutUs = () => {
                   initial="hidden"
                   animate="visible"
                 >
-                   <CustomHeading title="Our Integrity" className="font-[700]" />
+                  <CustomHeading title="Our Integrity" className="font-[700]" />
                 </motion.div>
               }
               description="Atcchains is always high in demand due to its wide variety of sub-products in the Plastic slat chain series, Modular belts series & conveyor components. We lead due to our consistent efforts in delivering the best suited services for our clients."
@@ -627,7 +634,7 @@ const AboutUs = () => {
                   initial="hidden"
                   animate="visible"
                 >
-                   <CustomHeading title="Why" className="font-[700]" />
+                  <CustomHeading title="Why" className="font-[700]" />
                 </motion.div>
               }
               subtitle={
@@ -636,7 +643,7 @@ const AboutUs = () => {
                   initial="hidden"
                   animate="visible"
                 >
-                   <CustomHeading title="Atc Chains?" className="font-[700]" />
+                  <CustomHeading title="Atc Chains?" className="font-[700]" />
                 </motion.div>
               }
               description="One year warranty. Our policies also include accidental warranty which is provided by no other company in the world. A diverse and wide variety of 1100+ products. 24*7 available technical assistance."
@@ -669,7 +676,7 @@ const AboutUs = () => {
 
       {/* Stats Section */}
       <motion.div
-        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-0 sm:py-0"
+        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-0 sm:py-10"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -689,7 +696,7 @@ const AboutUs = () => {
 
       {/* Team Section */}
       <motion.div
-        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-5"
+        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-10"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -705,7 +712,10 @@ const AboutUs = () => {
                   animate="visible"
                 >
                   <CustomHeading title="Our" className="font-[700]" />
-                  <CustomHeading title="Team" className="font-[700] text-[#BABEC8]" /> 
+                  <CustomHeading
+                    title="Team"
+                    className="font-[700] text-[#BABEC8]"
+                  />
                 </motion.div>
               }
               alignment="center"
@@ -736,7 +746,7 @@ const AboutUs = () => {
 
       {/* History Section */}
       <motion.div
-        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 pt-16 sm:pt-20"
+        className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 pt-0 md:pt-10"
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -752,26 +762,29 @@ const AboutUs = () => {
 
           {/* Fixed text spacing for mobile */}
           <motion.div variants={fadeInUp}>
-            <SectionTitle
-              title={
-                <motion.div
-                  variants={containerVariants}
-                  initial="hidden"
-                  animate="visible"
-                  className="text-center flex flex-col"
-                >
-                  <div className="block md:inline">
-                    <CustomHeading title="Foundation of excellences" className="font-[400] md:font[700] text-[30px] md:text-[48px] " />
-                  </div>
-                  <div className="block md:inline">
-                    <CustomHeading title="in Industry" className="font-[400] md:font[700] text-[30px] md:text-[48px] text-[#BABEC8]" /> 
-                  </div>
-                </motion.div>
-              }
-              alignment="center"
-            />
+            <h3>
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+                className="text-center flex flex-col"
+              >
+                <div className="block md:inline">
+                  <CustomHeading
+                    title="Foundation of excellences"
+                    className="font-[600] md:font-[600] text-[30px] md:text-[48px] text-[#2E437C] md:leading-[70px]"
+                  />
+                </div>
+                <div className="block md:inline">
+                  <CustomHeading
+                    title="in Industry"
+                    className="font-[600] md:font-[600] text-[30px] md:text-[48px] text-[#BABEC8] leading-[40px] md:leading-[40px]"
+                  />
+                </div>
+              </motion.div>
+            </h3>
           </motion.div>
-          <motion.div variants={containerVariants}>
+          <motion.div className="mt-4" variants={containerVariants}>
             {[
               "Founded in 2015, we deliver high-quality machines and customized belt solutions with a focus",
               "on reliability, innovation, and integrity. Guided by our founder Mr. Ajay Patel, we uphold",
@@ -824,7 +837,7 @@ const AboutUs = () => {
             <AnimatePresence mode="wait">
               <motion.div
                 key={selectedYear}
-                className="bg-gradient-to-br rounded-2xl h-full p-6 sm:p-8 relative overflow-hidden"
+                className="bg-gradient-to-br rounded-2xl h-full px-6 sm:px-8 py-0 md:py-8 relative overflow-hidden"
                 initial={{ opacity: 0, y: 20, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -20, scale: 0.98 }}
@@ -885,7 +898,7 @@ const AboutUs = () => {
                 initial="hidden"
                 animate="visible"
               >
-               <CustomHeading title="Recent Images" className="" /> 
+                <CustomHeading title="Recent Images" className="" />
               </motion.div>
             }
             alignment="center"
@@ -901,7 +914,9 @@ const AboutUs = () => {
 
         {galleryError && (
           <div className="text-center py-8">
-            <p className="text-red-500 mb-4">Failed to load gallery images: {galleryError}</p>
+            <p className="text-red-500 mb-4">
+              Failed to load gallery images: {galleryError}
+            </p>
           </div>
         )}
 

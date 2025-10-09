@@ -172,11 +172,11 @@ export default function ClientFeedback() {
           <CustomHeading title="Client Feedback" className="" />
         </motion.p>
 
-        <motion.h2 className="text-[32px] md:text-[48px] font-normal text-[#2E437C] mt-2 leading-[44px]">
+        <motion.h2 className="text-[30px] md:text-[48px] font-[700] text-[#2E437C] mt-2 leading-[44px]">
           <CustomHeading title="Don't take our world for it!" className="" />
         </motion.h2>
 
-        <motion.h3 className="ext-[32px] md:text-[48px] font-bold text-[#BABEC8]">
+        <motion.h3 className="text-[30px] md:text-[48px] font-bold text-[#BABEC8]">
           <CustomHeading title="Hear it from our partners." className="" />
         </motion.h3>
       </motion.div>
@@ -186,7 +186,7 @@ export default function ClientFeedback() {
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
         variants={containerVariants}
-        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
+        className="flex md:flex-wrap overflow-x-auto md:overflow-visible gap-6 w-auto pb-4 scrollbar-hide md:hidden"
       >
         {testimonials.map((t, index) => (
           <motion.div
@@ -207,7 +207,7 @@ export default function ClientFeedback() {
               scale: 0.98,
               transition: { duration: 0.1 },
             }}
-            className="bg-gradient-to-br from-[#F8F9FB] to-[#F0F2F7] p-6 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-50 relative overflow-hidden group"
+            className="bg-gradient-to-br from-[#F8F9FB] to-[#F0F2F7] p-6 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-50 relative overflow-hidden group w-[280px] md:w-auto flex-shrink-0"
           >
             <motion.div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#2E437C]/5 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
@@ -244,6 +244,104 @@ export default function ClientFeedback() {
                 className="text-gray-700 text-[15px] leading-relaxed mb-4 relative"
               >
                 <span className="text-[#2E437C] text-xl absolute -top-2 -left-1 opacity-30">
+                  "
+                </span>
+                {t.feedback}
+                <span className="text-[#2E437C] text-xl opacity-30">"</span>
+              </motion.p>
+
+              <motion.div
+                variants={nameVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                <motion.p
+                  className="font-semibold text-gray-800 mb-1"
+                  whileHover={{
+                    color: "#2E437C",
+                    transition: { duration: 0.2 },
+                  }}
+                >
+                  {t.name}
+                </motion.p>
+                <p className="text-gray-500 text-sm">{t.role}</p>
+              </motion.div>
+
+              <motion.div
+                className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-[#2E437C] to-[#1d3b72] opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                initial={{ scaleX: 0 }}
+                whileHover={{ scaleX: 1 }}
+                transition={{ duration: 0.3 }}
+              />
+            </div>
+          </motion.div>
+        ))}
+      </motion.div>
+
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-80px" }}
+        variants={containerVariants}
+        className=" grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-6 hidden md:grid"
+      >
+        {testimonials.map((t, index) => (
+          <motion.div
+            key={t.id}
+            variants={cardVariants}
+            whileHover={{
+              y: -8,
+              scale: 1.02,
+              boxShadow: "0 20px 40px rgba(46, 67, 124, 0.15)",
+              transition: {
+                type: "spring",
+                stiffness: 400,
+                damping: 25,
+                duration: 0.3,
+              },
+            }}
+            whileTap={{
+              scale: 0.98,
+              transition: { duration: 0.1 },
+            }}
+            className="bg-gradient-to-br from-[#F8F9FB] to-[#F0F2F7] p-2 md:p-6 shadow-sm hover:shadow-xl transition-all duration-300 cursor-pointer border border-gray-50 relative overflow-hidden group"
+          >
+            <motion.div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-[#2E437C]/5 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+            <div className="relative z-10">
+              <motion.div
+                className="flex items-center mb-4"
+                variants={imageVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+              >
+                <motion.img
+                  src={t.image}
+                  alt={t.name}
+                  className="w-12 h-12 rounded-full object-cover ring-2 ring-white shadow-md"
+                  whileHover={{
+                    scale: 1.1,
+                    rotate: 5,
+                    transition: {
+                      type: "spring",
+                      stiffness: 500,
+                      damping: 25,
+                      duration: 0.2,
+                    },
+                  }}
+                />
+              </motion.div>
+
+              <motion.p
+                variants={textVariants}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="text-gray-700 text-[10px] md:text-[15px] leading-relaxed mb-4 relative"
+              >
+                <span className="text-[#2E437C]  absolute -top-2 -left-1 opacity-30">
                   "
                 </span>
                 {t.feedback}

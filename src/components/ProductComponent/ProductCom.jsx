@@ -1006,7 +1006,7 @@ const ProductCom = () => {
             transition={{ duration: 0.7 }}
             className="w-full md:w-1/4"
           >
-            <div className="p-4 rounded-lg">
+            <div className="py-4 rounded-lg">
               {/* Your existing accordion structure remains the same */}
               <div className="md:hidden">
                 <Accordion
@@ -1022,7 +1022,7 @@ const ProductCom = () => {
                     border: "none",
                     borderRadius: "27px",
                     width: "100%",
-                    maxWidth: "396px",
+                    maxWidth: "420px",
                     overflow: "hidden",
                   }}
                 >
@@ -1173,7 +1173,7 @@ const ProductCom = () => {
                                                 child.subcategoryId &&
                                               !selectedProductId
                                                 ? "#2E437C"
-                                                : "#666666",
+                                                : "#666666cc",
                                             transition:
                                               "color 0.2s ease-in-out",
                                             whiteSpace: "nowrap",
@@ -1182,7 +1182,6 @@ const ProductCom = () => {
                                         >
                                           {child.title}
                                         </Typography>
-                                        <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
                                       </div>
                                     </AccordionSummary>
 
@@ -1223,7 +1222,7 @@ const ProductCom = () => {
                                                       selectedProductId ===
                                                       subChild.productId
                                                         ? "#2E437C"
-                                                        : "#6b7280",
+                                                        : "#666666cc",
                                                     marginLeft: "2px",
                                                     transition:
                                                       "color 0.2s ease-in-out",
@@ -1384,7 +1383,7 @@ const ProductCom = () => {
                                             child.subcategoryId &&
                                           !selectedProductId
                                             ? "#2E437C"
-                                            : "#666666",
+                                            : "#666666cc",
                                         transition: "color 0.2s ease-in-out",
                                         whiteSpace: "nowrap",
                                         marginRight: "12px",
@@ -1393,7 +1392,6 @@ const ProductCom = () => {
                                     >
                                       {child.title}
                                     </Typography>
-                                    <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
                                   </div>
                                 </AccordionSummary>
 
@@ -1424,7 +1422,7 @@ const ProductCom = () => {
                                                 "all 0.2s ease-in-out",
                                             }}
                                           >
-                                            •{" "}
+                                            •{" "}{" "}
                                             <ListItemText
                                               primary={subChild.title}
                                               primaryTypographyProps={{
@@ -1439,7 +1437,7 @@ const ProductCom = () => {
                                                   selectedProductId ===
                                                   subChild.productId
                                                     ? "#2E437C"
-                                                    : "#6b7280",
+                                                    : "#666666cc",
                                                 marginLeft: "2px",
                                                 transition:
                                                   "color 0.2s ease-in-out",
@@ -1469,7 +1467,7 @@ const ProductCom = () => {
                                     transition: "all 0.2s ease-in-out",
                                   }}
                                 >
-                                  •
+                                  •{" "}
                                   <ListItemText
                                     primary={child.title}
                                     primaryTypographyProps={{
@@ -1479,7 +1477,7 @@ const ProductCom = () => {
                                       color:
                                         selectedProductId === child.productId
                                           ? "#2E437C"
-                                          : "#4b5563",
+                                          : "#666666cc",
                                       marginLeft: "2px",
                                       transition: "color 0.2s ease-in-out",
                                     }}

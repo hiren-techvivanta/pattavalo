@@ -377,19 +377,22 @@ const Career = () => {
     <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-lg transition-all duration-300">
       <div className="flex items-center justify-between">
         {/* Job Title */}
-        <div className="flex-1">
+        <div className="flex gap-8">
+          <div className="flex-1">
           <h3 className="text-lg font-semibold text-gray-900">{job.title}</h3>
           <p className="text-sm text-gray-500 mt-1">{job.location}</p>
         </div>
 
         {/* Experience Section */}
         <div className="flex flex-col items-center px-8">
+         <span className="text-lg font-semibold text-gray-900">
+            {job.experience}
+          </span>
           <span className="text-xs text-gray-400 uppercase tracking-wide mb-1">
             Experience
           </span>
-          <span className="text-lg font-semibold text-gray-900">
-            {job.experience}
-          </span>
+         
+        </div>
         </div>
 
         {/* Apply Button */}

@@ -179,7 +179,7 @@ export default function HomeBanner({ onAnimationComplete }) {
                     animate="visible"
                     style={{
                       fontFamily: "'Articulat CF', sans-serif",
-                      fontWeight: 400,
+                      fontWeight: 500,
                       lineHeight: 1.1,
                     }}
                   >
@@ -195,7 +195,7 @@ export default function HomeBanner({ onAnimationComplete }) {
                     animate="visible"
                     style={{
                       fontFamily: "'Articulat CF', sans-serif",
-                      fontWeight: 400,
+                      fontWeight: 500,
                       lineHeight: 1.1,
                     }}
                   >

@@ -14,7 +14,7 @@ const TimelineItem = ({
       onClick={onClick}
       className={`
         ${!isLast ? "border-b border-gray-200" : ""} 
-        py-4 sm:py-6 font-semibold text-lg sm:text-xl 
+        py-4 sm:py-6 font-semibold text-[16px] sm:text-[16px] 
         transition-all duration-300 cursor-pointer
         ${isSelected
           ? "bg-[#2E437C] text-white shadow-inner"
