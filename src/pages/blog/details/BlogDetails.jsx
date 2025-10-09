@@ -46,7 +46,6 @@ const BlogDetails = () => {
           `${import.meta.env.VITE_BACKEND_URL}/settings/post-detail/${slug}`,
           {
             method: "GET",
-       
           }
         );
 
@@ -268,12 +267,12 @@ const BlogDetails = () => {
         {/* Hero Image */}
         {post?.image && (
           <motion.div
-            className="mb-12 fade-up-blog"
+            className="mb-12 fade-up-blog aspect-[2/1] overflow-hidden rounded-2xl"
             variants={heroImageVariants}
           >
             <motion.img
               src={`${import.meta.env.VITE_BACKEND_URL}/${post.image}`}
-              className="w-full lg:h-[650px] object-cover rounded-2xl shadow-2xl"
+              className="w-full object-cover shadow-2xl"
               alt={post.name}
               loading="lazy"
               whileHover={{
@@ -310,11 +309,10 @@ const BlogDetails = () => {
               }}
             />
           )}
-          
         </motion.article>
 
         {/* Related Posts Section */}
-        <NewsGrid  initialPostsCount={4} className="pt-20" />
+        <NewsGrid initialPostsCount={4} className="pt-20" />
 
         {/* Partners Section */}
         <motion.section
@@ -394,6 +392,7 @@ const BlogDetails = () => {
         }
         .prose-custom img {
           width: 50%;
+          aspect-ratio: 2/1;
           height: auto;
           border-radius: 12px;
           margin: 2rem auto;

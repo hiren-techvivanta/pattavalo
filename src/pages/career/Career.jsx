@@ -489,7 +489,7 @@ const Career = () => {
           className="font-[400] text-[#2E437C] text-[40px] md:text-[74px] text-center"
           style={{ lineHeight: "70px" }}
         >
-          <CustomHeading title="Career " className="" /> <br />
+          <CustomHeading title="Career " className="font-[700]" /> <br />
           <span className="font-[700] text-[#BABEC8]"><CustomHeading title="Openings" className="" /></span>
         </motion.h1>
 
@@ -637,7 +637,7 @@ const Career = () => {
           {/* Left Side - Text Content */}
           <motion.div className="p-3" variants={slideInLeft}>
             <p className="text-[#001833] text-[18px] font-[500]">Benefits</p>
-            <h2 className="text-[#2E437C] text-[36px] font-[400] leading-tight">
+            <h2 className="text-[#2E437C] text-[36px] font-[700] leading-tight">
               Why you Should Join{" "}
             </h2>
             <h2 className="text-[#BABEC8] text-[36px] font-[700] leading-tight">

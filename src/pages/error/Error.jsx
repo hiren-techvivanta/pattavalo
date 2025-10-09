@@ -6,6 +6,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "@studio-freight/lenis";
 import Lottie from "lottie-react";
 import err from "../../assets/json/Error404.json";
+import Seo from "../../components/common/Seo";
 
 gsap.registerPlugin(ScrollTrigger);
   
@@ -18,8 +19,6 @@ const Error = () => {
     const lightness = 50 + Math.random() * 20;
     return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
   };
-
-  // useEffect(() => {
   //   // Initialize Lenis smooth scrolling
   //   const lenis = new Lenis({
   //     lerp: 0.1,
@@ -174,7 +173,7 @@ const Error = () => {
       exit="exit"
     >
       <Seo
-        title="Error | ATC Chain India"
+        title="Error 404 | ATC Chain India"
         description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
       />
       {/* Background Decorative Elements */}

@@ -949,7 +949,7 @@ const ProductCom = () => {
           transition={{ duration: 0.6 }}
           className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8"
         >
-          <h1 className="text-3xl md:text-4xl font-bold text-[#BABEC8]">
+          <h1 className="text-[36px] font-[700] text-[#BABEC8]">
             <CustomHeading title="Our Products" className="" />
           </h1>
 
