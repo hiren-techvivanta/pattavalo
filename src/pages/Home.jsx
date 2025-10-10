@@ -252,9 +252,9 @@ export default function Home() {
             viewport={{ once: true }}
             className="mb-12 px-14 mx-auto container"
           >
-            <motion.h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
+            <motion.h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center md:text-start">
               <span className="text-[#2E437C]">
-                <CustomHeading title="Our " className="" />
+                <CustomHeading title="Our" className="" />
               </span>
               <span className="text-[#BABEC8]">
                 <CustomHeading title="Clients" className="" />

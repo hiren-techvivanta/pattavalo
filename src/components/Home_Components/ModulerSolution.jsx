@@ -212,7 +212,7 @@ export default function ModulerSolution() {
         variants={containerVariants}
         className="mb-8 sm:mb-12 md:text-left px-0"
       >
-        <h2 className=" text-[40px] md:text-[100px] font-[500] text-[#BABEC8] leading-[55px] md:leading-[98px]">
+        <h2 className=" text-[40px] md:text-[100px] font-[500] text-[#BABEC8] leading-[55px] md:leading-[98px] text-center md:text-start">
           <CustomHeading title="Your Crafted, " className=" font-[500]" />
           <CustomHeading
             title="Modular Solution"
