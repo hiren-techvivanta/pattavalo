@@ -15,11 +15,11 @@ export default function HomeBanner({ onAnimationComplete }) {
   const [hasAnimatedBefore, setHasAnimatedBefore] = useState(false);
   const videoRef = useRef(null);
 
-  // Local storage key for animation flag
+ 
   const ANIMATION_KEY = "homeBannerAnimationCompleted";
 
   useEffect(() => {
-    // Check if animation has been played before
+    
     const animationCompleted = sessionStorage.getItem(ANIMATION_KEY);
     const hasAnimated = animationCompleted === "true";
 
@@ -227,7 +227,7 @@ export default function HomeBanner({ onAnimationComplete }) {
                 >
                   <AnimatedButton
                     icon={MdArrowOutward}
-                    color={"#2E437C"}
+                    color={"white"}
                     hoverColor={`#2E437C`}
                     onClick={() => navigate(`/products`)}
                   >
