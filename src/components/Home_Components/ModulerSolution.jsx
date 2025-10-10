@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom"; // Add this import
+import { useNavigate } from "react-router-dom";
 import { CustomHeading } from "../common/CustomHeading";
 
 export default function ModulerSolution() {
-  const navigate = useNavigate(); // Add navigation hook
+  const navigate = useNavigate();
   const [solutions, setSolutions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -39,18 +39,23 @@ export default function ModulerSolution() {
           result.message === "Categories fetched successfully" &&
           result.data
         ) {
-          // Transform API data to match the original structure
-          const transformedSolutions = result.data.map((category, index) => ({
-            id: category.id,
-            title: category.name.toUpperCase(),
-            icon: category.image.startsWith("http")
-              ? category.image
-              : `${import.meta.env.VITE_BACKEND_URL}/${category.image}`,
-            description: category.description,
-            animation: null, // No animation applied
-            created_at: category.created_at,
-            updated_at: category.updated_at,
-          }));
+          // Transform API data and sort by displayOrder
+          const transformedSolutions = result.data
+            .filter(category => category.is_active) // Only show active categories
+            .sort((a, b) => a.displayOrder - b.displayOrder) // Sort by displayOrder ascending
+            .map((category, index) => ({
+              id: category.id,
+              title: category.name.toUpperCase(),
+              icon: category.image.startsWith("http")
+                ? category.image
+                : `${import.meta.env.VITE_BACKEND_URL}/${category.image}`,
+              description: category.description,
+              animation: null, // No animation applied
+              displayOrder: category.displayOrder,
+              is_active: category.is_active,
+              created_at: category.created_at,
+              updated_at: category.updated_at,
+            }));
 
           setSolutions(transformedSolutions);
         } else {
@@ -207,9 +212,7 @@ export default function ModulerSolution() {
         variants={containerVariants}
         className="mb-8 sm:mb-12 md:text-left px-0"
       >
-        <h2
-          className=" text-[40px] md:text-[100px] font-[500] text-[#BABEC8] leading-[55px] md:leading-[98px]"
-        >
+        <h2 className=" text-[40px] md:text-[100px] font-[500] text-[#BABEC8] leading-[55px] md:leading-[98px]">
           <CustomHeading title="Your Crafted, " className=" font-[500]" />
           <CustomHeading
             title="Modular Solution"
@@ -229,7 +232,7 @@ export default function ModulerSolution() {
           <motion.div
             key={item.id}
             variants={cardVariants}
-            onClick={() => handleCategoryClick(item.id)} // Add click handler
+            onClick={() => handleCategoryClick(item.id)}
             whileHover={{
               y: -2,
               scale: 1.01,
@@ -241,12 +244,11 @@ export default function ModulerSolution() {
               },
             }}
             whileTap={{
-              // Add tap animation for better UX
               scale: 0.98,
               transition: { duration: 0.1 },
             }}
             className="group relative flex flex-col items-center justify-center p-5 bg-white
-              cursor-pointer overflow-hidden hover:shadow-lg" // Added hover:shadow-lg for better UX
+              cursor-pointer overflow-hidden hover:shadow-lg"
           >
             <motion.div
               className="absolute inset-0 bg-gradient-to-br from-[#2E437C] to-[#1d3b72]

@@ -26,10 +26,10 @@ const NewsCard = ({ props }) => {
             {props.news}
           </p>
           <div className="flex justify-between">
-            <p className="md:text-[21px] text-[14px] font-[500] py-1">
+            <p className="md:text-[21px] text-[14px] font-[500] py-0">
               {props.heading}
             </p>
-            <MdArrowOutward className="text-[21px] py-1" />
+            <MdArrowOutward className="text-[22px] pt-1" />
           </div>
           <p className="md:text-[14px] text-[10px] text-[#667085] py-1">
             {props.details}

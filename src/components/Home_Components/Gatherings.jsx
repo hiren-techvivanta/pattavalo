@@ -210,7 +210,7 @@ export default function Gatherings() {
         </h2>
 
         <motion.p
-          className="text-[#191919] my-6  text-[20px] sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto md:mx-0"
+          className="text-[#191919] my-2  text-[20px] sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto md:mx-0"
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}

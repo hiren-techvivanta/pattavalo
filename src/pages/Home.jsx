@@ -238,7 +238,7 @@ export default function Home() {
 
       {/* Partners Section with fast animations */}
       <motion.div
-        className="our-client-section fade-in-section py-5"
+        className="our-client-section fade-in-section py-15"
         variants={quickScale}
         initial="hidden"
         whileInView="visible"

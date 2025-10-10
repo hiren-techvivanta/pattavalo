@@ -31,6 +31,7 @@ const theme = createTheme({
           minHeight: "40px !important",
           "&.Mui-expanded": {
             minHeight: "10px !important",
+            // padding: "10px 0",
           },
         },
         content: {
