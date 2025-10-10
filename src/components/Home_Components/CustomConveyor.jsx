@@ -3,8 +3,10 @@ import { motion } from "framer-motion";
 import ConveyorImage from "../../assets/images/custom_conveyor.png";
 import { RxArrowRight } from "react-icons/rx";
 import AnimatedButton from "../aboutUsComponents/AnimatedButton";
+import { useNavigate } from "react-router-dom";
 
 export default function ExpertSolutions() {
+  const navigate = useNavigate()
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -170,6 +172,7 @@ export default function ExpertSolutions() {
           whileHover="hover"
           whileTap="tap"
           className="mt-4"
+          onClick={() => window.open("https://atc-chain-flex-zero.vercel.app/", '_blank', 'noopener,noreferrer')}
         >
           <AnimatedButton
             icon={RxArrowRight}
