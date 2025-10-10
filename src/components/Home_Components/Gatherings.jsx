@@ -189,7 +189,7 @@ export default function Gatherings() {
   }
 
   return (
-    <section className="w-full px-4 md:px-10 lg:px-15 py-10">
+    <section className="container mx-auto w-full px-4 md:px-10 lg:px-15 py-10 bg-white">
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -197,7 +197,7 @@ export default function Gatherings() {
         variants={containerVariants}
         className="container mx-auto mb-0 sm:px-6 lg:px-0 pb-1 md:text-left"
       >
-        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[74px] leading-[70px]">
+        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[74px] leading-[50px] md:leading-[80px]">
           <CustomHeading
             title="What's "
             className="font-bold text-[#2E437C] block"
@@ -294,13 +294,13 @@ export default function Gatherings() {
 
                 <div className="flex-1">
                   <motion.h3
-                    className="font-semibold text-gray-800 text-[15px] md:text-base line-clamp-2"
+                    className="font-[600] text-[16px] md:text-base line-clamp-2"
                     whileHover={{ color: "#2E437C" }}
                     transition={{ duration: 0.2 }}
                   >
                     {event.heading || event.name || "Event"}
                   </motion.h3>
-                  <p className="text-sm text-gray-500 truncate">
+                  <p className="text-[12px] opacity-[60%] truncate">
                     {event.location || "Location TBA"}
                   </p>
                 </div>

@@ -238,7 +238,7 @@ export default function Home() {
 
       {/* Partners Section with fast animations */}
       <motion.div
-        className="our-client-section fade-in-section"
+        className="our-client-section fade-in-section py-5"
         variants={quickScale}
         initial="hidden"
         whileInView="visible"
@@ -250,7 +250,7 @@ export default function Home() {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="mb-12 px-14"
+            className="mb-12 px-14 mx-auto container"
           >
             <motion.h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
               <span className="text-[#2E437C]">

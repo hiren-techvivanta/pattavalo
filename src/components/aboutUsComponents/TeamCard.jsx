@@ -13,7 +13,7 @@ const TeamCard = ({ member, index = 0 }) => {
 
   return (
     <motion.div 
-      className="flex-shrink-0 w-[183px] md:w-64 h-80 text-center"
+      className="flex-shrink-0 w-[183px] md:w-64 h-60 md:h-80 text-center"
       variants={scaleUp}
       whileHover={{ y: -10, scale: 1.02 }}
       transition={{ duration: 0.3 }}

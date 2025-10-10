@@ -285,7 +285,9 @@ const QuickSelectMenu = ({ navBg }) => {
           <motion.div
             ref={menuRef}
             className={`mt-2 bg-white shadow-2xl z-50 overflow-hidden ${
-              isMobile ? "absolute right-0 w-80 max-w-[90vw]" : "center-div"
+              isMobile
+                ? "absolute right-0 w-[100vw] max-w-[100vw]"
+                : "center-div"
             }`}
             variants={dropdownVariants}
             initial="hidden"
@@ -293,7 +295,10 @@ const QuickSelectMenu = ({ navBg }) => {
             exit="exit"
             style={
               isMobile
-                ? {}
+                ? {
+                    right: -80,
+                    transform: "translateX(-50%)",
+                  }
                 : {
                     position: "fixed",
                     marginTop: 0,
@@ -499,10 +504,7 @@ const QuickSelectMenu = ({ navBg }) => {
                               key={category.id}
                               className={`flex items-center justify-between p-4 cursor-pointer transition-all duration-100`}
                               variants={itemVariants}
-                              onClick={() =>
-                                handleCategoryHover(category.id)
-                              }
-                            
+                              onClick={() => handleCategoryHover(category.id)}
                             >
                               <span
                                 className={`text-base transition-colors duration-100 ${
@@ -565,7 +567,6 @@ const QuickSelectMenu = ({ navBg }) => {
                                       onClick={() =>
                                         handleSubcategoryHover(subcategory.id)
                                       }
-                                      
                                     >
                                       <span
                                         className={`text-sm transition-colors duration-100 font-medium ${
@@ -615,7 +616,6 @@ const QuickSelectMenu = ({ navBg }) => {
                                         duration: 0.15,
                                       }}
                                       onClick={() => handleItemClick(product)}
-                                    
                                     >
                                       <span
                                         className="text-sm transition-colors duration-100 text-[#666666] font-medium"
@@ -669,7 +669,6 @@ const QuickSelectMenu = ({ navBg }) => {
                                           onClick={() =>
                                             handleItemClick(product)
                                           }
-                                          
                                         >
                                           <span
                                             className="text-[#666666] font-medium  duration-100 "

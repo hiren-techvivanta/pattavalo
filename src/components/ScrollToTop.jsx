@@ -16,7 +16,7 @@ const ScrollToTop = () => {
         gestureDirection: 'vertical',
         smooth: true,
         mouseMultiplier: 1.0,
-        smoothTouch: false,
+        smoothTouch: true,
         touchMultiplier: 2.0,
         infinite: false,
       });

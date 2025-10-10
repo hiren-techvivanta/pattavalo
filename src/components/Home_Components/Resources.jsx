@@ -82,7 +82,7 @@ export default function Resources() {
         className="mb-8"
       >
         <motion.h2
-          className="text-[48px] sm:text-4xl lg:text-5xl font-bold text-[#2E437C]"
+          className="text-[37px] sm:text-4xl lg:text-5xl font-bold text-[#2E437C]"
           variants={headerVariants}
         >
           <span className="text-[#2E437C]">
