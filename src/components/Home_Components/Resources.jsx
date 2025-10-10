@@ -185,6 +185,7 @@ export default function Resources() {
       <NewsGrid
         activeTab={activeTab}
         initialPostsCount={4}
+        screen={"home"}
         // searchQuery={searchQuery}
         // className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 pb-16 sm:pb-20"
       />

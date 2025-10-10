@@ -172,7 +172,7 @@ export default function ClientFeedback() {
           <CustomHeading title="Client Feedback" className="" />
         </motion.p>
 
-        <motion.h2 className="text-[30px] md:text-[48px] font-[700] text-[#2E437C] mt-2 leading-[44px]">
+        <motion.h2 className="text-[30px] md:text-[48px] font-[700] text-[#2E437C] mt-2 leading-[35px]">
           <CustomHeading title="Don't take our world for it!" className="" />
         </motion.h2>
 

@@ -242,7 +242,7 @@ const ShowCase = () => {
               <button
                 aria-label="Hotspot"
                 className="relative flex items-center justify-center
-          w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6
+          w-4 h-4 sm:w-5 sm:h-5 md:w-4 md:h-4
           bg-orange-500 text-white rounded-full shadow-lg
           cursor-pointer transition-transform duration-200
           hover:scale-110 active:scale-95"

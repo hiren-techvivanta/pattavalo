@@ -22,22 +22,31 @@ import axios from "axios";
 import { CustomHeading } from "../common/CustomHeading";
 import { CiSearch } from "react-icons/ci";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { LuDot } from "react-icons/lu";
 
 const theme = createTheme({
   components: {
     MuiAccordionSummary: {
       styleOverrides: {
         root: {
-          minHeight: "40px !important",
+          minHeight: "38px !important",
+          padding: "0px 16px !important",
+          marginBottom: "0px !important",
           "&.Mui-expanded": {
-            minHeight: "10px !important",
+            minHeight: "38px !important",
+            margin: "0 !important",
+            marginBottom: "0 !important",
           },
         },
         content: {
-          margin: "0 0 !important",
+          margin: "0 !important",
           "&.Mui-expanded": {
-            margin: "0 0 !important",
+            margin: "0 !important",
           },
+        },
+        expandIconWrapper: {
+          marginRight: "0 !important",
+          marginLeft: "16px !important",
         },
       },
     },
@@ -45,11 +54,22 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           margin: "0 !important",
-          "&:not(:last-child)": {
-            marginBottom: "0 !important",
+          padding: "0 !important",
+          borderRadius: "0 !important",
+          boxShadow: "none !important",
+          backgroundColor: "transparent !important",
+          "&.Mui-expanded": {
+            margin: "0 !important",
+            // padding: "0 !important",
           },
           "&:before": {
             display: "none !important",
+          },
+          "&:last-child": {
+            marginBottom: "0 !important",
+            "&.Mui-expanded": {
+              margin: "0 !important",
+            },
           },
         },
       },
@@ -57,7 +77,19 @@ const theme = createTheme({
     MuiAccordionDetails: {
       styleOverrides: {
         root: {
+          padding:"0 !important"
+        },
+      },
+    },
+    MuiList: {
+      styleOverrides: {
+        root: {
+          paddingTop: "0 !important",
           paddingBottom: "0 !important",
+          listStyle: "none",
+          // margin: "0",
+          // paddingLeft:"32px !important",
+          position: "relative",
         },
       },
     },
@@ -1211,7 +1243,16 @@ const ProductCom = () => {
                                                     "all 0.2s ease-in-out",
                                                 }}
                                               >
-                                                •{" "}
+                                                <LuDot
+                                                  className="text-[30px]"
+                                                  style={{
+                                                    color:
+                                                      selectedProductId ===
+                                                      subChild.productId
+                                                        ? "#2E437C"
+                                                        : "#666666cc",
+                                                  }}
+                                                />
                                                 <ListItemText
                                                   primary={subChild.title}
                                                   primaryTypographyProps={{
@@ -1332,10 +1373,14 @@ const ProductCom = () => {
                     </AccordionSummary>
 
                     <AccordionDetails sx={{ padding: "0 0 8px 16px" }}>
-                      <List dense sx={{
-                                  marginLeft:"25px",}}>
+                      <List
+                        dense
+                        sx={{
+                          marginLeft: "25px",
+                        }}
+                      >
                         {category.children.map((child, childIndex) => (
-                          <React.Fragment key={childIndex} >
+                          <React.Fragment key={childIndex}>
                             {child.isSubCategory ? (
                               <Accordion
                                 expanded={
@@ -1353,7 +1398,6 @@ const ProductCom = () => {
                                   "& .MuiAccordionSummary-root": {
                                     flexDirection: "row-reverse",
                                   },
-                                  
                                 }}
                               >
                                 <AccordionSummary
@@ -1416,13 +1460,22 @@ const ProductCom = () => {
                                             }
                                             sx={{
                                               minHeight: "32px",
-                                              padding: "4px 8px",
+                                              marginLeft: "20px",
                                               borderRadius: "4px",
                                               transition:
                                                 "all 0.2s ease-in-out",
                                             }}
                                           >
-                                            •{" "}{" "}
+                                            <LuDot
+                                              className="text-[30px]"
+                                              style={{
+                                                color:
+                                                  selectedProductId ===
+                                                  subChild.productId
+                                                    ? "#2E437C"
+                                                    : "#666666cc",
+                                              }}
+                                            />
                                             <ListItemText
                                               primary={subChild.title}
                                               primaryTypographyProps={{
@@ -1462,12 +1515,19 @@ const ProductCom = () => {
                                   }
                                   sx={{
                                     minHeight: "36px",
-                                    padding: "4px 8px",
                                     borderRadius: "4px",
                                     transition: "all 0.2s ease-in-out",
                                   }}
                                 >
-                                  •{" "}
+                                  <LuDot
+                                    className="text-[30px]"
+                                    style={{
+                                      color:
+                                        selectedProductId === child.productId
+                                          ? "#2E437C"
+                                          : "#666666cc",
+                                    }}
+                                  />
                                   <ListItemText
                                     primary={child.title}
                                     primaryTypographyProps={{
@@ -1563,7 +1623,7 @@ const ProductCom = () => {
                               transition={{ duration: 0.3 }}
                             />
                           </div>
-                          <h2 className="text-lg font-semibold mt-3 text-gray-800">
+                          <h2 className="text-[16px] font-[600] mt-3 text-gray-800">
                             {product.title}
                           </h2>
                           <p className="text-gray-500 text-sm mt-1">
@@ -1623,7 +1683,7 @@ const ProductCom = () => {
                     <p className="mt-4 text-gray-600">Searching products...</p>
                   </div>
                 ) : displayProducts.length > 0 ? (
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
                     {displayProducts.map((product, index) => (
                       <motion.div
                         key={product.id}
@@ -1634,7 +1694,7 @@ const ProductCom = () => {
                         onClick={() => handleProductClick(product)}
                         className="flex flex-col items-start text-center cursor-pointer"
                       >
-                        <div className="aspect-[4/3] overflow-hidden">
+                        <div className="aspect-[4/4] w-full overflow-hidden">
                           <motion.img
                             src={
                               product.image && product.image.startsWith("http")
@@ -1646,12 +1706,12 @@ const ProductCom = () => {
                                 : productImage
                             }
                             alt={product.title}
-                            className="w-full h-48 object-contain mb-4"
+                            className="w-full object-cover p-3  mb-4"
                             whileHover={{ scale: 1.05 }}
                             transition={{ duration: 0.3 }}
                           />
                         </div>
-                        <h2 className="text-lg font-semibold mt-3 text-gray-800">
+                        <h2 className="text-[16px] font-[600] mt-3 text-gray-800">
                           {product.title}
                         </h2>
                         <p className="text-gray-500 text-sm mt-1">

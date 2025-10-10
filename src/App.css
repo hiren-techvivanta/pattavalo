@@ -43,12 +43,21 @@
   overflow: hidden;
 }
 
-@media (min-width: 1400px) {
+@media (min-width: 1600px) {
   .center-div {
     width: 100vw;
     max-width: 2000px;
     left: 0;
      top: 7.5%;
+  }
+}
+
+@media (min-width: 1400px) and (max-width: 1599px){
+  .center-div {
+    width: 100vw;
+    max-width: 2000px;
+    left: 0;
+     top: 10%;
   }
 }
 

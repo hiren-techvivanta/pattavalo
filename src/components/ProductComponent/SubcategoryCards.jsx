@@ -72,7 +72,7 @@ const SubcategoryCards = ({ subcategories, onSubcategoryClick, loading }) => {
             />
           </div>
 
-          <h2 className="text-lg font-semibold mt-3 text-gray-800">
+          <h2 className="text-[16px] font-[600] mt-3 text-gray-800">
             {subcategory.name}
           </h2>
           {subcategory.description && (

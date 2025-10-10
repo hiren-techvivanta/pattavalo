@@ -113,7 +113,7 @@ export default function ExpertSolutions() {
         <motion.h1
           variants={containerVariants}
           className="
-      text-[38px] sm:text-[34px] md:text-[42px] lg:text-[50px] xl:text-[54px]
+      text-[38px] md:text-[48px]
       leading-[45px] sm:leading-[44px] md:leading-[52px] lg:leading-[60px] text-[#BABEC8]
       font-[600] mb-6 sm:mb-8"
         >
@@ -127,7 +127,7 @@ export default function ExpertSolutions() {
         {/* Paragraph 1 */}
         <motion.p
           className="
-      text-sm sm:text-base md:text-lg
+      text-sm sm:text-base md:text-[16px]
       text-[#A0A3AD]
       mb-4 sm:mb-6
       leading-relaxed
@@ -144,7 +144,7 @@ export default function ExpertSolutions() {
         {/* Paragraph 2 */}
         <motion.p
           className="
-      text-sm sm:text-base md:text-lg
+      text-sm sm:text-base md:text-[16px]
       text-[#A0A3AD]
       mb-4 sm:mb-6
       leading-relaxed

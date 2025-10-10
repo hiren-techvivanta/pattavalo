@@ -397,7 +397,7 @@ export default function IndustryCom() {
       setIsMobile(mobile);
 
       if (mobile) {
-        setRotation(-170);
+        setRotation(-120);
       } else {
         setRotation(0);
       }
@@ -582,6 +582,13 @@ export default function IndustryCom() {
                 const y = radius * Math.sin(radian);
 
                 const isActive = industry.id === activeIndustry.id;
+                const iconTextSize = isActive
+                  ? isMobile
+                    ? "text-[10px]"
+                    : "text-xs"
+                  : isMobile
+                  ? "text-[8px]"
+                  : "text-xs";
                 const centerPoint = isMobile ? 200 : 300;
                 const pathRadius = isMobile ? 200 : 300;
 
@@ -605,19 +612,19 @@ export default function IndustryCom() {
                           pathRadius * Math.sin((endAngle * Math.PI) / 180)
                         } Z')`,
                         zIndex: 15,
-                        border: isActive
-                          ? "2px solid #fff"
-                          : "2px solid transparent",
-                        filter: isActive
-                          ? "drop-shadow(0 0 15px rgba(255,255,255,0.6))"
-                          : "none",
-                        transition: "all 0.3s ease",
+                        // border: isActive
+                        //   ? "2px solid #fff"
+                        //   : "2px solid transparent",
+                        // filter: isActive
+                        //   ? "drop-shadow(0 0 15px rgba(255,255,255,0.6))"
+                        //   : "none",
+                        // transition: "all 0.3s ease",
                       }}
                     ></div>
 
                     <motion.div
                       initial={{ rotate: isMobile ? 170 : 20 }}
-                      animate={{ rotate: -rotation + (isMobile ? 170 : 20) }} // Fixed counter-rotation
+                      animate={{ rotate: -rotation + (isMobile ? 170 : 20) }}
                       transition={{ duration: 0.7, ease: "easeInOut" }}
                       className={`absolute z-20 flex flex-col items-center justify-center ${
                         isMobile ? "w-12 h-12" : "w-16 h-16"
@@ -635,14 +642,23 @@ export default function IndustryCom() {
                       }}
                     >
                       <span className={isMobile ? "text-lg" : "text-xl"}>
-                        {React.cloneElement(industry.icon, {
+                        {/* {React.cloneElement(industry.icon, {
                           size: isMobile ? 23 : 26,
+                        })} */}
+                        {React.cloneElement(industry.icon, {
+                          size: isActive
+                            ? isMobile
+                              ? 30
+                              : 50
+                            : isMobile
+                            ? 23
+                            : 26,
                         })}
                       </span>
                       <span
-                        className={`${
-                          isMobile ? "text-[8px]" : "text-xs"
-                        } mt-1 font-medium text-center leading-tight`}
+                        className={`${iconTextSize} mt-1 font-medium text-center leading-tight ${
+                          isActive ? "font-semibold" : "font-medium"
+                        }`}
                       >
                         {industry.title.split(" ")[0]}
                       </span>
