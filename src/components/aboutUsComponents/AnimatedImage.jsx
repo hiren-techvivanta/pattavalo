@@ -16,7 +16,7 @@ const AnimatedImage = ({
 
   return (
     <motion.div 
-      className={`overflow-hidden ${containerClassName}`}
+      className={`overflow-hidden ${containerClassName} aspect-[4/3]`}
       variants={variants || scaleUp}
     >
       <motion.img
