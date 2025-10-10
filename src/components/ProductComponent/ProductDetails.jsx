@@ -1279,8 +1279,7 @@
 
 // export default ProductDetails;
 
-
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs, Autoplay } from "swiper/modules";
 import { HiChevronRight } from "react-icons/hi2";
@@ -1363,6 +1362,24 @@ const ProductDetails = ({ selectedProduct }) => {
   });
 
   const [formErrors, setFormErrors] = useState({});
+  const [showThumbnailArrows, setShowThumbnailArrows] = useState(false);
+  const thumbnailContainerRef = useRef(null);
+
+  // Add this function to handle thumbnail scroll
+  const handleThumbnailScroll = (direction) => {
+    if (thumbnailContainerRef.current) {
+      const container = thumbnailContainerRef.current;
+      const scrollAmount = 100; // Adjust this value as needed
+
+      if (direction === "up") {
+        container.scrollTop -= scrollAmount;
+      } else {
+        container.scrollTop += scrollAmount;
+      }
+    }
+  };
+
+  // Add this useEffect to check if thumbnails need scrolling arrows
 
   const getImageUrl = (imagePath) => {
     if (!imagePath || typeof imagePath !== "string") return null;
@@ -1403,7 +1420,13 @@ const ProductDetails = ({ selectedProduct }) => {
   };
 
   const images = getImages();
-
+  useEffect(() => {
+    if (thumbnailContainerRef.current) {
+      const container = thumbnailContainerRef.current;
+      const hasVerticalScroll = container.scrollHeight > container.clientHeight;
+      setShowThumbnailArrows(hasVerticalScroll);
+    }
+  }, [images]);
   // Get available download files
   const getDownloadFiles = () => {
     const files = [];
@@ -2098,7 +2121,9 @@ const ProductDetails = ({ selectedProduct }) => {
                 }}
                 thumbs={{
                   swiper:
-                    thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
+                    thumbsSwiper && !thumbsSwiper.destroyed
+                      ? thumbsSwiper
+                      : null,
                 }}
                 autoplay={{
                   delay: 4000,
@@ -2146,7 +2171,7 @@ const ProductDetails = ({ selectedProduct }) => {
                       key={`mobile-thumb-${image.id}`}
                       onClick={() => setActiveIndex(index)}
                       className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 hover:opacity-90 rounded-lg ${
-                        activeIndex === index ? 'ring-2 ring-[#2E437C]' : ''
+                        activeIndex === index ? "ring-2 ring-[#2E437C]" : ""
                       }`}
                     >
                       <img
@@ -2176,7 +2201,9 @@ const ProductDetails = ({ selectedProduct }) => {
                   }}
                   thumbs={{
                     swiper:
-                      thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
+                      thumbsSwiper && !thumbsSwiper.destroyed
+                        ? thumbsSwiper
+                        : null,
                   }}
                   autoplay={{
                     delay: 4000,
@@ -2217,22 +2244,25 @@ const ProductDetails = ({ selectedProduct }) => {
             </div>
 
             {/* Vertical Thumbnails - 25% width */}
-            {images.length > 1 && (
-              <div className="w-1/4" style={{
-                maxHeight:"550px",
-                overflowY:"scroll",
-              }}>
+            {/* {images.length > 1 && (
+              <div
+                className="w-1/4"
+                style={{
+                  maxHeight: "550px",
+                  overflowY: "scroll",
+                }}
+              >
                 <div className="">
-                  {/* Use a custom scrollable container instead of Swiper for vertical thumbnails */}
+                  
                   <div className="flex flex-col gap-3 h-full overflow-y-auto scrollbar-hide">
                     {images.map((image, index) => (
                       <div
                         key={`desktop-thumb-${image.id}`}
                         onClick={() => setActiveIndex(index)}
                         className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 hover:opacity-90 rounded-lg flex-shrink-0 ${
-                          activeIndex === index 
-                            ? ' shadow-lg scale-105' 
-                            : 'hover:shadow-md'
+                          activeIndex === index
+                            ? " shadow-lg scale-105"
+                            : "hover:shadow-md"
                         }`}
                       >
                         <img
@@ -2240,7 +2270,7 @@ const ProductDetails = ({ selectedProduct }) => {
                           alt={image.alt}
                           className="w-full h-full object-cover transition-all duration-300"
                         />
-                        {/* Active indicator overlay */}
+                       
                         {activeIndex === index && (
                           <div className="absolute inset-0 bg-[#2E437C]/10 rounded-lg" />
                         )}
@@ -2249,16 +2279,69 @@ const ProductDetails = ({ selectedProduct }) => {
                   </div>
                 </div>
               </div>
+            )} */}
+            {images?.length > 1 && (
+              <div className="w-1/4 relative">
+                {/* Up Arrow */}
+                {showThumbnailArrows && (
+                  <button
+                    onClick={() => handleThumbnailScroll("up")}
+                    className="absolute top-0 left-1/2 transform -translate-x-1/2 z-10 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 shadow-lg mb-1"
+                  >
+                    <HiChevronRight className="w-4 h-4 text-gray-800 -rotate-90" />
+                  </button>
+                )}
+
+                <div
+                  ref={thumbnailContainerRef}
+                  className="flex flex-col gap-3 h-full overflow-y-auto scrollbar-hide"
+                  style={{
+                    maxHeight: "550px",
+                    marginTop: showThumbnailArrows ? "32px" : "0",
+                    marginBottom: showThumbnailArrows ? "32px" : "0",
+                  }}
+                >
+                  {images.map((image, index) => (
+                    <div
+                      key={`desktop-thumb-${image.id}`}
+                      onClick={() => setActiveIndex(index)}
+                      className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 hover:opacity-90 rounded-lg flex-shrink-0 ${
+                        activeIndex === index
+                          ? " shadow-lg scale-105"
+                          : "hover:shadow-md"
+                      }`}
+                    >
+                      <img
+                        src={image.src}
+                        alt={image.alt}
+                        className="w-full h-full object-cover transition-all duration-300"
+                      />
+                      {/* Active indicator overlay */}
+                      {activeIndex === index && (
+                        <div className="absolute inset-0 bg-[#2E437C]/10 rounded-lg" />
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {/* Down Arrow */}
+                {showThumbnailArrows && (
+                  <button
+                    onClick={() => handleThumbnailScroll("down")}
+                    className="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-10 w-8 h-8 bg-white/90 hover:bg-white rounded-full flex items-center justify-center cursor-pointer transition-all duration-300 hover:scale-110 shadow-lg mt-1"
+                  >
+                    <HiChevronRight className="w-4 h-4 text-gray-800 rotate-90" />
+                  </button>
+                )}
+              </div>
             )}
           </div>
-
-          
         </div>
       </div>
 
       {/* Fullscreen Image Modal */}
       {isImageFullscreen && (
-        <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-black bg-opacity-95 z-50 flex items-center justify-center overflow-auto">
           {/* Close button */}
           <button
             onClick={handleCloseFullscreen}
@@ -2268,7 +2351,7 @@ const ProductDetails = ({ selectedProduct }) => {
           </button>
 
           {/* Navigation buttons for multiple images */}
-          {images.length > 1 && (
+          {images?.length > 1 && (
             <>
               <button
                 onClick={handleFullscreenPrev}
@@ -2286,11 +2369,15 @@ const ProductDetails = ({ selectedProduct }) => {
           )}
 
           {/* Main fullscreen image */}
-          <div className="relative max-w-full max-h-full p-4">
+          <div className="relative p-4 flex items-center justify-center">
             <img
               src={images[fullscreenImageIndex]?.src}
               alt={images[fullscreenImageIndex]?.alt}
-              className="max-w-full max-h-full object-contain"
+              className="object-none" // prevents cropping
+              style={{
+                maxWidth: "none",
+                maxHeight: "none",
+              }}
             />
           </div>
 
