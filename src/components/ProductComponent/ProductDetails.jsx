@@ -601,7 +601,7 @@
 //         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 lg:gap-8 mb-6 lg:mb-8">
 //           {/* Product Title and Description */}
 //           <div className="flex-1 min-w-0">
-//             <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#2E437C] leading-tight">
+//             <h2 className="text-2xl md:text-[32px] font-bold text-[#babec8] leading-tight">
 //               {productData.productName}
 //             </h2>
 //           </div>
@@ -1279,6 +1279,7 @@
 
 // export default ProductDetails;
 
+
 import React, { useState, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Thumbs, Autoplay } from "swiper/modules";
@@ -1882,7 +1883,7 @@ const ProductDetails = ({ selectedProduct }) => {
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 lg:gap-8 mb-6 lg:mb-8">
           {/* Product Title and Description */}
           <div className="flex-1 min-w-0">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-[#2E437C] leading-tight">
+            <h2 className="text-2xl md:text-[32px] font-bold text-[#babec8] leading-tight">
               {productData.productName}
             </h2>
           </div>
@@ -2097,9 +2098,7 @@ const ProductDetails = ({ selectedProduct }) => {
                 }}
                 thumbs={{
                   swiper:
-                    thumbsSwiper && !thumbsSwiper.destroyed
-                      ? thumbsSwiper
-                      : null,
+                    thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
                 }}
                 autoplay={{
                   delay: 4000,
@@ -2147,7 +2146,7 @@ const ProductDetails = ({ selectedProduct }) => {
                       key={`mobile-thumb-${image.id}`}
                       onClick={() => setActiveIndex(index)}
                       className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 hover:opacity-90 rounded-lg ${
-                        activeIndex === index ? "ring-2 ring-[#2E437C]" : ""
+                        activeIndex === index ? 'ring-2 ring-[#2E437C]' : ''
                       }`}
                     >
                       <img
@@ -2165,7 +2164,7 @@ const ProductDetails = ({ selectedProduct }) => {
           {/* Desktop Layout - 75% slider + 25% vertical thumbnails */}
           <div className="hidden lg:flex gap-6">
             {/* Main Slider - 75% width */}
-            <div className="w-6/8">
+            <div className="w-3/4">
               <div className="relative w-full aspect-[4/3] bg-gray-100 overflow-hidden shadow-lg">
                 <Swiper
                   modules={[Navigation, Thumbs, Autoplay]}
@@ -2177,9 +2176,7 @@ const ProductDetails = ({ selectedProduct }) => {
                   }}
                   thumbs={{
                     swiper:
-                      thumbsSwiper && !thumbsSwiper.destroyed
-                        ? thumbsSwiper
-                        : null,
+                      thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null,
                   }}
                   autoplay={{
                     delay: 4000,
@@ -2188,13 +2185,7 @@ const ProductDetails = ({ selectedProduct }) => {
                   }}
                   loop={images.length > 1}
                   speed={800}
-                  onSlideChange={(swiper) => {
-                    setActiveIndex(swiper.realIndex);
-                    // Auto-scroll thumbnail to show active image at top
-                    if (thumbsSwiper && !thumbsSwiper.destroyed) {
-                      thumbsSwiper.slideTo(swiper.realIndex);
-                    }
-                  }}
+                  onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
                   className="w-full h-full swiper-container"
                 >
                   {images.map((image, index) => (
@@ -2227,76 +2218,41 @@ const ProductDetails = ({ selectedProduct }) => {
 
             {/* Vertical Thumbnails - 25% width */}
             {images.length > 1 && (
-              <div className="w-1/7">
-                {/* Container with same aspect ratio as main slider */}
-                <div className=" rounded-lg ">
-                  <Swiper
-                    onSwiper={setThumbsSwiper}
-                    direction="vertical"
-                    spaceBetween={12}
-                    slidesPerView={4}
-                    slidesPerGroup={1}
-                    centeredSlides={false}
-                    freeMode={false}
-                    watchSlidesProgress={true}
-                    modules={[Navigation, Thumbs]}
-                    className="h-full w-full thumb-swiper"
-                    style={{
-                      height: "100%",
-                      padding: "12px",
-                    }}
-                    breakpoints={{
-                      1024: {
-                        slidesPerView: 4,
-                        spaceBetween: 12,
-                      },
-                      1280: {
-                        slidesPerView: 4,
-                        spaceBetween: 12,
-                      },
-                    }}
-                  >
+              <div className="w-1/4" style={{
+                maxHeight:"550px",
+                overflowY:"scroll",
+              }}>
+                <div className="">
+                  {/* Use a custom scrollable container instead of Swiper for vertical thumbnails */}
+                  <div className="flex flex-col gap-3 h-full overflow-y-auto scrollbar-hide">
                     {images.map((image, index) => (
-                      <SwiperSlide
+                      <div
                         key={`desktop-thumb-${image.id}`}
-                        style={{ height: "auto" }}
-                        className="!h-auto"
+                        onClick={() => setActiveIndex(index)}
+                        className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 hover:opacity-90 rounded-lg flex-shrink-0 ${
+                          activeIndex === index 
+                            ? ' shadow-lg scale-105' 
+                            : 'hover:shadow-md'
+                        }`}
                       >
-                        <div
-                          onClick={() => {
-                            setActiveIndex(index);
-                            // Update main swiper
-                            const mainSwiper =
-                              document.querySelector(
-                                ".swiper-container"
-                              )?.swiper;
-                            if (mainSwiper) {
-                              mainSwiper.slideTo(index);
-                            }
-                          }}
-                          className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 hover:opacity-90 rounded-lg ${
-                            activeIndex === index
-                              ? "ring-2 ring-[#2E437C] shadow-lg scale-105"
-                              : "hover:shadow-md"
-                          }`}
-                        >
-                          <img
-                            src={image.src}
-                            alt={image.alt}
-                            className="w-full h-full object-cover transition-all duration-300"
-                          />
-                          {/* Active indicator overlay */}
-                          {activeIndex === index && (
-                            <div className="absolute inset-0 bg-[#2E437C]/10 rounded-lg" />
-                          )}
-                        </div>
-                      </SwiperSlide>
+                        <img
+                          src={image.src}
+                          alt={image.alt}
+                          className="w-full h-full object-cover transition-all duration-300"
+                        />
+                        {/* Active indicator overlay */}
+                        {activeIndex === index && (
+                          <div className="absolute inset-0 bg-[#2E437C]/10 rounded-lg" />
+                        )}
+                      </div>
                     ))}
-                  </Swiper>
+                  </div>
                 </div>
               </div>
             )}
           </div>
+
+          
         </div>
       </div>
 

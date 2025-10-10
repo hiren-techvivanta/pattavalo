@@ -1683,7 +1683,7 @@ const ProductCom = () => {
                     <p className="mt-4 text-gray-600">Searching products...</p>
                   </div>
                 ) : displayProducts.length > 0 ? (
-                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                  <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
                     {displayProducts.map((product, index) => (
                       <motion.div
                         key={product.id}
@@ -1694,7 +1694,7 @@ const ProductCom = () => {
                         onClick={() => handleProductClick(product)}
                         className="flex flex-col items-start text-center cursor-pointer"
                       >
-                        <div className="aspect-[4/3] overflow-hidden">
+                        <div className="aspect-[4/4] w-full overflow-hidden">
                           <motion.img
                             src={
                               product.image && product.image.startsWith("http")
@@ -1706,7 +1706,7 @@ const ProductCom = () => {
                                 : productImage
                             }
                             alt={product.title}
-                            className="w-full h-48 object-contain mb-4"
+                            className="w-full object-cover p-3  mb-4"
                             whileHover={{ scale: 1.05 }}
                             transition={{ duration: 0.3 }}
                           />
