@@ -21,17 +21,16 @@ const ContactForm = () => {
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState({ type: "", message: "" });
+  const [submitStatus, setSubmitStatus] = useState({ type:"", message: "" });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
-      setErrors((prev) => ({ ...prev, [name]: "" }));
+      setErrors((prev) => ({ ...prev, [name]:""}));
     }
-    // Clear submit status when user starts typing
     if (submitStatus.message) {
-      setSubmitStatus({ type: "", message: "" });
+      setSubmitStatus({ type:"", message: "" });
     }
   };
 
