@@ -1878,7 +1878,7 @@ const ProductDetails = ({ selectedProduct }) => {
   };
 
   return (
-    <div className="w-full min-h-screen bg-white">
+    <div className="w-full bg-white">
       {/* Breadcrumb Navigation */}
       <div className="px-4 lg:px-0 mb-4 lg:mb-5">
         <div className="flex items-center flex-wrap gap-2 text-sm">
@@ -2297,7 +2297,7 @@ const ProductDetails = ({ selectedProduct }) => {
                 {/* Thumbnail grid */}
                 <div
                   ref={thumbnailContainerRef}
-                  className="grid grid-cols-2 gap-3 h-full overflow-y-auto scrollbar-hide"
+                  className="grid grid-cols-2 gap-3 overflow-y-auto scrollbar-hide"
                   style={{
                     maxHeight: "550px",
                     marginTop: showThumbnailArrows ? "32px" : "0",
@@ -2308,10 +2308,10 @@ const ProductDetails = ({ selectedProduct }) => {
                     <div
                       key={`desktop-thumb-${image.id}`}
                       onClick={() => setActiveIndex(index)}
-                      className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 hover:opacity-90 rounded-lg flex-shrink-0 ${
+                      className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 hover:opacity-90 flex-shrink-0 ${
                         activeIndex === index
-                          ? "shadow-lg scale-105"
-                          : "hover:shadow-md"
+                          ? "border border-[#2E437C]"
+                          : ""
                       }`}
                     >
                       <img
@@ -2320,10 +2320,7 @@ const ProductDetails = ({ selectedProduct }) => {
                         className="w-full h-full object-cover transition-all duration-300"
                       />
 
-                      {/* Active indicator overlay */}
-                      {activeIndex === index && (
-                        <div className="absolute inset-0 bg-[#2E437C]/10 rounded-lg" />
-                      )}
+                     
                     </div>
                   ))}
                 </div>
