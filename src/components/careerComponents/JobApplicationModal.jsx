@@ -154,7 +154,6 @@ const JobApplicationModal = ({ isOpen, onClose, jobId }) => {
         throw new Error(errorData?.message || "Failed to submit application");
       }
     } catch (error) {
-      console.error("Error submitting application:", error);
       setSubmitMessage(
         `Failed to submit application: ${error.message}. Please try again.`
       );

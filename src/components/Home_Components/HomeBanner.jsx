@@ -28,7 +28,6 @@ export default function HomeBanner({ onAnimationComplete }) {
     if (videoRef.current) {
       videoRef.current
         .play()
-        .catch((err) => console.log("Autoplay prevented:", err));
     }
 
     if (hasAnimated) {

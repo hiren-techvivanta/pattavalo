@@ -213,7 +213,6 @@ const AboutUs = () => {
 
       setOurTeam(result.data || result);
     } catch (err) {
-      console.error("Error fetching team:", err);
       setError(
         err instanceof Error ? err.message : "An unknown error occurred"
       );
@@ -267,7 +266,6 @@ const AboutUs = () => {
         setShowLoadMore(false);
       }
     } catch (err) {
-      console.error("Error fetching gallery images:", err);
       setGalleryError(err.message);
 
       // On error, set empty arrays
@@ -376,7 +374,6 @@ const AboutUs = () => {
     if (videoRef.current) {
       videoRef.current
         .play()
-        .catch((err) => console.log("Autoplay prevented:", err));
     }
 
     if (hasAnimated) {

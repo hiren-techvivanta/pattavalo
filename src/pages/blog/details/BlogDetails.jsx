@@ -61,7 +61,6 @@ const BlogDetails = () => {
           throw new Error("Post not found");
         }
       } catch (err) {
-        console.error("Error fetching post details:", err);
         setError("Failed to load post details. Please try again later.");
       } finally {
         setLoading(false);

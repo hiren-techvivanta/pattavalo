@@ -126,7 +126,6 @@ const ContactForm = () => {
         throw new Error("Failed to send message");
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
       setSubmitStatus({
         type: "error",
         message: "Failed to send message. Please try again later.",
