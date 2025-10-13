@@ -34,6 +34,213 @@ import meat2 from "../../assets/images/industries/meat2.jpeg";
 import poultry1 from "../../assets/images/industries/meat2.jpeg";
 import milk from "../../assets/images/industries/milk.jfif";
 import { CustomHeading } from "../common/CustomHeading";
+import { IoFastFoodOutline } from "react-icons/io5";
+import { TbMeat } from "react-icons/tb";
+import { IoFishSharp } from "react-icons/io5";
+import seeFood1 from "../../assets/images/industries/seeFood1.jpg";
+import seeFood2 from "../../assets/images/industries/seeFood2.jpg";
+import seeFood3 from "../../assets/images/industries/seeFood3.jpg";
+import seeFood4 from "../../assets/images/industries/seeFood4.jpg";
+
+// const categoryContent = {
+//   // Food Industry
+//   "Fruit & Vegitables": {
+//     title: "Fruit & Vegetables Solutions",
+//     description:
+//       "A fruits and vegetable modular conveyor belt is a type of conveyor system that is designed specifically for handling fruits and vegetables in a production or processing facility. This type of conveyor system is typically made up of modular plastic belts that are designed to be easily replaced, cleaned, and sanitized to meet the strict hygiene standards required in the food industry. The design of a fruits and vegetable modular conveyor belt is optimized for the handling of delicate produce, such as fruits and vegetables, without causing damage to the product. The conveyor system is typically equipped with features such as adjustable speed controls and gentle transfer mechanisms to ensure that the produce is transported smoothly and safely through the production or processing line. In addition to being designed for the handling of delicate produce, a fruits and vegetable modular conveyor belt is also typically designed to be easily disassembled and cleaned to meet strict food safety requirements. This is important because any contaminants or bacteria that may be present on the conveyor belt can easily transfer to the produce, which can have serious health implications for consumers. Overall, a fruits and vegetable modular conveyor belt is an important component of a modern food production or processing facility, and can help ensure that fruits and vegetables are handled safely and efficiently throughout the production process.",
+//     images: [food1, food2],
+//   },
+
+//   Water: {
+//     title: "Water Bottling Solutions",
+//     description:
+//       "SS chain (stainless steel chain), plastic chain, modular belts, and components are commonly used in water bottling lines for various purposes. These materials and components play important roles in conveying, transferring, and processing bottles throughout the bottling process.",
+//     images: [water1, water2],
+//   },
+
+//   Juice: {
+//     title: "Juice Production Lines",
+//     description:
+//       "In a juice production line, you can utilize conveyors made of stainless steel (SS), plastic chain, and modular belt, along with various components tailored to the specific needs of the process. Modular belt, SS chains, Plastic and flex chains are commonly use in In-feed Conveyors, Fruit Washing Conveyors, Sorting Conveyors, Juice Extraction Conveyors, Bottle or Container Conveyors, Packaging Conveyors, Inspection Conveyors, Transfer Conveyors. Stainless steel conveyors are commonly used for conveying fruits through washing and sorting stages. They are resistant to moisture, chemicals, and are easy to clean, making them suitable for maintaining hygiene during the washing process. Plastic chain conveyors can also be employed, providing gentle and efficient transportation of delicate fruits.For the bottling and packaging of juice, conveyors with modular belts or plastic chains are commonly used. These conveyors transport empty bottles or containers through filling, capping, labeling, and packaging stations. Modular belts provide a stable surface for smooth and efficient movement, while plastic chain conveyors offer flexibility and ease of cleaning. Conveyors with modular belts or plastic chains are used for visual inspection and quality control of filled and packaged juice products. These conveyors facilitate the movement of bottles or containers, allowing inspectors to examine them for any defects or inconsistencies.",
+//     images: [juice1, juice2],
+//   },
+
+//   "Tetra Pack": {
+//     title: "Tetra Pack Handling",
+//     description:
+//       "Tetra Pack production typically involves the use of finger chains, slat chains, and various conveyor components to transport the cartons throughout the production line.Finger chains are commonly used in the Tetra Pack production process to transport the cartons from one stage to another. They are designed to securely hold the cartons in place and prevent them from falling or tilting during the conveying process.Modular belts are a versatile option for conveying cartons in the Tetra Pack production process. They can be easily customized to fit different conveyor configurations and offer low maintenance and easy cleaning, making them ideal for use in food and beverage applications. Other conveyor components commonly used in the Tetra Pack production process include bearings, sprockets, wear strips, and guides, all of which play a crucial role in ensuring the efficient and effective operation of the conveyor system.",
+//     images: [tetra1, tetra2],
+//   },
+
+//   "Beer Line": {
+//     title: "Brewery Conveying Systems",
+//     description:
+//       "Beer manufacturing processes often utilize conveyors for various stages of production, including bottling, canning, labeling, packaging, and transportation. Both stainless steel (SS) conveyors and conveyors with plastic chains or modular belts are commonly employed in the beer industry. Stainless steel is a popular choice for conveying systems in the beer manufacturing industry due to its durability, corrosion resistance, and ease of cleaning. Plastic chain conveyors are another type of conveyor system widely used in the beer industry. These conveyors consist of interlocking plastic chains that move products along the production line. Plastic chains offer advantages such as being lightweight, flexible, and easy to clean. Both plastic chain conveyors and modular belt conveyors are well-suited for beer manufacturing processes as they are resistant to moisture, corrosion, and chemical exposure. The choice between the two will depend on factors such as the specific application, the type of product being transported, and the desired level of hygiene and product protection. It's worth noting that conveyor systems in the beer industry often require additional features and components to ensure product integrity and maintain hygiene standards. These may include side guides, drip pans, sanitary design principles, and proper cleaning procedures to prevent contamination and maintain the quality of the beer throughout the production process.",
+//     images: [beer1, beer2],
+//   },
+
+//   "Carbonated Soft Drinks": {
+//     title: "Carbonated Beverage Lines",
+//     description:
+//       "The manufacturing process of carbonated soft drinks often involves the use of SS (stainless steel) slat chains, plastic chains, and various conveyor parts to transport the bottles or cans throughout the production line.Other conveyor parts commonly used in the manufacturing process of carbonated soft drinks include bearings, sprockets, wear strips, and guides, all of which play a crucial role in ensuring the efficient and effective operation of the conveyor system.",
+//     images: [softdrink1, softdrink2],
+//   },
+
+//   // Meat & Seafood Industry
+//   Seafood: {
+//     title: "Seafood Handling Solutions",
+//     description:
+//       "Efficient and hygienic conveyor systems for seafood processing and packaging.",
+//     images: [seafood1, seafood2],
+//   },
+
+//   Meat: {
+//     title: "Meat Processing Solutions",
+//     description:
+//       "Safe and sanitary conveyor systems for meat processing facilities.",
+//     images: [meat1, meat2],
+//   },
+
+//   Poultry: {
+//     title: "Poultry Handling Solutions",
+//     description:
+//       "Specialized conveyors for handling poultry products with hygiene compliance.",
+//     images: [poultry1],
+//   },
+
+//   // Dairy Industry
+//   Chocolate: {
+//     title: "Chocolate Production Solutions",
+//     description: "Conveyors for chocolate processing ensuring product quality.",
+//     images: [
+//       "https://images.unsplash.com/photo-1580927752450-b5f0a35b0a2d?auto=format&fit=crop&w=1200&q=80",
+//     ],
+//   },
+
+//   "Milk & Milk Products": {
+//     title: "Milk Processing Solutions",
+//     description:
+//       "Modular belts and plastic chains are commonly used in the food and beverage industry, including milk and milk product filling, labeling, and packaging applications. Modular belts are made up of interlocking plastic modules that can be easily replaced if damaged, allowing for quick maintenance and reducing downtime. They are often used in conveyor systems for transporting milk and other liquid products, as they are easy to clean and can withstand exposure to moisture. Plastic chains, on the other hand, are composed of interlocking plastic links and are ideal for applications that require high-strength and durability. They are often used in packaging and labeling machines to transport and position containers of milk and milk products during the filling and packaging process. Both modular belts and plastic chains are popular choices for the food and beverage industry because they are made from food-grade materials that are safe for contact with consumable products. They are also resistant to corrosion and are easy to clean, making them an ideal choice for environments where hygiene is critical.",
+//     images: [milk],
+//   },
+
+//   Yogurt: {
+//     title: "Yogurt Production Lines",
+//     description: "Sanitary conveyor solutions for yogurt production.",
+//     images: [
+//       "https://images.unsplash.com/photo-1587398290463-90b95b56e1b1?auto=format&fit=crop&w=1200&q=80",
+//     ],
+//   },
+
+//   Cheese: {
+//     title: "Cheese Handling Systems",
+//     description: "Specialized conveyors for cheese processing and packaging.",
+//     images: [
+//       "https://images.unsplash.com/photo-1596614770116-0ff91d8e234d?auto=format&fit=crop&w=1200&q=80",
+//     ],
+//   },
+
+//   "Shrink Wrapping": {
+//     title: "Shrink Wrapping Solutions",
+//     description:
+//       "Conveyors for automated shrink wrapping in logistics and packaging.",
+//     images: [
+//       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
+//     ],
+//   },
+
+//   "Material Handling": {
+//     title: "Material Handling Solutions",
+//     description:
+//       "Efficient conveyors for moving materials across production lines.",
+//     images: [
+//       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
+//     ],
+//   },
+
+//   "Packaging Belting Solution": {
+//     title: "Packaging Belting Solutions",
+//     description:
+//       "Conveyor belts optimized for packaging applications and labeling.",
+//     images: [
+//       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
+//     ],
+//   },
+
+//   "E-commerce": {
+//     title: "E-commerce Logistics Solutions",
+//     description: "Conveyors for efficient handling of e-commerce products.",
+//     images: [
+//       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
+//     ],
+//   },
+
+//   Distribution: {
+//     title: "Distribution Solutions",
+//     description: "Conveyors for product distribution and warehouse automation.",
+//     images: [
+//       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
+//     ],
+//   },
+
+//   // Cosmetic & Pharmaceutical
+//   "No Category": {
+//     title: "Cosmetic & Pharmaceutical Conveyors",
+//     description:
+//       "Conveyors for cosmetic and pharmaceutical industries ensuring sterile handling.",
+//     images: [
+//       "https://png.pngtree.com/png-vector/20221125/ourmid/pngtree-no-image-available-icon-flatvector-illustration-picture-coming-creative-vector-png-image_40968940.jpg",
+//     ],
+//   },
+
+//   // Automobile
+//   Assembly: {
+//     title: "Assembly Line Conveyors",
+//     description: "Conveyors for automobile assembly lines.",
+//     images: [
+//       "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
+//     ],
+//   },
+
+//   "Parts Manufacturing": {
+//     title: "Parts Manufacturing Conveyors",
+//     description: "Conveyors for efficient parts manufacturing.",
+//     images: [
+//       "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
+//     ],
+//   },
+
+//   Painting: {
+//     title: "Painting Line Conveyors",
+//     description: "Specialized conveyors for painting operations.",
+//     images: [
+//       "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
+//     ],
+//   },
+
+//   "Quality Control": {
+//     title: "Quality Control Conveyors",
+//     description: "Conveyors for QC processes in automobile production.",
+//     images: [
+//       "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
+//     ],
+//   },
+
+//   // Healthcare
+//   "Seafood Processing": {
+//     title: "Seafood Processing Conveyors",
+//     description:
+//       "Seafood processing conveyors are designed for durability, hygiene, and product safety. Built with stainless steel and modular plastic belts, they efficiently move fish, shrimp, and shellfish through cutting, washing, inspection, and packaging lines. Their open-grid structure and easy-clean design prevent bacterial buildup, ensuring compliance with food-safety standards such as HACCP and FDA.",
+//     images: [seeFood1, seeFood4],
+//   },
+
+//   "Frozen Handling": {
+//     title: "Frozen Seafood Handling Systems",
+//     description:
+//       "Frozen seafood conveyors are engineered to maintain product integrity under sub-zero temperatures. Using anti-corrosive materials and low-friction modular belts, they ensure smooth movement of frozen fish and crustaceans during glazing, freezing, and packaging. The systems are energy-efficient, easy to sanitize, and minimize ice accumulation, reducing maintenance downtime.",
+//     images: [seeFood2, seeFood3],
+//   },
+// };
 
 const categoryContent = {
   // Food Industry
@@ -186,70 +393,59 @@ const categoryContent = {
     ],
   },
 
-  // Automobile
+  // Automobile (Updated)
   Assembly: {
-    title: "Assembly Line Conveyors",
-    description: "Conveyors for automobile assembly lines.",
+    title: "Automobile Assembly Line Conveyors",
+    description:
+      "Automobile assembly line conveyors are the backbone of modern vehicle manufacturing. These systems enable seamless integration of car components — from chassis construction to body fitting and final inspection. Designed for heavy-duty performance, our modular and slat chain conveyors ensure continuous, efficient movement of vehicles through every production phase, minimizing downtime and enhancing productivity.",
     images: [
-      "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
+      "https://cdn.skoda-storyboard.com/2019/06/cars-skoda-manufacturing-factory.JPG-1440x960.jpg",
+      "https://miro.medium.com/v2/0*6c5Y9Fh1zHW3t0Gg.",
     ],
   },
 
   "Parts Manufacturing": {
-    title: "Parts Manufacturing Conveyors",
-    description: "Conveyors for efficient parts manufacturing.",
+    title: "Automotive Parts Manufacturing Conveyors",
+    description:
+      "Precision and speed are vital in parts manufacturing. Our conveyor systems are engineered to handle metal and plastic automotive parts efficiently across machining, welding, and sub-assembly stations. They reduce manual handling, increase throughput, and maintain high quality across all production environments.",
     images: [
-      "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHJZfUQJhw_EI2HidPYRcxoGUMfq624bslJQ&s",
+      "https://i.ytimg.com/vi/orneOQXr0B0/maxresdefault.jpg",
     ],
   },
 
   Painting: {
-    title: "Painting Line Conveyors",
-    description: "Specialized conveyors for painting operations.",
+    title: "Automotive Painting Line Conveyors",
+    description:
+      "Our painting line conveyors are designed to handle vehicles and components in paint shops with superior precision. Featuring anti-corrosive materials and smooth operation, they ensure even coating and reduce contamination risks. The design allows easy cleaning and maintenance, supporting a spotless painting environment.",
     images: [
-      "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
+      "https://www.shutterstock.com/image-photo/car-bodies-on-assembly-line-260nw-2136777759.jpg",
+      "https://img.freepik.com/premium-photo/car-factory-assembly-line-land-vehicle-production-conveyor-belt-aig41_31965-323415.jpg",
     ],
   },
 
   "Quality Control": {
-    title: "Quality Control Conveyors",
-    description: "Conveyors for QC processes in automobile production.",
+    title: "Automotive Quality Control Conveyors",
+    description:
+      "Quality control conveyors are equipped with precision motion and integration options for inspection systems. These conveyors ensure vehicles and parts move steadily through testing zones — enabling sensor checks, visual inspection, and automated QA processes. Built for consistency, they help maintain strict industry standards and zero-defect outcomes.",
     images: [
-      "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
+      "https://www.shutterstock.com/image-illustration/automation-automobile-factory-concept-3d-600nw-2252817305.jpg",
     ],
   },
 
-  // Healthcare
-  "Medical Supplies": {
-    title: "Medical Supplies Conveyors",
-    description: "Conveyors for safe transport of medical supplies.",
-    images: [
-      "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
-    ],
+  // Seafood Industry (Separate section)
+  "Seafood Processing": {
+    title: "Seafood Processing Conveyors",
+    description:
+      "Seafood processing conveyors are designed for durability, hygiene, and product safety. Built with stainless steel and modular plastic belts, they efficiently move fish, shrimp, and shellfish through cutting, washing, inspection, and packaging lines. Their open-grid structure and easy-clean design prevent bacterial buildup, ensuring compliance with food-safety standards such as HACCP and FDA.",
+    images: [seeFood1, seeFood4],
   },
 
-  Equipment: {
-    title: "Medical Equipment Conveyors",
-    description: "Conveyors for moving medical equipment safely.",
-    images: [
-      "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
-    ],
-  },
-
-  "Specimen Transport": {
-    title: "Specimen Transport Solutions",
-    description: "Conveyors for safe and hygienic transport of specimens.",
-    images: [
-      "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
-    ],
-  },
-
-  "Sterile Products": {
-    title: "Sterile Product Handling",
-    description: "Conveyors for sterile product transport in healthcare.",
-    images: [
-      "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
-    ],
+  "Frozen Handling": {
+    title: "Frozen Seafood Handling Systems",
+    description:
+      "Frozen seafood conveyors are engineered to maintain product integrity under sub-zero temperatures. Using anti-corrosive materials and low-friction modular belts, they ensure smooth movement of frozen fish and crustaceans during glazing, freezing, and packaging. The systems are energy-efficient, easy to sanitize, and minimize ice accumulation, reducing maintenance downtime.",
+    images: [seeFood2, seeFood3],
   },
 };
 
@@ -260,7 +456,7 @@ const industries = [
     description:
       "A food industry modular conveyor belt is a type of conveyor system that is commonly used in the food processing and manufacturing industry. It consists of individual interlocking plastic modules that.",
     image: food1,
-    icon: <FaIndustry size={26} />,
+    icon: <IoFastFoodOutline size={26} />,
     SColor: "#2E437C",
     EColor: "#0E1A4C",
     targetRotation: 0,
@@ -294,7 +490,7 @@ const industries = [
       "Specialized conveyors for meat and seafood processing ensure hygiene standards while handling raw and processed products.",
     image:
       "https://images.unsplash.com/photo-1581338834647-b0fb40704e21?auto=format&fit=crop&w=1200&q=80",
-    icon: <FaFish size={26} />,
+    icon: <TbMeat size={26} />,
     SColor: "#F39314",
     EColor: "#8C3E00",
     targetRotation: -90,
@@ -370,22 +566,17 @@ const industries = [
   },
   {
     id: 8,
-    title: "Healthcare",
+    title: "Seafood Industry",
     description:
-      "Healthcare conveyors safely transport medical supplies, equipment, and specimens throughout medical facilities.",
+      "Seafood processing requires conveyor systems that ensure hygiene, precision, and efficiency throughout the handling, cleaning, and packaging stages. Our modular conveyor solutions are designed to handle delicate seafood products safely while meeting strict food-grade standards.",
     image:
-      "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
-    icon: <FaHospital size={26} />,
+      "https://images.unsplash.com/photo-1581338834647-b0fb40704e21?auto=format&fit=crop&w=1200&q=80",
+    icon: <IoFishSharp size={26} />,
     SColor: "#F4D601",
     EColor: "#FFB100",
     targetRotation: -315,
     mobileTargetRotation: -80,
-    categories: [
-      "Medical Supplies",
-      "Equipment",
-      "Specimen Transport",
-      "Sterile Products",
-    ],
+    categories: ["Seafood Processing", "Frozen Handling"],
   },
 ];
 
