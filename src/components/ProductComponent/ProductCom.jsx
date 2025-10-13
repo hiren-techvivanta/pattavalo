@@ -30,7 +30,7 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           minHeight: "38px !important",
-          padding: "0px 16px !important",
+          padding: "0px 5px !important",
           marginBottom: "0px !important",
           "&.Mui-expanded": {
             minHeight: "38px !important",
@@ -1267,11 +1267,8 @@ const ProductCom = () => {
     <ThemeProvider theme={theme}>
       <div className="min-h-screen bg-white px-4 md:px-12 pb-10 pt-5">
         {/* Your existing JSX remains the same */}
-        <motion.div
-          initial={{ opacity: 0, x: -40 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+        <div
+        
           className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-5"
         >
           <h1 className="text-[36px] font-[700] text-[#BABEC8]">
@@ -1316,7 +1313,7 @@ const ProductCom = () => {
               </motion.button>
             )}
           </div>
-        </motion.div>
+        </div>
 
         {/* Rest of your existing JSX remains exactly the same */}
         <div className="mt-2 flex flex-col md:flex-row gap-5">
