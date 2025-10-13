@@ -1918,7 +1918,7 @@ const ProductDetails = ({ selectedProduct }) => {
                 onClick={() => {
                   window.open(productData.url, "_blank", "noopener,noreferrer");
                 }}
-                className="flex-1 min-w-[120px] sm:flex-none px-3 sm:px-6 py-2.5 border border-black text-black text-xs sm:text-sm font-medium uppercase rounded-full hover:bg-gray-50 transition-colors min-w-0"
+                className="flex-1 min-w-[120px] sm:flex-none px-3 sm:px-6 py-2.5 border border-black text-black text-xs sm:text-sm font-medium uppercase rounded-full hover:bg-gray-50 transition-colors"
               >
                 <span className="truncate">Explore More</span>
               </button>
@@ -2099,7 +2099,7 @@ const ProductDetails = ({ selectedProduct }) => {
 
             <button
               onClick={handleOpenDialog}
-              className="flex-1 min-w-[125px] sm:flex-none px-3 sm:px-6 py-2.5 border border-black text-black text-xs sm:text-sm font-medium uppercase rounded-full hover:bg-gray-50 transition-colors min-w-0"
+              className="flex-1 min-w-[125px] sm:flex-none px-3 sm:px-6 py-2.5 border border-black text-black text-xs sm:text-sm font-medium uppercase rounded-full hover:bg-gray-50 transition-colors"
             >
               <span className="truncate">Raise Inquiry</span>
             </button>
