@@ -1289,6 +1289,7 @@ import {
   MdPictureAsPdf,
   MdKeyboardArrowDown,
 } from "react-icons/md";
+import { FiMaximize2 } from "react-icons/fi";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   Dialog,
@@ -1650,7 +1651,7 @@ const ProductDetails = ({ selectedProduct }) => {
     }
   };
 
-  // Handle download dropdown toggle
+  
   const handleDownloadMenuToggle = () => {
     setDownloadMenuOpen((prevOpen) => !prevOpen);
   };
@@ -1665,7 +1666,7 @@ const ProductDetails = ({ selectedProduct }) => {
     setDownloadMenuOpen(false);
   };
 
-  // Handle individual file download
+
   const handleFileDownload = async (file) => {
     setDownloadingFiles((prev) => new Set(prev).add(file.id));
     setDownloadMenuOpen(false);
@@ -1703,7 +1704,6 @@ const ProductDetails = ({ selectedProduct }) => {
     setDownloadMenuOpen(false);
     for (const file of downloadFiles) {
       await handleFileDownload(file);
-      // Add a small delay between downloads to prevent overwhelming the browser
       await new Promise((resolve) => setTimeout(resolve, 500));
     }
   };
@@ -2217,13 +2217,15 @@ const ProductDetails = ({ selectedProduct }) => {
                 >
                   {images.map((image, index) => (
                     <SwiperSlide key={image.id}>
-                      <div className="aspect-[4/3] overflow-hidden">
+                      <div className="relative aspect-[4/3] overflow-hidden group cursor-zoom-in">
                         <img
                           src={image.src}
                           alt={image.alt}
-                          className="w-full h-full object-cover cursor-pointer"
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                           onClick={() => handleImageClick(index)}
                         />
+
+                        <FiMaximize2 className="text-white text-4xl drop-shadow-md" />
                       </div>
                     </SwiperSlide>
                   ))}
@@ -2292,9 +2294,10 @@ const ProductDetails = ({ selectedProduct }) => {
                   </button>
                 )}
 
+                {/* Thumbnail grid */}
                 <div
                   ref={thumbnailContainerRef}
-                  className="flex flex-col gap-3 h-full overflow-y-auto scrollbar-hide"
+                  className="grid grid-cols-2 gap-3 h-full overflow-y-auto scrollbar-hide"
                   style={{
                     maxHeight: "550px",
                     marginTop: showThumbnailArrows ? "32px" : "0",
@@ -2307,7 +2310,7 @@ const ProductDetails = ({ selectedProduct }) => {
                       onClick={() => setActiveIndex(index)}
                       className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 hover:opacity-90 rounded-lg flex-shrink-0 ${
                         activeIndex === index
-                          ? " shadow-lg scale-105"
+                          ? "shadow-lg scale-105"
                           : "hover:shadow-md"
                       }`}
                     >
@@ -2316,6 +2319,7 @@ const ProductDetails = ({ selectedProduct }) => {
                         alt={image.alt}
                         className="w-full h-full object-cover transition-all duration-300"
                       />
+
                       {/* Active indicator overlay */}
                       {activeIndex === index && (
                         <div className="absolute inset-0 bg-[#2E437C]/10 rounded-lg" />
@@ -2356,7 +2360,7 @@ const ProductDetails = ({ selectedProduct }) => {
               <button
                 onClick={handleFullscreenPrev}
                 className="absolute left-4 top-1/2 -translate-y-1/2 z-60 w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-colors"
-              >
+              >2
                 <HiChevronRight className="w-6 h-6 rotate-180" />
               </button>
               <button
@@ -2373,7 +2377,7 @@ const ProductDetails = ({ selectedProduct }) => {
             <img
               src={images[fullscreenImageIndex]?.src}
               alt={images[fullscreenImageIndex]?.alt}
-              className="object-none" // prevents cropping
+              className="object-none"
               style={{
                 maxWidth: "none",
                 maxHeight: "none",
@@ -2381,7 +2385,7 @@ const ProductDetails = ({ selectedProduct }) => {
             />
           </div>
 
-          {/* Image counter */}
+          
           {images.length > 1 && (
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/20 text-white px-4 py-2 rounded-full">
               {fullscreenImageIndex + 1} / {images.length}

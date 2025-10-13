@@ -741,7 +741,7 @@ const ProductCom = () => {
     });
   };
 
-  // Keep all your existing handlers for UI interactions...
+  
   const handleSubAccordionChange =
     (subPanel, subCategory) => async (event, isExpanded) => {
       setExpandedSubPanel(isExpanded ? subPanel : false);
@@ -974,7 +974,7 @@ const ProductCom = () => {
     <ThemeProvider theme={theme}>
       <div className="min-h-screen bg-white px-4 md:px-12 py-10">
         {/* Your existing JSX remains the same */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
@@ -1027,7 +1027,7 @@ const ProductCom = () => {
               </motion.button>
             )}
           </div>
-        </motion.div>
+        </motion.div> */}
 
         {/* Rest of your existing JSX remains exactly the same */}
         <div className="mt-2 flex flex-col md:flex-row gap-5">
@@ -1039,7 +1039,7 @@ const ProductCom = () => {
             className="w-full md:w-1/4"
           >
             <div className="py-4 rounded-lg">
-              {/* Your existing accordion structure remains the same */}
+              
               <div className="md:hidden">
                 <Accordion
                   expanded={isMobileMenuOpen}
