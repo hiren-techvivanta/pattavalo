@@ -113,7 +113,7 @@ export default function Navbar({ navStyle, show = true }) {
           variants={containerVariants}
         >
           <div className="mx-auto px-6 md:px-3 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-20">
+            <div className="flex items-center justify-between h-18">
               {/* Logo */}
               <motion.div
                 className="flex-shrink-0 flex items-center cursor-pointer"

@@ -311,86 +311,74 @@ const categoryContent = {
   // Dairy Industry
   Chocolate: {
     title: "Chocolate Production Solutions",
-    description: "Conveyors for chocolate processing ensuring product quality.",
+    description:
+      "Our chocolate conveyor systems are engineered for precision and temperature control during every stage of chocolate production — from molding and cooling to coating and packaging. Built with food-grade materials, these conveyors ensure smooth product transfer without contamination, maintaining texture, gloss, and quality consistency. Optional cooling tunnels, enrobing lines, and custom belt designs help optimize efficiency in modern confectionery manufacturing plants.",
     images: [
-      "https://images.unsplash.com/photo-1580927752450-b5f0a35b0a2d?auto=format&fit=crop&w=1200&q=80",
+      "https://elitevisionbelting.com/assets/images/product/chocolate%2001-min.jpg",
+      "https://www.tayanasolutions.com/wp-content/uploads/2022/04/chocolate-manufacturing-1.jpg",
     ],
   },
 
   "Milk & Milk Products": {
     title: "Milk Processing Solutions",
     description:
-      "Modular belts and plastic chains are commonly used in the food and beverage industry, including milk and milk product filling, labeling, and packaging applications. Modular belts are made up of interlocking plastic modules that can be easily replaced if damaged, allowing for quick maintenance and reducing downtime. They are often used in conveyor systems for transporting milk and other liquid products, as they are easy to clean and can withstand exposure to moisture. Plastic chains, on the other hand, are composed of interlocking plastic links and are ideal for applications that require high-strength and durability. They are often used in packaging and labeling machines to transport and position containers of milk and milk products during the filling and packaging process. Both modular belts and plastic chains are popular choices for the food and beverage industry because they are made from food-grade materials that are safe for contact with consumable products. They are also resistant to corrosion and are easy to clean, making them an ideal choice for environments where hygiene is critical.",
+      "Our modular belt and plastic chain conveyors are specifically designed for dairy operations involving milk processing, filling, and packaging. Made from high-grade, hygienic materials, they support easy cleaning and moisture resistance, crucial for maintaining product safety and compliance with food standards. Whether for transporting bottles, pouches, or cartons, these conveyors ensure steady flow, reduced downtime, and seamless integration with filling and labeling machines. Their corrosion-resistant construction makes them a durable, efficient choice for milk, butter, cream, and other dairy products.",
     images: [milk],
   },
 
   Yogurt: {
     title: "Yogurt Production Lines",
-    description: "Sanitary conveyor solutions for yogurt production.",
+    description:
+      "Our sanitary conveyor systems for yogurt production maintain hygienic conditions throughout fermentation, filling, and packaging processes. Designed with stainless steel frames and food-grade belts, they prevent bacterial buildup and allow easy washdowns. With precise motion control, these conveyors handle cups, bottles, and tubs efficiently — reducing spillage and ensuring consistent throughput. Perfect for high-speed yogurt lines focused on safety and shelf-life quality.",
     images: [
-      "https://images.unsplash.com/photo-1587398290463-90b95b56e1b1?auto=format&fit=crop&w=1200&q=80",
+      "https://img.freepik.com/premium-photo/dairy-factory-with-conveyor-belt-filled-with-yogurt_899870-20707.jpg",
     ],
   },
 
   Cheese: {
     title: "Cheese Handling Systems",
-    description: "Specialized conveyors for cheese processing and packaging.",
+    description:
+      "Engineered for gentle yet efficient cheese processing, our conveyor systems support cutting, curing, coating, and packaging applications. Built with stainless steel and modular plastic belts, they ensure product hygiene and prevent sticking or deformation. Adjustable configurations allow smooth transfer of cheese blocks, slices, and grated products, reducing manual handling and enhancing productivity. Ideal for both artisanal and industrial-scale cheese operations requiring precision and hygiene.",
     images: [
-      "https://images.unsplash.com/photo-1596614770116-0ff91d8e234d?auto=format&fit=crop&w=1200&q=80",
+      "https://conveyorsolutionsindia.com/static/media/1.702f4a76.jpg",
+      "https://assets-us-01.kc-usercontent.com/19eb64b5-1815-003a-d268-e7109927ccad/534e77b0-501c-43d6-9af7-2546094a9d7d/2022-06-22_11-54-08.png?w=568&h=298.2&rect=0,35,1910,1003&fit=&q=85&auto=format",
     ],
   },
 
   "Shrink Wrapping": {
     title: "Shrink Wrapping Solutions",
     description:
-      "Conveyors for automated shrink wrapping in logistics and packaging.",
+      "Our shrink wrapping conveyor systems are designed for high-speed, automated packaging lines. They provide precise film application, consistent heat distribution, and smooth material flow — ensuring tightly sealed, durable packages for products across food, pharmaceutical, and consumer goods industries.",
     images: [
-      "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
+      "https://www.shutterstock.com/image-photo/recyclable-cardboard-box-being-transported-600nw-2436656401.jpg",
+      "https://images.stockcake.com/public/8/3/7/8372d38f-d275-41d5-8628-cfedfd6823a9_large/conveyor-belt-package-stockcake.jpg",
     ],
   },
 
   "Material Handling": {
     title: "Material Handling Solutions",
     description:
-      "Efficient conveyors for moving materials across production lines.",
+      "Efficient, durable conveyor systems engineered for seamless material movement between production stages. Our modular designs support bulk goods, components, and finished products — improving workflow efficiency, reducing manual handling, and enhancing plant safety in manufacturing and logistics operations.",
     images: [
-      "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
+      "https://rebstorage.com/wp-content/uploads/2022/12/REB-011-scaled.jpg",
     ],
   },
 
   "Packaging Belting Solution": {
     title: "Packaging Belting Solutions",
     description:
-      "Conveyor belts optimized for packaging applications and labeling.",
+      "Optimized conveyor belts built for high-speed packaging, labeling, and sorting. With precision motion control and hygienic materials, our belting systems enhance packaging line performance while minimizing maintenance — ideal for food, beverage, and FMCG industries.",
     images: [
-      "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
-    ],
-  },
-
-  "E-commerce": {
-    title: "E-commerce Logistics Solutions",
-    description: "Conveyors for efficient handling of e-commerce products.",
-    images: [
-      "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
-    ],
-  },
-
-  Distribution: {
-    title: "Distribution Solutions",
-    description: "Conveyors for product distribution and warehouse automation.",
-    images: [
-      "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
+      "https://assets-us-01.kc-usercontent.com/19eb64b5-1815-003a-d268-e7109927ccad/ff92da15-e856-4b2c-8105-3420da8a8035/packaging-solutions-40_21.jpg?w=750&h=421.875&rect=80,0,2240,1260&fit=&q=85&auto=format",
     ],
   },
 
   // Cosmetic & Pharmaceutical
-  "No Category": {
-    title: "Cosmetic & Pharmaceutical Conveyors",
+  Cosmetic: {
+    name: "Filling & Packaging Conveyors",
     description:
-      "Conveyors for cosmetic and pharmaceutical industries ensuring sterile handling.",
-    images: [
-      "https://png.pngtree.com/png-vector/20221125/ourmid/pngtree-no-image-available-icon-flatvector-illustration-picture-coming-creative-vector-png-image_40968940.jpg",
-    ],
+      "High-speed, stainless steel conveyor systems designed for hygienic transport of bottles, jars, and tubes during the filling and packaging process — ensuring smooth, contamination-free production lines for cosmetic and personal care products.",
+    images: ["https://www.conveyors247.com/hubfs/dreamstime_xl_28892650.jpg"],
   },
 
   // Automobile (Updated)
@@ -527,8 +515,6 @@ const industries = [
       "Shrink Wrapping",
       "Material Handling",
       "Packaging Belting Solution",
-      "E-commerce",
-      "Distribution",
     ],
   },
   {
@@ -543,7 +529,7 @@ const industries = [
     EColor: "#8B1C00",
     targetRotation: -225,
     mobileTargetRotation: -345,
-    categories: ["No Category"],
+    categories: ["Cosmetic"],
   },
   {
     id: 7,

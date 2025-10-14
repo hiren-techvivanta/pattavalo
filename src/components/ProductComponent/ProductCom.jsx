@@ -2128,7 +2128,7 @@ const theme = createTheme({
         },
         expandIconWrapper: {
           marginRight: "0 !important",
-          marginLeft: "16px !important",
+          marginLeft: "0px !important",
         },
       },
     },
@@ -3239,7 +3239,7 @@ const ProductCom = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="w-full md:w-1/4 max-h-[99vh] overflow-y-auto overflow-x-hidden"
+            className="w-full md:w-1/4 lg:w-2/6 xl:w-1/4 max-h-[99vh] overflow-y-auto overflow-x-hidden"
           >
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-5">
               <h1 className="text-[36px] font-[700] text-[#BABEC8]">
@@ -3768,7 +3768,7 @@ const ProductCom = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
             ref={rightPanelRef}
-            className="w-full md:w-3/4 max-h-[99vh] overflow-auto"
+            className="w-full md:w-3/4 lg:w-4/6 xl:w-3/4 max-h-[99vh] overflow-auto"
           >
             {viewMode === "categories" && (
               <div>
