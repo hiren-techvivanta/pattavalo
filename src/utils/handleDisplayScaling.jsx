@@ -40,9 +40,100 @@
 
 
 // src/utils/handleDisplayScaling.js
+
+// export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
+//   const html = document.documentElement;
+//   const body = document.body;
+  
+//   // Media query for screens above 992px
+//   const mediaQuery = window.matchMedia('(min-width: 992px)');
+  
+//   const applyScaleFix = () => {
+//     const actualWidth = window.innerWidth;
+//     const actualHeight = window.innerHeight;
+
+//     // Only apply scaling if screen width is above 992px
+//     if (actualWidth > 992) {
+//       // Calculate relative scaling vs baseline resolution
+//       const widthRatio = actualWidth / baseWidth;
+//       const heightRatio = actualHeight / baseHeight;
+
+//       // Use the smaller ratio to keep proportions consistent
+//       const uiScale = Math.min(widthRatio, heightRatio);
+
+//       // We want to normalize so design looks the same
+//       // e.g. if your laptop looks normal at 125%, we fix that baseline here
+//       const normalizedScale = uiScale / 0.8; // since 125% = 1.25x → 1/1.25 ≈ 0.8
+
+//       html.style.setProperty("--ui-scale", normalizedScale);
+//       html.style.setProperty("--vh", `${window.innerHeight}px`);
+
+//       // Apply scaling to body
+//       body.style.transform = `scale(${normalizedScale})`;
+//       body.style.transformOrigin = "top left";
+//       body.style.width = `${100 / normalizedScale}%`;
+//       body.style.height = `${100 / normalizedScale}%`;
+//     } else {
+//       // Reset scaling for smaller screens
+//       resetScaling();
+//     }
+//   };
+
+//   const resetScaling = () => {
+//     html.style.removeProperty("--ui-scale");
+//     html.style.setProperty("--vh", `${window.innerHeight}px`);
+//     body.style.transform = "none";
+//     body.style.transformOrigin = "initial";
+//     body.style.width = "100%";
+//     body.style.height = "100%";
+//   };
+
+//   // Handle media query changes efficiently
+//   const handleMediaQueryChange = (event) => {
+//     if (event.matches) {
+//       // Screen is now above 992px - apply scaling
+//       applyScaleFix();
+//     } else {
+//       // Screen is now below 992px - reset scaling
+//       resetScaling();
+//     }
+//   };
+
+//   // Initial setup
+//   applyScaleFix();
+
+//   // Use matchMedia for efficient breakpoint detection
+//   mediaQuery.addEventListener('change', handleMediaQueryChange);
+  
+//   // Still listen to resize for screens above 992px
+//   const handleResize = () => {
+//     if (window.innerWidth > 992) {
+//       applyScaleFix();
+//     }
+//   };
+
+//   window.addEventListener("resize", handleResize);
+  
+//   // Optional: periodic check (reduce frequency since we have matchMedia)
+//   const interval = setInterval(() => {
+//     if (window.innerWidth > 992) {
+//       applyScaleFix();
+//     }
+//   }, 3000); // Reduced frequency from 1500ms to 3000ms
+
+//   // Cleanup function
+//   return () => {
+//     mediaQuery.removeEventListener('change', handleMediaQueryChange);
+//     window.removeEventListener("resize", handleResize);
+//     clearInterval(interval);
+//     resetScaling(); // Reset on cleanup
+//   };
+// };
+
+
+// src/utils/handleDisplayScaling.js
 export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
   const html = document.documentElement;
-  const body = document.body;
   
   // Media query for screens above 992px
   const mediaQuery = window.matchMedia('(min-width: 992px)');
@@ -61,17 +152,31 @@ export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
       const uiScale = Math.min(widthRatio, heightRatio);
 
       // We want to normalize so design looks the same
-      // e.g. if your laptop looks normal at 125%, we fix that baseline here
-      const normalizedScale = uiScale / 0.8; // since 125% = 1.25x → 1/1.25 ≈ 0.8
+      const normalizedScale = uiScale / 0.8;
 
       html.style.setProperty("--ui-scale", normalizedScale);
       html.style.setProperty("--vh", `${window.innerHeight}px`);
 
-      // Apply scaling to body
-      body.style.transform = `scale(${normalizedScale})`;
-      body.style.transformOrigin = "top left";
-      body.style.width = `${100 / normalizedScale}%`;
-      body.style.height = `${100 / normalizedScale}%`;
+      // Instead of scaling body, scale main content containers
+      // This prevents breaking position:fixed elements like navbar
+      const mainContent = document.querySelector('#main-content') || 
+                         document.querySelector('main') || 
+                         document.querySelector('.app-content');
+      
+      if (mainContent) {
+        mainContent.style.transform = `scale(${normalizedScale})`;
+        mainContent.style.transformOrigin = "top center";
+        mainContent.style.width = `${100 / normalizedScale}%`;
+        mainContent.style.minHeight = `${100 / normalizedScale}vh`;
+      }
+
+      // Alternative: Scale individual sections instead of body
+      const sectionsToScale = document.querySelectorAll('.scalable-section');
+      sectionsToScale.forEach(section => {
+        section.style.transform = `scale(${normalizedScale})`;
+        section.style.transformOrigin = "top center";
+      });
+
     } else {
       // Reset scaling for smaller screens
       resetScaling();
@@ -81,19 +186,32 @@ export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
   const resetScaling = () => {
     html.style.removeProperty("--ui-scale");
     html.style.setProperty("--vh", `${window.innerHeight}px`);
-    body.style.transform = "none";
-    body.style.transformOrigin = "initial";
-    body.style.width = "100%";
-    body.style.height = "100%";
+    
+    // Reset main content scaling
+    const mainContent = document.querySelector('#main-content') || 
+                       document.querySelector('main') || 
+                       document.querySelector('.app-content');
+    
+    if (mainContent) {
+      mainContent.style.transform = "none";
+      mainContent.style.transformOrigin = "initial";
+      mainContent.style.width = "100%";
+      mainContent.style.minHeight = "100vh";
+    }
+
+    // Reset section scaling
+    const sectionsToScale = document.querySelectorAll('.scalable-section');
+    sectionsToScale.forEach(section => {
+      section.style.transform = "none";
+      section.style.transformOrigin = "initial";
+    });
   };
 
   // Handle media query changes efficiently
   const handleMediaQueryChange = (event) => {
     if (event.matches) {
-      // Screen is now above 992px - apply scaling
       applyScaleFix();
     } else {
-      // Screen is now below 992px - reset scaling
       resetScaling();
     }
   };
@@ -113,18 +231,18 @@ export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
 
   window.addEventListener("resize", handleResize);
   
-  // Optional: periodic check (reduce frequency since we have matchMedia)
+  // Optional: periodic check
   const interval = setInterval(() => {
     if (window.innerWidth > 992) {
       applyScaleFix();
     }
-  }, 3000); // Reduced frequency from 1500ms to 3000ms
+  }, 3000);
 
   // Cleanup function
   return () => {
     mediaQuery.removeEventListener('change', handleMediaQueryChange);
     window.removeEventListener("resize", handleResize);
     clearInterval(interval);
-    resetScaling(); // Reset on cleanup
+    resetScaling();
   };
 };
