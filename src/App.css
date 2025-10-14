@@ -4,7 +4,7 @@
   /* --brand-color-light: #3AB0FF; */
 }
 
-:root {
+/* :root {
   --ui-scale: 1;
   --vh: 100vh;
 }
@@ -20,7 +20,7 @@ body {
 .full-height {
   height: var(--vh);
   min-height: var(--vh);
-}
+} */
 
 
 
