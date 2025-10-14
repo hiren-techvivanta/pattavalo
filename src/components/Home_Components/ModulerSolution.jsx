@@ -209,9 +209,9 @@ export default function ModulerSolution() {
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
         variants={containerVariants}
-        className="mb-8 sm:mb-10 lg:mb-0 xl:mb-10 md:text-left px-0"
+        className="mb-8 sm:mb-12 md:text-left px-0"
       >
-        <h2 className=" text-[40px] md:text-[100px] lg:text-[72px] xl:text-[100px] font-[500] text-[#BABEC8] leading-[55px] md:leading-[98px] lg:leading-[68px] xl:leading-[98px] text-center md:text-start">
+        <h2 className=" text-[40px] md:text-[100px] font-[500] text-[#BABEC8] leading-[55px] md:leading-[98px] text-center md:text-start">
           <CustomHeading title="Your Crafted, " className=" font-[500]" />
           <CustomHeading
             title="Modular Solution"
@@ -225,7 +225,7 @@ export default function ModulerSolution() {
         whileInView="visible"
         viewport={{ once: true, margin: "-60px" }}
         variants={cardGridVariants}
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8 lg:gap-4 xl:gap-8 text-center"
+        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8 text-center"
       >
         {solutions.map((item, idx) => (
           <motion.div

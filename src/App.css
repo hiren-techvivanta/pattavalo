@@ -4,6 +4,27 @@
   /* --brand-color-light: #3AB0FF; */
 }
 
+:root {
+  --ui-scale: 1;
+  --vh: 100vh;
+}
+
+body {
+  transform: scale(var(--ui-scale));
+  transform-origin: top left;
+  width: calc(100% / var(--ui-scale));
+  height: calc(100% / var(--ui-scale));
+  overflow-x: hidden;
+}
+
+.full-height {
+  height: var(--vh);
+  min-height: var(--vh);
+}
+
+
+
+
 * {
   scrollbar-width: none;
   -ms-overflow-style: none;
