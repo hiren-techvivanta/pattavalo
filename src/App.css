@@ -22,9 +22,6 @@ body {
   min-height: var(--vh);
 } */
 
-
-
-
 * {
   scrollbar-width: none;
   -ms-overflow-style: none;
