@@ -91,7 +91,7 @@ const News = () => {
             className="flex justify-start py-6"
             variants={headerVariants}
           >
-            <motion.nav
+            <motion.div
               className="flex space-x-4 md:space-x-6 lg:space-x-8 overflow-x-auto scrollbar-hide"
               variants={tabContainerVariants}
               initial="hidden"
@@ -124,7 +124,7 @@ const News = () => {
                   )}
                 </motion.button>
               ))}
-            </motion.nav>
+            </motion.div>
           </motion.div>
         </div>
       </motion.div>
