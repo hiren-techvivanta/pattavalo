@@ -52,6 +52,7 @@
 // const ProductDetails = ({ selectedProduct }) => {
 //   const [thumbsSwiper, setThumbsSwiper] = useState(null);
 //   const [activeIndex, setActiveIndex] = useState(0);
+//   const [mainSwiperRef, setMainSwiperRef] = useState(null); // Add swiper ref state
 //   const navigate = useNavigate();
 //   const [searchParams] = useSearchParams();
 
@@ -99,7 +100,13 @@
 //     }
 //   };
 
-//   // Add this useEffect to check if thumbnails need scrolling arrows
+//   // Handle thumbnail click to update main slider
+//   const handleThumbnailClick = (index) => {
+//     setActiveIndex(index);
+//     if (mainSwiperRef) {
+//       mainSwiperRef.slideTo(index);
+//     }
+//   };
 
 //   const getImageUrl = (imagePath) => {
 //     if (!imagePath || typeof imagePath !== "string") return null;
@@ -140,6 +147,7 @@
 //   };
 
 //   const images = getImages();
+  
 //   useEffect(() => {
 //     if (thumbnailContainerRef.current) {
 //       const container = thumbnailContainerRef.current;
@@ -147,6 +155,7 @@
 //       setShowThumbnailArrows(hasVerticalScroll);
 //     }
 //   }, [images]);
+
 //   // Get available download files
 //   const getDownloadFiles = () => {
 //     const files = [];
@@ -370,7 +379,6 @@
 //     }
 //   };
 
-  
 //   const handleDownloadMenuToggle = () => {
 //     setDownloadMenuOpen((prevOpen) => !prevOpen);
 //   };
@@ -384,7 +392,6 @@
 //     }
 //     setDownloadMenuOpen(false);
 //   };
-
 
 //   const handleFileDownload = async (file) => {
 //     setDownloadingFiles((prev) => new Set(prev).add(file.id));
@@ -850,6 +857,7 @@
 //                 loop={images.length > 1}
 //                 speed={800}
 //                 onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+//                 onSwiper={setMainSwiperRef}
 //                 className="w-full h-full"
 //               >
 //                 {images.map((image, index) => (
@@ -879,14 +887,14 @@
 //               </Swiper>
 //             </div>
 
-//             {/* Mobile Bottom Thumbnails */}
+//             {/* Mobile Bottom Thumbnails - Updated with click handler */}
 //             {images.length > 1 && (
 //               <div className="mt-4">
 //                 <div className="grid grid-cols-4 gap-3">
 //                   {images.map((image, index) => (
 //                     <div
 //                       key={`mobile-thumb-${image.id}`}
-//                       onClick={() => setActiveIndex(index)}
+//                       onClick={() => handleThumbnailClick(index)} // Updated click handler
 //                       className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 hover:opacity-90 rounded-lg ${
 //                         activeIndex === index ? "ring-2 ring-[#2E437C]" : ""
 //                       }`}
@@ -930,6 +938,7 @@
 //                   loop={images.length > 1}
 //                   speed={800}
 //                   onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
+//                   onSwiper={setMainSwiperRef}
 //                   className="w-full h-full swiper-container"
 //                 >
 //                   {images.map((image, index) => (
@@ -962,43 +971,7 @@
 //               </div>
 //             </div>
 
-//             {/* Vertical Thumbnails - 25% width */}
-//             {/* {images.length > 1 && (
-//               <div
-//                 className="w-1/4"
-//                 style={{
-//                   maxHeight: "550px",
-//                   overflowY: "scroll",
-//                 }}
-//               >
-//                 <div className="">
-                  
-//                   <div className="flex flex-col gap-3 h-full overflow-y-auto scrollbar-hide">
-//                     {images.map((image, index) => (
-//                       <div
-//                         key={`desktop-thumb-${image.id}`}
-//                         onClick={() => setActiveIndex(index)}
-//                         className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 hover:opacity-90 rounded-lg flex-shrink-0 ${
-//                           activeIndex === index
-//                             ? " shadow-lg scale-105"
-//                             : "hover:shadow-md"
-//                         }`}
-//                       >
-//                         <img
-//                           src={image.src}
-//                           alt={image.alt}
-//                           className="w-full h-full object-cover transition-all duration-300"
-//                         />
-                       
-//                         {activeIndex === index && (
-//                           <div className="absolute inset-0 bg-[#2E437C]/10 rounded-lg" />
-//                         )}
-//                       </div>
-//                     ))}
-//                   </div>
-//                 </div>
-//               </div>
-//             )} */}
+//             {/* Vertical Thumbnails - 25% width - Updated with click handler */}
 //             {images?.length > 1 && (
 //               <div className="w-1/4 relative">
 //                 {/* Up Arrow */}
@@ -1024,7 +997,7 @@
 //                   {images.map((image, index) => (
 //                     <div
 //                       key={`desktop-thumb-${image.id}`}
-//                       onClick={() => setActiveIndex(index)}
+//                       onClick={() => handleThumbnailClick(index)} // Updated click handler
 //                       className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 hover:opacity-90 flex-shrink-0 ${
 //                         activeIndex === index
 //                           ? "border border-[#2E437C]"
@@ -1036,8 +1009,6 @@
 //                         alt={image.alt}
 //                         className="w-full h-full object-cover transition-all duration-300"
 //                       />
-
-                     
 //                     </div>
 //                   ))}
 //                 </div>
@@ -1074,7 +1045,7 @@
 //               <button
 //                 onClick={handleFullscreenPrev}
 //                 className="absolute left-4 top-1/2 -translate-y-1/2 z-60 w-12 h-12 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center text-white transition-colors"
-//               >2
+//               >
 //                 <HiChevronRight className="w-6 h-6 rotate-180" />
 //               </button>
 //               <button
@@ -1099,7 +1070,6 @@
 //             />
 //           </div>
 
-          
 //           {images.length > 1 && (
 //             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white/20 text-white px-4 py-2 rounded-full">
 //               {fullscreenImageIndex + 1} / {images.length}
@@ -1108,6 +1078,7 @@
 //         </div>
 //       )}
 
+//       {/* Rest of your existing dialogs (Download Files Dialog and Inquiry Dialog) remain unchanged */}
 //       {/* Download Files Dialog */}
 //       <Dialog
 //         open={isDownloadDialogOpen}
@@ -1528,7 +1499,7 @@ import pd4 from "../../assets/images/pd4.jpg";
 const ProductDetails = ({ selectedProduct }) => {
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [mainSwiperRef, setMainSwiperRef] = useState(null); // Add swiper ref state
+  const [mainSwiperRef, setMainSwiperRef] = useState(null);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -1562,11 +1533,11 @@ const ProductDetails = ({ selectedProduct }) => {
   const [showThumbnailArrows, setShowThumbnailArrows] = useState(false);
   const thumbnailContainerRef = useRef(null);
 
-  // Add this function to handle thumbnail scroll
+  // Handle thumbnail scroll
   const handleThumbnailScroll = (direction) => {
     if (thumbnailContainerRef.current) {
       const container = thumbnailContainerRef.current;
-      const scrollAmount = 100; // Adjust this value as needed
+      const scrollAmount = 100;
 
       if (direction === "up") {
         container.scrollTop -= scrollAmount;
@@ -1632,17 +1603,13 @@ const ProductDetails = ({ selectedProduct }) => {
     }
   }, [images]);
 
-  // Get available download files
+  // UPDATED: Get available download files from documents array
   const getDownloadFiles = () => {
     const files = [];
 
-    // Handle document field - can be array or string
-    if (selectedProduct?.document) {
-      const documents = Array.isArray(selectedProduct.document)
-        ? selectedProduct.document
-        : [selectedProduct.document];
-
-      documents.forEach((doc, index) => {
+    // Handle documents from selectedProduct - NEW LOGIC FOR YOUR API RESPONSE
+    if (selectedProduct?.documents && Array.isArray(selectedProduct.documents)) {
+      selectedProduct.documents.forEach((doc, index) => {
         if (doc && typeof doc === "string") {
           const fileName = doc.split("/").pop() || `document_${index + 1}`;
           const fileExtension = fileName.split(".").pop()?.toLowerCase() || "";
@@ -1659,59 +1626,23 @@ const ProductDetails = ({ selectedProduct }) => {
       });
     }
 
-    // Handle documents from apiData - can be array or string
-    if (selectedProduct?.apiData?.documents) {
-      const documents = Array.isArray(selectedProduct.apiData.documents)
-        ? selectedProduct.apiData.documents
-        : [selectedProduct.apiData.documents];
+    // Fallback: Handle legacy document field - can be array or string
+    if (selectedProduct?.document && files.length === 0) {
+      const documents = Array.isArray(selectedProduct.document)
+        ? selectedProduct.document
+        : [selectedProduct.document];
 
       documents.forEach((doc, index) => {
         if (doc && typeof doc === "string") {
-          const fileName =
-            doc.split("/").pop() || `document_${index + files.length + 1}`;
+          const fileName = doc.split("/").pop() || `document_${index + 1}`;
           const fileExtension = fileName.split(".").pop()?.toLowerCase() || "";
 
           files.push({
-            id: index + files.length + 1,
+            id: index + 1,
             name: fileName,
             url: getImageUrl(doc),
             type: getFileType(fileExtension),
             size: "Unknown",
-            extension: fileExtension,
-          });
-        }
-      });
-    }
-
-    // Add more files if available from API
-    if (selectedProduct?.files && Array.isArray(selectedProduct.files)) {
-      selectedProduct.files.forEach((file, index) => {
-        if (typeof file === "string") {
-          const fileName =
-            file.split("/").pop() || `file_${index + files.length + 1}`;
-          const fileExtension = fileName.split(".").pop()?.toLowerCase() || "";
-
-          files.push({
-            id: index + files.length + 1,
-            name: fileName,
-            url: getImageUrl(file),
-            type: getFileType(fileExtension),
-            size: "Unknown",
-            extension: fileExtension,
-          });
-        } else if (file && typeof file === "object") {
-          const fileName =
-            file.name ||
-            (file.url || file).split("/").pop() ||
-            `file_${index + files.length + 1}`;
-          const fileExtension = fileName.split(".").pop()?.toLowerCase() || "";
-
-          files.push({
-            id: index + files.length + 1,
-            name: fileName,
-            url: getImageUrl(file.url || file),
-            type: getFileType(fileExtension),
-            size: file.size || "Unknown",
             extension: fileExtension,
           });
         }
@@ -1748,7 +1679,6 @@ const ProductDetails = ({ selectedProduct }) => {
 
   const getFileIcon = (extension) => {
     const iconProps = { size: 20 };
-
     if (["pdf"].includes(extension)) {
       return <MdPictureAsPdf {...iconProps} color="#d32f2f" />;
     }
@@ -1766,9 +1696,9 @@ const ProductDetails = ({ selectedProduct }) => {
     const items = [];
 
     const categoryName =
-      selectedProduct.category || selectedProduct.apiData?.category?.name;
+      selectedProduct.category?.name || selectedProduct.apiData?.category?.name;
     const subcategoryName =
-      selectedProduct.subcategory || selectedProduct.apiData?.subcategory?.name;
+      selectedProduct.subcategory?.name || selectedProduct.apiData?.subcategory?.name;
     const productName = selectedProduct.title || selectedProduct.productName;
 
     // Get current URL parameters for navigation
@@ -1855,6 +1785,7 @@ const ProductDetails = ({ selectedProduct }) => {
     }
   };
 
+  // UPDATED: Download menu toggle handlers
   const handleDownloadMenuToggle = () => {
     setDownloadMenuOpen((prevOpen) => !prevOpen);
   };
@@ -1869,27 +1800,22 @@ const ProductDetails = ({ selectedProduct }) => {
     setDownloadMenuOpen(false);
   };
 
+  // UPDATED: File download handler
   const handleFileDownload = async (file) => {
     setDownloadingFiles((prev) => new Set(prev).add(file.id));
     setDownloadMenuOpen(false);
 
     try {
-      const response = await fetch(file.url);
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
+      // Create a temporary link for download
       const link = document.createElement("a");
-      link.href = url;
+      link.href = file.url;
       link.download = file.name;
+      link.target = "_blank";
       document.body.appendChild(link);
       link.click();
-      window.URL.revokeObjectURL(url);
       document.body.removeChild(link);
     } catch (error) {
+      console.error("Download failed:", error);
       alert("Download failed. Please try again.");
     } finally {
       setDownloadingFiles((prev) => {
@@ -2124,133 +2050,157 @@ const ProductDetails = ({ selectedProduct }) => {
               </button>
             )}
 
+            {/* UPDATED: Enhanced Download Button with Dropdown */}
             {downloadFiles.length > 0 && (
               <div className="relative flex-1 sm:flex-none">
-                <ButtonGroup
-                  variant="contained"
-                  ref={downloadAnchorRef}
-                  aria-label="download options"
-                  sx={{
-                    boxShadow: "none",
-                    width: "100%",
-                    "& .MuiButton-root": {
+                {downloadFiles.length === 1 ? (
+                  // Single file - direct download
+                  <Button
+                    onClick={() => handleFileDownload(downloadFiles[0])}
+                    variant="contained"
+                    disabled={downloadingFiles.has(downloadFiles[0].id)}
+                    startIcon={<LuDownload className="w-4 h-4" />}
+                    sx={{
                       backgroundColor: "#2E437C",
                       textTransform: "uppercase",
                       fontSize: { xs: "0.75rem", sm: "0.875rem" },
                       fontWeight: 500,
                       borderRadius: "9999px",
-                      flex: 1,
+                      px: { xs: 2, sm: 3 },
+                      py: 1.25,
                       "&:hover": {
                         backgroundColor: "#1E2F5C",
                       },
-                    },
-                    "& .MuiButtonGroup-grouped:not(:last-of-type)": {
-                      borderRight: "1px solid rgba(255,255,255,0.3)",
-                    },
-                  }}
-                >
-                  <Button
-                    size="small"
-                    onClick={
-                      downloadFiles.length === 1
-                        ? handleDownloadMenuToggle
-                        : handleDownloadAll
-                    }
-                    startIcon={<LuDownload className="w-4 h-4" />}
-                    sx={{
-                      px: { xs: 2, sm: 3 },
-                      py: 1.25,
-                      minWidth: 0,
-                      "& .MuiButton-startIcon": {
-                        marginRight: { xs: "4px", sm: "8px" },
-                      },
                     }}
                   >
-                    <span
-                      style={{ overflow: "hidden", textOverflow: "ellipsis" }}
-                    >
-                      {downloadFiles.length === 1 ? "Download" : "Downloads"}
-                    </span>
+                    {downloadingFiles.has(downloadFiles[0].id) ? (
+                      <CircularProgress size={16} color="inherit" />
+                    ) : (
+                      "Download"
+                    )}
                   </Button>
-                </ButtonGroup>
-
-                <Popper
-                  sx={{ zIndex: 1300 }}
-                  open={downloadMenuOpen}
-                  anchorEl={downloadAnchorRef.current}
-                  role={undefined}
-                  transition
-                  disablePortal
-                  placement="bottom-end"
-                >
-                  {({ TransitionProps, placement }) => (
-                    <Grow
-                      {...TransitionProps}
-                      style={{
-                        transformOrigin:
-                          placement === "bottom-end"
-                            ? "right top"
-                            : "right bottom",
+                ) : (
+                  // Multiple files - dropdown
+                  <>
+                    <ButtonGroup
+                      variant="contained"
+                      ref={downloadAnchorRef}
+                      aria-label="download options"
+                      sx={{
+                        boxShadow: "none",
+                        width: "100%",
+                        "& .MuiButton-root": {
+                          backgroundColor: "#2E437C",
+                          textTransform: "uppercase",
+                          fontSize: { xs: "0.75rem", sm: "0.875rem" },
+                          fontWeight: 500,
+                          borderRadius: "9999px",
+                          flex: 1,
+                          "&:hover": {
+                            backgroundColor: "#1E2F5C",
+                          },
+                        },
+                        "& .MuiButtonGroup-grouped:not(:last-of-type)": {
+                          borderRight: "1px solid rgba(255,255,255,0.3)",
+                        },
                       }}
                     >
-                      <Paper
+                      <Button
+                        size="small"
+                        onClick={handleDownloadMenuToggle}
+                        startIcon={<LuDownload className="w-4 h-4" />}
+                        endIcon={<MdKeyboardArrowDown className="w-4 h-4" />}
                         sx={{
-                          minWidth: 200,
-                          mt: 1,
-                          borderRadius: 2,
-                          boxShadow: 3,
+                          px: { xs: 2, sm: 3 },
+                          py: 1.25,
+                          minWidth: 0,
+                          "& .MuiButton-startIcon": {
+                            marginRight: { xs: "4px", sm: "8px" },
+                          },
                         }}
                       >
-                        <ClickAwayListener
-                          onClickAway={handleDownloadMenuClose}
-                        >
-                          <MenuList
-                            autoFocusItem={downloadMenuOpen}
-                            id="download-menu"
-                          >
-                            {downloadFiles
-                              .slice(
-                                0,
-                                downloadFiles.length <= 3
-                                  ? downloadFiles.length
-                                  : 3
-                              )
-                              .map((file) => (
-                                <MenuItem
-                                  key={file.id}
-                                  onClick={() => handleFileDownload(file)}
-                                  disabled={downloadingFiles.has(file.id)}
-                                  sx={{
-                                    py: 0.5,
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: 1.5,
-                                    "&:hover": {
-                                      backgroundColor:
-                                        "rgba(46, 67, 124, 0.04)",
-                                    },
-                                  }}
-                                >
-                                  <Box>
-                                    <Typography
-                                      variant="body2"
-                                      fontWeight="medium"
-                                      noWrap
-                                      sx={{ maxWidth: 150 }}
-                                    >
-                                      {file.name}
-                                    </Typography>
-                                  </Box>
-                                  <Box>
-                                    <IconButton color="inherit">
-                                      <LuDownload className="text-[20px]" />
-                                    </IconButton>
-                                  </Box>
-                                </MenuItem>
-                              ))}
+                        <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>
+                          Downloads ({downloadFiles.length})
+                        </span>
+                      </Button>
+                    </ButtonGroup>
 
-                            {downloadFiles.length > 1 && (
-                              <>
+                    <Popper
+                      sx={{ zIndex: 1300 }}
+                      open={downloadMenuOpen}
+                      anchorEl={downloadAnchorRef.current}
+                      role={undefined}
+                      transition
+                      disablePortal
+                      placement="bottom-end"
+                    >
+                      {({ TransitionProps, placement }) => (
+                        <Grow
+                          {...TransitionProps}
+                          style={{
+                            transformOrigin:
+                              placement === "bottom-end"
+                                ? "right top"
+                                : "right bottom",
+                          }}
+                        >
+                          <Paper
+                            sx={{
+                              minWidth: 250,
+                              mt: 1,
+                              borderRadius: 2,
+                              boxShadow: 3,
+                            }}
+                          >
+                            <ClickAwayListener onClickAway={handleDownloadMenuClose}>
+                              <MenuList
+                                autoFocusItem={downloadMenuOpen}
+                                id="download-menu"
+                              >
+                                {downloadFiles.map((file) => (
+                                  <MenuItem
+                                    key={file.id}
+                                    onClick={() => handleFileDownload(file)}
+                                    disabled={downloadingFiles.has(file.id)}
+                                    sx={{
+                                      py: 1,
+                                      display: "flex",
+                                      alignItems: "center",
+                                      gap: 1.5,
+                                      "&:hover": {
+                                        backgroundColor: "rgba(46, 67, 124, 0.04)",
+                                      },
+                                    }}
+                                  >
+                                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                                      {getFileIcon(file.extension)}
+                                      <Box>
+                                        <Typography
+                                          variant="body2"
+                                          fontWeight="medium"
+                                          noWrap
+                                          sx={{ maxWidth: 180 }}
+                                        >
+                                          {file.name}
+                                        </Typography>
+                                        <Typography
+                                          variant="caption"
+                                          color="text.secondary"
+                                        >
+                                          {file.type}
+                                        </Typography>
+                                      </Box>
+                                    </Box>
+                                    <Box sx={{ ml: "auto" }}>
+                                      {downloadingFiles.has(file.id) ? (
+                                        <CircularProgress size={16} />
+                                      ) : (
+                                        <LuDownload className="text-[16px]" />
+                                      )}
+                                    </Box>
+                                  </MenuItem>
+                                ))}
+
                                 <Divider />
                                 <MenuItem
                                   onClick={handleDownloadAll}
@@ -2259,41 +2209,37 @@ const ProductDetails = ({ selectedProduct }) => {
                                     color: "#2E437C",
                                     fontWeight: "medium",
                                     "&:hover": {
-                                      backgroundColor:
-                                        "rgba(46, 67, 124, 0.04)",
+                                      backgroundColor: "rgba(46, 67, 124, 0.04)",
                                     },
                                   }}
                                 >
-                                  <LuDownload
-                                    size={18}
-                                    style={{ marginRight: 8 }}
-                                  />
+                                  <LuDownload size={18} style={{ marginRight: 8 }} />
                                   Download All ({downloadFiles.length} files)
                                 </MenuItem>
-                              </>
-                            )}
 
-                            {downloadFiles.length > 3 && (
-                              <MenuItem
-                                onClick={handleViewAllDownloads}
-                                sx={{
-                                  py: 1.5,
-                                  color: "#2E437C",
-                                  fontWeight: "medium",
-                                  "&:hover": {
-                                    backgroundColor: "rgba(46, 67, 124, 0.04)",
-                                  },
-                                }}
-                              >
-                                View All Downloads
-                              </MenuItem>
-                            )}
-                          </MenuList>
-                        </ClickAwayListener>
-                      </Paper>
-                    </Grow>
-                  )}
-                </Popper>
+                                {downloadFiles.length > 5 && (
+                                  <MenuItem
+                                    onClick={handleViewAllDownloads}
+                                    sx={{
+                                      py: 1.5,
+                                      color: "#2E437C",
+                                      fontWeight: "medium",
+                                      "&:hover": {
+                                        backgroundColor: "rgba(46, 67, 124, 0.04)",
+                                      },
+                                    }}
+                                  >
+                                    View All Downloads
+                                  </MenuItem>
+                                )}
+                              </MenuList>
+                            </ClickAwayListener>
+                          </Paper>
+                        </Grow>
+                      )}
+                    </Popper>
+                  </>
+                )}
               </div>
             )}
 
@@ -2370,7 +2316,7 @@ const ProductDetails = ({ selectedProduct }) => {
                   {images.map((image, index) => (
                     <div
                       key={`mobile-thumb-${image.id}`}
-                      onClick={() => handleThumbnailClick(index)} // Updated click handler
+                      onClick={() => handleThumbnailClick(index)}
                       className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 hover:opacity-90 rounded-lg ${
                         activeIndex === index ? "ring-2 ring-[#2E437C]" : ""
                       }`}
@@ -2426,7 +2372,6 @@ const ProductDetails = ({ selectedProduct }) => {
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-[1.03]"
                           onClick={() => handleImageClick(index)}
                         />
-
                         <FiMaximize2 className="text-white text-4xl drop-shadow-md" />
                       </div>
                     </SwiperSlide>
@@ -2473,7 +2418,7 @@ const ProductDetails = ({ selectedProduct }) => {
                   {images.map((image, index) => (
                     <div
                       key={`desktop-thumb-${image.id}`}
-                      onClick={() => handleThumbnailClick(index)} // Updated click handler
+                      onClick={() => handleThumbnailClick(index)}
                       className={`relative w-full aspect-square overflow-hidden cursor-pointer transition-all duration-300 hover:opacity-90 flex-shrink-0 ${
                         activeIndex === index
                           ? "border border-[#2E437C]"
@@ -2502,6 +2447,20 @@ const ProductDetails = ({ selectedProduct }) => {
             )}
           </div>
         </div>
+
+        {/* Product Description */}
+        {productData.description && (
+          <div className="mt-8 lg:mt-12">
+            <div className="bg-gray-50 rounded-lg p-6">
+              <h3 className="text-xl font-semibold text-[#2E437C] mb-4">
+                Product Description
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                {productData.description}
+              </p>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Fullscreen Image Modal */}
@@ -2554,7 +2513,6 @@ const ProductDetails = ({ selectedProduct }) => {
         </div>
       )}
 
-      {/* Rest of your existing dialogs (Download Files Dialog and Inquiry Dialog) remain unchanged */}
       {/* Download Files Dialog */}
       <Dialog
         open={isDownloadDialogOpen}

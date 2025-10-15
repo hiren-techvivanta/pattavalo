@@ -1,77 +1,31 @@
 :root {
   --brand-color: #2e437c;
-  /* Dynamic scaling variables - will be set by JavaScript */
+  /* --brand-color-dark: #007ACC; */
+  /* --brand-color-light: #3AB0FF; */
+}
+
+/* :root {
   --ui-scale: 1;
   --vh: 100vh;
 }
 
-/* Dynamic scaling styles - only active above 992px */
-@media (min-width: 992px) {
-  /* Main content scaling container */
-  #main-content,
-  .scalable-content {
-    transform: scale(var(--ui-scale));
-    transform-origin: top center;
-    width: calc(100% / var(--ui-scale));
-    min-height: calc(100vh / var(--ui-scale));
-    transition: transform 0.1s ease-out;
-  }
-
-  /* Ensure navbar stays fixed and unscaled */
-  .navbar-fixed,
-  nav[class*="fixed"] {
-    position: fixed !important;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 9999;
-    transform: none !important;
-    width: 100vw !important;
-  }
-
-  /* Prevent body overflow when scaling */
-  body {
-    overflow-x: hidden;
-  }
-
-  /* Scale-aware full height utility */
-  .full-height {
-    height: calc(var(--vh) / var(--ui-scale));
-    min-height: calc(var(--vh) / var(--ui-scale));
-  }
-
-  /* Update center-div for scaled content */
-  .center-div {
-    transform: translateX(-50%) scale(calc(1 / var(--ui-scale)));
-    transform-origin: center top;
-  }
+body {
+  transform: scale(var(--ui-scale));
+  transform-origin: top left;
+  width: calc(100% / var(--ui-scale));
+  height: calc(100% / var(--ui-scale));
+  overflow-x: hidden;
 }
 
-/* Preserve original behavior below 992px */
-@media (max-width: 991px) {
-  #main-content,
-  .scalable-content {
-    transform: none;
-    width: 100%;
-    min-height: 100vh;
-  }
+.full-height {
+  height: var(--vh);
+  min-height: var(--vh);
+} */
 
-  .full-height {
-    height: var(--vh);
-    min-height: var(--vh);
-  }
-
-  body {
-    overflow-x: hidden;
-  }
-}
-
-/* Original styles preserved */
 * {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
-
 *::-webkit-scrollbar {
   display: none;
 }
@@ -100,7 +54,6 @@
   }
 }
 
-/* Updated center-div with scaling support */
 .center-div {
   position: fixed;
   top: 10%;
@@ -110,14 +63,13 @@
   max-width: 100vw;
   height: auto;
   min-height: 400px;
+  /* max-height: 80vh; */
   z-index: 1000;
   background: white;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   overflow: hidden;
-  transition: transform 0.1s ease-out;
 }
 
-/* Responsive breakpoints for center-div - updated with scaling awareness */
 @media (min-width: 1600px) {
   .center-div {
     width: 100vw;
@@ -145,25 +97,12 @@
   }
 }
 
-@media (min-width: 992px) and (max-width: 1023px) {
+@media (min-width: 768px) and (max-width: 1023px) {
   .center-div {
     width: 100vw;
     max-width: 1023px;
     left: 0;
     top: 7%;
-    /* Adjust for scaling */
-    transform: translateX(-50%) scale(calc(1 / var(--ui-scale)));
-  }
-}
-
-@media (min-width: 768px) and (max-width: 991px) {
-  .center-div {
-    width: 100vw;
-    max-width: 1023px;
-    left: 0;
-    top: 7%;
-    /* No scaling below 992px */
-    transform: translateX(-50%);
   }
 }
 
@@ -171,7 +110,6 @@
   .center-div {
     width: 95vw;
     max-width: 600px;
-    transform: translateX(-50%);
   }
 }
 
@@ -182,71 +120,5 @@
     min-height: 300px;
     max-height: 85vh;
     top: 5%;
-    transform: translateX(-50%);
   }
-}
-
-/* Additional utility classes for scaling support */
-@media (min-width: 992px) {
-  /* Prevent fixed elements from scaling */
-  .no-scale {
-    transform: none !important;
-  }
-
-  /* Force scaling on specific elements */
-  .force-scale {
-    transform: scale(var(--ui-scale)) !important;
-    transform-origin: top center !important;
-  }
-
-  /* Scale-aware positioning */
-  .scale-aware-fixed {
-    position: fixed;
-    transform: scale(calc(1 / var(--ui-scale)));
-    transform-origin: top left;
-  }
-
-  /* Responsive text that scales with UI */
-  .scale-text {
-    font-size: calc(1rem * var(--ui-scale));
-  }
-
-  /* Scale-aware spacing */
-  .scale-padding {
-    padding: calc(1rem * var(--ui-scale));
-  }
-
-  .scale-margin {
-    margin: calc(1rem * var(--ui-scale));
-  }
-}
-
-/* Performance optimizations for scaling */
-@media (min-width: 992px) {
-  /* GPU acceleration for better scaling performance */
-  .scalable-content,
-  #main-content {
-    will-change: transform;
-    backface-visibility: hidden;
-    perspective: 1000px;
-  }
-
-  /* Smooth transitions during resize */
-  .scalable-content * {
-    transition: transform 0.1s ease-out;
-  }
-}
-
-/* Debug utilities (remove in production) */
-.debug-scale::before {
-  content: "Scale: " attr(data-scale);
-  position: fixed;
-  top: 10px;
-  right: 10px;
-  background: rgba(0, 0, 0, 0.8);
-  color: white;
-  padding: 5px 10px;
-  border-radius: 3px;
-  font-size: 12px;
-  z-index: 10000;
 }

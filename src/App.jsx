@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import "./App.css";
-// import "./temp.css"
+// import "./App.css";
+import "./temp.css"
 import Home from "./pages/Home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AboutUs from "./pages/about/AboutUs";
@@ -18,8 +18,8 @@ import { handleDisplayScaling } from "./utils/handleDisplayScaling";
 
 function App() {
   useEffect(() => {
-    // const cleanup = handleDisplayScaling(1536, 864);
-    // return cleanup;
+    const cleanup = handleDisplayScaling(1536, 864);
+    return cleanup;
   }, []);
 
   return (

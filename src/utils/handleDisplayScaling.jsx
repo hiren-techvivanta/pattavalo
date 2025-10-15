@@ -46,7 +46,7 @@
 //   const body = document.body;
   
 //   // Media query for screens above 992px
-//   const mediaQuery = window.matchMedia('(min-width: 992px)');
+//   const mediaQuery = window.matchMedia('(min-width: 1200px)');
   
 //   const applyScaleFix = () => {
 //     const actualWidth = window.innerWidth;
@@ -131,19 +131,158 @@
 // };
 
 
+
+// ---------------------------------------------------------------------------------------------
+
+
+
 // src/utils/handleDisplayScaling.js
+// export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
+//   const html = document.documentElement;
+  
+//   // Media query for screens between 1200px and 1550px
+//   const mediaQuery = window.matchMedia('(min-width: 1200px) and (max-width: 1550px)');
+  
+//   const applyScaleFix = () => {
+//     const actualWidth = window.innerWidth;
+//     const actualHeight = window.innerHeight;
+
+//     console.log('Scaling check:', { actualWidth, actualHeight, inRange: actualWidth >= 1200 && actualWidth <= 1550 });
+
+//     // Only apply scaling if screen width is between 1200px and 1550px
+//     if (actualWidth >= 1200 && actualWidth <= 1550) {
+//       // Calculate relative scaling vs baseline resolution
+//       const widthRatio = actualWidth / baseWidth;
+//       const heightRatio = actualHeight / baseHeight;
+
+//       // Use the smaller ratio to keep proportions consistent
+//       const uiScale = Math.min(widthRatio, heightRatio);
+
+//       // We want to normalize so design looks the same
+//       const normalizedScale = uiScale / 0.8;
+
+//       console.log('Applying scale:', { widthRatio, heightRatio, uiScale, normalizedScale });
+
+//       html.style.setProperty("--ui-scale", normalizedScale);
+//       html.style.setProperty("--vh", `${window.innerHeight}px`);
+
+//       // Instead of scaling body, scale only main content areas
+//       const contentSelectors = [
+//         'main',
+//         '.container',
+//         '.content',
+//         'section:not(nav):not(header)',
+//         'footer',
+//         '.page-content'
+//       ];
+
+//       contentSelectors.forEach(selector => {
+//         const elements = document.querySelectorAll(selector);
+//         elements.forEach(element => {
+//           // Skip if it's inside a navbar
+//           if (!element.closest('nav') && !element.closest('header')) {
+//             element.style.transform = `scale(${normalizedScale})`;
+//             element.style.transformOrigin = "top center";
+//           }
+//         });
+//       });
+
+//       // Ensure navbar stays unscaled
+//       forceNavbarFix();
+      
+//     } else {
+//       // Reset scaling for screens outside the range
+//       resetScaling();
+//     }
+//   };
+
+//   const forceNavbarFix = () => {
+//     const navElements = document.querySelectorAll('nav, .navbar-fixed, header, [role="navigation"]');
+//     navElements.forEach(element => {
+//       element.style.setProperty('position', 'fixed', 'important');
+//       element.style.setProperty('top', '0px', 'important');
+//       element.style.setProperty('left', '0px', 'important');
+//       element.style.setProperty('right', '0px', 'important');
+//       element.style.setProperty('width', '100vw', 'important');
+//       element.style.setProperty('z-index', '9999', 'important');
+//       element.style.setProperty('transform', 'none', 'important');
+//       element.style.setProperty('transform-origin', 'initial', 'important');
+//     });
+//   };
+
+//   const resetScaling = () => {
+//     console.log('Resetting scaling - outside 1200px-1550px range');
+    
+//     html.style.setProperty("--ui-scale", "1");
+//     html.style.setProperty("--vh", `${window.innerHeight}px`);
+
+//     // Reset content scaling
+//     const allElements = document.querySelectorAll('*');
+//     allElements.forEach(element => {
+//       if (element.style.transform && element.style.transform.includes('scale')) {
+//         element.style.transform = '';
+//         element.style.transformOrigin = '';
+//       }
+//     });
+
+//     // Ensure navbar stays fixed
+//     forceNavbarFix();
+//   };
+
+//   // Rest of the code remains the same...
+//   const handleMediaQueryChange = (event) => {
+//     console.log('Media query changed - 1200px-1550px range:', event.matches);
+//     if (event.matches) {
+//       applyScaleFix();
+//     } else {
+//       resetScaling();
+//     }
+//   };
+
+//   applyScaleFix();
+//   mediaQuery.addEventListener('change', handleMediaQueryChange);
+  
+//   const handleResize = () => {
+//     const currentWidth = window.innerWidth;
+//     if (currentWidth >= 1200 && currentWidth <= 1550) {
+//       applyScaleFix();
+//     } else if (currentWidth < 1200 || currentWidth > 1550) {
+//       resetScaling();
+//     }
+//   };
+
+//   window.addEventListener("resize", handleResize);
+  
+//   const interval = setInterval(() => {
+//     const currentWidth = window.innerWidth;
+//     if (currentWidth >= 1200 && currentWidth <= 1550) {
+//       forceNavbarFix();
+//     }
+//   }, 500);
+
+//   return () => {
+//     mediaQuery.removeEventListener('change', handleMediaQueryChange);
+//     window.removeEventListener("resize", handleResize);
+//     clearInterval(interval);
+//     resetScaling();
+//   };
+// };
+
+
 export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
   const html = document.documentElement;
   
-  // Media query for screens above 992px
-  const mediaQuery = window.matchMedia('(min-width: 992px)');
+  // Media query for screens between 1200px and 1550px
+  const mediaQuery = window.matchMedia('(min-width: 1200px) and (max-width: 1550px)');
   
   const applyScaleFix = () => {
     const actualWidth = window.innerWidth;
     const actualHeight = window.innerHeight;
 
-    // Only apply scaling if screen width is above 992px
-    if (actualWidth > 992) {
+    console.log('Scaling check:', { actualWidth, actualHeight, inRange: actualWidth >= 1200 && actualWidth <= 1550 });
+
+    // Only apply scaling if screen width is between 1200px and 1550px
+    if (actualWidth >= 1200 && actualWidth <= 1550) {
       // Calculate relative scaling vs baseline resolution
       const widthRatio = actualWidth / baseWidth;
       const heightRatio = actualHeight / baseHeight;
@@ -151,64 +290,119 @@ export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
       // Use the smaller ratio to keep proportions consistent
       const uiScale = Math.min(widthRatio, heightRatio);
 
-      // We want to normalize so design looks the same
-      const normalizedScale = uiScale / 0.8;
+      // FIXED: Better normalization for initial screen
+      let normalizedScale;
+      
+      // Check if this is close to the baseline screen
+      const isBaselineScreen = Math.abs(actualWidth - baseWidth) < 100 && Math.abs(actualHeight - baseHeight) < 100;
+      
+      if (isBaselineScreen) {
+        // For baseline screen, use scale of 1 (no scaling)
+        normalizedScale = 1;
+      } else {
+        // For other screens, apply the normalization
+        normalizedScale = uiScale / 0.8;
+        
+        // Ensure reasonable bounds
+        normalizedScale = Math.max(0.6, Math.min(1.3, normalizedScale));
+      }
+
+      console.log('Applying scale:', { 
+        widthRatio, 
+        heightRatio, 
+        uiScale, 
+        normalizedScale,
+        isBaselineScreen,
+        actualDimensions: `${actualWidth}x${actualHeight}`,
+        baseDimensions: `${baseWidth}x${baseHeight}`
+      });
 
       html.style.setProperty("--ui-scale", normalizedScale);
       html.style.setProperty("--vh", `${window.innerHeight}px`);
 
-      // Instead of scaling body, scale main content containers
-      // This prevents breaking position:fixed elements like navbar
-      const mainContent = document.querySelector('#main-content') || 
-                         document.querySelector('main') || 
-                         document.querySelector('.app-content');
-      
-      if (mainContent) {
-        mainContent.style.transform = `scale(${normalizedScale})`;
-        mainContent.style.transformOrigin = "top center";
-        mainContent.style.width = `${100 / normalizedScale}%`;
-        mainContent.style.minHeight = `${100 / normalizedScale}vh`;
-      }
+      // Instead of scaling body, scale only main content areas
+      const contentSelectors = [
+        'main',
+        '.container',
+        '.content',
+        'section:not(nav):not(header)',
+        'footer',
+        '.page-content'
+      ];
 
-      // Alternative: Scale individual sections instead of body
-      const sectionsToScale = document.querySelectorAll('.scalable-section');
-      sectionsToScale.forEach(section => {
-        section.style.transform = `scale(${normalizedScale})`;
-        section.style.transformOrigin = "top center";
+      contentSelectors.forEach(selector => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach(element => {
+          // Skip if it's inside a navbar
+          if (!element.closest('nav') && !element.closest('header')) {
+            if (normalizedScale === 1) {
+              // For baseline screen, remove any scaling
+              element.style.transform = '';
+              element.style.transformOrigin = '';
+            } else {
+              // For other screens, apply scaling
+              element.style.transform = `scale(${normalizedScale})`;
+              element.style.transformOrigin = "top center";
+            }
+          }
+        });
       });
 
+      // Ensure navbar stays unscaled
+      forceNavbarFix();
+      
     } else {
-      // Reset scaling for smaller screens
+      // Reset scaling for screens outside the range
       resetScaling();
     }
   };
 
-  const resetScaling = () => {
-    html.style.removeProperty("--ui-scale");
-    html.style.setProperty("--vh", `${window.innerHeight}px`);
-    
-    // Reset main content scaling
-    const mainContent = document.querySelector('#main-content') || 
-                       document.querySelector('main') || 
-                       document.querySelector('.app-content');
-    
-    if (mainContent) {
-      mainContent.style.transform = "none";
-      mainContent.style.transformOrigin = "initial";
-      mainContent.style.width = "100%";
-      mainContent.style.minHeight = "100vh";
-    }
+  const forceNavbarFix = () => {
+    const navElements = document.querySelectorAll('nav, .navbar-fixed, header, [role="navigation"]');
+    navElements.forEach(element => {
+      element.style.setProperty('position', 'fixed', 'important');
+      element.style.setProperty('top', '0px', 'important');
+      element.style.setProperty('left', '0px', 'important');
+      element.style.setProperty('right', '0px', 'important');
+      element.style.setProperty('width', '100vw', 'important');
+      element.style.setProperty('z-index', '9999', 'important');
+      element.style.setProperty('transform', 'none', 'important');
+      element.style.setProperty('transform-origin', 'initial', 'important');
+    });
 
-    // Reset section scaling
-    const sectionsToScale = document.querySelectorAll('.scalable-section');
-    sectionsToScale.forEach(section => {
-      section.style.transform = "none";
-      section.style.transformOrigin = "initial";
+    // Also fix WhatsApp icon
+    const whatsappElements = document.querySelectorAll('.whatsapp-fixed, [class*="whatsapp"]');
+    whatsappElements.forEach(element => {
+      element.style.setProperty('position', 'fixed', 'important');
+      element.style.setProperty('bottom', '2.5rem', 'important');
+      element.style.setProperty('right', '2.5rem', 'important');
+      element.style.setProperty('z-index', '9997', 'important');
+      element.style.setProperty('transform', 'none', 'important');
+      element.style.setProperty('transform-origin', 'initial', 'important');
     });
   };
 
-  // Handle media query changes efficiently
+  const resetScaling = () => {
+    console.log('Resetting scaling - outside 1200px-1550px range');
+    
+    html.style.setProperty("--ui-scale", "1");
+    html.style.setProperty("--vh", `${window.innerHeight}px`);
+
+    // Reset content scaling
+    const allElements = document.querySelectorAll('*');
+    allElements.forEach(element => {
+      if (element.style.transform && element.style.transform.includes('scale')) {
+        element.style.transform = '';
+        element.style.transformOrigin = '';
+      }
+    });
+
+    // Ensure navbar stays fixed
+    forceNavbarFix();
+  };
+
   const handleMediaQueryChange = (event) => {
+    console.log('Media query changed - 1200px-1550px range:', event.matches);
     if (event.matches) {
       applyScaleFix();
     } else {
@@ -216,29 +410,27 @@ export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
     }
   };
 
-  // Initial setup
   applyScaleFix();
-
-  // Use matchMedia for efficient breakpoint detection
   mediaQuery.addEventListener('change', handleMediaQueryChange);
   
-  // Still listen to resize for screens above 992px
   const handleResize = () => {
-    if (window.innerWidth > 992) {
+    const currentWidth = window.innerWidth;
+    if (currentWidth >= 1200 && currentWidth <= 1550) {
       applyScaleFix();
+    } else if (currentWidth < 1200 || currentWidth > 1550) {
+      resetScaling();
     }
   };
 
   window.addEventListener("resize", handleResize);
   
-  // Optional: periodic check
   const interval = setInterval(() => {
-    if (window.innerWidth > 992) {
-      applyScaleFix();
+    const currentWidth = window.innerWidth;
+    if (currentWidth >= 1200 && currentWidth <= 1550) {
+      forceNavbarFix();
     }
-  }, 3000);
+  }, 500);
 
-  // Cleanup function
   return () => {
     mediaQuery.removeEventListener('change', handleMediaQueryChange);
     window.removeEventListener("resize", handleResize);

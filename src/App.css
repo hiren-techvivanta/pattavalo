@@ -4,9 +4,27 @@
   /* --brand-color-light: #3AB0FF; */
 }
 
-/* :root {
+:root {
   --ui-scale: 1;
   --vh: 100vh;
+}
+
+/* IMPORTANT: Navbar protection for scaling */
+@media (min-width: 1200px) and (max-width: 1550px) {
+  /* Ensure navbar stays fixed and unscaled */
+  nav,
+  .navbar-fixed,
+  [class*="fixed"],
+  header {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+    transform: none !important;
+    width: 100vw !important;
+    transform-origin: initial !important;
+  }
 }
 
 body {
@@ -20,7 +38,7 @@ body {
 .full-height {
   height: var(--vh);
   min-height: var(--vh);
-} */
+}
 
 * {
   scrollbar-width: none;
@@ -88,7 +106,23 @@ body {
   }
 }
 
-@media (min-width: 1024px) and (max-width: 1399px) {
+/* NEW: XL screens scaling for center-div (1200px-1550px) */
+@media (min-width: 1200px) and (max-width: 1550px) {
+  .center-div {
+    width: calc(100vw / var(--ui-scale));
+    max-width: calc(2000px / var(--ui-scale));
+    height: calc(80vh / var(--ui-scale));
+    min-height: calc(400px / var(--ui-scale));
+    max-height: calc(85vh / var(--ui-scale));
+    left: 0;
+    top: calc(1% / var(--ui-scale));
+    transform: translateX(-50%) scale(var(--ui-scale));
+    transform-origin: center top;
+    transition: all 0.2s ease-out;
+  }
+}
+
+@media (min-width: 1024px) and (max-width: 1199px) {
   .center-div {
     width: 100vw;
     max-width: 1399px;
