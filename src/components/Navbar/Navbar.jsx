@@ -514,7 +514,7 @@ export default function Navbar({ navStyle, show = true }) {
           }}
         >
           <div className="mx-auto px-6 md:px-3 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-18">
+            <div className="flex items-center justify-between h-15">
               {/* Logo */}
               <motion.div
                 className="flex-shrink-0 flex items-center cursor-pointer"
@@ -526,7 +526,7 @@ export default function Navbar({ navStyle, show = true }) {
                 <img
                   src={navBg ? logoBlack : logoWhite}
                   alt="ATC Logo"
-                  className="h-8 w-auto sm:h-10 md:h-8 lg:h-10"
+                  className="h-8 w-auto sm:h-10 md:h-8 lg:h-7"
                 />
               </motion.div>
 
