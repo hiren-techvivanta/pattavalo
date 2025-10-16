@@ -6,7 +6,7 @@ import AnimatedButton from "../aboutUsComponents/AnimatedButton";
 import { useNavigate } from "react-router-dom";
 
 export default function ExpertSolutions() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -97,117 +97,125 @@ export default function ExpertSolutions() {
     ));
 
   return (
-    <section className="container min-h-screen flex flex-col-reverse mx-auto lg:flex-row items-center justify-between w-full px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-10  bg-white font-articulat">
-      <motion.div
-        className="
+    <section className="container px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-5  bg-white font-articulat grid-center-box-100">
+      <div className="min-h-screen flex flex-col-reverse mx-auto lg:flex-row items-center justify-between w-full">
+        <motion.div
+          className="
     w-full 
     max-w-[90%] sm:max-w-2xl lg:max-w-4xl
     lg:w-1/2
     lg:pr-16 xl:pr-20
-    mb-10 lg:mb-0
+    mb-5 lg:mb-0
+    grid-center-box-100
   "
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={containerVariants}
-      >
-        {/* Heading */}
-        <motion.h1
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
           variants={containerVariants}
-          className="
+        >
+          {/* Heading */}
+          <motion.h1
+            variants={containerVariants}
+            className="
       text-[38px] md:text-[48px]
       leading-[45px] sm:leading-[44px] md:leading-[52px] lg:leading-[60px] text-[#BABEC8]
-      font-[600] mb-6 sm:mb-8"
-        >
-          Expert{" "}
-          <span className="text-[#2E437C] font-[600]">
-            Solutions for Custom Conveyor
-          </span>{" "}
-          Needs.
-        </motion.h1>
-
-        {/* Paragraph 1 */}
-        <motion.p
-          className="
-      text-sm sm:text-base md:text-[16px]
-      text-[#A0A3AD]
-      mb-4 sm:mb-6
-      leading-relaxed
-      font-normal
-    "
-          variants={textRevealVariants}
-        >
-          We are a team of 150+ experts leading and thriving in the
-          manufacturing industry. Our large warehouse capacity facilitates
-          extensive production services, enabling us to build robust products
-          and machinery designed to last for generations.
-        </motion.p>
-
-        {/* Paragraph 2 */}
-        <motion.p
-          className="
-      text-sm sm:text-base md:text-[16px]
-      text-[#A0A3AD]
-      mb-4 sm:mb-6
-      leading-relaxed
-      font-normal
-    "
-          variants={textRevealVariants}
-        >
-          With expertise across multiple industries, we deliver intelligent and
-          unique belt solutions tailored to your specific requirements. Our
-          long-term vision is to build a customer-centric brand through
-          impeccable service and quality.
-        </motion.p>
-
-        {/* Decorative line */}
-        <motion.div
-          className="w-12 sm:w-16 md:w-20 h-[2px] bg-[#2E437C] mb-6 sm:mb-8"
-          variants={textRevealVariants}
-        />
-
-        {/* Button */}
-        <motion.div
-          variants={textRevealVariants}
-          whileHover="hover"
-          whileTap="tap"
-          className="mt-4"
-          onClick={() => window.open("https://atc-chain-flex-zero.vercel.app/", '_blank', 'noopener,noreferrer')}
-        >
-          <AnimatedButton
-            icon={RxArrowRight}
-            color="#2E437C"
-            hoverColor="#2E437C"
+      font-[600] mb-6 sm:mb-5"
           >
-            Explore Product
-          </AnimatedButton>
-        </motion.div>
-      </motion.div>
+            Expert{" "}
+            <span className="text-[#2E437C] font-[600]">
+              Solutions for Custom Conveyor
+            </span>{" "}
+            Needs.
+          </motion.h1>
 
-      <motion.div
-        className="lg:w-1/2 w-full flex justify-center lg:justify-end"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={imageVariants}
-        draggable={false}
-        onContextMenu={(e) => e.preventDefault()}
-      >
-        <motion.img
-          src={ConveyorImage}
-          alt="Custom Conveyor"
-          className="w-full object-contain pointer-events-none select-none"
-          whileHover={{
-            scale: 1.02,
-            transition: {
-              type: "spring",
-              stiffness: 300,
-              damping: 25,
-              duration: 0.4,
-            },
-          }}
-        />
-      </motion.div>
+          {/* Paragraph 1 */}
+          <motion.p
+            className="
+      text-sm sm:text-base md:text-[16px]
+      text-[#A0A3AD]
+      leading-relaxed
+      font-normal
+      s-para
+    "
+            variants={textRevealVariants}
+          >
+            We are a team of 150+ experts leading and thriving in the
+            manufacturing industry. Our large warehouse capacity facilitates
+            extensive production services, enabling us to build robust products
+            and machinery designed to last for generations.
+          </motion.p>
+
+          {/* Paragraph 2 */}
+          <motion.p
+            className="
+      text-sm sm:text-base md:text-[16px]
+      text-[#A0A3AD]
+      leading-relaxed
+      font-normal s-para
+    "
+            variants={textRevealVariants}
+          >
+            With expertise across multiple industries, we deliver intelligent
+            and unique belt solutions tailored to your specific requirements.
+            Our long-term vision is to build a customer-centric brand through
+            impeccable service and quality.
+          </motion.p>
+
+          {/* Decorative line */}
+          <motion.div
+            className="w-12 sm:w-16 md:w-20 h-[2px] bg-[#2E437C] mb-6 sm:mb-8"
+            variants={textRevealVariants}
+          />
+
+          {/* Button */}
+          <motion.div
+            variants={textRevealVariants}
+            whileHover="hover"
+            whileTap="tap"
+            className=""
+            onClick={() =>
+              window.open(
+                "https://atc-chain-flex-zero.vercel.app/",
+                "_blank",
+                "noopener,noreferrer"
+              )
+            }
+          >
+            <AnimatedButton
+              icon={RxArrowRight}
+              color="#2E437C"
+              hoverColor="#2E437C"
+            >
+              Explore Product
+            </AnimatedButton>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          className="lg:w-1/2 w-full flex justify-center lg:justify-end"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          variants={imageVariants}
+          draggable={false}
+          onContextMenu={(e) => e.preventDefault()}
+        >
+          <motion.img
+            src={ConveyorImage}
+            alt="Custom Conveyor"
+            className="w-full object-contain pointer-events-none select-none"
+            whileHover={{
+              scale: 1.02,
+              transition: {
+                type: "spring",
+                stiffness: 300,
+                damping: 25,
+                duration: 0.4,
+              },
+            }}
+          />
+        </motion.div>
+      </div>
     </section>
   );
 }

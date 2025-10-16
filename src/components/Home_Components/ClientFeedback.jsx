@@ -166,7 +166,7 @@ export default function ClientFeedback() {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={containerVariants}
-        className="text-left mb-12 max-w-4xl"
+        className="text-left mb-5 max-w-4xl"
       >
         <motion.p className="text-[18px] text-[#2E437C] font-medium">
           Client Feedback

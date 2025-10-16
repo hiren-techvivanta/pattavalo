@@ -41,7 +41,7 @@ export default function ModulerSolution() {
         ) {
           // Transform API data and sort by displayOrder
           const transformedSolutions = result.data
-            .filter(category => category.is_active) // Only show active categories
+            .filter((category) => category.is_active) // Only show active categories
             .sort((a, b) => a.displayOrder - b.displayOrder) // Sort by displayOrder ascending
             .map((category, index) => ({
               id: category.id,
@@ -203,19 +203,19 @@ export default function ModulerSolution() {
   }
 
   return (
-    <section className="container mx-auto w-full px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-10 bg-white">
+    <section className="container mx-auto grid-center-box-100 px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 bg-white">
       <motion.div
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
         variants={containerVariants}
-        className="mb-8 sm:mb-12 md:text-left px-0"
+        className="my-auto md:text-left px-0"
       >
-        <h2 className=" text-[40px] md:text-[100px] font-[500] text-[#BABEC8] leading-[55px] md:leading-[98px] text-center md:text-start">
-          <CustomHeading title="Your Crafted, " className=" font-[500]" />
+        <h2 className="text-[40px] md:text-[100px] font-[500] text-[#BABEC8] leading-[55px] md:leading-[98px] text-center md:text-start">
+          <CustomHeading title="Your Crafted, " className="font-[500]" />
           <CustomHeading
             title="Modular Solution"
-            className=" font-[500] text-[#2E437C]"
+            className="font-[500] text-[#2E437C]"
           />
         </h2>
       </motion.div>
@@ -225,7 +225,7 @@ export default function ModulerSolution() {
         whileInView="visible"
         viewport={{ once: true, margin: "-60px" }}
         variants={cardGridVariants}
-        className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 md:gap-8 text-center"
+        className="grid grid-cols-2 custom-gap sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 md:gap-6 text-center"
       >
         {solutions.map((item, idx) => (
           <motion.div
@@ -246,12 +246,12 @@ export default function ModulerSolution() {
               scale: 0.98,
               transition: { duration: 0.1 },
             }}
-            className="group relative flex flex-col items-center justify-center p-5 bg-white
-              cursor-pointer overflow-hidden hover:shadow-lg"
+            className="group relative flex flex-col items-center justify-center p-4 bg-white
+          cursor-pointer overflow-hidden hover:shadow-lg"
           >
             <motion.div
               className="absolute inset-0 bg-gradient-to-br from-[#2E437C] to-[#1d3b72]
-               opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+           opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             />
 
             {/* Icon without any continuous animation */}
@@ -260,7 +260,7 @@ export default function ModulerSolution() {
                 src={item.icon}
                 alt={item.title}
                 className="w-full h-full object-contain transition-all duration-300
-                 group-hover:brightness-0 group-hover:invert"
+             group-hover:brightness-0 group-hover:invert"
                 onError={(e) => {
                   // Fallback for broken images
                   e.target.src =
@@ -272,8 +272,8 @@ export default function ModulerSolution() {
             {/* Title from API */}
             <motion.p
               className="relative z-10 text-xs sm:text-sm md:text-base font-medium
-               text-gray-700 group-hover:text-white transition-colors duration-300
-               text-center leading-tight max-w-full"
+           text-gray-700 group-hover:text-white transition-colors duration-300
+           text-center leading-tight max-w-full"
               whileHover={{
                 scale: 1.01,
                 transition: {
@@ -288,8 +288,8 @@ export default function ModulerSolution() {
             {/* Bottom Border */}
             <motion.div
               className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r
-               from-[#2E437C] to-[#1d3b72]
-               opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+           from-[#2E437C] to-[#1d3b72]
+           opacity-0 group-hover:opacity-100 transition-opacity duration-300"
             />
           </motion.div>
         ))}
