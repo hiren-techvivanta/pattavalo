@@ -77,7 +77,7 @@ const theme = createTheme({
     MuiAccordionDetails: {
       styleOverrides: {
         root: {
-          padding: "0 !important",
+          padding:"0 !important"
         },
       },
     },
@@ -128,299 +128,6 @@ const ProductCom = () => {
   const searchTimeoutRef = useRef(null);
   const hasProcessedUrlRef = useRef(false);
   const lastUrlParamsRef = useRef("");
-  const leftPanelRef = useRef(null);
-  const rightPanelRef = useRef(null);
-  const scrollTarget = useRef(0);
-  const scrolling = useRef(false);
-
-  useEffect(() => {
-    const leftElement = leftPanelRef.current;
-    const rightElement = rightPanelRef.current;
-
-    // Custom smooth scroll function
-    const smoothScrollTo = (element, targetScrollTop) => {
-      if (!element) return;
-
-      const startScrollTop = element.scrollTop;
-      const distance = targetScrollTop - startScrollTop;
-      const duration = 300; // ms
-      let startTime = null;
-
-      const animateScroll = (currentTime) => {
-        if (startTime === null) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const progress = Math.min(timeElapsed / duration, 1);
-
-        // Easing function (ease-out)
-        const ease = 1 - Math.pow(1 - progress, 3);
-
-        element.scrollTop = startScrollTop + distance * ease;
-
-        if (progress < 1) {
-          requestAnimationFrame(animateScroll);
-        }
-      };
-
-      requestAnimationFrame(animateScroll);
-    };
-
-    // Scroll to top function
-    const scrollToTop = (panel = "both") => {
-      if (panel === "left" || panel === "both") {
-        if (leftElement) {
-          smoothScrollTo(leftElement, 0);
-        }
-      }
-
-      if (panel === "right" || panel === "both") {
-        if (rightElement) {
-          smoothScrollTo(rightElement, 0);
-        }
-      }
-    };
-
-    // Auto scroll to active item in left panel
-    const scrollToActiveItem = () => {
-      if (!leftElement) return;
-
-      // Find the active/expanded accordion
-      const activeAccordion = leftElement.querySelector(".Mui-expanded");
-      if (activeAccordion) {
-        const containerRect = leftElement.getBoundingClientRect();
-        const itemRect = activeAccordion.getBoundingClientRect();
-
-        if (
-          itemRect.top < containerRect.top ||
-          itemRect.bottom > containerRect.bottom
-        ) {
-          const scrollTop =
-            activeAccordion.offsetTop - leftElement.offsetTop - 20;
-          smoothScrollTo(leftElement, scrollTop);
-        }
-      }
-    };
-
-    // Enhanced wheel handler for left panel
-    const handleLeftPanelWheel = (e) => {
-      if (!leftElement) return;
-
-      const isScrollable = leftElement.scrollHeight > leftElement.clientHeight;
-      if (!isScrollable) return;
-
-      const atTop = leftElement.scrollTop <= 0;
-      const atBottom =
-        leftElement.scrollTop >=
-        leftElement.scrollHeight - leftElement.clientHeight;
-
-      const scrollingDown = e.deltaY > 0;
-      const scrollingUp = e.deltaY < 0;
-
-      if ((scrollingDown && !atBottom) || (scrollingUp && !atTop)) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const scrollAmount = e.deltaY * 0.8;
-        const newScrollTop = Math.max(
-          0,
-          Math.min(
-            leftElement.scrollTop + scrollAmount,
-            leftElement.scrollHeight - leftElement.clientHeight
-          )
-        );
-
-        smoothScrollTo(leftElement, newScrollTop);
-      }
-    };
-
-    // Enhanced wheel handler for right panel
-    const handleRightPanelWheel = (e) => {
-      if (!rightElement) return;
-
-      const isScrollable =
-        rightElement.scrollHeight > rightElement.clientHeight;
-      if (!isScrollable) return;
-
-      const atTop = rightElement.scrollTop <= 0;
-      const atBottom =
-        rightElement.scrollTop >=
-        rightElement.scrollHeight - rightElement.clientHeight;
-
-      const scrollingDown = e.deltaY > 0;
-      const scrollingUp = e.deltaY < 0;
-
-      if ((scrollingDown && !atBottom) || (scrollingUp && !atTop)) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const scrollAmount = e.deltaY * 0.8;
-        const newScrollTop = Math.max(
-          0,
-          Math.min(
-            rightElement.scrollTop + scrollAmount,
-            rightElement.scrollHeight - rightElement.clientHeight
-          )
-        );
-
-        smoothScrollTo(rightElement, newScrollTop);
-      }
-    };
-
-    // Handle keyboard navigation
-    const handleKeyDown = (e) => {
-      if (e.key === "ArrowUp" || e.key === "ArrowDown") {
-        const activeElement = document.activeElement;
-        let targetElement = null;
-
-        if (leftElement && leftElement.contains(activeElement)) {
-          targetElement = leftElement;
-        } else if (rightElement && rightElement.contains(activeElement)) {
-          targetElement = rightElement;
-        }
-
-        if (targetElement) {
-          e.preventDefault();
-          const scrollAmount = e.key === "ArrowDown" ? 50 : -50;
-          const newScrollTop = Math.max(
-            0,
-            Math.min(
-              targetElement.scrollTop + scrollAmount,
-              targetElement.scrollHeight - targetElement.clientHeight
-            )
-          );
-          smoothScrollTo(targetElement, newScrollTop);
-        }
-      }
-
-      if (e.key === "Home" || e.key === "End") {
-        if (rightElement && rightElement.contains(document.activeElement)) {
-          e.preventDefault();
-          const targetScrollTop =
-            e.key === "Home" ? 0 : rightElement.scrollHeight;
-          smoothScrollTo(rightElement, targetScrollTop);
-        }
-      }
-    };
-
-    // Handle resize events
-    const handleResize = () => {
-      if (leftElement) {
-        const maxScroll = leftElement.scrollHeight - leftElement.clientHeight;
-        if (leftElement.scrollTop > maxScroll) {
-          smoothScrollTo(leftElement, maxScroll);
-        }
-      }
-
-      if (rightElement) {
-        const maxScroll = rightElement.scrollHeight - rightElement.clientHeight;
-        if (rightElement.scrollTop > maxScroll) {
-          smoothScrollTo(rightElement, maxScroll);
-        }
-      }
-    };
-
-    // Handle focus management
-    const handleFocusIn = (e) => {
-      if (leftElement && leftElement.contains(e.target)) {
-        const elementRect = e.target.getBoundingClientRect();
-        const containerRect = leftElement.getBoundingClientRect();
-
-        if (
-          elementRect.top < containerRect.top ||
-          elementRect.bottom > containerRect.bottom
-        ) {
-          const scrollTop = e.target.offsetTop - leftElement.offsetTop - 50;
-          smoothScrollTo(leftElement, scrollTop);
-        }
-      }
-
-      if (rightElement && rightElement.contains(e.target)) {
-        const elementRect = e.target.getBoundingClientRect();
-        const containerRect = rightElement.getBoundingClientRect();
-
-        if (
-          elementRect.top < containerRect.top ||
-          elementRect.bottom > containerRect.bottom
-        ) {
-          const scrollTop = e.target.offsetTop - rightElement.offsetTop - 50;
-          smoothScrollTo(rightElement, scrollTop);
-        }
-      }
-    };
-
-    // Handle state-based scroll behavior
-    const handleStateChanges = () => {
-      // Auto scroll to active item when expanded panel changes
-      if (expandedPanel) {
-        setTimeout(scrollToActiveItem, 100);
-      }
-
-      // Scroll right panel to top when view mode changes
-      if (viewMode) {
-        scrollToTop("right");
-      }
-
-      // Reset scroll position when search query changes
-      if (searchQuery) {
-        scrollToTop("right");
-      }
-
-      // Handle mobile accordion behavior - using selectedCategory instead of selectedCategoryId
-      if (selectedCategory && !expandedPanel) {
-        setExpandedPanel("panel1");
-      }
-
-      // Smooth scroll on category/subcategory changes - using your actual variables
-      if (selectedCategory || selectedSubcategoryId) {
-        setTimeout(() => {
-          scrollToTop("right");
-        }, 150);
-      }
-    };
-
-    // Setup all event listeners
-    if (leftElement) {
-      leftElement.addEventListener("wheel", handleLeftPanelWheel, {
-        passive: false,
-      });
-    }
-
-    if (rightElement) {
-      rightElement.addEventListener("wheel", handleRightPanelWheel, {
-        passive: false,
-      });
-    }
-
-    document.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("resize", handleResize);
-    document.addEventListener("focusin", handleFocusIn);
-
-    // Initialize and handle state changes
-    setTimeout(() => {
-      scrollToTop("both");
-    }, 100);
-
-    handleStateChanges();
-
-    // Cleanup function
-    return () => {
-      if (leftElement) {
-        leftElement.removeEventListener("wheel", handleLeftPanelWheel);
-      }
-      if (rightElement) {
-        rightElement.removeEventListener("wheel", handleRightPanelWheel);
-      }
-      document.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("resize", handleResize);
-      document.removeEventListener("focusin", handleFocusIn);
-    };
-  }, [
-    expandedPanel,
-    viewMode,
-    searchQuery,
-    selectedCategory,
-    selectedSubcategoryId,
-    selectedProductId,
-  ]);
 
   const getAxiosConfig = useCallback(
     () => ({
@@ -714,7 +421,7 @@ const ProductCom = () => {
     try {
       setProductsLoading(true);
 
-      // Find the subcategory in the tree structure
+      
       let foundSubcategory = null;
       let subPanelIndex = -1;
 
@@ -1265,18 +972,22 @@ const ProductCom = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="min-h-screen bg-white px-4 md:px-12 pb-10 pt-5">
+      <div className="min-h-screen bg-white px-4 md:px-12 py-10">
         {/* Your existing JSX remains the same */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-5"
+          className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8"
         >
           <h1 className="text-[36px] font-[700] text-[#BABEC8]">
             <CustomHeading title="Our Products" className="" />
           </h1>
+
+          <div className="hidden md:block flex-1 mx-6">
+            <div className="h-[6px] bg-[#BABEC8]"></div>
+          </div>
 
           <div className="relative w-full md:max-w-md lg:max-w-lg xl:max-w-lg">
             <motion.input
@@ -1316,17 +1027,16 @@ const ProductCom = () => {
               </motion.button>
             )}
           </div>
-        </motion.div>
+        </motion.div> */}
 
         {/* Rest of your existing JSX remains exactly the same */}
         <div className="mt-2 flex flex-col md:flex-row gap-5">
           <motion.div
-            ref={leftPanelRef}
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="w-full md:w-1/4 max-h-[80vh] overflow-y-auto overflow-x-hidden"
+            className="w-full md:w-1/4"
           >
             <div className="py-4 rounded-lg">
               
@@ -1850,8 +1560,7 @@ const ProductCom = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            ref={rightPanelRef}
-            className="w-full md:w-3/4 max-h-[80vh] overflow-auto"
+            className="w-full md:w-3/4"
           >
             {viewMode === "categories" && (
               <div>
