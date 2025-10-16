@@ -13,14 +13,14 @@ const TeamCard = ({ member, index = 0 }) => {
 
   return (
     <motion.div 
-      className="flex-shrink-0 w-[183px] md:w-64 h-60 md:h-80 text-center"
+      className="flex-shrink-0 w-[183px] md:w-64 aspect-[3/4] text-center"
       variants={scaleUp}
       whileHover={{ y: -10, scale: 1.02 }}
       transition={{ duration: 0.3 }}
     >
       <motion.img 
         src={`${import.meta.env.VITE_BACKEND_URL}/${member.image}`} 
-        className="w-[391px] md:w-full h-[183px] md:h-60 object-cover" 
+        className="w-[391px] md:w-full h-full object-cover" 
         alt={member.name}
         whileHover={{ scale: 1.05 }}
         transition={{ duration: 0.3 }}
