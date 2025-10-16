@@ -18,8 +18,8 @@ import { handleDisplayScaling } from "./utils/handleDisplayScaling";
 
 function App() {
   useEffect(() => {
-    const cleanup = handleDisplayScaling(1536, 864);
-    return cleanup;
+    // const cleanup = handleDisplayScaling(1536, 864);
+    // return cleanup;
   }, []);
 
   return (
