@@ -81,7 +81,7 @@ const News = () => {
       <Navbar navStyle={"white"} />
 
       <motion.div
-        className="w-full bg-gradient-to-b from-gray-50/30 to-white pt-20 md:pt-24 lg:pt-30"
+        className="w-full bg-gradient-to-b from-gray-50/30 to-white pt-20 md:pt-15 lg:pt-15"
         initial="hidden"
         animate="visible"
         variants={pageVariants}

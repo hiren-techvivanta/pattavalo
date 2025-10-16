@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   FaIndustry,
@@ -699,22 +699,56 @@ export default function IndustryCom() {
       </motion.span>
     ));
 
+  const whatsappRef = useRef(null);
+
+  useEffect(() => {
+    const forceWhatsAppPosition = () => {
+      if (whatsappRef.current) {
+        const element = whatsappRef.current;
+        element.style.setProperty("transform", "none", "important");
+        element.style.setProperty("transform-origin", "initial", "important");
+      }
+    };
+
+    // Force positioning immediately
+    forceWhatsAppPosition();
+
+    // Force positioning on scroll and resize
+    const handleScroll = () => forceWhatsAppPosition();
+    const handleResize = () => forceWhatsAppPosition();
+
+    // Force positioning periodically
+    const interval = setInterval(forceWhatsAppPosition, 500);
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      clearInterval(interval);
+    };
+  }, []);
+
   return (
-    <section className="container mx-auto w-full  px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-10 lg:pr-16 lg:pl-0 xl:pr-20 xl:pl-0  sm:py-20">
+    <section
+      ref={whatsappRef}
+      className=" mx-auto w-full py-10 lg:pr-16 lg:pl-0 xl:pr-20 xl:pl-0  sm:py-20"
+    >
       {/* Heading */}
       <motion.h1
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
-        className="text-[44px] md:text-[112px] font-[500] md:font-[400] text-[#BABEC8] mb-10 text-center md:text-left "
+        className=" ps-2 lg:ps-25 text-[44px] md:text-[112px] font-[500] md:font-[400] text-[#BABEC8] mb-10 text-center md:text-left "
       >
         <CustomHeading title="Industries we serve" className="" />
       </motion.h1>
 
-      <div className=" grid grid-cols-1 md:grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-10 items-center">
+      <div className=" grid grid-cols-1 md:grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
         {/* Chart Section */}
-        <div className="col-span-1 md:col-span-1 lg:col-span-1 relative flex justify-center lg:justify-start items-center overflow-hidden order-2 lg:order-1">
+        <div className="col-span-1 md:col-span-1 lg:col-span-5 relative flex justify-center lg:justify-start items-center overflow-hidden order-2 lg:order-1">
           <motion.div
             initial={{
               opacity: 0,
@@ -867,7 +901,7 @@ export default function IndustryCom() {
         </div>
 
         {/* Content Section */}
-        <div className="col-span-1 md:col-span-1 lg:col-span-2 order-1 lg:order-2">
+        <div className="col-span-1 md:col-span-1 lg:col-span-7 order-1 lg:order-2">
           <motion.div
             key={activeIndustry.id}
             initial={{ opacity: 0, x: 50 }}

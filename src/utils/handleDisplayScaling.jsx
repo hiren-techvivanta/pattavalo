@@ -370,6 +370,13 @@ export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
       element.style.setProperty('transform-origin', 'initial', 'important');
     });
 
+     const footerElements = document.querySelectorAll('footer-bottom-main');
+    footerElements.forEach(element => {
+      element.style.setProperty('transform', 'none', 'important');
+      element.style.setProperty('width', '100vw', 'important');
+      element.style.setProperty('transform-origin', 'initial', 'important');
+    });
+
     // Also fix WhatsApp icon
     const whatsappElements = document.querySelectorAll('.whatsapp-fixed, [class*="whatsapp"]');
     whatsappElements.forEach(element => {

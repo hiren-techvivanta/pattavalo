@@ -156,3 +156,9 @@ body {
     top: 5%;
   }
 }
+
+.footer-bottom-main {
+  transform: none !important;
+  transform-origin: initial !important;
+  
+}
