@@ -2126,7 +2126,7 @@ const ProductDetails = ({ selectedProduct }) => {
                     </ButtonGroup>
 
                     <Popper
-                      sx={{ zIndex: 1300 }}
+                      sx={{ zIndex: 99999 }}
                       open={downloadMenuOpen}
                       anchorEl={downloadAnchorRef.current}
                       role={undefined}

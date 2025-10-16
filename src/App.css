@@ -144,6 +144,8 @@
 .custom-position {
 }
 
+.form-custom {}
+
 @media (min-width: 1200px) and (min-height: 500px) {
   .grid-center-box-100 {
     gap: 0.5rem;
@@ -173,6 +175,10 @@
     bottom: 0;
     right: -30% !important;
   }
+
+  .form-custom {
+    height: 40px !important;
+  }
 }
 
 @media (min-width: 1200px) and (min-height: 650px) {
@@ -197,6 +203,10 @@
 
    .s-para {
     font-size: 16px;
+  }
+
+   .form-custom {
+    height: 60px !important;
   }
 }
 

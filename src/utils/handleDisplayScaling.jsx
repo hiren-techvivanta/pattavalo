@@ -365,7 +365,7 @@ export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
       element.style.setProperty('left', '0px', 'important');
       element.style.setProperty('right', '0px', 'important');
       element.style.setProperty('width', '100vw', 'important');
-      element.style.setProperty('z-index', '9999', 'important');
+      // element.style.setProperty('z-index', '9999', 'important');
       element.style.setProperty('transform', 'none', 'important');
       element.style.setProperty('transform-origin', 'initial', 'important');
     });

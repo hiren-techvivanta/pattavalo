@@ -113,38 +113,38 @@ const WhatsappIcon = () => {
   }, []);
 
   // Protect WhatsApp icon from scaling effects
-  useEffect(() => {
-    const forceWhatsAppPosition = () => {
-      if (whatsappRef.current) {
-        const element = whatsappRef.current;
-        element.style.setProperty('position', 'fixed', 'important');
-        element.style.setProperty('bottom', '2.5rem', 'important'); // bottom-10 = 2.5rem
-        element.style.setProperty('right', '2.5rem', 'important');  // right-10 = 2.5rem
-        element.style.setProperty('z-index', '99999999', 'important');
-        element.style.setProperty('transform', 'none', 'important');
-        element.style.setProperty('transform-origin', 'initial', 'important');
-      }
-    };
+  // useEffect(() => {
+  //   const forceWhatsAppPosition = () => {
+  //     if (whatsappRef.current) {
+  //       const element = whatsappRef.current;
+  //       element.style.setProperty('position', 'fixed', 'important');
+  //       element.style.setProperty('bottom', '2.5rem', 'important'); // bottom-10 = 2.5rem
+  //       element.style.setProperty('right', '2.5rem', 'important');  // right-10 = 2.5rem
+  //       // element.style.setProperty('z-index', '99999999', 'important');
+  //       element.style.setProperty('transform', 'none', 'important');
+  //       element.style.setProperty('transform-origin', 'initial', 'important');
+  //     }
+  //   };
 
-    // Force positioning immediately
-    forceWhatsAppPosition();
+  //   // Force positioning immediately
+  //   forceWhatsAppPosition();
     
-    // Force positioning on scroll and resize
-    const handleScroll = () => forceWhatsAppPosition();
-    const handleResize = () => forceWhatsAppPosition();
+  //   // Force positioning on scroll and resize
+  //   const handleScroll = () => forceWhatsAppPosition();
+  //   const handleResize = () => forceWhatsAppPosition();
 
-    // Force positioning periodically
-    const interval = setInterval(forceWhatsAppPosition, 500);
+  //   // Force positioning periodically
+  //   const interval = setInterval(forceWhatsAppPosition, 500);
 
-    window.addEventListener('scroll', handleScroll);
-    window.addEventListener('resize', handleResize);
+  //   window.addEventListener('scroll', handleScroll);
+  //   window.addEventListener('resize', handleResize);
 
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      window.removeEventListener('resize', handleResize);
-      clearInterval(interval);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener('scroll', handleScroll);
+  //     window.removeEventListener('resize', handleResize);
+  //     clearInterval(interval);
+  //   };
+  // }, []);
 
   return (
     <div 

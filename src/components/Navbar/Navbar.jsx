@@ -395,30 +395,30 @@ export default function Navbar({ navStyle, show = true }) {
   }, []);
 
   // Additional effect to handle when scaling changes
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      if (navRef.current) {
-        const nav = navRef.current;
-        nav.style.setProperty('position', 'fixed', 'important');
-        nav.style.setProperty('top', '0px', 'important');
-        nav.style.setProperty('left', '0px', 'important');
-        nav.style.setProperty('right', '0px', 'important');
-        nav.style.setProperty('width', '100vw', 'important');
-        nav.style.setProperty('z-index', '9999', 'important');
-        nav.style.setProperty('transform', 'none', 'important');
-        nav.style.setProperty('transform-origin', 'initial', 'important');
-      }
-    });
+  // useEffect(() => {
+  //   const observer = new MutationObserver(() => {
+  //     if (navRef.current) {
+  //       const nav = navRef.current;
+  //       nav.style.setProperty('position', 'fixed', 'important');
+  //       nav.style.setProperty('top', '0px', 'important');
+  //       nav.style.setProperty('left', '0px', 'important');
+  //       nav.style.setProperty('right', '0px', 'important');
+  //       nav.style.setProperty('width', '100vw', 'important');
+  //       nav.style.setProperty('z-index', '9999', 'important');
+  //       nav.style.setProperty('transform', 'none', 'important');
+  //       nav.style.setProperty('transform-origin', 'initial', 'important');
+  //     }
+  //   });
 
-    if (navRef.current) {
-      observer.observe(navRef.current, {
-        attributes: true,
-        attributeFilter: ['style', 'class']
-      });
-    }
+  //   if (navRef.current) {
+  //     observer.observe(navRef.current, {
+  //       attributes: true,
+  //       attributeFilter: ['style', 'class']
+  //     });
+  //   }
 
-    return () => observer.disconnect();
-  }, []);
+  //   return () => observer.disconnect();
+  // }, []);
 
   const menuItems = [
     { name: "Home", url: "/" },
@@ -507,7 +507,7 @@ export default function Navbar({ navStyle, show = true }) {
             top: '0px',
             left: '0px',
             right: '0px',
-            zIndex: '9999',
+            zIndex: '9',
             width: '100vw',
             transform: 'none',
             transformOrigin: 'initial'
@@ -655,7 +655,7 @@ export default function Navbar({ navStyle, show = true }) {
                 style={{
                   // Ensure mobile menu also stays unscaled
                   position: 'fixed',
-                  zIndex: '9998',
+                  // zIndex: '9998',
                   width: '100vw',
                   transform: 'none'
                 }}
