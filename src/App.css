@@ -126,15 +126,15 @@
 }
 
 .custom-gap {
-  gap: 0;
+  /* gap: 0; */
 }
 
 .custom-width {
-  width: calc(3 / 12 * 100%);
+  /* width: calc(3 / 12 * 100%); */
 }
 
 .custom-width2 {
-  width: calc(9 / 12 * 100%);
+  /* width: calc(9 / 12 * 100%); */
 }
 
 .custom-image {

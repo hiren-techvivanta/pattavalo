@@ -1149,14 +1149,14 @@ const ProductCom = () => {
   return (
     <ThemeProvider theme={theme}>
       <div className="min-h-screen bg-white px-4 md:px-12 py-2">
-        <div className="mt-2 flex flex-col md:flex-row gap-5">
+        <div className="mt-2 flex flex-col lg:flex-row gap-5">
           <motion.div
             ref={leftPanelRef}
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="w-full md:w-1/4 lg:w-5/12 xl:w-4/12 custom-width max-h-[99vh] overflow-y-auto overflow-x-hidden"
+            className="w-full md:w-full lg:w-5/12 xl:w-4/12 custom-width max-h-[99vh] overflow-y-auto overflow-x-hidden"
           >
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-5">
               <h1 className="text-[36px] font-[700] text-[#BABEC8]">
@@ -1164,7 +1164,7 @@ const ProductCom = () => {
               </h1>
             </div>
             <div className="py-4 rounded-lg">
-              <div className="md:hidden">
+              <div className="lg:hidden">
                 <Accordion
                   expanded={isMobileMenuOpen}
                   onChange={(event, isExpanded) =>
@@ -1178,13 +1178,13 @@ const ProductCom = () => {
                     border: "none",
                     borderRadius: "27px",
                     width: "100%",
-                    maxWidth: "420px",
+                    maxWidth: "100%",
                     overflow: "hidden",
                   }}
                 >
                   <AccordionSummary
                     expandIcon={
-                      <FaChevronDown className="text-black w-[9.58px] h-[5.42px]" />
+                      <FaChevronDown className="text-black" />
                     }
                     sx={{
                       backgroundColor: "#ffffff",
@@ -1446,7 +1446,7 @@ const ProductCom = () => {
                 </Accordion>
               </div>
 
-              <div className="hidden md:block">
+              <div className="hidden lg:block">
                 {categories.map((category, index) => (
                   <Accordion
                     key={category.id}
@@ -1685,7 +1685,7 @@ const ProductCom = () => {
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
             ref={rightPanelRef}
-            className="w-full md:w-3/4 lg:w-7/12 xl:w-8/12 custom-width2 max-h-[99vh] overflow-auto"
+            className="w-full md:w-full lg:w-7/12 xl:w-8/12 custom-width2 max-h-[99vh] overflow-auto"
           >
             {viewMode === "categories" && (
               <div>
