@@ -261,7 +261,8 @@ const industries = [
       "A food industry modular conveyor belt is a type of conveyor system that is commonly used in the food processing and manufacturing industry. It consists of individual interlocking plastic modules that.",
     image: food1,
     icon: <FaIndustry size={26} />,
-    color: "#2E437C",
+    SColor: "#2E437C",
+    EColor: "#0E1A4C",
     targetRotation: 0,
     mobileTargetRotation: -120,
     categories: ["Fruit & Vegitables"],
@@ -274,7 +275,8 @@ const industries = [
     image:
       "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=1200&q=80",
     icon: <FaWineBottle size={26} />,
-    color: "#E74623",
+    SColor: "#E74623",
+    EColor: "#8B1C00",
     targetRotation: -45,
     mobileTargetRotation: -165,
     categories: [
@@ -293,7 +295,8 @@ const industries = [
     image:
       "https://images.unsplash.com/photo-1581338834647-b0fb40704e21?auto=format&fit=crop&w=1200&q=80",
     icon: <FaFish size={26} />,
-    color: "#F39314",
+    SColor: "#F39314",
+    EColor: "#8C3E00",
     targetRotation: -90,
     mobileTargetRotation: -210,
     categories: ["Seafood", "Meat", "Poultry"],
@@ -306,7 +309,8 @@ const industries = [
     image:
       "https://images.unsplash.com/photo-1566772940193-9c3ae2938d78?auto=format&fit=crop&w=1200&q=80",
     icon: <FaIceCream size={26} />,
-    color: "#F5DC00",
+    SColor: "#F4D601",
+    EColor: "#FFB100",
     targetRotation: -135,
     mobileTargetRotation: -255,
     categories: ["Chocolate", "Milk & Milk Products", "Yogurt", "Cheese"],
@@ -319,7 +323,8 @@ const industries = [
     image:
       "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&w=1200&q=80",
     icon: <FaShippingFast size={26} />,
-    color: "#2E437C",
+    SColor: "#2E437C",
+    EColor: "#0E1A4C",
     targetRotation: -180,
     mobileTargetRotation: -300,
     categories: [
@@ -338,7 +343,8 @@ const industries = [
     image:
       "https://png.pngtree.com/png-vector/20221125/ourmid/pngtree-no-image-available-icon-flatvector-illustration-picture-coming-creative-vector-png-image_40968940.jpg",
     icon: <FaSprayCan size={26} />,
-    color: "#E74623",
+    SColor: "#E74623",
+    EColor: "#8B1C00",
     targetRotation: -225,
     mobileTargetRotation: -345,
     categories: ["No Category"],
@@ -351,7 +357,8 @@ const industries = [
     image:
       "https://images.unsplash.com/photo-1581092336013-7c52eec64b28?auto=format&fit=crop&w=1200&q=80",
     icon: <FaCar size={26} />,
-    color: "#F39314",
+    SColor: "#F39314",
+    EColor: "#8C3E00",
     targetRotation: -270,
     mobileTargetRotation: -35,
     categories: [
@@ -369,7 +376,8 @@ const industries = [
     image:
       "https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1200&q=80",
     icon: <FaHospital size={26} />,
-    color: "#F5DC00",
+    SColor: "#F4D601",
+    EColor: "#FFB100",
     targetRotation: -315,
     mobileTargetRotation: -80,
     categories: [
@@ -456,14 +464,18 @@ export default function IndustryCom() {
     industries.forEach((industry, index) => {
       const startAngle = index * segmentAngle;
       const endAngle = (index + 1) * segmentAngle - gapAngle;
+      const { SColor, EColor } = industry;
 
-      gradientString += `${industry.color} ${startAngle}deg ${endAngle}deg, `;
-      gradientString += `transparent ${endAngle}deg ${
-        endAngle + gapAngle
-      }deg, `;
+      // Smooth blend from SColor → EColor per segment
+      gradientString += `
+      ${SColor} ${startAngle}deg, 
+      ${EColor} ${endAngle}deg, 
+      transparent ${endAngle}deg ${endAngle + gapAngle}deg, 
+    `;
     });
 
-    return gradientString.slice(0, -2);
+    // Remove trailing comma and return the stops only
+    return gradientString.trim().replace(/,$/, "");
   };
 
   const getCategoryContent = () => {
@@ -560,6 +572,7 @@ export default function IndustryCom() {
                 className="absolute inset-0 rounded-full cursor-pointer"
                 style={{
                   background: `conic-gradient(${getConicGradient()})`,
+                  // filter: "grayscale(15%)",
                 }}
               ></div>
 
@@ -641,7 +654,13 @@ export default function IndustryCom() {
                         pointerEvents: "none",
                       }}
                     >
-                      <span className={isMobile ? "text-lg" : "text-xl"}>
+                      <span
+                        className={
+                          isMobile
+                            ? "text-lg text-[#f1f1f1]"
+                            : "text-xl text-[#f1f1f1]"
+                        }
+                      >
                         {/* {React.cloneElement(industry.icon, {
                           size: isMobile ? 23 : 26,
                         })} */}
@@ -656,7 +675,7 @@ export default function IndustryCom() {
                         })}
                       </span>
                       <span
-                        className={`${iconTextSize} mt-1 font-medium text-center leading-tight ${
+                        className={`${iconTextSize} mt-1 font-medium text-center text-[#f1f1f1] leading-tight ${
                           isActive ? "font-semibold" : "font-medium"
                         }`}
                       >

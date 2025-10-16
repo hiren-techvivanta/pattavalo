@@ -62,7 +62,6 @@ export default function ModulerSolution() {
           throw new Error("Invalid API response format");
         }
       } catch (err) {
-        console.error("Error fetching categories:", err);
         setError(err.message || "Failed to fetch categories");
       } finally {
         setLoading(false);

@@ -31,7 +31,7 @@
 //   // Check if mobile view
 //   useEffect(() => {
 //     const checkMobile = () => {
-//       setIsMobile(window.innerWidth < 768);
+//       setIsMobile(window.innerWidth < 767);
 //     };
 
 //     checkMobile();
@@ -87,7 +87,6 @@
 //         throw new Error("Invalid API response format");
 //       }
 //     } catch (err) {
-//       console.error("Error fetching categories:", err);
 //       setError(
 //         err.response?.data?.message ||
 //           err.message ||
@@ -286,7 +285,7 @@
 //             ref={menuRef}
 //             className={`mt-2 bg-white shadow-2xl z-50 overflow-hidden ${
 //               isMobile
-//                 ? "absolute right-0 w-[100vw] max-w-[100vw]"
+//                 ? "absolute right-0 w-[102vw] max-w-[110vw]"
 //                 : "center-div"
 //             }`}
 //             variants={dropdownVariants}
@@ -343,15 +342,15 @@
 
 //             {!loading && !error && categories.length > 0 && (
 //               <>
-//                 {/* Mobile Accordion View */}
+//                 {/* Mobile Accordion View - Updated Styles */}
 //                 {isMobile && (
 //                   <div className="max-h-96 overflow-y-auto">
 //                     <div className="p-4">
 //                       {categories.map((category) => (
 //                         <div key={category.id} className="mb-4">
-//                           {/* Category Header */}
+//                           {/* Category Header - Matching Desktop Style */}
 //                           <motion.div
-//                             className={`flex items-center justify-between p-3 cursor-pointer rounded-lg transition-all duration-200 ${
+//                             className={`flex items-center justify-between p-4 cursor-pointer transition-all duration-100 ${
 //                               expandedCategory === category.id
 //                                 ? ""
 //                                 : "hover:bg-gray-50"
@@ -359,25 +358,26 @@
 //                             onClick={() => handleItemClick(category)}
 //                           >
 //                             <span
-//                               className={`font-semibold ${
+//                               className={`transition-colors duration-100 ${
 //                                 expandedCategory === category.id
-//                                   ? "text-[#2E437C]"
-//                                   : "text-gray-700"
+//                                   ? "text-[#000] font-[500]"
+//                                   : "text-[#666666] font-medium"
 //                               }`}
 //                               style={{
 //                                 fontFamily: "'Articulat CF', sans-serif",
+//                                 fontSize: "17px",
 //                               }}
 //                             >
 //                               {category.name}
 //                             </span>
 //                             <motion.div
 //                               animate={{
-//                                 rotate:
-//                                   expandedCategory === category.id ? 180 : 0,
+//                                 rotate: expandedCategory === category.id ? 0 : -90,
+//                                 color: expandedCategory === category.id ? "#2E437C" : "#9CA3AF",
 //                               }}
-//                               transition={{ duration: 0.2 }}
+//                               transition={{ duration: 0.1 }}
 //                             >
-//                               <IoChevronDown className="w-5 h-5" />
+//                               <IoChevronDown className="w-6 h-6" />
 //                             </motion.div>
 //                           </motion.div>
 
@@ -392,13 +392,13 @@
 //                                 className="overflow-hidden"
 //                               >
 //                                 <div className="pl-4 pt-2">
-//                                   {/* Subcategories */}
+//                                   {/* Subcategories - Matching Desktop Style */}
 //                                   {category.subcategories.map((subcategory) => (
 //                                     <div key={subcategory.id} className="mb-2">
 //                                       <motion.div
-//                                         className={`flex items-center justify-between p-2 cursor-pointer rounded-lg transition-all duration-200 ${
+//                                         className={`flex items-center justify-between p-2.5 cursor-pointer rounded-lg transition-all duration-100 ${
 //                                           expandedSubcategory === subcategory.id
-//                                             ? "bg-[#2E437C]/5 border border-[#2E437C]/10"
+//                                             ? ""
 //                                             : "hover:bg-gray-50"
 //                                         }`}
 //                                         onClick={() =>
@@ -406,33 +406,32 @@
 //                                         }
 //                                       >
 //                                         <span
-//                                           className={`text-sm font-medium ${
-//                                             expandedSubcategory ===
-//                                             subcategory.id
-//                                               ? "text-[#2E437C]"
-//                                               : "text-gray-600"
+//                                           className={`transition-colors duration-100 font-medium ${
+//                                             expandedSubcategory === subcategory.id
+//                                               ? "text-[#000] font-[500]"
+//                                               : "text-gray-700"
 //                                           }`}
+//                                           style={{
+//                                             fontFamily: "'Articulat CF', sans-serif",
+//                                             fontSize: "15px",
+//                                           }}
 //                                         >
 //                                           {subcategory.name}
 //                                         </span>
 //                                         <motion.div
 //                                           animate={{
-//                                             rotate:
-//                                               expandedSubcategory ===
-//                                               subcategory.id
-//                                                 ? 180
-//                                                 : 0,
+//                                             rotate: expandedSubcategory === subcategory.id ? 0 : -90,
+//                                             color: expandedSubcategory === subcategory.id ? "#2E437C" : "#9CA3AF",
 //                                           }}
-//                                           transition={{ duration: 0.2 }}
+//                                           transition={{ duration: 0.1 }}
 //                                         >
-//                                           <IoChevronDown className="w-4 h-4" />
+//                                           <IoChevronDown className="w-6 h-6" />
 //                                         </motion.div>
 //                                       </motion.div>
 
-//                                       {/* Subcategory Products */}
+//                                       {/* Subcategory Products - Matching Desktop Style */}
 //                                       <AnimatePresence>
-//                                         {expandedSubcategory ===
-//                                           subcategory.id && (
+//                                         {expandedSubcategory === subcategory.id && (
 //                                           <motion.div
 //                                             initial={{ height: 0, opacity: 0 }}
 //                                             animate={{
@@ -447,13 +446,20 @@
 //                                               (product) => (
 //                                                 <motion.div
 //                                                   key={product.id}
-//                                                   className="p-2 cursor-pointer hover:bg-[#2E437C]/5 rounded-lg transition-all duration-200"
+//                                                   className="flex items-center p-2.5 cursor-pointer hover:bg-gray-50 rounded-lg transition-all duration-100"
 //                                                   onClick={() =>
 //                                                     handleItemClick(product)
 //                                                   }
 //                                                   whileHover={{ x: 2 }}
 //                                                 >
-//                                                   <span className="text-sm text-[#2E437C] font-medium">
+//                                                   <span 
+//                                                     className="text-[#666666] font-medium transition-colors duration-100"
+//                                                     style={{
+//                                                       fontFamily: "'Articulat CF', sans-serif",
+//                                                       fontSize: "15px",
+//                                                       lineHeight: "22px",
+//                                                     }}
+//                                                   >
 //                                                     • {product.title}
 //                                                   </span>
 //                                                 </motion.div>
@@ -465,15 +471,22 @@
 //                                     </div>
 //                                   ))}
 
-//                                   {/* Direct Products */}
+//                                   {/* Direct Products - Matching Desktop Style */}
 //                                   {category.directProducts.map((product) => (
 //                                     <motion.div
 //                                       key={product.id}
-//                                       className="p-2 cursor-pointer hover:bg-[#2E437C]/5 rounded-lg transition-all duration-200"
+//                                       className="flex items-center p-2.5 cursor-pointer hover:bg-gray-50 rounded-lg transition-all duration-100"
 //                                       onClick={() => handleItemClick(product)}
 //                                       whileHover={{ x: 2 }}
 //                                     >
-//                                       <span className="text-sm text-[#2E437C] font-medium">
+//                                       <span 
+//                                         className="text-[#666666] font-medium transition-colors duration-100"
+//                                         style={{
+//                                           fontFamily: "'Articulat CF', sans-serif",
+//                                           fontSize: "15px",
+//                                           lineHeight: "22px",
+//                                         }}
+//                                       >
 //                                         • {product.title}
 //                                       </span>
 //                                     </motion.div>
@@ -488,7 +501,7 @@
 //                   </div>
 //                 )}
 
-//                 {/* Desktop Mega Menu */}
+//                 {/* Desktop Mega Menu - Keep existing styles */}
 //                 {!isMobile && (
 //                   <div className="max-w-7xl mx-auto">
 //                     <div className="flex justify-center mt-5">
@@ -746,6 +759,7 @@
 
 // export default QuickSelectMenu;
 
+
 import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { IoChevronDown } from "react-icons/io5";
@@ -775,6 +789,41 @@ const QuickSelectMenu = ({ navBg }) => {
       "Content-Type": "application/json",
     },
   };
+
+  // Handle menu height and scrolling
+  useEffect(() => {
+    if (isOpen && menuRef.current && !isMobile) {
+      const menu = menuRef.current;
+      const viewportHeight = window.innerHeight;
+      const maxHeight = viewportHeight * 0.8; // 80vh
+      
+      // Check if content height exceeds 80vh
+      const contentHeight = menu.scrollHeight;
+      if (contentHeight > maxHeight) {
+        menu.style.maxHeight = `${maxHeight}px`;
+        menu.style.overflowY = 'auto';
+      }
+
+      // Prevent window scroll when scrolling inside menu
+      const handleWheel = (e) => {
+        if (menu.contains(e.target)) {
+          const atTop = menu.scrollTop <= 0;
+          const atBottom = menu.scrollTop >= menu.scrollHeight - menu.clientHeight;
+          
+          // Only prevent window scroll if menu can still scroll
+          if ((e.deltaY < 0 && !atTop) || (e.deltaY > 0 && !atBottom)) {
+            e.stopPropagation();
+          }
+        }
+      };
+
+      document.addEventListener('wheel', handleWheel, { passive: false });
+      
+      return () => {
+        document.removeEventListener('wheel', handleWheel);
+      };
+    }
+  }, [isOpen, isMobile, categories, expandedCategory, selectedCategory]);
 
   // Check if mobile view
   useEffect(() => {
@@ -835,7 +884,6 @@ const QuickSelectMenu = ({ navBg }) => {
         throw new Error("Invalid API response format");
       }
     } catch (err) {
-      console.error("Error fetching categories:", err);
       setError(
         err.response?.data?.message ||
           err.message ||

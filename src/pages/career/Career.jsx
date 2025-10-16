@@ -262,7 +262,6 @@ const Career = () => {
           setCategories(updatedCategories);
         }
       } catch (err) {
-        console.error("Error fetching jobs:", err);
         setError("Failed to load job openings. Please try again later.");
       } finally {
         setLoading(false);

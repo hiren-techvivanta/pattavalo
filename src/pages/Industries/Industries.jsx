@@ -54,14 +54,12 @@ const Industries = () => {
         } else if (data.results && Array.isArray(data.results)) {
           brochuresData = data.results;
         } else {
-          console.warn("API response format not recognized");
           brochuresData = [];
         }
 
         setBrochures(brochuresData);
         setError(null);
       } catch (err) {
-        console.error("Error fetching brochures:", err);
         setError(err.message);
         setBrochures([]);
       } finally {
@@ -118,7 +116,6 @@ const Industries = () => {
         throw new Error("No documents available for download");
       }
     } catch (err) {
-      console.error("Download failed:", err);
       alert(`Download failed: ${err.message}`);
     }
   };

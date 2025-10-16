@@ -12,8 +12,6 @@ const usePosts = (endpoint = "settings/post") => {
         setError(null);
         setPosts([]); // Clear previous posts
 
-        console.log('Fetching from endpoint:', endpoint); // Debug log
-
         const response = await fetch(
           `${import.meta.env.VITE_BACKEND_URL}/${endpoint}`,
           {
@@ -27,7 +25,6 @@ const usePosts = (endpoint = "settings/post") => {
         }
 
         const result = await response.json();
-        console.log('API Response:', result); // Debug log
 
         // Check different possible response structures
         if (result.data && Array.isArray(result.data)) {
@@ -76,14 +73,11 @@ const usePosts = (endpoint = "settings/post") => {
             };
           });
 
-          console.log('Transformed posts:', transformedPosts); // Debug log
           setPosts(transformedPosts);
         } else {
-          console.log('No data in response or data is not an array');
           setPosts([]);
         }
       } catch (err) {
-        console.error("Error fetching posts:", err);
         setError("Failed to load posts. Please try again later.");
       } finally {
         setLoading(false);
@@ -91,7 +85,7 @@ const usePosts = (endpoint = "settings/post") => {
     };
 
     fetchPosts();
-  }, [endpoint]); // Make sure endpoint is in dependency array
+  }, [endpoint]); 
 
   // Refetch function for manual refresh
   const refetch = () => {
