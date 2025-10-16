@@ -210,7 +210,7 @@ const ShowCase = () => {
         </motion.h1>
       </div>
 
-      <div className="  relative mx-auto custom-image max-w-[1050px] mx-auto px-4 sm:px-6 lg:px-1 overflow-visible">
+      <div className="  relative mx-auto custom-image max-w-[1050px] px-4 sm:px-6 lg:px-1 overflow-visible">
         <div
           className="relative w-full aspect-[16/9]  overflow-visible cursor-not-allowed select-none lg:mb-12"
           onContextMenu={handleContextMenu}
