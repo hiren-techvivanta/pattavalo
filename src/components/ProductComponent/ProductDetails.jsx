@@ -368,7 +368,6 @@ const ProductDetails = ({ selectedProduct }) => {
       link.click();
       document.body.removeChild(link);
     } catch (error) {
-      console.error("Download failed:", error);
       alert("Download failed. Please try again.");
     } finally {
       setDownloadingFiles((prev) => {

@@ -886,7 +886,6 @@ const ProductCom = () => {
             displayOrder: product.displayOrder
           }))
           .sort((a, b) => {
-            console.log(a, b);
 
             // Handle undefined/null displayOrder values properly
             if (a.displayOrder == null && b.displayOrder == null) return 0;
@@ -1162,8 +1161,8 @@ const ProductCom = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="min-h-screen bg-white px-4 md:px-12 py-2">
-        <div className="mt-2 flex flex-col lg:flex-row gap-5">
+      <div className="min-h-screen bg-white px-4 md:px-12">
+        <div className="flex flex-col lg:flex-row gap-5">
           <motion.div
             ref={leftPanelRef}
             initial={{ opacity: 0, y: 40 }}
