@@ -294,7 +294,7 @@ const ShowCase = () => {
             </motion.div>
           ))}
         </div>
-        <div className="absolute custom-position bottom-[-18%] right-[0%] md:bottom-[0%] md:right-[-20%] w-full flex justify-end text-black px-2 sm:px-4">
+        <div className="absolute custom-position bottom-[-18%] right-[0%] md:bottom-[0%] md:right-[-20%]  w-full flex justify-end text-black px-2 sm:px-4">
           <div className="flex flex-col items-start leading-tight text-left">
             {/* Title */}
             <span className="font-bold text-xs sm:text-sm md:text-base lg:text-lg">

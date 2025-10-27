@@ -173,7 +173,7 @@
 
   .custom-position {
     bottom: 0;
-    right: -30% !important;
+    right: -30% ;
   }
 
   .form-custom {
@@ -215,6 +215,11 @@
 
   .center-div {
     top: 7.7%;
+  }
+
+   .custom-position {
+    bottom: 0;
+    right: -20% ;
   }
 }
 
