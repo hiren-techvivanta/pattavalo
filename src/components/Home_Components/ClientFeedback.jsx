@@ -293,7 +293,7 @@ export default function ClientFeedback() {
             whileHover={{
               y: -8,
               scale: 1.02,
-              boxShadow: "0 20px 40px rgba(46, 67, 124, 0.15)",
+              // boxShadow: "0 20px 40px rgba(46, 67, 124, 0.15)",
               transition: {
                 type: "spring",
                 stiffness: 400,

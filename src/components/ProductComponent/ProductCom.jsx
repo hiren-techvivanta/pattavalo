@@ -540,7 +540,9 @@ const ProductCom = () => {
             subcategoryId: product.subcategory_id,
             apiData: product,
             isDirectProduct: true,
-          }));
+            displayOrder: product.displayOrder,
+          }))
+          .sort((a, b) => a.displayOrder - b.displayOrder);
       }
 
       setSubcategories(subcategoriesData);
@@ -864,22 +866,34 @@ const ProductCom = () => {
         response.data.message === "Products fetched successfully" &&
         response.data.data
       ) {
-        const transformedProducts = response.data.data.map((product) => ({
-          id: product.id,
-          title: product.productName,
-          category: product.category?.name || "Uncategorized",
-          parentCategory: product.category?.name || "Uncategorized",
-          image:
-            product.images && product.images.length > 0
-              ? product.images[0]
-              : productImage,
-          description: product.description,
-          document: product.document,
-          is_active: product.is_active,
-          categoryId: product.category_id,
-          subcategoryId: product.subcategory_id,
-          apiData: product,
-        }));
+        const transformedProducts = response.data.data
+          .map((product) => ({
+            id: product.id,
+            title: product.productName,
+            category: product.category?.name || "Uncategorized",
+            parentCategory: product.category?.name || "Uncategorized",
+            image:
+              product.images && product.images.length > 0
+                ? product.images[0]
+                : productImage,
+            description: product.description,
+            document: product.document,
+            is_active: product.is_active,
+            categoryId: product.category_id,
+            subcategoryId: product.subcategory_id,
+            displayOrder: product.displayOrder || product.display_order || 999, // Add displayOrder mapping with fallback
+            apiData: product,
+            displayOrder: product.displayOrder
+          }))
+          .sort((a, b) => {
+            console.log(a, b);
+
+            // Handle undefined/null displayOrder values properly
+            if (a.displayOrder == null && b.displayOrder == null) return 0;
+            if (a.displayOrder == null) return 1; // Put items without displayOrder at the end
+            if (b.displayOrder == null) return -1;
+            return a.displayOrder - b.displayOrder;
+          });
 
         return transformedProducts;
       } else {
@@ -1183,9 +1197,7 @@ const ProductCom = () => {
                   }}
                 >
                   <AccordionSummary
-                    expandIcon={
-                      <FaChevronDown className="text-black" />
-                    }
+                    expandIcon={<FaChevronDown className="text-black" />}
                     sx={{
                       backgroundColor: "#ffffff",
                       border: "1px solid #000000",
