@@ -1730,7 +1730,7 @@ const ProductCom = () => {
                           onClick={() => handleDirectProductClick(product)}
                           className="flex flex-col items-start cursor-pointer p-4"
                         >
-                          <div className="aspect-[3/3] max-w-[100%] overflow-hidden">
+                          <div className="aspect-[3/3] max-w-[100%] w-full overflow-hidden">
                             <motion.img
                               src={
                                 product.image &&

@@ -1000,20 +1000,6 @@ const ProductDetails = ({ selectedProduct }) => {
             )}
           </div>
         </div>
-
-        {/* Product Description */}
-        {productData.description && (
-          <div className="mt-8 lg:mt-12">
-            <div className="bg-gray-50 rounded-lg p-6">
-              <h3 className="text-xl font-semibold text-[#2E437C] mb-4">
-                Product Description
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                {productData.description}
-              </p>
-            </div>
-          </div>
-        )}
       </div>
 
       {/* Fullscreen Image Modal */}
