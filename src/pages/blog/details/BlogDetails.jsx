@@ -72,7 +72,8 @@ const BlogDetails = () => {
 
   // Format date
   const formatDate = (dateString) => {
-    const date = new Date(dateString);
+    const updatedDate = dateString.split(" ")[0]
+    const date = new Date(updatedDate);
     return date.toLocaleDateString("en-US", {
       day: "numeric",
       month: "long",
