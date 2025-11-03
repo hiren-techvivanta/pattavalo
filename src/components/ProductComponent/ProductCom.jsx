@@ -14,13 +14,12 @@ import {
   CircularProgress,
   Alert,
 } from "@mui/material";
-import { FaChevronDown, FaSearch, FaArrowLeft, FaTimes } from "react-icons/fa";
+import { FaChevronDown, FaArrowLeft, FaTimes } from "react-icons/fa";
 import productImage from "../../assets/images/productdefault.png";
 import ProductDetails from "./ProductDetails";
 import SubcategoryCards from "./SubcategoryCards";
 import axios from "axios";
 import { CustomHeading } from "../common/CustomHeading";
-import { CiSearch } from "react-icons/ci";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { LuDot } from "react-icons/lu";
 
@@ -46,7 +45,7 @@ const theme = createTheme({
         },
         expandIconWrapper: {
           marginRight: "0 !important",
-          marginLeft: "16px !important",
+          marginLeft: "0px !important",
         },
       },
     },
@@ -60,7 +59,6 @@ const theme = createTheme({
           backgroundColor: "transparent !important",
           "&.Mui-expanded": {
             margin: "0 !important",
-            // padding: "0 !important",
           },
           "&:before": {
             display: "none !important",
@@ -87,8 +85,6 @@ const theme = createTheme({
           paddingTop: "0 !important",
           paddingBottom: "0 !important",
           listStyle: "none",
-          // margin: "0",
-          // paddingLeft:"32px !important",
           position: "relative",
         },
       },
@@ -100,7 +96,6 @@ const ProductCom = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
 
-  const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Bearing");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
@@ -114,20 +109,285 @@ const ProductCom = () => {
   const [directProducts, setDirectProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [searchResults, setSearchResults] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
   const [productDetailsLoading, setProductDetailsLoading] = useState(false);
   const [productsLoading, setProductsLoading] = useState(false);
   const [subcategoriesLoading, setSubcategoriesLoading] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [searchError, setSearchError] = useState(null);
   const [selectedSubcategoryId, setSelectedSubcategoryId] = useState(null);
   const [selectedProductId, setSelectedProductId] = useState(null);
 
   const isInitialLoadRef = useRef(false);
-  const searchTimeoutRef = useRef(null);
   const hasProcessedUrlRef = useRef(false);
   const lastUrlParamsRef = useRef("");
+
+  const leftPanelRef = useRef(null);
+  const rightPanelRef = useRef(null);
+  const scrollTarget = useRef(0);
+  const scrolling = useRef(false);
+
+  // Smooth scrolling useEffect (keeping existing scroll behavior)
+  useEffect(() => {
+    const leftElement = leftPanelRef.current;
+    const rightElement = rightPanelRef.current;
+
+    const smoothScrollTo = (element, targetScrollTop) => {
+      if (!element) return;
+
+      const startScrollTop = element.scrollTop;
+      const distance = targetScrollTop - startScrollTop;
+      const duration = 300;
+      let startTime = null;
+
+      const animateScroll = (currentTime) => {
+        if (startTime === null) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = Math.min(timeElapsed / duration, 1);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        element.scrollTop = startScrollTop + distance * ease;
+
+        if (progress < 1) {
+          requestAnimationFrame(animateScroll);
+        }
+      };
+
+      requestAnimationFrame(animateScroll);
+    };
+
+    const scrollToTop = (panel = "both") => {
+      if (panel === "left" || panel === "both") {
+        if (leftElement) {
+          smoothScrollTo(leftElement, 0);
+        }
+      }
+
+      if (panel === "right" || panel === "both") {
+        if (rightElement) {
+          smoothScrollTo(rightElement, 0);
+        }
+      }
+    };
+
+    const scrollToActiveItem = () => {
+      if (!leftElement) return;
+
+      const activeAccordion = leftElement.querySelector(".Mui-expanded");
+      if (activeAccordion) {
+        const containerRect = leftElement.getBoundingClientRect();
+        const itemRect = activeAccordion.getBoundingClientRect();
+
+        if (
+          itemRect.top < containerRect.top ||
+          itemRect.bottom > containerRect.bottom
+        ) {
+          const scrollTop =
+            activeAccordion.offsetTop - leftElement.offsetTop - 20;
+          smoothScrollTo(leftElement, scrollTop);
+        }
+      }
+    };
+
+    const handleLeftPanelWheel = (e) => {
+      if (!leftElement) return;
+
+      const isScrollable = leftElement.scrollHeight > leftElement.clientHeight;
+      if (!isScrollable) return;
+
+      const atTop = leftElement.scrollTop <= 0;
+      const atBottom =
+        leftElement.scrollTop >=
+        leftElement.scrollHeight - leftElement.clientHeight;
+
+      const scrollingDown = e.deltaY > 0;
+      const scrollingUp = e.deltaY < 0;
+
+      if ((scrollingDown && !atBottom) || (scrollingUp && !atTop)) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const scrollAmount = e.deltaY * 0.8;
+        const newScrollTop = Math.max(
+          0,
+          Math.min(
+            leftElement.scrollTop + scrollAmount,
+            leftElement.scrollHeight - leftElement.clientHeight
+          )
+        );
+
+        smoothScrollTo(leftElement, newScrollTop);
+      }
+    };
+
+    const handleRightPanelWheel = (e) => {
+      if (!rightElement) return;
+
+      const isScrollable =
+        rightElement.scrollHeight > rightElement.clientHeight;
+      if (!isScrollable) return;
+
+      const atTop = rightElement.scrollTop <= 0;
+      const atBottom =
+        rightElement.scrollTop >=
+        rightElement.scrollHeight - rightElement.clientHeight;
+
+      const scrollingDown = e.deltaY > 0;
+      const scrollingUp = e.deltaY < 0;
+
+      if ((scrollingDown && !atBottom) || (scrollingUp && !atTop)) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const scrollAmount = e.deltaY * 0.8;
+        const newScrollTop = Math.max(
+          0,
+          Math.min(
+            rightElement.scrollTop + scrollAmount,
+            rightElement.scrollHeight - rightElement.clientHeight
+          )
+        );
+
+        smoothScrollTo(rightElement, newScrollTop);
+      }
+    };
+
+    const handleKeyDown = (e) => {
+      if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+        const activeElement = document.activeElement;
+        let targetElement = null;
+
+        if (leftElement && leftElement.contains(activeElement)) {
+          targetElement = leftElement;
+        } else if (rightElement && rightElement.contains(activeElement)) {
+          targetElement = rightElement;
+        }
+
+        if (targetElement) {
+          e.preventDefault();
+          const scrollAmount = e.key === "ArrowDown" ? 50 : -50;
+          const newScrollTop = Math.max(
+            0,
+            Math.min(
+              targetElement.scrollTop + scrollAmount,
+              targetElement.scrollHeight - targetElement.clientHeight
+            )
+          );
+          smoothScrollTo(targetElement, newScrollTop);
+        }
+      }
+
+      if (e.key === "Home" || e.key === "End") {
+        if (rightElement && rightElement.contains(document.activeElement)) {
+          e.preventDefault();
+          const targetScrollTop =
+            e.key === "Home" ? 0 : rightElement.scrollHeight;
+          smoothScrollTo(rightElement, targetScrollTop);
+        }
+      }
+    };
+
+    const handleResize = () => {
+      if (leftElement) {
+        const maxScroll = leftElement.scrollHeight - leftElement.clientHeight;
+        if (leftElement.scrollTop > maxScroll) {
+          smoothScrollTo(leftElement, maxScroll);
+        }
+      }
+
+      if (rightElement) {
+        const maxScroll = rightElement.scrollHeight - rightElement.clientHeight;
+        if (rightElement.scrollTop > maxScroll) {
+          smoothScrollTo(rightElement, maxScroll);
+        }
+      }
+    };
+
+    const handleFocusIn = (e) => {
+      if (leftElement && leftElement.contains(e.target)) {
+        const elementRect = e.target.getBoundingClientRect();
+        const containerRect = leftElement.getBoundingClientRect();
+
+        if (
+          elementRect.top < containerRect.top ||
+          elementRect.bottom > containerRect.bottom
+        ) {
+          const scrollTop = e.target.offsetTop - leftElement.offsetTop - 50;
+          smoothScrollTo(leftElement, scrollTop);
+        }
+      }
+
+      if (rightElement && rightElement.contains(e.target)) {
+        const elementRect = e.target.getBoundingClientRect();
+        const containerRect = rightElement.getBoundingClientRect();
+
+        if (
+          elementRect.top < containerRect.top ||
+          elementRect.bottom > containerRect.bottom
+        ) {
+          const scrollTop = e.target.offsetTop - rightElement.offsetTop - 50;
+          smoothScrollTo(rightElement, scrollTop);
+        }
+      }
+    };
+
+    const handleStateChanges = () => {
+      if (expandedPanel) {
+        setTimeout(scrollToActiveItem, 100);
+      }
+
+      if (viewMode) {
+        scrollToTop("right");
+      }
+
+      if (selectedCategory && !expandedPanel) {
+        setExpandedPanel("panel1");
+      }
+
+      if (selectedCategory || selectedSubcategoryId) {
+        setTimeout(() => {
+          scrollToTop("right");
+        }, 150);
+      }
+    };
+
+    if (leftElement) {
+      leftElement.addEventListener("wheel", handleLeftPanelWheel, {
+        passive: false,
+      });
+    }
+
+    if (rightElement) {
+      rightElement.addEventListener("wheel", handleRightPanelWheel, {
+        passive: false,
+      });
+    }
+
+    document.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("resize", handleResize);
+    document.addEventListener("focusin", handleFocusIn);
+
+    setTimeout(() => {
+      scrollToTop("both");
+    }, 100);
+
+    handleStateChanges();
+
+    return () => {
+      if (leftElement) {
+        leftElement.removeEventListener("wheel", handleLeftPanelWheel);
+      }
+      if (rightElement) {
+        rightElement.removeEventListener("wheel", handleRightPanelWheel);
+      }
+      document.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("resize", handleResize);
+      document.removeEventListener("focusin", handleFocusIn);
+    };
+  }, [
+    expandedPanel,
+    viewMode,
+    selectedCategory,
+    selectedSubcategoryId,
+    selectedProductId,
+  ]);
 
   const getAxiosConfig = useCallback(
     () => ({
@@ -164,12 +424,10 @@ const ProductCom = () => {
     const subcategoryParam = searchParams.get("subcategory");
     const productParam = searchParams.get("product");
 
-    // Create a unique string to compare with previous URL params
     const currentUrlParams = `${categoryParam || ""}-${
       subcategoryParam || ""
     }-${productParam || ""}`;
 
-    // Skip if we've already processed these exact URL parameters
     if (
       hasProcessedUrlRef.current &&
       lastUrlParamsRef.current === currentUrlParams
@@ -189,7 +447,6 @@ const ProductCom = () => {
       hasProcessedUrlRef.current = true;
       applyUrlFilters(urlFilters);
     } else if (categories.length > 0 && !hasProcessedUrlRef.current) {
-      // Only show first category if no URL params and we haven't processed URL before
       const firstCategory = categories[0];
       if (firstCategory?.id) {
         setSelectedCategory(firstCategory.category || firstCategory.title);
@@ -203,38 +460,6 @@ const ProductCom = () => {
       }
     }
   }, [categories, searchParams]);
-
-  const debouncedSearch = useCallback(
-    (query) => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-
-      searchTimeoutRef.current = setTimeout(() => {
-        if (query.trim() === "") {
-          setSearchResults([]);
-          setViewMode(
-            subcategories.length > 0 || directProducts.length > 0
-              ? "categories"
-              : "products"
-          );
-          setShowDetails(false);
-        } else {
-          setViewMode("search");
-          setShowDetails(false);
-          searchProducts(query);
-        }
-      }, 300);
-    },
-    [subcategories.length, directProducts.length]
-  );
-
-  const handleSearchChange = (e) => {
-    const query = e.target.value;
-    setSearchQuery(query);
-    setSearchError(null);
-    debouncedSearch(query);
-  };
 
   const updateUrlParams = (params) => {
     const newSearchParams = new URLSearchParams();
@@ -257,7 +482,6 @@ const ProductCom = () => {
       params.subcategory || ""
     }-${params.product || ""}`;
 
-    // Only update URL if it's actually different
     if (currentUrlParams !== newUrlParamsFormatted) {
       lastUrlParamsRef.current = newUrlParamsFormatted;
       setSearchParams(newSearchParams);
@@ -351,13 +575,11 @@ const ProductCom = () => {
 
         if (!category) return;
 
-        // Set category state
         setSelectedCategory(category.category || category.title);
         setParentCategory(category.category || category.title);
         setExpandedPanel(`panel${categories.indexOf(category) + 1}`);
 
         if (filters.product) {
-          // Handle product view
           setSelectedProductId(filters.product);
           setSelectedSubcategoryId(filters.subcategory || null);
           await handleProductByUrl(
@@ -366,12 +588,10 @@ const ProductCom = () => {
             filters.subcategory
           );
         } else if (filters.subcategory) {
-          // Handle subcategory view
           setSelectedSubcategoryId(filters.subcategory);
           setSelectedProductId(null);
           await handleSubcategoryByUrl(filters.subcategory, category);
         } else {
-          // Handle category view
           setSelectedSubcategoryId(null);
           setSelectedProductId(null);
           await fetchSubcategoriesAndDirectProducts(category.id);
@@ -400,7 +620,6 @@ const ProductCom = () => {
         setViewMode("details");
         setShowDetails(true);
 
-        // Load related products for context
         if (subcategoryId || detailedProduct.subcategoryId) {
           const searchResults = await searchProducts(
             "",
@@ -421,7 +640,7 @@ const ProductCom = () => {
     try {
       setProductsLoading(true);
 
-      
+
       let foundSubcategory = null;
       let subPanelIndex = -1;
 
@@ -521,7 +740,6 @@ const ProductCom = () => {
         setExpandedSubPanel("");
         setSelectedSubcategoryId(null);
         setSelectedProductId(null);
-        setSearchQuery("");
         setProducts([]);
 
         fetchSubcategoriesAndDirectProducts(category.id);
@@ -530,7 +748,6 @@ const ProductCom = () => {
     }
   };
 
-  // Rest of your existing functions remain the same...
   const fetchProductDetails = async (productId) => {
     try {
       setProductDetailsLoading(true);
@@ -628,9 +845,7 @@ const ProductCom = () => {
     subcategoryId = null
   ) => {
     try {
-      setIsSearching(query ? true : false);
-      setSearchError(null);
-      if (!query) setProductsLoading(true);
+      setProductsLoading(true);
 
       let url = `${
         import.meta.env.VITE_BACKEND_URL
@@ -668,27 +883,13 @@ const ProductCom = () => {
           apiData: product,
         }));
 
-        if (query) {
-          setSearchResults(transformedProducts);
-        }
-
         return transformedProducts;
       } else {
-        const emptyResults = [];
-        if (query) {
-          setSearchResults(emptyResults);
-        }
-        return emptyResults;
+        return [];
       }
     } catch (err) {
-      if (query) {
-        setSearchError("Search failed. Please try again.");
-        setSearchResults([]);
-      }
-
       return [];
     } finally {
-      setIsSearching(false);
       setProductsLoading(false);
     }
   };
@@ -741,7 +942,6 @@ const ProductCom = () => {
     });
   };
 
-  
   const handleSubAccordionChange =
     (subPanel, subCategory) => async (event, isExpanded) => {
       setExpandedSubPanel(isExpanded ? subPanel : false);
@@ -763,7 +963,6 @@ const ProductCom = () => {
             setParentCategory(subCategory.category);
             setViewMode("products");
             setShowDetails(false);
-            setSearchQuery("");
 
             const fetchedProducts = await searchProducts(
               "",
@@ -922,27 +1121,6 @@ const ProductCom = () => {
     }
   };
 
-  const filteredProducts = products.filter((product) => {
-    const matchSearch = product.title
-      .toLowerCase()
-      .includes(searchQuery.toLowerCase());
-
-    return matchSearch;
-  });
-
-  const displayProducts =
-    searchQuery.trim() !== "" && viewMode === "search"
-      ? searchResults
-      : filteredProducts;
-
-  useEffect(() => {
-    return () => {
-      if (searchTimeoutRef.current) {
-        clearTimeout(searchTimeoutRef.current);
-      }
-    };
-  }, []);
-
   if (loading) {
     return (
       <div className="fixed inset-0 flex flex-col items-center justify-center bg-white z-50">
@@ -954,7 +1132,7 @@ const ProductCom = () => {
     );
   }
 
-  if (error && !searchError) {
+  if (error) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center px-4">
         <Alert severity="error" className="max-w-md">
@@ -972,75 +1150,26 @@ const ProductCom = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="min-h-screen bg-white px-4 md:px-12 py-10">
-        {/* Your existing JSX remains the same */}
-
-        <div
-        
-          className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-5"
-
-        >
-          <h1 className="text-[36px] font-[700] text-[#BABEC8]">
-            <CustomHeading title="Our Products" className="" />
-          </h1>
-
-          <div className="hidden md:block flex-1 mx-6">
-            <div className="h-[6px] bg-[#BABEC8]"></div>
-          </div>
-
-          <div className="relative w-full md:max-w-md lg:max-w-lg xl:max-w-lg">
-            <motion.input
-              type="text"
-              placeholder="Search products..."
-              value={searchQuery}
-              onChange={handleSearchChange}
-              className="w-full border border-gray-300 rounded-full pl-12 pr-6 py-3 md:py-2 outline-none focus:ring-3 focus:ring-[#2E437C]/20 focus:border-[#2E437C] transition-all duration-300 text-gray-800 placeholder-gray-500 text-base md:text-lg bg-white shadow-sm hover:shadow-md focus:shadow-lg"
-              whileFocus={{
-                scale: 1.01,
-                boxShadow: "0 10px 30px rgba(46, 67, 124, 0.15)",
-              }}
-              whileHover={{
-                scale: 1.005,
-                boxShadow: "0 5px 20px rgba(0, 0, 0, 0.08)",
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 300,
-                damping: 20,
-              }}
-            />
-
-            <CiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg md:text-xl transition-colors duration-300 pointer-events-none" />
-
-            {searchQuery && (
-              <motion.button
-                onClick={() => {
-                  setSearchQuery("");
-                  setSearchError(null);
-                }}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <FaTimes className="text-lg" />
-              </motion.button>
-            )}
-          </div>
-
-        </div>
-
-
-        {/* Rest of your existing JSX remains exactly the same */}
+<
+      <div className="min-h-screen bg-white px-4 md:px-12 py-2">
         <div className="mt-2 flex flex-col md:flex-row gap-5">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="w-full md:w-1/4"
+
+            // className="w-full md:w-1/4"
+
+            className="w-full md:w-1/4 lg:w-5/12 xl:w-4/12 custom-width max-h-[99vh] overflow-y-auto overflow-x-hidden"
+
           >
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-5">
+              <h1 className="text-[36px] font-[700] text-[#BABEC8]">
+                <CustomHeading title="Our Products" className="" />
+              </h1>
+            </div>
             <div className="py-4 rounded-lg">
-              
               <div className="md:hidden">
                 <Accordion
                   expanded={isMobileMenuOpen}
@@ -1561,7 +1690,10 @@ const ProductCom = () => {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="w-full md:w-3/4"
+
+            ref={rightPanelRef}
+            className="w-full md:w-3/4 lg:w-7/12 xl:w-8/12 custom-width2 max-h-[99vh] overflow-auto"
+
           >
             {viewMode === "categories" && (
               <div>
@@ -1671,21 +1803,16 @@ const ProductCom = () => {
               </div>
             )}
 
-            {(viewMode === "products" || viewMode === "search") && (
+            {viewMode === "products" && (
               <>
                 {productsLoading ? (
                   <div className="text-center py-20">
                     <CircularProgress size={40} sx={{ color: "#2E437C" }} />
                     <p className="mt-4 text-gray-600">Loading products...</p>
                   </div>
-                ) : isSearching ? (
-                  <div className="text-center py-20">
-                    <CircularProgress size={40} sx={{ color: "#2E437C" }} />
-                    <p className="mt-4 text-gray-600">Searching products...</p>
-                  </div>
-                ) : displayProducts.length > 0 ? (
+                ) : products.length > 0 ? (
                   <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
-                    {displayProducts.map((product, index) => (
+                    {products.map((product, index) => (
                       <motion.div
                         key={product.id}
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -1718,11 +1845,6 @@ const ProductCom = () => {
                         <p className="text-gray-500 text-sm mt-1">
                           {product.category}
                         </p>
-                        {searchQuery.trim() !== "" && viewMode === "search" && (
-                          <span className="text-xs text-[#2E437C] mt-1 bg-[#2E437C]/10 px-2 py-1 rounded-full">
-                            Search Result
-                          </span>
-                        )}
                       </motion.div>
                     ))}
                   </div>
@@ -1748,18 +1870,12 @@ const ProductCom = () => {
                       </svg>
                     </div>
                     <h3 className="text-lg font-medium text-gray-600 mb-2">
-                      {searchQuery && viewMode === "search"
-                        ? "No products found"
-                        : products.length === 0 && !searchQuery
+                      {products.length === 0
                         ? "Select a subcategory to view products"
                         : "No products found"}
                     </h3>
                     <p className="text-gray-400">
-                      {searchQuery && viewMode === "search"
-                        ? searchError
-                          ? `${searchError} Try searching with different keywords.`
-                          : `No products match "${searchQuery}". Try different search terms.`
-                        : products.length === 0 && !searchQuery
+                      {products.length === 0
                         ? "Choose a subcategory from the left to explore products"
                         : `No products available in ${selectedCategory}`}
                     </p>
@@ -1789,6 +1905,7 @@ const ProductCom = () => {
           </motion.div>
         </div>
       </div>
+      
     </ThemeProvider>
   );
 };

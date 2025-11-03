@@ -1,5 +1,5 @@
 // src/pages/Home.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Lenis from "@studio-freight/lenis";
 import { gsap } from "gsap";
@@ -149,6 +149,38 @@ export default function Home() {
       localStorage.removeItem("scrollToIndustries");
     }
   }, []);
+
+  const whatsappRef = useRef(null);
+
+  useEffect(() => {
+    const forceWhatsAppPosition = () => {
+      if (whatsappRef.current) {
+        const element = whatsappRef.current;
+        element.style.setProperty("transform", "none", "important");
+        element.style.setProperty("transform-origin", "initial", "important");
+      }
+    };
+
+    // Force positioning immediately
+    forceWhatsAppPosition();
+
+    // Force positioning on scroll and resize
+    const handleScroll = () => forceWhatsAppPosition();
+    const handleResize = () => forceWhatsAppPosition();
+
+    // Force positioning periodically
+    const interval = setInterval(forceWhatsAppPosition, 500);
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      clearInterval(interval);
+    };
+  }, []);
+
   const handleBannerAnimationComplete = () => {
     setShowNavbar(true);
   };
@@ -351,9 +383,7 @@ export default function Home() {
           />
         </motion.div>
       </motion.section> */}
-       <section
-        className="w-full pt-10 bg-white"
-      >
+      <section ref={whatsappRef} className="w-full pt-10 bg-white">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}
@@ -371,7 +401,6 @@ export default function Home() {
           ></iframe>
         </motion.div>
       </section>
-
     </div>
   );
 }

@@ -3,6 +3,15 @@
   /* --brand-color-dark: #007ACC; */
   /* --brand-color-light: #3AB0FF; */
 }
+
+* {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+*::-webkit-scrollbar {
+  display: none;
+}
+
 .bg-brand {
   background-color: var(--brand-color);
 }
@@ -52,12 +61,12 @@
   }
 }
 
-@media (min-width: 1400px) and (max-width: 1599px){
+@media (min-width: 1400px) and (max-width: 1599px) {
   .center-div {
     width: 99vw;
     max-width: 2000px;
     left: 0;
-     top: 10%;
+    top: 10%;
   }
 }
 
@@ -93,5 +102,131 @@
     min-height: 300px;
     max-height: 85vh;
     top: 5%;
+  }
+}
+
+.grid-center-box-100 {
+  /* width: 100%; */
+  /* height: 100vh !important; */
+  /* max-height: 100vh !important; */
+  /* display: grid; */
+  /* place-content: center; */
+  /* gap: 0; */
+}
+
+@media (min-width: 1200px) {
+  .grid-center-box-100 {
+    /* width: 100%; */
+    height: 100vh !important;
+    max-height: 100vh !important;
+    display: grid;
+    place-content: center;
+    gap: 0;
+  }
+}
+
+.custom-gap {
+  gap: 0;
+}
+
+.custom-width {
+  width: calc(3 / 12 * 100%);
+}
+
+.custom-width2 {
+  width: calc(9 / 12 * 100%);
+}
+
+.custom-image {
+  width: 100%;
+}
+
+.custom-position {
+}
+
+.form-custom {}
+
+@media (min-width: 1200px) and (min-height: 500px) {
+  .grid-center-box-100 {
+    gap: 0.5rem;
+  }
+
+  .s-para {
+    font-size: 15px;
+  }
+
+  .custom-width {
+    width: calc(4 / 12 * 100%);
+  }
+
+  .custom-width2 {
+    width: calc(8 / 12 * 100%);
+  }
+
+  .custom-gap {
+    gap: 10px !important;
+  }
+
+  .custom-image {
+    width: 65%;
+  }
+
+  .custom-position {
+    bottom: 0;
+    right: -30% !important;
+  }
+
+  .form-custom {
+    height: 40px !important;
+  }
+}
+
+@media (min-width: 1200px) and (min-height: 650px) {
+  .grid-center-box-100 {
+    gap: 2rem;
+  }
+  .custom-width {
+    width: calc(3 / 12 * 100%) !important;
+  }
+
+  .custom-width2 {
+    width: calc(9 / 12 * 100%);
+  }
+
+  .custom-gap {
+    gap: 26px !important;
+  }
+
+  .custom-image {
+    width: 100%;
+  }
+
+   .s-para {
+    font-size: 16px;
+  }
+
+   .form-custom {
+    height: 60px !important;
+  }
+}
+
+@media (min-width: 1200px) and (min-height: 800px) {
+  .grid-center-box-100 {
+    gap: 2rem;
+  }
+  .s-para {
+    font-size: 18px;
+  }
+}
+
+@media (min-width: 1200px) and (min-height: 1000px) {
+  .grid-center-box-100 {
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1200px) and (min-height: 1200px) {
+  .grid-center-box-100 {
+    gap: 8rem;
   }
 }

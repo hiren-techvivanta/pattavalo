@@ -272,7 +272,7 @@ const ContactForm = () => {
                   value={formData.name}
                   onChange={handleInputChange}
                   placeholder="Full Name *"
-                  className={`w-full h-14 lg:h-16 px-4 lg:px-6 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
+                  className={`w-full h-14 lg:h-15 form-custom px-4 lg:px-6 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
                     errors.name ? "border-red-500" : "border-[#D8D8D8]"
                   }`}
                 />
@@ -291,7 +291,7 @@ const ContactForm = () => {
                   value={formData.email}
                   onChange={handleInputChange}
                   placeholder="Email *"
-                  className={`w-full h-14 lg:h-16 px-4 lg:px-6 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
+                  className={`w-full h-14 lg:h-15 form-custom px-4 lg:px-6 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
                     errors.email ? "border-red-500" : "border-[#D8D8D8]"
                   }`}
                 />
@@ -310,7 +310,7 @@ const ContactForm = () => {
                   value={formData.phone_number}
                   onChange={handleInputChange}
                   placeholder="Phone Number *"
-                  className={`w-full h-14 lg:h-16 px-4 lg:px-6 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
+                  className={`w-full h-14 lg:h-15 form-custom px-4 lg:px-6 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
                     errors.phone_number
                       ? "border-red-500"
                       : "border-[#D8D8D8]"
@@ -331,7 +331,7 @@ const ContactForm = () => {
                   value={formData.company_name}
                   onChange={handleInputChange}
                   placeholder="Company Name"
-                  className="w-full h-14 lg:h-16 px-3 lg:px-4 bg-white border border-[#D8D8D8] rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all"
+                  className="w-full h-14 lg:h-15 form-custom px-3 lg:px-4 bg-white border border-[#D8D8D8] rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all"
                 />
               </div>
               <div className="space-y-2">
@@ -341,7 +341,7 @@ const ContactForm = () => {
                   value={formData.company_website}
                   onChange={handleInputChange}
                   placeholder="Website"
-                  className={`w-full h-14 lg:h-16 px-3 lg:px-4 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
+                  className={`w-full h-14 lg:h-15 form-custom px-3 lg:px-4 bg-white border rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all ${
                     errors.company_website
                       ? "border-red-500"
                       : "border-[#D8D8D8]"
@@ -363,7 +363,7 @@ const ContactForm = () => {
                 value={formData.designation}
                 onChange={handleInputChange}
                 placeholder="Designation"
-                className="w-full h-14 lg:h-16 px-4 lg:px-6 bg-white border border-[#D8D8D8] rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all"
+                className="w-full h-14 lg:h-15 form-custom px-4 lg:px-6 bg-white border border-[#D8D8D8] rounded-lg text-[14px] lg:text-[16px] text-[#494949] placeholder-[#494949] focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:border-transparent transition-all"
               />
             </div>
 
@@ -385,7 +385,7 @@ const ContactForm = () => {
               disabled={isSubmitting}
               whileHover={!isSubmitting ? { scale: 1.02 } : {}}
               whileTap={!isSubmitting ? { scale: 0.98 } : {}}
-              className={`w-full h-14 lg:h-16 text-white text-[14px] lg:text-[16px] font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl ${
+              className={`w-full h-14 lg:h-15 form-custom text-white text-[14px] lg:text-[16px] font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-[#2E437C] focus:ring-offset-2 transition-all duration-300 shadow-lg hover:shadow-xl ${
                 isSubmitting
                   ? "bg-gray-400 cursor-not-allowed"
                   : "bg-[#2E437C] hover:bg-[#1E2F5C]"

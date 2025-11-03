@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
+// import "./temp.css"
 import Home from "./pages/Home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import AboutUs from "./pages/about/AboutUs";
@@ -13,8 +14,14 @@ import Industries from "./pages/Industries/Industries";
 import OurProduct from "./pages/product/OurProduct";
 import Error from "./pages/error/Error";
 import WhatsappIcon from "./components/common/WhatsappIcon";
+import { handleDisplayScaling } from "./utils/handleDisplayScaling";
 
 function App() {
+  useEffect(() => {
+    // const cleanup = handleDisplayScaling(1536, 864);
+    // return cleanup;
+  }, []);
+
   return (
     <>
       <BrowserRouter>

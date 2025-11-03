@@ -81,7 +81,7 @@ const News = () => {
       <Navbar navStyle={"white"} />
 
       <motion.div
-        className="w-full bg-gradient-to-b from-gray-50/30 to-white pt-20 md:pt-24 lg:pt-30"
+        className="w-full bg-gradient-to-b from-gray-50/30 to-white pt-20 md:pt-15 lg:pt-15"
         initial="hidden"
         animate="visible"
         variants={pageVariants}
@@ -91,7 +91,7 @@ const News = () => {
             className="flex justify-start py-6"
             variants={headerVariants}
           >
-            <motion.nav
+            <motion.div
               className="flex space-x-4 md:space-x-6 lg:space-x-8 overflow-x-auto scrollbar-hide"
               variants={tabContainerVariants}
               initial="hidden"
@@ -124,7 +124,7 @@ const News = () => {
                   )}
                 </motion.button>
               ))}
-            </motion.nav>
+            </motion.div>
           </motion.div>
         </div>
       </motion.div>

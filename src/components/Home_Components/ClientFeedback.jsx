@@ -1,40 +1,40 @@
 import React from "react";
 import { motion } from "framer-motion";
-import clientimg from "../../assets/images/clientfeedback.jpg";
+import clientimg from "../../assets/images/clientfeedback.png";
 import { CustomHeading } from "../common/CustomHeading";
 
 const testimonials = [
   {
     id: 1,
-    name: "Mirana Mari",
-    role: "3D Designer",
+    name: "N R ENTERPRISE",
+    role: "Company",
     image: clientimg,
     feedback:
-      "Working with this team was a fantastic experience from start to finish. They took the time to really understand our requirements, asked the right questions, and even suggested improvements that we hadn't thought of. The final delivery was not only on time but exceeded our expectations in terms of quality and design.",
+      "We installed SS Slat Chain and Modular Belts from ATC and saw immediate improvement in reliability. The components are robust and the team guided us through the design and setup with professionalism.",
   },
   {
     id: 2,
-    name: "Mirana Mari",
-    role: "3D Designer",
+    name: "S G PHARMATEC",
+    role: "Company",
     image: clientimg,
     feedback:
-      "Working with this team was a fantastic experience from start to finish. They took the time to really understand our requirements, asked the right questions, and even suggested improvements that we hadn't thought of. The final delivery was not only on time but exceeded our expectations in terms of quality and design.",
+      "The Thermoplastic Slat Chain and Sprockets we purchased have delivered consistent performance. The delivery was timely, and the technical support ensured seamless integration into our production line.",
   },
   {
     id: 3,
-    name: "Mirana Mari",
-    role: "3D Designer",
+    name: "SUSHANT SUPPLIERS",
+    role: "Company",
     image: clientimg,
     feedback:
-      "Working with this team was a fantastic experience from start to finish. They took the time to really understand our requirements, asked the right questions, and even suggested improvements that we hadn't thought of. The final delivery was not only on time but exceeded our expectations in terms of quality and design.",
+      "Our experience with ATC’s Wear Strips and Modular Belts has been exceptional. The wear strips resist friction, and the belts maintain tension over time. Their team answered all our implementation queries promptly.",
   },
   {
     id: 4,
-    name: "Mirana Mari",
-    role: "3D Designer",
+    name: "TASK INDUSTRIES",
+    role: "Company",
     image: clientimg,
     feedback:
-      "Working with this team was a fantastic experience from start to finish. They took the time to really understand our requirements, asked the right questions, and even suggested improvements that we hadn't thought of. The final delivery was not only on time but exceeded our expectations in terms of quality and design.",
+      "We sourced Sprockets, SS Slat Chain, and Modular Belts from ATC and have been extremely satisfied. The components are durable and performance is top-notch. Their customer support was responsive and helpful.",
   },
 ];
 
@@ -166,10 +166,10 @@ export default function ClientFeedback() {
         whileInView="visible"
         viewport={{ once: true, margin: "-100px" }}
         variants={containerVariants}
-        className="text-left mb-12 max-w-4xl"
+        className="text-left mb-5 max-w-4xl"
       >
         <motion.p className="text-[18px] text-[#2E437C] font-medium">
-          <CustomHeading title="Client Feedback" className="" />
+          Client Feedback
         </motion.p>
 
         <motion.h2 className="text-[30px] md:text-[48px] font-[700] text-[#2E437C] mt-2 leading-[35px]">

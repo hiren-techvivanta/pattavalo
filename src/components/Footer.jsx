@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import {
   FiPhone,
@@ -7,25 +7,65 @@ import {
   FiInstagram,
   FiLinkedin,
   FiYoutube,
-
 } from "react-icons/fi";
 import { RiTwitterXFill } from "react-icons/ri";
 import Logo from "../assets/images/logo-white.png";
 
 export default function Footer() {
+  const whatsappRef = useRef(null);
+
   const socialLinks = [
     {
       icon: <FiInstagram />,
       href: "https://www.instagram.com/atcchainsindia/?igsh=MTBtb3NhczAydjhpMA%3D%3D#",
       label: "Instagram",
     },
-    { icon: <FiLinkedin />, href: "https://www.linkedin.com/company/atc-chains-india-ahmedabad/", label: "LinkedIn" },
-    { icon: <FiYoutube />, href: "https://www.youtube.com/@atcchainsindia", label: "YouTube" },
+    {
+      icon: <FiLinkedin />,
+      href: "https://www.linkedin.com/company/atc-chains-india-ahmedabad/",
+      label: "LinkedIn",
+    },
+    {
+      icon: <FiYoutube />,
+      href: "https://www.youtube.com/@atcchainsindia",
+      label: "YouTube",
+    },
   ];
+
+  useEffect(() => {
+    const forceWhatsAppPosition = () => {
+      if (whatsappRef.current) {
+        const element = whatsappRef.current;
+        element.style.setProperty("transform", "none", "important");
+        element.style.setProperty("transform-origin", "initial", "important");
+      }
+    };
+
+    // Force positioning immediately
+    forceWhatsAppPosition();
+
+    // Force positioning on scroll and resize
+    const handleScroll = () => forceWhatsAppPosition();
+    const handleResize = () => forceWhatsAppPosition();
+
+    // Force positioning periodically
+    const interval = setInterval(forceWhatsAppPosition, 500);
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      clearInterval(interval);
+    };
+  }, []);
   return (
-    <footer className="bg-[#2E437C] text-white">
+    <footer
+      ref={whatsappRef}
+      className="bg-[#2E437C] text-white footer-bottom-main"
+    >
       <div className=" px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-10 sm:py-15">
-        
         <motion.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -33,7 +73,6 @@ export default function Footer() {
           transition={{ duration: 0.8 }}
           className="grid grid-cols-1 md:grid-cols-3 gap-10"
         >
-          
           <div className="space-y-6">
             <img src={Logo} alt="ATC Chains India" className="h-10 w-auto" />
             <p className="text-md leading-relaxed text-[#DBEAFE] max-w-xs">
@@ -41,7 +80,6 @@ export default function Footer() {
               performance and durability.
             </p>
 
-           
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
