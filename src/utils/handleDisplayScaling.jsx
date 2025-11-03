@@ -279,7 +279,7 @@ export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
     const actualWidth = window.innerWidth;
     const actualHeight = window.innerHeight;
 
-    console.log('Scaling check:', { actualWidth, actualHeight, inRange: actualWidth >= 1200 && actualWidth <= 1550 });
+   
 
     // Only apply scaling if screen width is between 1200px and 1550px
     if (actualWidth >= 1200 && actualWidth <= 1550) {
@@ -307,15 +307,7 @@ export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
         normalizedScale = Math.max(0.6, Math.min(1.3, normalizedScale));
       }
 
-      console.log('Applying scale:', { 
-        widthRatio, 
-        heightRatio, 
-        uiScale, 
-        normalizedScale,
-        isBaselineScreen,
-        actualDimensions: `${actualWidth}x${actualHeight}`,
-        baseDimensions: `${baseWidth}x${baseHeight}`
-      });
+     
 
       html.style.setProperty("--ui-scale", normalizedScale);
       html.style.setProperty("--vh", `${window.innerHeight}px`);
@@ -390,7 +382,7 @@ export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
   };
 
   const resetScaling = () => {
-    console.log('Resetting scaling - outside 1200px-1550px range');
+   
     
     html.style.setProperty("--ui-scale", "1");
     html.style.setProperty("--vh", `${window.innerHeight}px`);
@@ -409,7 +401,7 @@ export const handleDisplayScaling = (baseWidth = 1536, baseHeight = 864) => {
   };
 
   const handleMediaQueryChange = (event) => {
-    console.log('Media query changed - 1200px-1550px range:', event.matches);
+   
     if (event.matches) {
       applyScaleFix();
     } else {

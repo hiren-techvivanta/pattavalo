@@ -8,7 +8,7 @@ import Seo from "../../components/common/Seo";
 
 const News = () => {
   const [activeTab, setActiveTab] = useState("Latest");
-  const initialPostsCount = 12;
+  const initialPostsCount = 8;
   const [loadMoreInfo, setLoadMoreInfo] = useState({
     hasMore: false,
     remaining: 0,

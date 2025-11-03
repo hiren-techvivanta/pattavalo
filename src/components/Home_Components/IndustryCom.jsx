@@ -388,7 +388,6 @@ const categoryContent = {
       "Automobile assembly line conveyors are the backbone of modern vehicle manufacturing. These systems enable seamless integration of car components — from chassis construction to body fitting and final inspection. Designed for heavy-duty performance, our modular and slat chain conveyors ensure continuous, efficient movement of vehicles through every production phase, minimizing downtime and enhancing productivity.",
     images: [
       "https://cdn.skoda-storyboard.com/2019/06/cars-skoda-manufacturing-factory.JPG-1440x960.jpg",
-      "https://miro.medium.com/v2/0*6c5Y9Fh1zHW3t0Gg.",
     ],
   },
 

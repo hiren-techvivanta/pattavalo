@@ -359,7 +359,7 @@ export default function Gatherings() {
             <motion.div className="relative">
               {/* Image container with 3:4 aspect ratio */}
               <div className="overflow-hidden">
-                <div className="aspect-[3/4] overflow-hidden">
+                <div className="aspect-[3/4] overflow-hidden relative">
                   <motion.img
                     src={getImageUrl(event.image)}
                     alt={event.heading || event.name}

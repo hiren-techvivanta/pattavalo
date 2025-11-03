@@ -1070,8 +1070,8 @@ const QuickSelectMenu = ({ navBg }) => {
         variants={buttonVariants}
         animate={isOpen ? "open" : "closed"}
       >
-        <div className="">
-          <GoFilter className="w-5 h-5" />
+        <div className="mx-auto">
+          <GoFilter className="w-5 h-5 mx-auto" />
         </div>
       </motion.button>
 

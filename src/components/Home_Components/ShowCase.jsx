@@ -210,7 +210,7 @@ const ShowCase = () => {
         </motion.h1>
       </div>
 
-      <div className="  relative mx-auto custom-image max-w-[1050px] mx-auto px-4 sm:px-6 lg:px-1 overflow-visible">
+      <div className="  relative mx-auto custom-image max-w-[1050px] px-4 sm:px-6 lg:px-1 overflow-visible">
         <div
           className="relative w-full aspect-[16/9]  overflow-visible cursor-not-allowed select-none lg:mb-12"
           onContextMenu={handleContextMenu}
@@ -294,7 +294,7 @@ const ShowCase = () => {
             </motion.div>
           ))}
         </div>
-        <div className="absolute custom-position bottom-[-18%] right-[0%] md:bottom-[0%] md:right-[-20%] w-full flex justify-end text-black px-2 sm:px-4">
+        <div className="absolute custom-position bottom-[-18%] right-[0%] md:bottom-[0%] md:right-[-20%]  w-full flex justify-end text-black px-2 sm:px-4">
           <div className="flex flex-col items-start leading-tight text-left">
             {/* Title */}
             <span className="font-bold text-xs sm:text-sm md:text-base lg:text-lg">

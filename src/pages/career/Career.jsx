@@ -821,7 +821,6 @@ const Career = () => {
         }
       } catch (err) {
         setError("Failed to load job categories. Please try again later.");
-        console.error("Error fetching job titles:", err);
       } finally {
         setLoading(false);
       }
@@ -893,7 +892,6 @@ const Career = () => {
         }
       } catch (err) {
         setJobsError("Failed to load job openings. Please try again later.");
-        console.error("Error fetching jobs:", err);
         setJobs([]);
       } finally {
         setJobsLoading(false);
