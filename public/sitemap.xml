@@ -21,7 +21,7 @@
 
   <url>
     <loc>https://www.atcchain.com/news/details</loc>
-    <priority>0.5</priority>
+    <priority>0.3</priority>
   </url>
 
   <url>
@@ -36,7 +36,7 @@
 
   <url>
     <loc>https://www.atcchain.com/contact</loc>
-    <priority>0.6</priority>
+    <priority>0.8</priority>
   </url>
 
   <url>
