@@ -13,10 +13,32 @@ export default function HomeBanner({ onAnimationComplete }) {
   const [showContent, setShowContent] = useState(false);
   const [showNavbar, setShowNavbar] = useState(false);
   const [hasAnimatedBefore, setHasAnimatedBefore] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
   const videoRef = useRef(null);
 
  
   const ANIMATION_KEY = "homeBannerAnimationCompleted";
+useEffect(() => {
+  document.title = "Industrial Solutions – Belts that Fit, Solutions that Last";
+
+  let metaDesc = document.querySelector("meta[name='description']");
+  if (!metaDesc) {
+    metaDesc = document.createElement("meta");
+    metaDesc.name = "description";
+    document.head.appendChild(metaDesc);
+  }
+  metaDesc.content =
+    "Leading in the manufacturing industry. We build durable, robust products designed to last for generations.";
+
+  // optional canonical
+  let canonical = document.querySelector("link[rel='canonical']");
+  if (!canonical) {
+    canonical = document.createElement("link");
+    canonical.rel = "canonical";
+    document.head.appendChild(canonical);
+  }
+  canonical.href = window.location.origin + window.location.pathname;
+}, []);
 
   useEffect(() => {
     
@@ -124,6 +146,8 @@ export default function HomeBanner({ onAnimationComplete }) {
             autoPlay
             muted
             loop
+             preload="none" 
+             poster="/assets/images/industries/posterimg.jpeg"
             playsInline
             className="w-full h-full object-cover"
             style={{ minHeight: "100vh", objectPosition: "center" }}
@@ -137,12 +161,12 @@ export default function HomeBanner({ onAnimationComplete }) {
         <motion.div
           initial={
             hasAnimatedBefore
-              ? { opacity: 1, y: 0, boxShadow: "0 0 0 0px white" } // Final state if already animated
-              : { opacity: 1, y: 1500, boxShadow: "0 0 0 9999px white" } // Initial animation state
+              ? { opacity: 1, y: 0, boxShadow: "0 0 0 0px white" } 
+              : { opacity: 1, y: 1500, boxShadow: "0 0 0 9999px white" } 
           }
           animate={
             hasAnimatedBefore
-              ? { opacity: 1, y: 0, boxShadow: "0 0 0 0px white" } // Skip animation
+              ? { opacity: 1, y: 0, boxShadow: "0 0 0 0px white" } 
               : {
                   opacity: 1,
                   y: 0,
@@ -152,7 +176,7 @@ export default function HomeBanner({ onAnimationComplete }) {
                 }
           }
           transition={{
-            duration: hasAnimatedBefore ? 0 : 0.6, // No animation duration if already played
+            duration: hasAnimatedBefore ? 0 : 0.6, 
             ease: "easeOut",
           }}
           className={`absolute inset-0 transition-all ease-out bg-transparent ${
@@ -161,7 +185,7 @@ export default function HomeBanner({ onAnimationComplete }) {
               : "scale-75 rounded-[15px] sm:scale-50 sm:rounded-3xl m-4"
           }`}
           style={{
-            transitionDuration: hasAnimatedBefore ? "0ms" : "800ms", // Skip CSS transition if already animated
+            transitionDuration: hasAnimatedBefore ? "0ms" : "800ms", 
           }}
         />
 

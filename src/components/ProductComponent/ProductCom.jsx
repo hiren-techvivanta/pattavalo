@@ -100,7 +100,9 @@ const ProductCom = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
   const [viewMode, setViewMode] = useState("categories");
-  const [expandedPanel, setExpandedPanel] = useState("panel1");
+  const [expandedPanel, setExpandedPanel] = useState(false);
+
+  // const [expandedPanel, setExpandedPanel] = useState("panel1");
   const [expandedSubPanel, setExpandedSubPanel] = useState("");
   const [parentCategory, setParentCategory] = useState("Bearing");
   const [categories, setCategories] = useState([]);
@@ -337,9 +339,9 @@ const ProductCom = () => {
         scrollToTop("right");
       }
 
-      if (selectedCategory && !expandedPanel) {
-        setExpandedPanel("panel1");
-      }
+      // if (selectedCategory && !expandedPanel) {
+      //   setExpandedPanel("panel1");
+      // }
 
       if (selectedCategory || selectedSubcategoryId) {
         setTimeout(() => {
@@ -883,15 +885,15 @@ const ProductCom = () => {
             is_active: product.is_active,
             categoryId: product.category_id,
             subcategoryId: product.subcategory_id,
-            displayOrder: product.displayOrder || product.display_order || 999, // Add displayOrder mapping with fallback
+            displayOrder: product.displayOrder || product.display_order || 999, 
             apiData: product,
-            displayOrder: product.displayOrder
+            
           }))
           .sort((a, b) => {
 
-            // Handle undefined/null displayOrder values properly
+            
             if (a.displayOrder == null && b.displayOrder == null) return 0;
-            if (a.displayOrder == null) return 1; // Put items without displayOrder at the end
+            if (a.displayOrder == null) return 1; 
             if (b.displayOrder == null) return -1;
             return a.displayOrder - b.displayOrder;
           });
@@ -1165,7 +1167,7 @@ const ProductCom = () => {
     <ThemeProvider theme={theme}>
 
 
-      <div className="min-h-screen bg-white px-4 md:px-12">
+      <div className="min-h-screen bg-white px-4 md:px-12 py-5">
         <div className="flex flex-col lg:flex-row gap-5">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -1727,7 +1729,7 @@ const ProductCom = () => {
 
                 {directProducts.length > 0 && (
                   <div>
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between pt-3 gap-6 mb-8">
                       <h2 className="text-xl font-semibold text-[#BABEC8]">
                         Products
                       </h2>

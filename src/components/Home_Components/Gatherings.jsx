@@ -75,24 +75,28 @@ export default function Gatherings() {
     },
   };
 
-  const cardVariants = {
-    hidden: {
-      opacity: 0,
-      y: 30,
-      scale: 0.95,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 20,
-        duration: 0.5,
-      },
-    },
-  };
+  // const cardVariants = {
+  //   hidden: {
+  //     opacity: 0,
+  //     y: 30,
+  //     scale: 0.95,
+  //   },
+  //   visible: {
+  //     opacity: 1,
+  //     y: 0,
+  //     scale: 1,
+  //     transition: {
+  //       type: "spring",
+  //       stiffness: 200,
+  //       damping: 20,
+  //       duration: 0.5,
+  //     },
+  //   },
+  // };
+const cardVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+};
 
   const imageVariants = {
     hover: {
@@ -274,8 +278,11 @@ export default function Gatherings() {
                       alt={event.heading || event.name}
                       variants={imageVariants}
                       className="w-full h-full object-cover p-2"
+                        loading="lazy"
+                        decoding="async"
                       onError={(e) => {
-                        e.target.src = next1; // Fallback to default image
+
+                        e.target.src = next1; 
                       }}
                     />
                   </div>
