@@ -18,27 +18,6 @@ export default function HomeBanner({ onAnimationComplete }) {
 
  
   const ANIMATION_KEY = "homeBannerAnimationCompleted";
-useEffect(() => {
-  document.title = "Industrial Solutions – Belts that Fit, Solutions that Last";
-
-  let metaDesc = document.querySelector("meta[name='description']");
-  if (!metaDesc) {
-    metaDesc = document.createElement("meta");
-    metaDesc.name = "description";
-    document.head.appendChild(metaDesc);
-  }
-  metaDesc.content =
-    "Leading in the manufacturing industry. We build durable, robust products designed to last for generations.";
-
-  // optional canonical
-  let canonical = document.querySelector("link[rel='canonical']");
-  if (!canonical) {
-    canonical = document.createElement("link");
-    canonical.rel = "canonical";
-    document.head.appendChild(canonical);
-  }
-  canonical.href = window.location.origin + window.location.pathname;
-}, []);
 
   useEffect(() => {
     

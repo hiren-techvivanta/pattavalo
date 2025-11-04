@@ -278,10 +278,7 @@ const cardVariants = {
                       alt={event.heading || event.name}
                       variants={imageVariants}
                       className="w-full h-full object-cover p-2"
-                        loading="lazy"
-                        decoding="async"
                       onError={(e) => {
-
                         e.target.src = next1; 
                       }}
                     />
