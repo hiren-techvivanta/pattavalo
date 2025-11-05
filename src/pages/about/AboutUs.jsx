@@ -27,6 +27,7 @@ import l5 from "../../assets/images/l5.png";
 import l6 from "../../assets/images/l6.png";
 import Seo from "../../components/common/Seo";
 import { CustomHeading } from "../../components/common/CustomHeading";
+import Loader from "../../components/common/Loader";
 
 // Data
 const partners = [
@@ -372,8 +373,7 @@ const AboutUs = () => {
     setHasAnimatedBefore(hasAnimated);
 
     if (videoRef.current) {
-      videoRef.current
-        .play()
+      videoRef.current.play();
     }
 
     if (hasAnimated) {
@@ -432,6 +432,22 @@ const AboutUs = () => {
         {char === " " ? "\u00A0" : char}
       </motion.span>
     ));
+
+  if (loading) {
+    return (
+      <>
+        <Loader />
+      </>
+    );
+  }
+
+  if (galleryLoading) {
+    return (
+      <>
+        <Loader />
+      </>
+    );
+  }
 
   return (
     <div ref={scrollContainerRef} className="overflow-hidden">

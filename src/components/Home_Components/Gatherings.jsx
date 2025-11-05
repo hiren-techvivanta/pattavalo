@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import next1 from "../../assets/images/next1.jpg";
 import { CustomHeading } from "../common/CustomHeading";
 import usePosts from "../../hooks/usePosts"; // Import your hook
+import Loader from "../common/Loader";
 
 export default function Gatherings() {
   // Use your hook to fetch events
@@ -93,10 +94,10 @@ export default function Gatherings() {
   //     },
   //   },
   // };
-const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-};
+  const cardVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
+  };
 
   const imageVariants = {
     hover: {
@@ -139,7 +140,9 @@ const cardVariants = {
       const datePart = dateString.split(" ")[0];
       const date = new Date(datePart);
 
-      const month = date.toLocaleDateString("en-US", { month: "short" }).toUpperCase();
+      const month = date
+        .toLocaleDateString("en-US", { month: "short" })
+        .toUpperCase();
       const day = date.getDate();
 
       return { month, day };
@@ -208,229 +211,242 @@ const cardVariants = {
       </section>
     );
   }
+  
 
   return (
-    <section className="container mx-auto w-full px-4 md:px-10 lg:px-15 py-10 bg-white">
-      <motion.div
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-        variants={containerVariants}
-        className="container mx-auto mb-0 sm:px-6 lg:px-0 pb-1 md:text-left"
-      >
-        <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[74px] leading-[50px] md:leading-[80px]">
-          <CustomHeading
-            title="What's "
-            className="font-bold text-[#2E437C] block"
-          />
-          <br />
-          <CustomHeading
-            title="Happening Next"
-            className="font-bold text-[#BABEC8] block"
-          />
-        </h2>
-
-        <motion.p
-          className="text-[#191919] my-2  text-[20px] sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto md:mx-0"
-          initial={{ opacity: 0, y: 15 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.4, delay: 0.6 }}
-        >
-          Stay connected with our latest gatherings and innovations
-        </motion.p>
-      </motion.div>
-
-      {/* Mobile: Horizontal scroll showing 2 cards at a time */}
-      <motion.div
-        className="md:hidden overflow-x-auto pb-4 scrollbar-hide"
-        variants={cardGridVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        <div className="flex gap-4 w-max">
-          {displayEvents.map((event, index) => (
+    <>
+      {loading === true ? (
+        <Loader />
+      ) : (
+        <>
+          <section className="container mx-auto w-full px-4 md:px-10 lg:px-15 py-10 bg-white">
             <motion.div
-              key={`mobile-${event.id}`}
               initial="hidden"
               whileInView="visible"
-              whileHover="hover"
-              viewport={{ once: true, margin: "-50px" }}
-              variants={{
-                ...cardVariants,
-                visible: {
-                  ...cardVariants.visible,
-                  transition: {
-                    ...cardVariants.visible.transition,
-                    delay: index * 0.1,
-                  },
-                },
-              }}
-              className="group overflow-hidden bg-white hover:bg-[#D8DEEE] border-b-2 border-transparent hover:border-b-2 hover:border-[#2E437C] transition-shadow duration-300 cursor-pointer w-[calc(50vw-32px)] flex-shrink-0"
+              viewport={{ once: true, margin: "-100px" }}
+              variants={containerVariants}
+              className="container mx-auto mb-0 sm:px-6 lg:px-0 pb-1 md:text-left"
             >
-              <motion.div className="relative">
-                {/* Image container with 3:4 aspect ratio */}
-                <div className="overflow-hidden">
-                  <div className="aspect-[3/4] overflow-hidden">
-                    <motion.img
-                      src={getImageUrl(event.image)}
-                      alt={event.heading || event.name}
-                      variants={imageVariants}
-                      className="w-full h-full object-cover p-2"
-                      onError={(e) => {
-                        e.target.src = next1; 
-                      }}
-                    />
-                  </div>
-                </div>
+              <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-[74px] leading-[50px] md:leading-[80px]">
+                <CustomHeading
+                  title="What's "
+                  className="font-bold text-[#2E437C] block"
+                />
+                <br />
+                <CustomHeading
+                  title="Happening Next"
+                  className="font-bold text-[#BABEC8] block"
+                />
+              </h2>
 
-                <motion.div
-                  className="flex items-center gap-3 p-3"
-                  initial={{ opacity: 0.8 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.2 }}
-                >
+              <motion.p
+                className="text-[#191919] my-2  text-[20px] sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto md:mx-0"
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: 0.6 }}
+              >
+                Stay connected with our latest gatherings and innovations
+              </motion.p>
+            </motion.div>
+
+            {/* Mobile: Horizontal scroll showing 2 cards at a time */}
+            <motion.div
+              className="md:hidden overflow-x-auto pb-4 scrollbar-hide"
+              variants={cardGridVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+            >
+              <div className="flex gap-4 w-max">
+                {displayEvents.map((event, index) => (
                   <motion.div
-                    className="bg-gray-100 w-12 h-12 flex flex-col items-center justify-center"
-                    whileHover={{
-                      backgroundColor: "#2E437C",
-                      color: "#FFFFFF",
-                      transition: { duration: 0.3 },
+                    key={`mobile-${event.id}`}
+                    initial="hidden"
+                    whileInView="visible"
+                    whileHover="hover"
+                    viewport={{ once: true, margin: "-50px" }}
+                    variants={{
+                      ...cardVariants,
+                      visible: {
+                        ...cardVariants.visible,
+                        transition: {
+                          ...cardVariants.visible.transition,
+                          delay: index * 0.1,
+                        },
+                      },
                     }}
+                    className="group overflow-hidden bg-white hover:bg-[#D8DEEE] border-b-2 border-transparent hover:border-b-2 hover:border-[#2E437C] transition-shadow duration-300 cursor-pointer w-[calc(50vw-32px)] flex-shrink-0"
                   >
-                    {(() => {
-                      const { month, day } = formatDateFromEvent(event.date);
-                      return (
-                        <>
-                          <p className="text-[10px] font-medium leading-tight">
-                            {month}
-                          </p>
-                          <p className="text-sm font-semibold leading-tight">
-                            {day}
-                          </p>
-                        </>
-                      );
-                    })()}
-                  </motion.div>
+                    <motion.div className="relative">
+                      {/* Image container with 3:4 aspect ratio */}
+                      <div className="overflow-hidden">
+                        <div className="aspect-[3/4] overflow-hidden">
+                          <motion.img
+                            src={getImageUrl(event.image)}
+                            alt={event.heading || event.name}
+                            variants={imageVariants}
+                            className="w-full h-full object-cover p-2"
+                            onError={(e) => {
+                              e.target.src = next1;
+                            }}
+                          />
+                        </div>
+                      </div>
 
-                  <div className="flex-1 min-w-0">
-                    <motion.h3
-                      className="font-[600] text-[14px] line-clamp-2"
-                      whileHover={{ color: "#2E437C" }}
+                      <motion.div
+                        className="flex items-center gap-3 p-3"
+                        initial={{ opacity: 0.8 }}
+                        whileHover={{ opacity: 1 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <motion.div
+                          className="bg-gray-100 w-12 h-12 flex flex-col items-center justify-center"
+                          whileHover={{
+                            backgroundColor: "#2E437C",
+                            color: "#FFFFFF",
+                            transition: { duration: 0.3 },
+                          }}
+                        >
+                          {(() => {
+                            const { month, day } = formatDateFromEvent(
+                              event.date
+                            );
+                            return (
+                              <>
+                                <p className="text-[10px] font-medium leading-tight">
+                                  {month}
+                                </p>
+                                <p className="text-sm font-semibold leading-tight">
+                                  {day}
+                                </p>
+                              </>
+                            );
+                          })()}
+                        </motion.div>
+
+                        <div className="flex-1 min-w-0">
+                          <motion.h3
+                            className="font-[600] text-[14px] line-clamp-2"
+                            whileHover={{ color: "#2E437C" }}
+                            transition={{ duration: 0.2 }}
+                          >
+                            {event.heading || event.name || "Event"}
+                          </motion.h3>
+                          <p className="text-[11px] opacity-[60%] truncate">
+                            {event.location || "Location TBA"}
+                          </p>
+                        </div>
+                      </motion.div>
+                    </motion.div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Desktop: Grid layout */}
+            <motion.div
+              className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
+              variants={cardGridVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: "-50px" }}
+            >
+              {displayEvents.map((event, index) => (
+                <motion.div
+                  key={`desktop-${event.id}`}
+                  initial="hidden"
+                  whileInView="visible"
+                  whileHover="hover"
+                  viewport={{ once: true, margin: "-50px" }}
+                  variants={{
+                    ...cardVariants,
+                    visible: {
+                      ...cardVariants.visible,
+                      transition: {
+                        ...cardVariants.visible.transition,
+                        delay: index * 0.1,
+                      },
+                    },
+                  }}
+                  className="group overflow-hidden bg-white hover:bg-[#D8DEEE] border-b-2 border-transparent hover:border-b-2 hover:border-[#2E437C] transition-shadow duration-300 cursor-pointer"
+                >
+                  <motion.div className="relative">
+                    {/* Image container with 3:4 aspect ratio */}
+                    <div className="overflow-hidden">
+                      <div className="aspect-[3/4] overflow-hidden relative">
+                        <motion.img
+                          src={getImageUrl(event.image)}
+                          alt={event.heading || event.name}
+                          variants={imageVariants}
+                          className="w-full h-full object-cover p-2"
+                          onError={(e) => {
+                            e.target.src = next1; // Fallback to default image
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <motion.div
+                      className="flex items-center gap-4 p-4"
+                      initial={{ opacity: 0.8 }}
+                      whileHover={{ opacity: 1 }}
                       transition={{ duration: 0.2 }}
                     >
-                      {event.heading || event.name || "Event"}
-                    </motion.h3>
-                    <p className="text-[11px] opacity-[60%] truncate">
-                      {event.location || "Location TBA"}
-                    </p>
-                  </div>
-                </motion.div>
-              </motion.div>
-            </motion.div>
-          ))}
-        </div>
-      </motion.div>
+                      <motion.div
+                        className="bg-gray-100 w-14 h-14 flex flex-col items-center justify-center"
+                        whileHover={{
+                          backgroundColor: "#2E437C",
+                          color: "#FFFFFF",
+                          transition: { duration: 0.3 },
+                        }}
+                      >
+                        {(() => {
+                          const { month, day } = formatDateFromEvent(
+                            event.date
+                          );
+                          return (
+                            <>
+                              <p className="text-[11px] font-medium leading-tight">
+                                {month}
+                              </p>
+                              <p className="text-base font-semibold leading-tight">
+                                {day}
+                              </p>
+                            </>
+                          );
+                        })()}
+                      </motion.div>
 
-      {/* Desktop: Grid layout */}
-      <motion.div
-        className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8"
-        variants={cardGridVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-50px" }}
-      >
-        {displayEvents.map((event, index) => (
-          <motion.div
-            key={`desktop-${event.id}`}
-            initial="hidden"
-            whileInView="visible"
-            whileHover="hover"
-            viewport={{ once: true, margin: "-50px" }}
-            variants={{
-              ...cardVariants,
-              visible: {
-                ...cardVariants.visible,
-                transition: {
-                  ...cardVariants.visible.transition,
-                  delay: index * 0.1,
-                },
-              },
-            }}
-            className="group overflow-hidden bg-white hover:bg-[#D8DEEE] border-b-2 border-transparent hover:border-b-2 hover:border-[#2E437C] transition-shadow duration-300 cursor-pointer"
-          >
-            <motion.div className="relative">
-              {/* Image container with 3:4 aspect ratio */}
-              <div className="overflow-hidden">
-                <div className="aspect-[3/4] overflow-hidden relative">
-                  <motion.img
-                    src={getImageUrl(event.image)}
-                    alt={event.heading || event.name}
-                    variants={imageVariants}
-                    className="w-full h-full object-cover p-2"
-                    onError={(e) => {
-                      e.target.src = next1; // Fallback to default image
-                    }}
-                  />
-                </div>
+                      <div className="flex-1">
+                        <motion.h3
+                          className="font-[600] text-[16px] md:text-base line-clamp-2"
+                          whileHover={{ color: "#2E437C" }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          {event.heading || event.name || "Event"}
+                        </motion.h3>
+                        <p className="text-[12px] opacity-[60%] truncate">
+                          {event.location || "Location TBA"}
+                        </p>
+                      </div>
+                    </motion.div>
+                  </motion.div>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Mobile scroll indicator */}
+            <div className="md:hidden flex justify-center mt-4">
+              <div className="flex items-center gap-2 text-sm text-gray-500">
+                <span>←</span>
+                <span>Swipe to see more events</span>
+                <span>→</span>
               </div>
-
-              <motion.div
-                className="flex items-center gap-4 p-4"
-                initial={{ opacity: 0.8 }}
-                whileHover={{ opacity: 1 }}
-                transition={{ duration: 0.2 }}
-              >
-                <motion.div
-                  className="bg-gray-100 w-14 h-14 flex flex-col items-center justify-center"
-                  whileHover={{
-                    backgroundColor: "#2E437C",
-                    color: "#FFFFFF",
-                    transition: { duration: 0.3 },
-                  }}
-                >
-                  {(() => {
-                    const { month, day } = formatDateFromEvent(event.date);
-                    return (
-                      <>
-                        <p className="text-[11px] font-medium leading-tight">
-                          {month}
-                        </p>
-                        <p className="text-base font-semibold leading-tight">
-                          {day}
-                        </p>
-                      </>
-                    );
-                  })()}
-                </motion.div>
-
-                <div className="flex-1">
-                  <motion.h3
-                    className="font-[600] text-[16px] md:text-base line-clamp-2"
-                    whileHover={{ color: "#2E437C" }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    {event.heading || event.name || "Event"}
-                  </motion.h3>
-                  <p className="text-[12px] opacity-[60%] truncate">
-                    {event.location || "Location TBA"}
-                  </p>
-                </div>
-              </motion.div>
-            </motion.div>
-          </motion.div>
-        ))}
-      </motion.div>
-
-      {/* Mobile scroll indicator */}
-      <div className="md:hidden flex justify-center mt-4">
-        <div className="flex items-center gap-2 text-sm text-gray-500">
-          <span>←</span>
-          <span>Swipe to see more events</span>
-          <span>→</span>
-        </div>
-      </div>
-    </section>
+            </div>
+          </section>
+        </>
+      )}
+    </>
   );
 }

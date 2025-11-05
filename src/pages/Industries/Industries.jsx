@@ -12,6 +12,7 @@ import AnimatedButton from "../../components/aboutUsComponents/AnimatedButton";
 import { LuDownload } from "react-icons/lu";
 import Seo from "../../components/common/Seo";
 import { CustomHeading } from "../../components/common/CustomHeading";
+import Loader from "../../components/common/Loader";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,7 +27,7 @@ const Industries = () => {
   // Helper function to construct full URL for images and documents
   const getFileUrl = (filePath) => {
     if (!filePath) return null;
-    if (filePath.startsWith('http')) return filePath;
+    if (filePath.startsWith("http")) return filePath;
     return `${BASE_URL}/${filePath}`;
   };
 
@@ -91,14 +92,14 @@ const Industries = () => {
       if (brochure.documents && brochure.documents.length > 0) {
         const documentUrl = brochure.documents[0]; // Get first document
         const fileUrl = getFileUrl(documentUrl);
-        
+
         if (fileUrl) {
           const response = await fetch(fileUrl);
-          
+
           if (!response.ok) {
             throw new Error(`Failed to download file: ${response.status}`);
           }
-          
+
           const blob = await response.blob();
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement("a");
@@ -276,34 +277,7 @@ const Industries = () => {
   if (loading) {
     return (
       <>
-        <Seo
-          title="Downloads | ATC Chain India"
-          description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
-          url="https://www.atcchain.com/downloads"
-        />
-        <Navbar navStyle={"white"} />
-        <motion.div
-          className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-20 py-16 sm:py-20 mt-10"
-          initial="hidden"
-          animate="visible"
-          variants={pageVariants}
-        >
-          <div className="flex justify-center items-center py-20">
-            <motion.div
-              className="text-center"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.5 }}
-            >
-              <motion.div
-                className="w-16 h-16 border-4 border-[#2E437C] border-t-transparent rounded-full mx-auto mb-4"
-                animate={{ rotate: 360 }}
-                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              />
-              <p className="text-gray-600 text-lg">Loading brochures...</p>
-            </motion.div>
-          </div>
-        </motion.div>
+        <Loader />
       </>
     );
   }
