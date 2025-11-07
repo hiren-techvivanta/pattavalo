@@ -1292,7 +1292,7 @@ const ProductCom = () => {
                                   >
                                     {category.title}
                                   </Typography>
-                                  <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
+                                  <div className="flex-1 border-[#2E437C] border-[1px] me-2 "></div>
                                 </div>
                               </AccordionSummary>
 
@@ -1516,7 +1516,7 @@ const ProductCom = () => {
                               >
                                 {category.title}
                               </Typography>
-                              <div className="flex-1 border-[#2E437C] border-[2px] me-2 "></div>
+                              <div className="flex-1 border-[#2E437C] border-[1px] me-2 "></div>
                             </div>
                           </AccordionSummary>
 
