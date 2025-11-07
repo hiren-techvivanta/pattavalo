@@ -21,13 +21,7 @@ export default function ModulerSolution() {
         setError(null);
 
         const response = await fetch(
-          "https://kiroapi.techvivanta.com/product/category/",
-          {
-            headers: {
-              "ngrok-skip-browser-warning": "true",
-              "Content-Type": "application/json",
-            },
-          }
+          `${import.meta.env.VITE_BACKEND_URL}/product/category/`,
         );
 
         if (!response.ok) {
@@ -47,9 +41,7 @@ export default function ModulerSolution() {
             .map((category, index) => ({
               id: category.id,
               title: category.name.toUpperCase(),
-              icon: category.image.startsWith("http")
-                ? category.image
-                : `${import.meta.env.VITE_BACKEND_URL}/${category.image}`,
+              icon: `${import.meta.env.VITE_BACKEND_URL}/${category.image}`,
               description: category.description,
               animation: null, // No animation applied
               displayOrder: category.displayOrder,
@@ -263,7 +255,7 @@ export default function ModulerSolution() {
                   {/* Icon without any continuous animation */}
                   <div className="relative z-10 w-12 h-12 sm:w-14 sm:h-14 mb-3 flex items-center justify-center">
                     <img
-                      src={item.icon}
+                      src={`${item.icon}`}
                       alt={item.title}
                       className="w-full h-full object-contain transition-all duration-300
              group-hover:brightness-0 group-hover:invert"
