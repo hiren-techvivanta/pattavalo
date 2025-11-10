@@ -48,24 +48,39 @@ const statsData = [
 
 const timelineData = {
   2015: {
-    title: "Establishment",
+    title: "The Beginning of a Vision",
     description:
-      "After extensive research, Our Founder Mr. Ajay Patel entered the manufacturing world with the intention to build durable transmission conveyor chains through automation.",
+      "Founded by Mr. Ajay Patel, Director of ATC Chains India. Started with a simple yet powerful idea – to design and manufacture customized stainless steel (SS) chains as per customer requirements. Built a foundation on innovation, precision, and customer trust.",
   },
   2017: {
-    title: "Modular Belt Production",
+    title: "Strengthening Capabilities",
     description:
-      "After receiving incredible response from customers, ATCchains shifted focus towards a better consumer-centric approach and entered modular belt manufacturing.",
+      "Gradual expansion of production capacity to meet increasing market demand. Introduced a wider range of industrial chains and conveyor components, serving various industries across India.",
   },
-  2019: {
-    title: "Conveying Solution",
+  2020: {
+    title: "Building for the Future",
     description:
-      "Understanding consumer requirements, we strategically moved towards developing conveyor sprockets, wear strips, and conveyor components.",
+      "Established a new, modern manufacturing facility to scale up operations. Expanded the product range to over 100 different products. Reinforced ATC Chains India’s position as a trusted name in the chain manufacturing industry.",
   },
-  2021: {
-    title: "Automation",
+  2022: {
+    title: "Nationwide Recognition",
     description:
-      "After gaining expertise in manufacturing, we expanded and established 3 other plants, expanding our products into 1100+ manufacturing solutions.",
+      "Achieved pan-India recognition for product quality and reliability. Successfully replaced several international brands with Make in India products. Increased in-house production to over 700 unique products, meeting diverse industrial needs.",
+  },
+   2023: {
+    title: "Global Reach and Recognition",
+    description:
+      "Expanded internationally with a strong presence across Africa, the UAE, and other global markets. Earned global respect for delivering world-class quality at competitive pricing. Strengthened export operations, establishing ATC Chains India as a recognized global manufacturer.",
+  },
+   2024: {
+    title: "Expanding Product Portfolio",
+    description:
+      "Represented ATC Chains India on the global stage through exhibitions and partnerships. Operated two advanced manufacturing facilities serving both domestic and international clients. Increased production capacity to 1,500 products, all manufactured 100% in-house.",
+  },
+   2025: {
+    title: "Leading the Future",
+    description:
+      "Established a new state-of-the-art facility to bridge the growing gap between supply and demand. Continuing to lead toward becoming India’s largest and most trusted industrial chain manufacturer. Focusing on automation, sustainability, and continuous innovation to drive the next decade of growth. Vision Ahead To be India’s leading global manufacturer of industrial chains – delivering innovation, excellence, and reliability to industries worldwide.",
   },
 };
 

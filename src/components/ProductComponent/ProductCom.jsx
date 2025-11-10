@@ -1783,7 +1783,7 @@ const ProductCom = () => {
                                     transition={{ duration: 0.3 }}
                                   />
                                 </div>
-                                <h2 className="text-[16px] font-[600] mt-3 text-gray-800">
+                                <h2 className="text-[16px] font-[400] mt-3 text-gray-800">
                                   {product.title}
                                 </h2>
                                 <p className="text-gray-500 text-sm mt-1">
@@ -1873,7 +1873,7 @@ const ProductCom = () => {
                                   transition={{ duration: 0.3 }}
                                 />
                               </div>
-                              <h2 className="text-[16px] font-[600] mt-3 text-gray-800">
+                              <h2 className="text-[16px] font-[400] mt-3 text-gray-800">
                                 {product.title}
                               </h2>
                               <p className="text-gray-500 text-sm mt-1">
