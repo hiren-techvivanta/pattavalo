@@ -28,7 +28,7 @@ const TimelineItem = ({
       whileTap={{ scale: 0.98 }}
       viewport={{ once: true }}
     >
-      In {year} - {data.title}
+      {year} - {data.title}
     </motion.div>
   );
 };
