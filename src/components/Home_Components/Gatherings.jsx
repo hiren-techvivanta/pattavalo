@@ -211,7 +211,6 @@ export default function Gatherings() {
       </section>
     );
   }
-  
 
   return (
     <>
