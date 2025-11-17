@@ -49,24 +49,47 @@ const ShowCase = () => {
     setSelectedPoint(null);
   };
   const getTooltipPosition = (point) => {
-    const leftPercent = parseFloat(point.left);
-    const topPercent = parseFloat(point.top);
+  const leftPercent = parseFloat(point.left);
+  const topPercent = parseFloat(point.top);
 
-    let translateX = "-50%";
-    let translateY = "0";
+  let translateX = "-50%";
+  let translateY = "0";
 
-    if (leftPercent < 20) translateX = "0";
-    if (leftPercent > 80) translateX = "-100%";
+  if (leftPercent < 20) translateX = "0";
+  if (leftPercent > 80) translateX = "-100%";
 
-    if (topPercent > 70) translateY = "-100%";
-    if (topPercent < 20) translateY = "0"; // prevents cutting on top if needed
+  if (topPercent > 60) {
+    translateY = "-100%";      
+  } else {
+    translateY = "0";          
+  }
 
-    return {
-      left: point.left,
-      top: point.top,
-      transform: `translate(${translateX}, ${translateY})`,
-    };
+  return {
+    left: point.left,
+    top: point.top,
+    transform: `translate(${translateX}, ${translateY})`,
   };
+};
+
+  // const getTooltipPosition = (point) => {
+  //   const leftPercent = parseFloat(point.left);
+  //   const topPercent = parseFloat(point.top);
+
+  //   let translateX = "-50%";
+  //   let translateY = "0";
+
+  //   if (leftPercent < 20) translateX = "0";
+  //   if (leftPercent > 80) translateX = "-100%";
+
+  //   if (topPercent > 70) translateY = "-100%";
+  //   if (topPercent < 20) translateY = "0"; // prevents cutting on top if needed
+
+  //   return {
+  //     left: point.left,
+  //     top: point.top,
+  //     transform: `translate(${translateX}, ${translateY})`,
+  //   };
+  // };
   const points = [
     {
       id: 1,
@@ -262,7 +285,9 @@ const ShowCase = () => {
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
                     className="absolute z-50 w-52 sm:w-60 md:w-64 bg-white rounded-xl shadow-xl p-3 sm:p-4"
-                    style={getTooltipPosition(point)}
+                    // style={getTooltipPosition(point)}
+                    style={{ ...getTooltipPosition(point),marginLeft:"20px", marginTop: "-80px" }}
+
                   >
                     <div className="flex gap-6 items-start">
                       <img src={point.img} className="w-10" alt={point.title} />

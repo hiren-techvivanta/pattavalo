@@ -373,7 +373,7 @@ const cardVariants = {
                     variants={imageVariants}
                     className="w-full h-full object-cover p-2"
                     onError={(e) => {
-                      e.target.src = next1; // Fallback to default image
+                      e.target.src = next1; 
                     }}
                   />
                 </div>
