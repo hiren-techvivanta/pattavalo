@@ -239,7 +239,7 @@ export default function Gatherings() {
                 />
               </h2>
 
-              <motion.p
+              <motion.h2
                 className="text-[#191919] my-2  text-[20px] sm:text-base md:text-lg lg:text-xl max-w-2xl mx-auto md:mx-0"
                 initial={{ opacity: 0, y: 15 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -247,7 +247,7 @@ export default function Gatherings() {
                 transition={{ duration: 0.4, delay: 0.6 }}
               >
                 Stay connected with our latest gatherings and innovations
-              </motion.p>
+              </motion.h2>
             </motion.div>
 
             {/* Mobile: Horizontal scroll showing 2 cards at a time */}

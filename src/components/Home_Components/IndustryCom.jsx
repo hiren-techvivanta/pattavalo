@@ -735,7 +735,7 @@ export default function IndustryCom() {
       className=" mx-auto w-full py-10 lg:pr-16 lg:pl-0 xl:pr-20 xl:pl-0  sm:py-20"
     >
       {/* Heading */}
-      <motion.h1
+      <motion.h2
         variants={containerVariants}
         initial="hidden"
         whileInView="visible"
@@ -743,7 +743,7 @@ export default function IndustryCom() {
         className=" ps-2 lg:ps-25 text-[44px] md:text-[112px] font-[500] md:font-[400] text-[#BABEC8] mb-10 text-center md:text-left "
       >
         <CustomHeading title="Industries we serve" className="" />
-      </motion.h1>
+      </motion.h2>
 
       <div className=" grid grid-cols-1 md:grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-10 items-center">
         {/* Chart Section */}

@@ -114,7 +114,7 @@ export default function ExpertSolutions() {
           variants={containerVariants}
         >
           {/* Heading */}
-          <motion.h1
+          <motion.h2
             variants={containerVariants}
             className="
       text-[38px] md:text-[48px]
@@ -126,7 +126,7 @@ export default function ExpertSolutions() {
               Solutions for Custom Conveyor
             </span>{" "}
             Needs.
-          </motion.h1>
+          </motion.h2>
 
           {/* Paragraph 1 */}
           <motion.p

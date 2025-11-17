@@ -193,7 +193,7 @@ const ShowCase = () => {
   return (
     <section className="container mx-auto w-full px-4 md:px-10 lg:px-5 xl:px-15 2xl:px-25 py-10 2xl:pb-25  relative  bg-white overflow-visible ">
       <div className="px-6 sm:px-8 md:px-0 md:text-left text-left">
-        <motion.h1
+        <motion.h2
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
@@ -207,7 +207,7 @@ const ShowCase = () => {
           <CustomHeading title="Interactive" className="text-[#2E437C]" />
           <br />
           <CustomHeading title="Product Showcase" className="text-[#BABEC8]" />
-        </motion.h1>
+        </motion.h2>
       </div>
 
       <div className="  relative mx-auto custom-image max-w-[1050px] px-4 sm:px-6 lg:px-1 overflow-visible">

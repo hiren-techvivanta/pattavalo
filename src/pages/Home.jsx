@@ -221,7 +221,7 @@ export default function Home() {
     <div>
       <Seo
         title="ATC Chain India"
-        description="ATC Chain designs and manufactures high-quality components for the food, beverage, packaging, automotive and automation industries providing the best solution designs and after-sale support."
+        description="ATC Chains India manufactures high-quality modular belts, chains, and conveyor components for food, packaging, and automation industries with durable, custom solutions."
         url="https://www.atcchain.com/"
       />
       <HomeBanner onAnimationComplete={handleBannerAnimationComplete} />
@@ -284,14 +284,14 @@ export default function Home() {
             viewport={{ once: true }}
             className="mb-12 px-14 mx-auto container"
           >
-            <motion.h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center md:text-start">
+            <motion.h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center md:text-start">
               <span className="text-[#2E437C]">
                 <CustomHeading title="Our" className="" />
               </span>
               <span className="text-[#BABEC8]">
                 <CustomHeading title="Clients" className="" />
               </span>
-            </motion.h1>
+            </motion.h2>
           </motion.div>
 
           <motion.div
