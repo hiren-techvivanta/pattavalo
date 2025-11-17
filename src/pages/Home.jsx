@@ -221,7 +221,8 @@ export default function Home() {
     <div>
       <Seo
         title="ATC Chain India"
-        description="ATC Chains India manufactures high-quality modular belts, chains, and conveyor components for food, packaging, and automation industries with durable, custom solutions."
+        description="ATC Chains India manufactures modular belts, chains and conveyor components for food, packaging and automation industries with reliable custom solutions.
+"
         url="https://www.atcchain.com/"
       />
       <HomeBanner onAnimationComplete={handleBannerAnimationComplete} />
