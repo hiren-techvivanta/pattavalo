@@ -545,6 +545,7 @@ const ProductCom = () => {
             apiData: product,
             isDirectProduct: true,
             displayOrder: product.displayOrder,
+            cover_image:product.cover_image
           }))
           .sort((a, b) => a.displayOrder - b.displayOrder);
       }
@@ -887,6 +888,7 @@ const ProductCom = () => {
             subcategoryId: product.subcategory_id,
             displayOrder: product.displayOrder || product.display_order || 999,
             apiData: product,
+            cover_image: product.cover_image,
           }))
           .sort((a, b) => {
             if (a.displayOrder == null && b.displayOrder == null) return 0;
@@ -1774,7 +1776,7 @@ const ProductCom = () => {
                                           product.image.includes("/")
                                         ? `${
                                             import.meta.env.VITE_BACKEND_URL
-                                          }/${product.image}`
+                                          }/${product.cover_image}`
                                         : productImage
                                     }
                                     alt={product.title}
@@ -1863,7 +1865,7 @@ const ProductCom = () => {
                                       : product.image &&
                                         product.image.includes("/")
                                       ? `${import.meta.env.VITE_BACKEND_URL}/${
-                                          product.image
+                                          product.cover_image
                                         }`
                                       : productImage
                                   }
