@@ -168,7 +168,7 @@ export default function Navbar({ navStyle, show = true }) {
             top: '0px',
             left: '0px',
             right: '0px',
-            zIndex: '9',
+            zIndex: '12',
             width: '100vw',
             transform: 'none',
             transformOrigin: 'initial'

@@ -23,6 +23,7 @@ import { CustomHeading } from "../common/CustomHeading";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { LuDot } from "react-icons/lu";
 import Loader from "../common/Loader";
+import CateComponent from "../Home_Components/modulerSolution/CateComponent";
 
 const theme = createTheme({
   components: {
@@ -100,7 +101,7 @@ const ProductCom = () => {
   const [selectedCategory, setSelectedCategory] = useState("Bearing");
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [showDetails, setShowDetails] = useState(false);
-  const [viewMode, setViewMode] = useState("categories");
+  const [viewMode, setViewMode] = useState("first");
   const [expandedPanel, setExpandedPanel] = useState(false);
 
   // const [expandedPanel, setExpandedPanel] = useState("panel1");
@@ -421,11 +422,26 @@ const ProductCom = () => {
   }, []);
 
   useEffect(() => {
-    if (!isInitialLoadRef.current || categories.length === 0) return;
-
     const categoryParam = searchParams.get("category");
     const subcategoryParam = searchParams.get("subcategory");
     const productParam = searchParams.get("product");
+
+    const urlFilters = {
+      category: categoryParam ? parseInt(categoryParam) : null,
+      subcategory: subcategoryParam ? parseInt(subcategoryParam) : null,
+      product: productParam ? parseInt(productParam) : null,
+    };
+
+    const hasAnyParam =
+      urlFilters.category || urlFilters.subcategory || urlFilters.product;
+
+    // Block API + selection logic ONLY if viewMode is 'first' and NO params
+    if (viewMode === "first" && !hasAnyParam) {
+      // Do not fetch subcategories or products!
+      return;
+    }
+
+    if (!isInitialLoadRef.current || categories.length === 0) return;
 
     const currentUrlParams = `${categoryParam || ""}-${
       subcategoryParam || ""
@@ -440,29 +456,22 @@ const ProductCom = () => {
 
     lastUrlParamsRef.current = currentUrlParams;
 
-    const urlFilters = {
-      category: categoryParam ? parseInt(categoryParam) : null,
-      subcategory: subcategoryParam ? parseInt(subcategoryParam) : null,
-      product: productParam ? parseInt(productParam) : null,
-    };
-
-    if (urlFilters.category || urlFilters.subcategory || urlFilters.product) {
+    if (hasAnyParam) {
       hasProcessedUrlRef.current = true;
       applyUrlFilters(urlFilters);
     } else if (categories.length > 0 && !hasProcessedUrlRef.current) {
       const firstCategory = categories[0];
       if (firstCategory?.id) {
-        setSelectedCategory(firstCategory.category || firstCategory.title);
-        setParentCategory(firstCategory.category || firstCategory.title);
-        setExpandedPanel(`panel1`);
-        setSelectedSubcategoryId(null);
-        setSelectedProductId(null);
-        fetchSubcategoriesAndDirectProducts(firstCategory.id);
-        updateUrlParams({ category: firstCategory.id });
-        hasProcessedUrlRef.current = true;
+        // setSelectedCategory(firstCategory.category || firstCategory.title);
+        // setParentCategory(firstCategory.category || firstCategory.title);
+        // setExpandedPanel(`panel1`);
+        // setSelectedSubcategoryId(null);
+        // setSelectedProductId(null);
+        // fetchSubcategoriesAndDirectProducts(firstCategory.id);
+        // hasProcessedUrlRef.current = true;
       }
     }
-  }, [categories, searchParams]);
+  }, [categories, searchParams, viewMode]);
 
   const updateUrlParams = (params) => {
     const newSearchParams = new URLSearchParams();
@@ -545,7 +554,7 @@ const ProductCom = () => {
             apiData: product,
             isDirectProduct: true,
             displayOrder: product.displayOrder,
-            cover_image:product.cover_image
+            cover_image: product.cover_image,
           }))
           .sort((a, b) => a.displayOrder - b.displayOrder);
       }
@@ -1718,6 +1727,11 @@ const ProductCom = () => {
                   ref={rightPanelRef}
                   className="w-full md:w-full lg:w-7/12 xl:w-8/12 custom-width2 max-h-[99vh] overflow-auto"
                 >
+                  {viewMode === "first" && (
+                    <div>
+                      <CateComponent />
+                    </div>
+                  )}
                   {viewMode === "categories" && (
                     <div>
                       {subcategories.length > 0 && (
