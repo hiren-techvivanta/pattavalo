@@ -165,7 +165,7 @@ const Career = () => {
         setError(null);
 
         const response = await fetch(
-          "https://kiroapi.techvivanta.com/settings/job-title",
+          `${import.meta.env.VITE_BACKEND_URL}/settings/job-title`,
           {
             headers: {
               "ngrok-skip-browser-warning": "true",
@@ -224,7 +224,7 @@ const Career = () => {
         setJobsError(null);
 
         const response = await fetch(
-          `https://kiroapi.techvivanta.com/settings/job?page=1&limit=10&job_title_id=${activeCategory}`,
+          `${import.meta.env.VITE_BACKEND_URL}/settings/job?page=1&limit=10&job_title_id=${activeCategory}`,
           {
             headers: {
               "ngrok-skip-browser-warning": "true",

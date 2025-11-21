@@ -6,32 +6,32 @@ import { CustomHeading } from "../common/CustomHeading";
 const testimonials = [
   {
     id: 1,
-    name: "N R ENTERPRISE",
-    role: "Company",
+    name: "Raj Gupta",
+    role: "",
     image: clientimg,
     feedback:
       "We installed SS Slat Chain and Modular Belts from ATC and saw immediate improvement in reliability. The components are robust and the team guided us through the design and setup with professionalism.",
   },
   {
     id: 2,
-    name: "S G PHARMATEC",
-    role: "Company",
+    name: "Priyanka Mehra",
+    role: "",
     image: clientimg,
     feedback:
       "The Thermoplastic Slat Chain and Sprockets we purchased have delivered consistent performance. The delivery was timely, and the technical support ensured seamless integration into our production line.",
   },
   {
     id: 3,
-    name: "SUSHANT SUPPLIERS",
-    role: "Company",
+    name: "kaushyap Sharma",
+    role: "",
     image: clientimg,
     feedback:
       "Our experience with ATC’s Wear Strips and Modular Belts has been exceptional. The wear strips resist friction, and the belts maintain tension over time. Their team answered all our implementation queries promptly.",
   },
   {
     id: 4,
-    name: "TASK INDUSTRIES",
-    role: "Company",
+    name: "Lalit Dalal",
+    role: "",
     image: clientimg,
     feedback:
       "We sourced Sprockets, SS Slat Chain, and Modular Belts from ATC and have been extremely satisfied. The components are durable and performance is top-notch. Their customer support was responsive and helpful.",

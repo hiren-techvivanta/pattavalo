@@ -319,7 +319,7 @@ const QuickSelectMenu = ({ navBg }) => {
         {isOpen && (
           <motion.div
             ref={menuRef}
-            className={`mt-2 bg-white shadow-2xl z-50 overflow-hidden ${
+            className={`mt-2 bg-white shadow-2xl z-50 overflow-hidden show-scrollbar ${
               isMobile
                 ? "absolute right-0 w-[102vw] max-w-[110vw]"
                 : "center-div"
@@ -380,7 +380,7 @@ const QuickSelectMenu = ({ navBg }) => {
               <>
                 {/* Mobile Accordion View - Updated Styles */}
                 {isMobile && (
-                  <div className="max-h-96 overflow-y-auto">
+                  <div className="max-h-96 overflow-y-auto show-scrollbar" >
                     <div className="p-4">
                       {categories.map((category) => (
                         <div key={category.id} className="mb-4">

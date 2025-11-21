@@ -34,9 +34,11 @@ const NewsCard = ({ props }) => {
           </p>
           <div className="flex justify-between">
             <p className="md:text-[21px] text-[14px] font-[500] py-0">
-              {truncateText(props.heading, 40)}
+              {truncateText(props.heading, 35)}
             </p>
-            <MdArrowOutward className="text-[22px] pt-1" />
+            <div style={{width:"22px",height:"22px"}}>
+              <MdArrowOutward className="text-[22px] pt-1" />
+            </div>
           </div>
           <p className="md:text-[14px] text-[10px] text-[#667085] py-1">
             {truncateText(props.details, 60)}

@@ -23,7 +23,7 @@ import { CustomHeading } from "../common/CustomHeading";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { LuDot } from "react-icons/lu";
 import Loader from "../common/Loader";
-import CateComponent from "../Home_Components/modulerSolution/CateComponent";
+import CateComponent2 from "../Home_Components/modulerSolution/CateComponent2";
 
 const theme = createTheme({
   components: {
@@ -759,6 +759,13 @@ const ProductCom = () => {
         fetchSubcategoriesAndDirectProducts(category.id);
         updateUrlParams({ category: category.id });
       }
+    } else {
+      // Accordion closed: show CateComponent2
+      setViewMode("first"); // triggers CateComponent2 to render
+      setSelectedCategory(null);
+      setSelectedCategoryId(null);
+      setSelectedSubcategoryId(null);
+      setSelectedProductId(null);
     }
   };
 
@@ -1005,7 +1012,18 @@ const ProductCom = () => {
           setProductsLoading(false);
         }
       } else {
-        setProducts([]);
+        // Subcategory accordion is closed - reset to category default view
+        setSelectedSubcategoryId(null);
+        setSelectedProductId(null);
+        setViewMode("categories");
+        setShowDetails(false);
+        // Load category subcategories + direct products
+        const categoryId = subCategory?.categoryId;
+        if (categoryId) {
+          await fetchSubcategoriesAndDirectProducts(categoryId);
+        } else {
+          setProducts([]);
+        }
       }
     };
 
@@ -1174,7 +1192,8 @@ const ProductCom = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.7 }}
-                  className="w-full md:w-full lg:w-5/12 xl:w-4/12 custom-width max-h-[99vh] overflow-y-auto overflow-x-hidden"
+                  ref={leftPanelRef}
+                  className="w-full md:w-full lg:w-5/12 xl:w-4/12 custom-width max-h-[87vh] overflow-y-auto overflow-x-hidden"
                 >
                   <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-5">
                     <h1 className="text-[36px] font-[700] text-[#BABEC8]">
@@ -1725,11 +1744,11 @@ const ProductCom = () => {
                   viewport={{ once: true }}
                   transition={{ duration: 0.8 }}
                   ref={rightPanelRef}
-                  className="w-full md:w-full lg:w-7/12 xl:w-8/12 custom-width2 max-h-[99vh] overflow-auto"
+                  className="w-full md:w-full lg:w-7/12 xl:w-8/12 custom-width2 max-h-[87vh] overflow-auto  "
                 >
                   {viewMode === "first" && (
                     <div>
-                      <CateComponent />
+                      <CateComponent2 />
                     </div>
                   )}
                   {viewMode === "categories" && (

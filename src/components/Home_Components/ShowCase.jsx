@@ -98,6 +98,7 @@ const ShowCase = () => {
       title: "Bucket Elevator",
       desc: "Vertical conveying system for bulk materials with high capacity and efficiency.",
       img: i2,
+      path:"/products?category=8"
     },
     {
       id: 2,
@@ -106,6 +107,7 @@ const ShowCase = () => {
       title: "BEARING",
       desc: "High-quality bearings ensuring smooth operation and reduced maintenance.",
       img: i1,
+      path:"/products?category=1"
     },
     {
       id: 3,
@@ -114,6 +116,7 @@ const ShowCase = () => {
       title: "Spiral Freezer",
       desc: "Multi-level spiral conveyor system for continuous freezing operations.",
       img: i3,
+      path:"/products?category=10"
     },
     {
       id: 4,
@@ -122,6 +125,7 @@ const ShowCase = () => {
       title: "Spiral Logistics",
       desc: "Space-efficient spiral conveyor solutions for material handling and storage.",
       img: i4,
+      path:"/products?category=11"
     },
     {
       id: 5,
@@ -130,6 +134,7 @@ const ShowCase = () => {
       title: "MODULAR BELT",
       desc: "Interlocking plastic belt system providing flexibility and easy maintenance.",
       img: i5,
+      path:"/products?category=4"
     },
     {
       id: 6,
@@ -138,6 +143,7 @@ const ShowCase = () => {
       title: "Flexzero",
       desc: "Flexible chain system designed for tight radius turns and compact applications.",
       img: i6,
+      path:"/products?category=12"
     },
     {
       id: 7,
@@ -146,6 +152,7 @@ const ShowCase = () => {
       title: "SS CHAIN & SPROCKET",
       desc: "Stainless steel chain and sprocket systems for food-grade applications.",
       img: i7,
+      path:"/products?category=5"
     },
     {
       id: 8,
@@ -154,6 +161,7 @@ const ShowCase = () => {
       title: "CONVEYOR COMPONENT",
       desc: "Essential components including guides, wear strips, and support structures.",
       img: i8,
+      path:"/products?category=3"
     },
     {
       id: 9,
@@ -162,6 +170,7 @@ const ShowCase = () => {
       title: "FINGER CHAIN & ASSEMBLY",
       desc: "Specialized chain system with fingers for secure product transport and positioning.",
       img: i9,
+      path:"/products?category=7"
     },
     {
       id: 10,
@@ -170,6 +179,7 @@ const ShowCase = () => {
       title: "WEAR STRIP",
       desc: "Durable wear strips providing smooth surface for belt operation and longevity.",
       img: i10,
+      path:"/products?category=9"
     },
     {
       id: 11,
@@ -178,6 +188,7 @@ const ShowCase = () => {
       title: "THERMOPLASTIC CHAIN & SPROCKET",
       desc: "Lightweight thermoplastic chain systems ideal for food processing environments.",
       img: i11,
+      path:"/products?category=6"
     },
   ];
 
@@ -306,7 +317,7 @@ const ShowCase = () => {
                    rounded-full border border-[#2E437C] text-[#000]
                    text-xs sm:text-sm font-medium hover:bg-[#2E437C]
                    hover:text-white transition-all"
-                          onClick={() => navigate("/products")}
+                          onClick={() => navigate(point.path)}
                         >
                           VIEW{" "}
                           <RxArrowTopRight className="ms-2 text-[#2E437C] hover:text-[#fff]" />
@@ -370,7 +381,7 @@ const ShowCase = () => {
                    rounded-full border border-[#2E437C] text-[#000]
                    text-xs sm:text-sm font-medium hover:bg-[#2E437C]
                    hover:text-white transition-all"
-                    onClick={() => navigate("/products")}
+                    onClick={() => navigate(point.path)}
                   >
                     VIEW <RxArrowTopRight className="ms-2 text-[#2E437C] hover:text-[#fff]" />
                   </motion.button>

@@ -10,7 +10,7 @@ const NewsGrid = ({
   initialPostsCount = 8,
   showLoadingState = true,
   showErrorState = true,
-  gridCols = "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
+  gridCols = "grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4",
   gap = "gap-6 lg:gap-8",
   className = "",
   onLoadMore,
@@ -127,8 +127,7 @@ const NewsGrid = ({
   const getLayoutClasses = () => {
     if (screen === "home") {
       return {
-        container:
-          "md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 md:gap-6 lg:gap-8",
+        container: `grid ${gridCols} ${gap}`,
         mobileContainer: "md:hidden overflow-x-auto pb-4 scrollbar-hide",
         mobileWrapper: "flex gap-4 min-w-max",
         cardWrapper: "w-[calc(50vw-32px)] flex-shrink-0 md:w-auto",
